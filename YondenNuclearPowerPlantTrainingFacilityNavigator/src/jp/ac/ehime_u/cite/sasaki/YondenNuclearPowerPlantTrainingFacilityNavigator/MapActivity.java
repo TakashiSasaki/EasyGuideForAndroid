@@ -2,12 +2,20 @@ package jp.ac.ehime_u.cite.sasaki.YondenNuclearPowerPlantTrainingFacilityNavigat
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 
 public class MapActivity extends Activity {
-    /** Called when the activity is first created. */
+	private Activity mGestureDetector;
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.map);
+	}
+	
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    public boolean onTouchEvent(MotionEvent event) {
+		return mGestureDetector.onTouchEvent(event);
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical">
+	<ScrollView android:layout_height="wrap_content" android:id="@+id/scrollView2"
+		android:layout_width="fill_parent">
+		<LinearLayout android:id="@+id/linearLayout2"
+			android:layout_gravity="center_horizontal" android:layout_height="fill_parent"
+			android:layout_width="fill_parent">
+			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton1"
+				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
+			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton2"
+				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
+			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton3"
+				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
+			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton8"
+				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
+			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton9"
+				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
+		</LinearLayout>
+	</ScrollView>
+	<LinearLayout android:id="@+id/linearLayout1"
+		android:layout_width="fill_parent" android:layout_height="260dp">
+		<ImageView android:id="@+id/imageView1" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="fitXY" android:src="@drawable/containment_building"></ImageView>
+	</LinearLayout>
+	<ScrollView android:layout_height="wrap_content" android:id="@+id/scrollView3"
+		android:layout_width="fill_parent">
+		<LinearLayout android:layout_width="fill_parent"
+			android:layout_height="fill_parent" android:gravity="bottom"
+			android:layout_gravity="center">
+			<ImageButton android:id="@+id/imageButton4" android:src="@drawable/icon"
+				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
+			<ImageButton android:id="@+id/imageButton5" android:src="@drawable/icon"
+				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
+			<ImageButton android:id="@+id/imageButton6" android:src="@drawable/icon"
+				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
+			<ImageButton android:id="@+id/imageButton7" android:src="@drawable/icon"
+				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
+			<ImageButton android:id="@+id/imageButton10" android:src="@drawable/icon"
+				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

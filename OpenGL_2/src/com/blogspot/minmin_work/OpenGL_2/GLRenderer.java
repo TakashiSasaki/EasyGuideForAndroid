@@ -1,4 +1,4 @@
-package test.sample;
+package com.blogspot.minmin_work.OpenGL_2;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -7,10 +7,18 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.view.Display;
 
+/**
+ * @author Yoshiki IZUMI
+ * @see "http://minmin-work.blogspot.com/"
+ */
 public class GLRenderer implements GLSurfaceView.Renderer {
 
 	private Scene mScene;
 	private boolean mOnce = true;
+	/**
+	 * @param activity
+	 * @param display
+	 */
 	public GLRenderer(Activity activity, Display display) {
 		mScene = new Scene(activity, display);
 	}

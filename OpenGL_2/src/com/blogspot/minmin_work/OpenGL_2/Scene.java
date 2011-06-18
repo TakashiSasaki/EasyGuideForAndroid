@@ -1,4 +1,4 @@
-package test.sample;
+package com.blogspot.minmin_work.OpenGL_2;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +7,9 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
+
+import test.sample.R;
+import test.sample.R.drawable;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -17,6 +20,10 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * @author Yoshiki IZUMI
+ * @see "http://minmin-work.blogspot.com/"
+ */
 public class Scene implements View.OnTouchListener{
 
 	private FloatBuffer vertexBuffer;

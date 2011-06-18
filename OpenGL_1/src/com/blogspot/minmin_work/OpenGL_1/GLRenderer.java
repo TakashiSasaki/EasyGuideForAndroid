@@ -1,4 +1,4 @@
-package test.sample;
+package com.blogspot.minmin_work.OpenGL_1;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

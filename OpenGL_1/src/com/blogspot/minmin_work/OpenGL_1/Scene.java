@@ -1,4 +1,4 @@
-package test.sample;
+package com.blogspot.minmin_work.OpenGL_1;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

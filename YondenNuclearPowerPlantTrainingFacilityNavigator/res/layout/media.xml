@@ -1,43 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:orientation="vertical">
-	<ScrollView android:layout_height="wrap_content" android:id="@+id/scrollView2"
-		android:layout_width="fill_parent">
-		<LinearLayout android:id="@+id/linearLayout2"
-			android:layout_gravity="center_horizontal" android:layout_height="fill_parent"
-			android:layout_width="fill_parent">
-			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton1"
-				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
-			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton2"
-				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
-			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton3"
-				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
-			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton8"
-				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
-			<ImageButton android:layout_height="60dp" android:id="@+id/imageButton9"
-				android:layout_width="60dp" android:src="@drawable/icon"></ImageButton>
-		</LinearLayout>
-	</ScrollView>
-	<LinearLayout android:id="@+id/linearLayout1"
-		android:layout_width="fill_parent" android:layout_height="260dp">
-		<ImageView android:id="@+id/imageView1" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="fitXY" android:src="@drawable/containment_building"></ImageView>
+	android:gravity="top">
+	<LinearLayout android:id="@+id/linearLayout9"
+		android:layout_width="wrap_content" android:orientation="vertical"
+		android:layout_height="wrap_content">
+		<ScrollView android:layout_width="wrap_content" android:id="@+id/scrollView2"
+			android:layout_height="wrap_content" android:layout_weight="1">
+			<LinearLayout android:layout_gravity="center_horizontal"
+				android:layout_width="fill_parent" android:id="@+id/linearLayout2"
+				android:layout_height="wrap_content">
+				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton1"
+					android:src="@drawable/sample_equipment_1" android:scaleType="fitXY"
+					android:layout_height="60dp"></ImageButton>
+				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton2"
+					android:src="@drawable/sample_equipment_2" android:scaleType="fitXY"
+					android:layout_height="60dp"></ImageButton>
+				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton3"
+					android:src="@drawable/sample_equipment_3" android:scaleType="fitXY"
+					android:layout_height="60dp"></ImageButton>
+				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton8"
+					android:src="@drawable/sample_equipment_4" android:scaleType="fitXY"
+					android:layout_height="60dp"></ImageButton>
+				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton9"
+					android:src="@drawable/sample_equipment_5" android:scaleType="fitXY"
+					android:layout_height="60dp"></ImageButton>
+				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton11"
+					android:src="@drawable/sample_equipment_6" android:scaleType="fitXY"
+					android:layout_height="60dp"></ImageButton>
+			</LinearLayout>
+		</ScrollView>
+		<RelativeLayout android:layout_width="fill_parent"
+			android:id="@+id/RelativeLayout1" android:layout_height="60dp"
+			android:gravity="center_vertical">
+			<Button android:id="@+id/buttonMediaRevert"
+				android:layout_width="wrap_content" android:background="@android:drawable/ic_menu_revert"
+				android:layout_height="wrap_content"></Button>
+			<Button android:text="" android:id="@+id/button1"
+				android:background="@android:drawable/ic_media_play"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true" android:layout_width="wrap_content"></Button>
+			<TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:text="TextView" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_height="wrap_content" android:layout_centerInParent="true"></TextView>
+		</RelativeLayout>
 	</LinearLayout>
-	<ScrollView android:layout_height="wrap_content" android:id="@+id/scrollView3"
-		android:layout_width="fill_parent" android:layout_gravity="bottom">
-		<LinearLayout android:layout_width="fill_parent"
-			android:layout_height="fill_parent" android:gravity="bottom"
-			android:layout_gravity="center">
-			<ImageButton android:id="@+id/imageButton4" android:src="@drawable/icon"
-				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
-			<ImageButton android:id="@+id/imageButton5" android:src="@drawable/icon"
-				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
-			<ImageButton android:id="@+id/imageButton6" android:src="@drawable/icon"
-				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
-			<ImageButton android:id="@+id/imageButton7" android:src="@drawable/icon"
-				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
-			<ImageButton android:id="@+id/imageButton10" android:src="@drawable/icon"
-				android:layout_width="60dp" android:layout_height="60dp"></ImageButton>
+	<FrameLayout android:layout_width="fill_parent" android:id="@+id/FrameLayout1"
+		android:layout_centerInParent="true" android:minHeight="260dp"
+		android:paddingTop="120dp" android:paddingBottom="40dp"
+		android:layout_height="fill_parent">
+		<LinearLayout android:id="@+id/linearLayout5"
+			android:layout_width="fill_parent" android:layout_height="wrap_content">
+			<ImageView android:layout_width="fill_parent" android:id="@+id/imageView1"
+				android:src="@drawable/containment_building" android:scaleType="fitXY"
+				android:layout_height="fill_parent" android:maxHeight="260dp"></ImageView>
 		</LinearLayout>
-	</ScrollView>
-</LinearLayout>
+		<LinearLayout android:id="@+id/linearLayout4"
+			android:layout_width="fill_parent" android:orientation="vertical"
+			android:layout_height="fill_parent">
+			<Gallery android:layout_width="wrap_content" android:id="@+id/gallery1"
+				android:layout_height="wrap_content"></Gallery>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/linearLayout3"
+			android:layout_width="fill_parent" android:orientation="vertical"
+			android:layout_height="fill_parent">
+			<VideoView android:layout_width="fill_parent" android:id="@+id/videoView1"
+				android:layout_height="fill_parent"></VideoView>
+			<MediaController android:layout_width="wrap_content"
+				android:id="@+id/mediaController1" android:layout_height="wrap_content"></MediaController>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/linearLayout6"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:orientation="vertical">
+			<WebView android:id="@+id/web" android:layout_height="fill_parent"
+				android:layout_width="fill_parent" />
+		</LinearLayout>
+	</FrameLayout>
+	<LinearLayout android:id="@+id/linearLayout8"
+		android:orientation="vertical" android:layout_alignParentBottom="true"
+		android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<LinearLayout android:id="@+id/linearLayout1"
+			android:layout_height="wrap_content" android:layout_width="fill_parent"
+			android:layout_gravity="top" android:layout_weight="1">
+			<Button android:text="@string/buttonMedia1" android:id="@+id/buttonMedia1"
+				android:gravity="fill_horizontal" android:minWidth="50dp"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1"></Button>
+			<Button android:text="@string/buttonMedia2" android:id="@+id/buttonMedia2"
+				android:gravity="fill_horizontal" android:minWidth="50dp"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1"></Button>
+			<Button android:text="@string/buttonMedia3" android:id="@+id/buttonMedia3"
+				android:gravity="fill_horizontal" android:minWidth="50dp"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1"></Button>
+			<Button android:text="@string/buttonMedia4" android:id="@+id/buttonMedai4"
+				android:gravity="fill_horizontal" android:minWidth="50dp"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1"></Button>
+			<Button android:text="@string/buttonMedia5" android:id="@+id/buttonMedia5"
+				android:gravity="fill_horizontal" android:minWidth="60dp"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1"></Button>
+			<Button android:text="@string/buttonMedia6" android:id="@+id/buttonMedia6"
+				android:gravity="fill_horizontal" android:minWidth="40dp"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1"></Button>
+		</LinearLayout>
+	</LinearLayout>
+</RelativeLayout>

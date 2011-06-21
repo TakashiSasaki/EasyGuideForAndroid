@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, MapActivity!</string>
-    <string name="app_name">YondenNuclearPowerPlantTrainingFacilityNavigator</string>
+	<string name="hello">Hello World, MapActivity!</string>
+	<string name="app_name">YondenNuclearPowerPlantTrainingFacilityNavigator
+	</string>
+	<string name="buttonMedia1">外観</string>
+	<string name="buttonMedia2">仕様</string>
+	<string name="buttonMedia3">機能</string>
+	<string name="buttonMedia4">訓練</string>
+	<string name="buttonMedia5">系統図</string>
+	<string name="buttonMedia6">Q&amp;A</string>
 </resources>

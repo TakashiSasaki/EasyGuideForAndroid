@@ -24,7 +24,7 @@
 		<ImageView android:id="@+id/imageView1" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="fitXY" android:src="@drawable/containment_building"></ImageView>
 	</LinearLayout>
 	<ScrollView android:layout_height="wrap_content" android:id="@+id/scrollView3"
-		android:layout_width="fill_parent">
+		android:layout_width="fill_parent" android:layout_gravity="bottom">
 		<LinearLayout android:layout_width="fill_parent"
 			android:layout_height="fill_parent" android:gravity="bottom"
 			android:layout_gravity="center">

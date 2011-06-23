@@ -13,6 +13,7 @@ import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -75,7 +76,7 @@ public class MapActivity extends Activity {
 						return false;
 					}
 				});
-		/*
+
 		((ImageView) findViewById(R.id.imageViewFloor))
 				.setOnTouchListener(new OnTouchListener() {
 
@@ -91,10 +92,20 @@ public class MapActivity extends Activity {
 						ListView list_view = (ListView) MapActivity.this
 								.findViewById(R.id.listViewFloor);
 						list_view.setAdapter(floor_list_adapter);
+
+						//コンテキストからインフレータを取得
+						LayoutInflater layout_infrater = LayoutInflater
+								.from(MapActivity.this);
+						//レイアウトをインフレとしてビューを取得
+						View view = layout_infrater.inflate(R.layout.floor_list,
+								null);
+
+						new AlertDialog.Builder(MapActivity.this).setView(
+								view).show();
+
 						return false;
 					}
 				});
-				*/
 	}
 
 	@Override

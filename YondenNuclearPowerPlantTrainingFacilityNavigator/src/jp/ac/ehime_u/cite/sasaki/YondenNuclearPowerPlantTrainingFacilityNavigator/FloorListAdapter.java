@@ -13,16 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FloorListAdapter extends ArrayAdapter<FloorListItem> {
-	private List<FloorListItem> items;
-	private LayoutInflater inflater;
+	private List<FloorListItem> floorListItems;
+	private LayoutInflater layoutInflater;
 
 	// コンストラクタ
 	// 特に深い意味は無い気がする・・
 	public FloorListAdapter(Context context, int resourceId,
 			List<FloorListItem> items) {
 		super(context, resourceId, items);
-		this.items = items;
-		this.inflater = (LayoutInflater) context
+		this.floorListItems = items;
+		this.layoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -37,11 +37,11 @@ public class FloorListAdapter extends ArrayAdapter<FloorListItem> {
 		View v = convertView;
 		if (v == null) {
 			// 1行分layoutからViewの塊を生成
-			v = inflater.inflate(R.layout.floor_list_item, null);
+			v = layoutInflater.inflate(R.layout.floor_list_item, null);
 		}
 		// itemsからデータ
 		// vから画面にくっついているViewを取り出して値をマッピングする
-		FloorListItem floor_list_item = (FloorListItem) items.get(position);
+		FloorListItem floor_list_item = (FloorListItem) floorListItems.get(position);
 		final FloorListItem f_floor_list_item = floor_list_item;
 
 		TextView text_view_floor_title = (TextView) v

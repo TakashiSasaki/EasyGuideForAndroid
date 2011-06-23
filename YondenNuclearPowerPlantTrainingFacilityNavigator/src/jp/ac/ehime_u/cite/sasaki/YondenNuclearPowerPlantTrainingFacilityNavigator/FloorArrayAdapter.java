@@ -12,14 +12,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class FloorListAdapter extends ArrayAdapter<FloorListItem> {
-	private List<FloorListItem> floorListItems;
+public class FloorArrayAdapter extends ArrayAdapter<FloorContent> {
+	private List<FloorContent> floorListItems;
 	private LayoutInflater layoutInflater;
 
 	// コンストラクタ
 	// 特に深い意味は無い気がする・・
-	public FloorListAdapter(Context context, int resourceId,
-			List<FloorListItem> items) {
+	public FloorArrayAdapter(Context context, int resourceId,
+			List<FloorContent> items) {
 		super(context, resourceId, items);
 		this.floorListItems = items;
 		this.layoutInflater = (LayoutInflater) context
@@ -30,33 +30,34 @@ public class FloorListAdapter extends ArrayAdapter<FloorListItem> {
 	// とにかく何をするにしてもこのgetViewというメソッドが1行操作するごとに呼ばれるので
 	// 追加処理とかもここに押し込む
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View view, ViewGroup parent) {
 		// 操作対象のViewを見る
 		// 完全に新規に作る場合はnullがわたってくる
 		// それにしてもViewを引数にとっているのにgetViewとは・・・なんだか変な話だ
-		View v = convertView;
-		if (v == null) {
+		//View view = convertView;
+		if (view == null) {
 			// 1行分layoutからViewの塊を生成
-			v = layoutInflater.inflate(R.layout.floor_list_item, null);
+			view = layoutInflater.inflate(R.layout.floor_list_item, null);
 		}
 		// itemsからデータ
 		// vから画面にくっついているViewを取り出して値をマッピングする
-		FloorListItem floor_list_item = (FloorListItem) floorListItems.get(position);
-		final FloorListItem f_floor_list_item = floor_list_item;
+		FloorContent floor_list_item = (FloorContent) floorListItems
+				.get(position);
+		final FloorContent f_floor_list_item = floor_list_item;
 
-		TextView text_view_floor_title = (TextView) v
+		TextView text_view_floor_title = (TextView) view
 				.findViewById(R.id.textViewFloorTitle);
 		text_view_floor_title.setText(floor_list_item.getTitle());
 
-		TextView text_view_floor_description = (TextView) v
+		TextView text_view_floor_description = (TextView) view
 				.findViewById(R.id.textViewFloorDescription);
 		text_view_floor_description.setText(floor_list_item.getDescription());
 
-		ImageView image_view_floor_icon = (ImageView) v
+		ImageView image_view_floor_icon = (ImageView) view
 				.findViewById(R.id.imageViewFloorIcon);
 		image_view_floor_icon.setImageBitmap(floor_list_item.getImage());
 
-		Button button_go_to_floor = (Button) v
+		Button button_go_to_floor = (Button) view
 				.findViewById(R.id.buttonGoToFloor);
 
 		button_go_to_floor.setOnClickListener(new OnClickListener() {
@@ -66,6 +67,6 @@ public class FloorListAdapter extends ArrayAdapter<FloorListItem> {
 				// doHoge(f_list_item);
 			}
 		});
-		return v;
+		return view;
 	}
 }

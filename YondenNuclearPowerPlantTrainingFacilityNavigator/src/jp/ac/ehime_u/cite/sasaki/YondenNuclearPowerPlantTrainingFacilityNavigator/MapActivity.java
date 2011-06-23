@@ -81,16 +81,17 @@ public class MapActivity extends Activity {
 				.setOnTouchListener(new OnTouchListener() {
 
 					public boolean onTouch(View v, MotionEvent event) {
-						List<FloorListItem> dataList = new ArrayList<FloorListItem>();
-						dataList.add(new FloorListItem(MapActivity.this));
-						dataList.add(new FloorListItem(MapActivity.this));
-						dataList.add(new FloorListItem(MapActivity.this));
+						List<FloorContent> dataList = new ArrayList<FloorContent>();
+						dataList.add(new FloorContent(MapActivity.this));
+						dataList.add(new FloorContent(MapActivity.this));
+						dataList.add(new FloorContent(MapActivity.this));
 
-						FloorListAdapter floor_list_adapter = new FloorListAdapter(
+						FloorArrayAdapter floor_list_adapter = new FloorArrayAdapter(
 								MapActivity.this, R.layout.floor_list_item,
 								dataList);
 						ListView list_view = (ListView) MapActivity.this
 								.findViewById(R.id.listViewFloor);
+						assert(list_view != null);
 						list_view.setAdapter(floor_list_adapter);
 
 						//コンテキストからインフレータを取得

@@ -1,22 +1,25 @@
 package jp.ac.ehime_u.cite.sasaki.YondenNuclearPowerPlantTrainingFacilityNavigator;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class FloorListItem {
+public class FloorContent {
 	private Bitmap image;
 	private String title;
 	private String description;
+	private ArrayList<RoomContent> roomContentArray;
+	private MediaContent mediaContent;
 
-	public FloorListItem(Context context) {
+	public FloorContent(Context context) {
 		super();
-		image = BitmapFactory.decodeResource(context.getResources(),
+		this.image = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.sample_floor_icon);
-		title = "Floor title";
-		description = "Floor description";
+		this.title = "Floor title";
+		this.description = "Floor description";
 	}
-
 	public Bitmap getImage() {
 		return image;
 	}

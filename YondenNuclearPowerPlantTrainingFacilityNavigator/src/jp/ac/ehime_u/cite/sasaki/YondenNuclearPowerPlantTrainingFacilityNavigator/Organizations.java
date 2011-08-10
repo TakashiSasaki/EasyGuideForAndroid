@@ -2,6 +2,10 @@ package jp.ac.ehime_u.cite.sasaki.YondenNuclearPowerPlantTrainingFacilityNavigat
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 
 import android.os.Environment;
 import android.util.Log;
@@ -12,8 +16,8 @@ public class Organizations {
 
 	public File directory;
 	public ArrayList<Organization> organizations = new ArrayList<Organization>();
-	
-	private static Organizations theOrganizations = new Organizations(); 
+
+	private static Organizations theOrganizations = new Organizations();
 
 	private Organizations() {
 		File storage_directory = Environment.getExternalStorageDirectory();
@@ -26,9 +30,27 @@ public class Organizations {
 			}
 			this.organizations.add(new Organization(organization_directory));
 		}
+		
+		class OrganizationComparator implements Comparator<Organization> {
+			public int compare(Organization object1, Organization object2) {
+				if (object1.order < object2.order) {
+					return -1;
+				} else if (object1.order > object2.order) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		}
+		
+		Collections.sort(this.organizations, new OrganizationComparator());
 	}
-	
-	public static Organizations GetTheOrganizations(){
+
+	public static Organizations GetTheOrganizations() {
 		return theOrganizations;
+	}
+
+	public static ArrayList<Organization> GetCollection() {
+		return theOrganizations.organizations;
 	}
 }

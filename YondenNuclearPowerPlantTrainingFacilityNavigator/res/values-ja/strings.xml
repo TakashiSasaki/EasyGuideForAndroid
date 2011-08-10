@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="among_all">すべての施設から選択</string>
+    <string name="around_here">現在位置から絞り込む</string>
+</resources>

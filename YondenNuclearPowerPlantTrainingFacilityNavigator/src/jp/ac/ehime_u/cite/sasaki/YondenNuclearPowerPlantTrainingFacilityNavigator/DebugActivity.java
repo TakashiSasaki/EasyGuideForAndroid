@@ -17,7 +17,13 @@ public class DebugActivity extends Activity {
 		textview_debug.append("\n" + "Storage Directory = "
 				+ storage_directory.getPath() + "\n");
 		File data_directory = Environment.getDataDirectory();
-		textview_debug.append("Data Directory = " + data_directory.getParent()
+		textview_debug.append("Data Directory = " + data_directory.getPath()
 				+ "\n");
+		
+		File[] files = storage_directory.listFiles();
+		for(int i = 0; i<files.length; ++i) {
+			textview_debug.append(files[i].getPath() + ", ");
+			textview_debug.append(files[i].getName() + "\n");
+		}
 	}
 }

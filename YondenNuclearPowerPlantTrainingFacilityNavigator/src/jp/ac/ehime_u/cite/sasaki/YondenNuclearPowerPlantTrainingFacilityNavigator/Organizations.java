@@ -12,8 +12,10 @@ public class Organizations {
 
 	public File directory;
 	public ArrayList<Organization> organizations = new ArrayList<Organization>();
+	
+	private static Organizations theOrganizations = new Organizations(); 
 
-	public Organizations() {
+	private Organizations() {
 		File storage_directory = Environment.getExternalStorageDirectory();
 		this.directory = new File(storage_directory, DIRECTORY);
 		File[] organization_directories = this.directory.listFiles();
@@ -24,5 +26,9 @@ public class Organizations {
 			}
 			this.organizations.add(new Organization(organization_directory));
 		}
+	}
+	
+	public static Organizations GetTheOrganizations(){
+		return theOrganizations;
 	}
 }

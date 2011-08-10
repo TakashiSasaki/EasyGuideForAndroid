@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -109,14 +110,29 @@ public class MapActivity extends Activity {
 						return false;
 					}
 				});
-		
+
 	}
-	
+
 	@Override
-	public boolean onCreateOptionsMenu(android.view.Menu menu){
+	public boolean onCreateOptionsMenu(android.view.Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		MenuInflater menu_infrater = getMenuInflater();
 		menu_infrater.inflate(R.menu.menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menu_item) {
+		super.onOptionsItemSelected(menu_item);
+		switch (menu_item.getItemId()) {
+		case R.id.itemDebug:
+			Intent intent = new Intent(getApplicationContext(),
+					DebugActivity.class);
+			startActivity(intent);
+			break;
+		default:
+			break;
+		}
 		return true;
 	}
 

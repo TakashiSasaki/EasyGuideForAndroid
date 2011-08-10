@@ -47,7 +47,7 @@ public class MapActivity extends Activity {
 						AlertDialog.Builder alert_dialog_builder = new AlertDialog.Builder(
 								MapActivity.this);
 						alert_dialog_builder.setTitle("ダイアログボックスのタイトル");
-						alert_dialog_builder.setPositiveButton("いえす",
+						alert_dialog_builder.setPositiveButton("YES デバッグ用",
 								new OnClickListener() {
 
 									public void onClick(DialogInterface dialog,
@@ -56,7 +56,7 @@ public class MapActivity extends Activity {
 
 									}
 								});
-						alert_dialog_builder.setNegativeButton("のお",
+						alert_dialog_builder.setNegativeButton("NO デバッグ用",
 								new OnClickListener() {
 
 									public void onClick(DialogInterface dialog,
@@ -65,7 +65,7 @@ public class MapActivity extends Activity {
 
 									}
 								});
-						alert_dialog_builder.setNeutralButton("しらん",
+						alert_dialog_builder.setNeutralButton("CANCEL デバッグ用",
 								new OnClickListener() {
 
 									public void onClick(DialogInterface dialog,
@@ -76,7 +76,7 @@ public class MapActivity extends Activity {
 								});
 						alert_dialog_builder.setCancelable(true);
 						alert_dialog_builder.show();
-						return false;
+						return true;
 					}
 				});
 

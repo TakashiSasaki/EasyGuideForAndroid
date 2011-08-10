@@ -7,18 +7,16 @@
 		android:orientation="vertical">
 		<LinearLayout android:gravity="top" android:id="@+id/linearLayout2"
 			android:layout_width="fill_parent" android:layout_height="wrap_content">
-			<ImageView android:layout_width="120dp"
-				android:layout_height="120dp" android:id="@+id/imageViewBuilding"
-				android:src="@drawable/building" android:scaleType="fitXY"></ImageView>
+			<ImageView android:id="@+id/imageViewBuilding"
+				android:src="@drawable/building" android:scaleType="fitXY" android:layout_width="295dp" android:layout_height="295dp"></ImageView>
 			<ImageView android:layout_width="fill_parent"
-				android:layout_height="120dp" android:id="@+id/imageViewFloor"
-				android:src="@drawable/sample_floor_map" android:scaleType="fitXY"></ImageView>
+				android:id="@+id/imageViewFloor"
+				android:scaleType="fitXY" android:layout_height="fill_parent" android:src="@drawable/simulator"></ImageView>
 		</LinearLayout>
 		<RelativeLayout android:layout_width="fill_parent"
 			android:id="@+id/relativeLayout1" android:layout_height="fill_parent">
 			<ImageView android:id="@+id/imageViewRoom"
-				android:layout_height="fill_parent" android:src="@drawable/sample_room_map"
-				android:scaleType="fitXY" android:layout_width="fill_parent"></ImageView>
+				android:layout_height="fill_parent" android:scaleType="fitXY" android:layout_width="fill_parent" android:src="@drawable/coronal"></ImageView>
 			<RelativeLayout android:id="@+id/RelativeLayout1"
 				android:layout_width="fill_parent" android:orientation="horizontal"
 				android:layout_height="wrap_content" android:layout_alignParentTop="true">

@@ -10,24 +10,24 @@
 			<LinearLayout android:layout_gravity="center_horizontal"
 				android:layout_width="fill_parent" android:id="@+id/linearLayout2"
 				android:layout_height="wrap_content">
-				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton1"
+				<ImageButton android:layout_width="160dp" android:id="@+id/imageButton1"
 					android:src="@drawable/sample_equipment_1" android:scaleType="fitXY"
-					android:layout_height="60dp"></ImageButton>
-				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton2"
+					android:layout_height="160dp"></ImageButton>
+				<ImageButton android:layout_width="160dp" android:id="@+id/imageButton2"
 					android:src="@drawable/sample_equipment_2" android:scaleType="fitXY"
-					android:layout_height="60dp"></ImageButton>
-				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton3"
+					android:layout_height="160dp"></ImageButton>
+				<ImageButton android:layout_width="160dp" android:id="@+id/imageButton3"
 					android:src="@drawable/sample_equipment_3" android:scaleType="fitXY"
-					android:layout_height="60dp"></ImageButton>
-				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton8"
+					android:layout_height="160dp"></ImageButton>
+				<ImageButton android:layout_width="160dp" android:id="@+id/imageButton8"
 					android:src="@drawable/sample_equipment_4" android:scaleType="fitXY"
-					android:layout_height="60dp"></ImageButton>
-				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton9"
+					android:layout_height="160dp"></ImageButton>
+				<ImageButton android:layout_width="160dp" android:id="@+id/imageButton9"
 					android:src="@drawable/sample_equipment_5" android:scaleType="fitXY"
-					android:layout_height="60dp"></ImageButton>
-				<ImageButton android:layout_width="60dp" android:id="@+id/imageButton11"
+					android:layout_height="160dp"></ImageButton>
+				<ImageButton android:layout_width="160dp" android:id="@+id/imageButton11"
 					android:src="@drawable/sample_equipment_6" android:scaleType="fitXY"
-					android:layout_height="60dp"></ImageButton>
+					android:layout_height="160dp"></ImageButton>
 			</LinearLayout>
 		</ScrollView>
 		<RelativeLayout android:layout_width="fill_parent"
@@ -45,7 +45,7 @@
 	</LinearLayout>
 	<FrameLayout android:layout_width="fill_parent" android:id="@+id/FrameLayout1"
 		android:layout_centerInParent="true" android:minHeight="260dp"
-		android:paddingTop="120dp" android:paddingBottom="40dp"
+		android:paddingTop="220dp" android:paddingBottom="40dp"
 		android:layout_height="fill_parent">
 		<LinearLayout android:id="@+id/linearLayout5"
 			android:layout_width="fill_parent" android:layout_height="wrap_content">
@@ -80,27 +80,27 @@
 		<LinearLayout android:id="@+id/linearLayout1"
 			android:layout_height="wrap_content" android:layout_width="fill_parent"
 			android:layout_gravity="top" android:layout_weight="1">
-			<Button android:text="@string/buttonMedia1" android:id="@+id/buttonMedia1"
+			<Button android:text="@string/buttonMedia1" android:textSize="30dp" android:id="@+id/buttonMedia1"
 				android:gravity="fill_horizontal" android:minWidth="50dp"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
 				android:layout_weight="1"></Button>
-			<Button android:text="@string/buttonMedia2" android:id="@+id/buttonMedia2"
+			<Button android:text="@string/buttonMedia2" android:textSize="30dp" android:id="@+id/buttonMedia2"
 				android:gravity="fill_horizontal" android:minWidth="50dp"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
 				android:layout_weight="1"></Button>
-			<Button android:text="@string/buttonMedia3" android:id="@+id/buttonMedia3"
+			<Button android:text="@string/buttonMedia3" android:textSize="30dp" android:id="@+id/buttonMedia3"
 				android:gravity="fill_horizontal" android:minWidth="50dp"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
 				android:layout_weight="1"></Button>
-			<Button android:text="@string/buttonMedia4" android:id="@+id/buttonMedai4"
+			<Button android:text="@string/buttonMedia4" android:textSize="30dp" android:id="@+id/buttonMedai4"
 				android:gravity="fill_horizontal" android:minWidth="50dp"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
 				android:layout_weight="1"></Button>
-			<Button android:text="@string/buttonMedia5" android:id="@+id/buttonMedia5"
+			<Button android:text="@string/buttonMedia5" android:textSize="30dp" android:id="@+id/buttonMedia5"
 				android:gravity="fill_horizontal" android:minWidth="60dp"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
 				android:layout_weight="1"></Button>
-			<Button android:text="@string/buttonMedia6" android:id="@+id/buttonMedia6"
+			<Button android:text="@string/buttonMedia6" android:textSize="30dp" android:id="@+id/buttonMedia6"
 				android:gravity="fill_horizontal" android:minWidth="40dp"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
 				android:layout_weight="1"></Button>

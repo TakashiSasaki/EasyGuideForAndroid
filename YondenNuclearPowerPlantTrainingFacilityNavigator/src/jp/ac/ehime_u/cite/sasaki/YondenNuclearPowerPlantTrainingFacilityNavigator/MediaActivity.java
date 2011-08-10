@@ -1,12 +1,17 @@
 package jp.ac.ehime_u.cite.sasaki.YondenNuclearPowerPlantTrainingFacilityNavigator;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.webkit.WebView;
+import android.webkit.WebView.WebViewTransport;
 
 public class MediaActivity extends Activity {
 	protected static final float SWIPE_MAX_OFF_PATH = 200;
@@ -20,6 +25,14 @@ public class MediaActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.media);
 		mGestureDetector = new GestureDetector(this, mOnGestureListener);
+		
+		//サンプルコンテンツのロード
+		WebView web_view = (WebView) findViewById(R.id.web);
+		File storage_directory = Environment.getExternalStorageDirectory();
+		File root_directory = new File(storage_directory, "EASYGUIDE");
+		File sample_directory = new File(root_directory, "sample");
+		File sample_index = new File(sample_directory, "sample.png");
+		web_view.loadUrl("file://"+sample_index.getAbsolutePath());
 	}
 
 	@Override

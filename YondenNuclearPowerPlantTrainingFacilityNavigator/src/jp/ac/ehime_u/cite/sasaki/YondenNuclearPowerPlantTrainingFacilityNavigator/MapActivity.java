@@ -2,6 +2,7 @@ package jp.ac.ehime_u.cite.sasaki.YondenNuclearPowerPlantTrainingFacilityNavigat
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -91,22 +93,31 @@ public class MapActivity extends Activity {
 								dataList);
 						ListView list_view = (ListView) MapActivity.this
 								.findViewById(R.id.listViewFloor);
-						assert(list_view != null);
+						assert (list_view != null);
 						list_view.setAdapter(floor_list_adapter);
 
-						//コンテキストからインフレータを取得
+						// コンテキストからインフレータを取得
 						LayoutInflater layout_infrater = LayoutInflater
 								.from(MapActivity.this);
-						//レイアウトをインフレとしてビューを取得
-						View view = layout_infrater.inflate(R.layout.floor_list,
-								null);
+						// レイアウトをインフレとしてビューを取得
+						View view = layout_infrater.inflate(
+								R.layout.floor_list, null);
 
-						new AlertDialog.Builder(MapActivity.this).setView(
-								view).show();
+						new AlertDialog.Builder(MapActivity.this).setView(view)
+								.show();
 
 						return false;
 					}
 				});
+		
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(android.view.Menu menu){
+		super.onCreateOptionsMenu(menu);
+		MenuInflater menu_infrater = getMenuInflater();
+		menu_infrater.inflate(R.menu.menu, menu);
+		return true;
 	}
 
 	@Override

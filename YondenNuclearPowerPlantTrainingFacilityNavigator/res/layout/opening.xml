@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-    <ImageView android:id="@+id/imageView1" android:src="@drawable/opening" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="fitXY"></ImageView>
-    
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<RelativeLayout android:id="@+id/relativeLayout1"
+		android:layout_width="fill_parent" android:layout_height="fill_parent">
+		<ListView android:id="@+id/listView1" android:layout_height="600dp" android:layout_width="400dp" android:layout_centerVertical="true" android:layout_centerHorizontal="true"></ListView>
+	</RelativeLayout>
+
 </LinearLayout>

@@ -114,29 +114,6 @@ public class MapActivity extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(android.view.Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		MenuInflater menu_infrater = getMenuInflater();
-		menu_infrater.inflate(R.menu.menu, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem menu_item) {
-		super.onOptionsItemSelected(menu_item);
-		switch (menu_item.getItemId()) {
-		case R.id.itemDebug:
-			Intent intent = new Intent(getApplicationContext(),
-					DebugActivity.class);
-			startActivity(intent);
-			break;
-		default:
-			break;
-		}
-		return true;
-	}
-
-	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// return super.onTouchEvent(event);
 		Log.d("onTouchEvent", "");

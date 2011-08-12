@@ -9,4 +9,6 @@
 	<string name="buttonMedia4">訓練</string>
 	<string name="buttonMedia5">系統図</string>
 	<string name="buttonMedia6">Q&amp;A</string>
+	<string name="among_all">すべての施設から選択</string>
+	<string name="around_here">現在位置から絞り込む</string>
 </resources>

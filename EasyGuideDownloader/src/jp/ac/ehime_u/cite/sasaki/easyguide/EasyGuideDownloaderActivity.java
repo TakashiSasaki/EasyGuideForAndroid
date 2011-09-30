@@ -1,7 +1,11 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -18,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 public class EasyGuideDownloaderActivity extends Activity {
-
 	static MyOpenHelper myOpenHelper;
 
 	/** Called when the activity is first created. */
@@ -48,11 +51,10 @@ public class EasyGuideDownloaderActivity extends Activity {
 							URL url = new URL(url_to_be_added);
 							content_values.put("zip_url", url.toString());
 							content_values.put("domain", url.getHost());
-							Log.d("EasyGuideDownloader",
-									"domain part = " + url.getHost());
+							Log.d(Common.TAG, "domain part = " + url.getHost());
 						} catch (MalformedURLException e) {
-							Log.e("EasyGuideDownloader",
-									"Malformed URL given, " + url_to_be_added);
+							Log.e(Common.TAG, "Malformed URL given, "
+									+ url_to_be_added);
 						}
 						// Log.d("EasyGuideDownloader",url_to_be_added);
 						writable_database.insert("zip_urls", null,
@@ -70,14 +72,19 @@ public class EasyGuideDownloaderActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				ListView list_view = (ListView)parent;
-				String zip_url = (String)list_view.getItemAtPosition(position);
-				
-				Activity activity = (Activity)view.getContext();
-				EditText edit_text = (EditText)activity.findViewById(R.id.editTextUrl);
+				ListView list_view = (ListView) parent;
+				String zip_url = (String) list_view.getItemAtPosition(position);
+
+				EasyGuideDownloaderActivity activity = (EasyGuideDownloaderActivity) view
+						.getContext();
+				EditText edit_text = (EditText) activity
+						.findViewById(R.id.editTextUrl);
 				edit_text.setText(zip_url);
-				Button button = (Button)activity.findViewById(R.id.buttonAddUrl);
+				Button button = (Button) activity
+						.findViewById(R.id.buttonAddUrl);
 				button.setClickable(false);
+				activity.DownloadZipFile(zip_url);
+				button.setClickable(true);
 			}
 
 		});
@@ -103,5 +110,32 @@ public class EasyGuideDownloaderActivity extends Activity {
 
 		ListView list_view = (ListView) findViewById(R.id.listViewUrls);
 		list_view.setAdapter(array_adapter);
+	}
+
+	public void DownloadZipFile(String url_) {
+		// ダウンロード元のURL
+		URL url;
+		try {
+			url = new URL(url_);
+		} catch (MalformedURLException e1) {
+			Log.e(Common.TAG, "malformed URL given: " + url_);
+			e1.printStackTrace();
+			return;
+		}
+
+		// ダウンロード先のディレクトリ
+		File organization_directory;
+		try {
+			Organizations organizations = Organizations.GetTheOrganizations();
+			Log.d(Common.TAG, "organizations' directory = "
+					+ organizations.directory.getPath());
+			organization_directory = new File(organizations.directory
+					+ url.getHost());
+			organization_directory.mkdir();
+		} catch (FileNotFoundException e) {
+			Log.d(Common.TAG, "Can't find organizations' directory");
+			e.printStackTrace();
+			return;
+		}
 	}
 }

@@ -12,7 +12,9 @@
 		<Button android:text="Add" android:id="@+id/buttonAddUrl"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 	</LinearLayout>
-	<ProgressBar android:layout_height="wrap_content" style="?android:attr/progressBarStyleHorizontal" android:id="@+id/progressBar1" android:layout_width="match_parent"></ProgressBar>
-	<ListView android:id="@+id/listView1" android:layout_width="match_parent"
+	<ProgressBar android:layout_height="wrap_content"
+		style="?android:attr/progressBarStyleHorizontal" android:id="@+id/progressBar1"
+		android:layout_width="match_parent"></ProgressBar>
+	<ListView android:id="@+id/listViewUrls" android:layout_width="match_parent"
 		android:layout_height="match_parent"></ListView>
 </LinearLayout>

@@ -5,18 +5,36 @@ import java.io.File;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+/**
+ * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
+ * 
+ */
 public class Equipment {
 
-	public static final String THUMBNAIL_NAME = "thumbnail.png";
-	public Bitmap thumbnail;
+	private static final String equipmentImageName = "equipment.png";
+	private static final int equipmentThumbnailHeight = 50;
+	private static final int equipmentThumbnailWidth = 50;
+	private Bitmap equipmentImage;
+	private Bitmap equipmentThumbnail;
 
-	public static final String IMAGE_NAME = "image.png";
-	public Bitmap image;
-
+	/**
+	 * @param equipment_directory
+	 */
 	public Equipment(File equipment_directory) {
-		File thumbnail_file = new File(equipment_directory, THUMBNAIL_NAME);
-		this.thumbnail = BitmapFactory.decodeFile(thumbnail_file.getPath());
-		File image_file = new File(equipment_directory, IMAGE_NAME);
-		this.image = BitmapFactory.decodeFile(image_file.getPath());
+		File equipment_image_file = new File(equipment_directory,
+				Equipment.equipmentImageName);
+		this.equipmentImage = BitmapFactory.decodeFile(equipment_image_file
+				.getPath());
+		this.equipmentThumbnail = Organization.ResizeBitmap(
+				this.equipmentImage, Equipment.equipmentThumbnailWidth,
+				Equipment.equipmentThumbnailHeight);
 	}
+
+	/**
+	 * @return the equipmentThumbnail
+	 */
+	public Bitmap getEquipmentThumbnail() {
+		return equipmentThumbnail;
+	}
+
 }

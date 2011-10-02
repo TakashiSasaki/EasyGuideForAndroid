@@ -1,11 +1,9 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -13,37 +11,25 @@ import android.util.Log;
  * 
  * @author Takashi SASAKI @
  */
-public class Organizations {
-	public static final String tag = "EASYGUIDE";
-	private static final String DIRECTORY = "EASYGUIDE";
+@SuppressWarnings("serial")
+public class Organizations extends ArrayList<Organization> {
 
-	public File directory;
-	public ArrayList<Organization> organizations = new ArrayList<Organization>();
+	// public ArrayList<Organization> organizations = new
+	// ArrayList<Organization>();
 
 	private static Organizations theOrganizations;
 
-	private Organizations() throws FileNotFoundException {
-		File storage_directory = Environment.getExternalStorageDirectory();
-		Log.v("Organizations", "Storage directory = " + storage_directory);
-		this.directory = new File(storage_directory, DIRECTORY);
-		File[] organization_directories = this.directory.listFiles();
-		if (organization_directories == null) {
-			throw new FileNotFoundException(this.directory.getAbsolutePath());
-		}
-		for (int i = 0; i < organization_directories.length; ++i) {
-			File organization_directory = organization_directories[i];
-			if (!organization_directory.isDirectory()) {
-				continue;
-			}
-			Log.v("Organizations", "Organization directory = "+organization_directory.getPath());
-			this.organizations.add(new Organization(organization_directory));
-		}
+	private Organizations(Root root_) {
+		super();
+		ScanRootDirectory(root_);
 
 		class OrganizationComparator implements Comparator<Organization> {
 			public int compare(Organization object1, Organization object2) {
-				if (object1.order < object2.order) {
+				if (object1.getOrganizationOrder() < object2
+						.getOrganizationOrder()) {
 					return -1;
-				} else if (object1.order > object2.order) {
+				} else if (object1.getOrganizationOrder() > object2
+						.getOrganizationOrder()) {
 					return 1;
 				} else {
 					return 0;
@@ -51,22 +37,46 @@ public class Organizations {
 			}
 		}
 
-		Collections.sort(this.organizations, new OrganizationComparator());
+		Collections.sort(this, new OrganizationComparator());
 	}
 
-	public static Organizations GetTheOrganizations()
-			throws FileNotFoundException {
+	private void ScanRootDirectory(Root root_) {
+		File[] domain_directories = root_.getRootDirectory().listFiles();
+		for (int i = 0; i < domain_directories.length; ++i) {
+			File domain_directory = domain_directories[i];
+			Log.v(this.getClass().getName(), domain_directory.getPath());
+			if (!domain_directory.isDirectory())
+				continue;
+			if (!domain_directory.canRead())
+				continue;
+			Domain domain = new Domain(domain_directory);
+			ScanDomainDirectory(domain);
+		}
+	}
+
+	private void ScanDomainDirectory(Domain domain_) {
+		File[] organization_directories = domain_.getDomainDirectory()
+				.listFiles();
+		for (int i = 0; i < organization_directories.length; ++i) {
+			File organization_directory = organization_directories[i];
+			Log.v(this.getClass().getName(), organization_directory.getPath()
+					+ " was found.");
+			if (!organization_directory.isDirectory())
+				continue;
+			if (!organization_directory.canRead())
+				continue;
+			this.add(new Organization(organization_directory));
+		}
+	}
+
+	/**
+	 * @param root_
+	 * @return singleton object of Organizations
+	 */
+	public static Organizations GetTheOrganizations(Root root_) {
 		if (theOrganizations == null) {
-			theOrganizations = new Organizations();
+			theOrganizations = new Organizations(root_);
 		}
 		return theOrganizations;
-	}
-
-	public static ArrayList<Organization> GetCollection() {
-		try {
-			return GetTheOrganizations().organizations;
-		} catch (FileNotFoundException file_not_found_exception) {
-			return new ArrayList<Organization>();
-		}
 	}
 }

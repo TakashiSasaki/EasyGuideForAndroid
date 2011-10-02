@@ -1,27 +1,38 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-class Floor {
-	public Rooms rooms;
-	public static final String IMAGE_NAME = "image.png";
-	public Bitmap image;
-	public int number;
-	public File directory;
-	public String name;
+@SuppressWarnings("serial")
+class Floor extends ArrayList<Room> {
+	private static final String floorImageName = "floor.png";
+	public Bitmap floorImage;
+	public int floorNumber;
+	public File floorDirectory;
+	public String floorName;
 
 	public Floor(File floor_directory) {
-		this.directory = floor_directory;
+		this.floorDirectory = floor_directory;
 		String floor_directory_name = floor_directory.getName();
 		String[] parts = floor_directory_name.split("[ ]+");
-		this.number = Integer.parseInt(parts[0]);
-		this.name = parts[1];
-		File image_file = new File(floor_directory, IMAGE_NAME);
-		this.image = BitmapFactory.decodeFile(image_file.getPath());
+		this.floorNumber = Integer.parseInt(parts[0]);
+		this.floorName = parts[1];
+		File floor_image_file = new File(floor_directory, floorImageName);
+		this.floorImage = BitmapFactory.decodeFile(floor_image_file.getPath());
+		ScanRooms();
+	}// Floor
 
-		this.rooms = new Rooms(floor_directory);
-	}
+	private void ScanRooms() {
+		File[] room_directories = this.floorDirectory.listFiles();
+		for (int i = 0; i < room_directories.length; ++i) {
+			File room_directory = room_directories[i];
+			if (!room_directory.isDirectory()) {
+				continue;
+			}
+			this.add(new Room(room_directory));
+		}
+	}// ScanRooms
 }

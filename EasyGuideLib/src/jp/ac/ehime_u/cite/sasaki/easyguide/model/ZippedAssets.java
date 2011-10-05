@@ -1,7 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -15,19 +15,42 @@ import android.util.Log;
  */
 @SuppressWarnings("serial")
 public class ZippedAssets extends ArrayList<URL> {
+	private static final String zipAssetDirectory = "zip";
+	
+	static class Exception extends RuntimeException {
+		public Exception(String message_) {
+			super(message_);
+		}
+	}
+
 	private static ZippedAssets zippedAssets;
+	private AssetManager assetManager;
 
 	private ZippedAssets(Context context_) {
-		AssetManager asset_manager = context_.getResources().getAssets();
+		assetManager = context_.getResources().getAssets();
 		try {
-			String[] list = asset_manager.list("zip");
+			String[] list = assetManager.list("zip");
 			if (list != null) {
 				for (int i = 0; i < list.length; ++i) {
-					this.add(new URL("file://assets/zip/" + list[i]));
+					this.add(new URL("file://assets/" + list[i]));
 				}
 			}
 		} catch (IOException e) {
 			Log.v(this.getClass().getSimpleName(), e.getMessage());
+		}
+	}
+
+	/**
+	 * @param slash_and_zip_file_name 
+	 * @return InputStream for the file in assets
+	 */
+	public InputStream GetInputStream(String slash_and_zip_file_name) {
+		String asset_path = zipAssetDirectory + slash_and_zip_file_name;
+		try {
+			return this.assetManager.open(asset_path);
+		} catch (IOException e) {
+			throw new Exception("Can't get " + asset_path
+					+ " in assets. " + e.getMessage());
 		}
 	}
 
@@ -40,9 +63,5 @@ public class ZippedAssets extends ArrayList<URL> {
 			zippedAssets = new ZippedAssets(context_);
 		}
 		return zippedAssets;
-	}
-	
-	public void Unzip(String asset_path, File destination_directory){
-		
 	}
 }

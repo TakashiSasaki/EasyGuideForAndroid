@@ -18,13 +18,8 @@ import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -328,11 +323,17 @@ public class ZipDownloader {
 	}
 
 	/**
-	 * 
+	 * @return downloaded file
 	 */
-	public void Unzip() {
-		ZipInflator zip_inflator = new ZipInflator(this.downloadedFile,
-				this.domainDirectory);
-		zip_inflator.Inflate();
+	public File getDownloadedFile() {
+		return downloadedFile;
 	}
+
+	/**
+	 * @return domain directory
+	 */
+	public File getDomainDirectory() {
+		return domainDirectory;
+	}
+
 }

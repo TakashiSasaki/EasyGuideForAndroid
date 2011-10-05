@@ -32,22 +32,21 @@ public class Domain {
 	/**
 	 * 
 	 * @param root_
-	 * @param url_
+	 * @param domain_name 
 	 * @throws UnknownHostException
 	 */
-	public Domain(Root root_, URL url_) throws UnknownHostException {
+	public Domain(String domain_name) {
 		//if (!IsResolvable(url_.getHost())) {
 		//	throw new Exception(url_.getHost() + " is not resolvable.");
 		//}
-		File domain_directory = new File(root_.getRootDirectory(), url_
-				.getHost().toLowerCase());
+		File domain_directory = new File(Root.GetTheRoot().getRootDirectory(), domain_name.toLowerCase());
 		if (!domain_directory.exists()) {
 			domain_directory.mkdirs();
 			assert(domain_directory.exists());
 		}
 		if (domain_directory.isFile()) {
 			throw new Exception("Can't make domain directory for "
-					+ url_.toString());
+					+ domain_name.toLowerCase());
 		}
 		assert (domain_directory.isDirectory());
 		this.domainDirectory = domain_directory;
@@ -82,8 +81,11 @@ public class Domain {
 		File[] files = this.domainDirectory.listFiles();
 		Log.v(this.getClass().getSimpleName(), "Enumerating unzipped directories on "
 				+ this.domainDirectory);
-		if (files == null)
+		if (files == null){
+			Log.v(this.getClass().getSimpleName(), "No unzipped directory in " + this.domainDirectory);
 			return;
+		}
+		Log.v(this.getClass().getSimpleName(), files.length + " unzipped directory/directories found.");
 		for (int i = 0; i < files.length; ++i) {
 			try {
 				UnzippedDirectory unzipped_directory = new UnzippedDirectory(

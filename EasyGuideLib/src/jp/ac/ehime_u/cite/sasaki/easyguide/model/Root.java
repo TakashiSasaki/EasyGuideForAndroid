@@ -14,6 +14,7 @@ import android.util.Log;
  */
 public class Root {
 	private static final String rootDirectoryName = "EASYGUIDE";
+	private static Root root;
 	private File rootDirectory;
 	// private ArrayList<Domain> domains;
 	private File externalStorageDirectory;
@@ -21,7 +22,7 @@ public class Root {
 	/**
 	 * 
 	 */
-	public Root() {
+	private Root() {
 		externalStorageDirectory = Environment.getExternalStorageDirectory();
 		Log.v(this.getClass().getSimpleName(),
 				externalStorageDirectory.getAbsolutePath());
@@ -55,5 +56,15 @@ public class Root {
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * @return singleton isntance of class Root
+	 */
+	public static Root GetTheRoot() {
+		if(root == null){
+			root = new Root();
+		}
+		return root;
 	}
 }

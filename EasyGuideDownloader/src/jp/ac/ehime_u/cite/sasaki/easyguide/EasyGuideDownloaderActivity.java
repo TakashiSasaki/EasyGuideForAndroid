@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -40,22 +41,21 @@ public class EasyGuideDownloaderActivity extends Activity {
 
 		((Button) findViewById(R.id.buttonAddUrl))
 				.setOnClickListener(new OnClickListener() {
-
 					@Override
 					public void onClick(View arg0) {
-						String url_to_be_added = ((EditText) findViewById(R.id.editTextUrl))
+						String url_string = ((EditText) findViewById(R.id.editTextUrl))
 								.getEditableText().toString();
-
 						URL url;
 						try {
-							url = new URL(url_to_be_added);
+							url = new URL(url_string);
 						} catch (MalformedURLException e) {
-							throw new Exception("Malformed URL "
-									+ url_to_be_added + ". " + e.getMessage());
+							Log.e(this.getClass().getSimpleName(),
+									"Malformed URL " + url_string);
+							return;
 						}
+						ZipUrls.GetTheZipUrls(arg0.getContext()).PutZipUrl(url);
 						EasyGuideDownloaderActivity activity = (EasyGuideDownloaderActivity) arg0
 								.getContext();
-						ZipUrls.GetTheZipUrls(activity).PutZipUrl(url);
 						ListView list_view = (ListView) activity
 								.findViewById(R.id.listViewUrls);
 						list_view.setAdapter(ZipUrls.GetTheZipUrls(activity)
@@ -63,25 +63,45 @@ public class EasyGuideDownloaderActivity extends Activity {
 					}
 				});
 
+		((Button) findViewById(R.id.buttonDownload))
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						final String url_string = ((EditText) findViewById(R.id.editTextUrl))
+								.getEditableText().toString();
+						Handler handler = new Handler();
+						handler.post(new Runnable() {
+							@Override
+							public void run() {
+								DownloadZipFile(url_string);
+							}
+						});
+					}
+				});
+
 		ListView list_view = (ListView) findViewById(R.id.listViewUrls);
 		list_view.setAdapter(ZipUrls.GetTheZipUrls(this).GetArrayAdapter(this));
 		list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
+			public void onItemClick(AdapterView<?> parent, final View view,
 					int position, long id) {
 				ListView list_view = (ListView) parent;
-				final String zip_url = (String) list_view
+				final String url_string = (String) list_view
 						.getItemAtPosition(position);
 				Handler handler = new Handler();
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
-						DownloadZipFile(zip_url);
+						SetEditableText(url_string);
 					}
 				});
 			}// onItemClick
 		});
 	}// onCreate
+
+	private void SetEditableText(String url_) {
+		((EditText) findViewById(R.id.editTextUrl)).setText(url_);
+	}
 
 	private void DownloadZipFile(String url_) {
 		URL url;

@@ -109,6 +109,19 @@ public class EasyGuideDownloaderActivity extends Activity {
 				});
 			}// onItemClick
 		});
+
+		((Button) findViewById(R.id.buttonQuit))
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(final View arg0) {
+						new Handler().post(new Runnable() {
+							@Override
+							public void run() {
+								moveTaskToBack(true);
+							}
+						});
+					}
+				});
 	}// onCreate
 
 	private void SetEditableText(String url_) {
@@ -123,13 +136,16 @@ public class EasyGuideDownloaderActivity extends Activity {
 			throw new Exception(e.getMessage());
 		}
 		if (url.getHost().equalsIgnoreCase("assets")) {
-			Log.v(this.getClass().getSimpleName(),"Clicked URL represents a file in assets.");
+			Log.v(this.getClass().getSimpleName(),
+					"Clicked URL represents a file in assets.");
 			InflateZipFileInAssets(url.getFile());
 		} else if (url.getHost().equalsIgnoreCase("localhost")) {
-			Log.v(this.getClass().getSimpleName(),"Clicked URL represents a file in local file system.");
+			Log.v(this.getClass().getSimpleName(),
+					"Clicked URL represents a file in local file system.");
 			InflateLocalZipFile(url.getPath());
 		} else {
-			Log.v(this.getClass().getSimpleName(),"Clicked URL represents a file on the Internet.");
+			Log.v(this.getClass().getSimpleName(),
+					"Clicked URL represents a file on the Internet.");
 			DownloadAndInflateZipFile(url);
 		}
 	}

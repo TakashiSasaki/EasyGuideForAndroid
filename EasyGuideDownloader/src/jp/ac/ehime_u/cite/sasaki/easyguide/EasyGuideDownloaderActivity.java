@@ -1,11 +1,11 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
+import java.net.UnknownHostException;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipDownloader;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -21,8 +21,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+/**
+ * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
+ * 
+ */
 public class EasyGuideDownloaderActivity extends Activity {
 	static MyOpenHelper myOpenHelper;
+
+	@SuppressWarnings("serial")
+	class Exception extends RuntimeException {
+
+		public Exception(String message_) {
+			super(message_);
+		}
+	}
 
 	/** Called when the activity is first created. */
 	@Override
@@ -112,30 +124,29 @@ public class EasyGuideDownloaderActivity extends Activity {
 		list_view.setAdapter(array_adapter);
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param url_
+	 */
 	public void DownloadZipFile(String url_) {
 		// ダウンロード元のURL
 		URL url;
 		try {
 			url = new URL(url_);
-		} catch (MalformedURLException e1) {
-			Log.e(Common.TAG, "malformed URL given: " + url_);
-			e1.printStackTrace();
-			return;
+		} catch (MalformedURLException e) {
+			throw new Exception(e.getMessage());
 		}
-
-		// ダウンロード先のディレクトリ
-		File organization_directory;
+		Root root = new Root();
+		Domain domain;
 		try {
-			Organizations organizations = Organizations.GetTheOrganizations();
-			Log.d(Common.TAG, "organizations' directory = "
-					+ organizations.directory.getPath());
-			organization_directory = new File(organizations.directory
-					+ url.getHost());
-			organization_directory.mkdir();
-		} catch (FileNotFoundException e) {
-			Log.d(Common.TAG, "Can't find organizations' directory");
-			e.printStackTrace();
-			return;
+			domain = new Domain(root, url);
+		} catch (UnknownHostException e) {
+			throw new Exception(e.getMessage());
 		}
+		ZipDownloader zip_downloader;
+		zip_downloader = new ZipDownloader(domain, url);
+		zip_downloader.GetMethod();
+		zip_downloader.Unzip();
 	}
 }

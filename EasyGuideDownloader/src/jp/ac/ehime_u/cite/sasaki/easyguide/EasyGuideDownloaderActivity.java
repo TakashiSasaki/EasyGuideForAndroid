@@ -48,7 +48,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 			zip_urls.PutZipUrl(i.next());
 		}
 		
-		((Button) findViewById(R.id.buttonAddUrl))
+		((Button) findViewById(R.id.buttonRemember))
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
@@ -72,7 +72,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 					}
 				});
 
-		((Button) findViewById(R.id.buttonDownload))
+		((Button) findViewById(R.id.buttonDeploy))
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {

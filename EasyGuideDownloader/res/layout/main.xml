@@ -9,9 +9,9 @@
 			android:layout_width="wrap_content"></TextView>
 		<EditText android:layout_height="wrap_content" android:id="@+id/editTextUrl"
 			android:layout_width="match_parent" android:layout_weight="1"></EditText>
-		<Button android:text="Add" android:id="@+id/buttonAddUrl"
+		<Button android:text="Remember" android:id="@+id/buttonRemember"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-		<Button android:text="Download" android:id="@+id/buttonDownload"
+		<Button android:text="Deploy" android:id="@+id/buttonDeploy"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 	</LinearLayout>
 	<ProgressBar android:layout_height="wrap_content"

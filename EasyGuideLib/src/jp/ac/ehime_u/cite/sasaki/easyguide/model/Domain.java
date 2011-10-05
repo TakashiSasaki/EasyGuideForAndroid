@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.util.Log;
+
 /**
  * Each organization belongs to one FQDN. class Domain manipulates resources
  * related to FQDN. *
@@ -40,7 +42,8 @@ public class Domain {
 		File domain_directory = new File(root_.getRootDirectory(), url_
 				.getHost().toLowerCase());
 		if (!domain_directory.exists()) {
-			domain_directory.mkdir();
+			domain_directory.mkdirs();
+			assert(domain_directory.exists());
 		}
 		if (domain_directory.isFile()) {
 			throw new Exception("Can't make domain directory for "
@@ -77,6 +80,10 @@ public class Domain {
 		this.newestUnzippedDirectory = null;
 		this.unzippedDirectories = new ArrayList<UnzippedDirectory>();
 		File[] files = this.domainDirectory.listFiles();
+		Log.v(this.getClass().getSimpleName(), "Enumerating unzipped directories on "
+				+ this.domainDirectory);
+		if (files == null)
+			return;
 		for (int i = 0; i < files.length; ++i) {
 			try {
 				UnzippedDirectory unzipped_directory = new UnzippedDirectory(
@@ -93,18 +100,30 @@ public class Domain {
 		}
 	}
 
-	private boolean IsResolvable(String host_) {
-		InetAddress inet_address;
+	private String hostAddress;
+
+	private boolean IsResolvable(final String host_) {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				InetAddress inet_address;
+				try {
+					inet_address = InetAddress.getByName(host_);
+					hostAddress = inet_address.getHostAddress();
+				} catch (UnknownHostException e) {
+				}
+			}
+		});
+		thread.start();
 		try {
-			inet_address = InetAddress.getByName(host_);
-		} catch (UnknownHostException e) {
+			thread.join(10000);
+			if (hostAddress == null || hostAddress.isEmpty()) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (InterruptedException e) {
 			return false;
-		}
-		String host_address = inet_address.getHostAddress();
-		if (host_address == null || host_address.isEmpty()) {
-			return false;
-		} else {
-			return true;
 		}
 	}
 

@@ -8,15 +8,10 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipDownloader;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -26,8 +21,6 @@ import android.widget.ListView;
  * 
  */
 public class EasyGuideDownloaderActivity extends Activity {
-	private static Domains domains;
-
 	@SuppressWarnings("serial")
 	static class Exception extends RuntimeException {
 
@@ -41,7 +34,6 @@ public class EasyGuideDownloaderActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		domains = new Domains(this);
 
 		((Button) findViewById(R.id.buttonAddUrl))
 				.setOnClickListener(new OnClickListener() {
@@ -58,17 +50,17 @@ public class EasyGuideDownloaderActivity extends Activity {
 							throw new Exception("Malformed URL "
 									+ url_to_be_added + ". " + e.getMessage());
 						}
-						domains.RegisterUrl(url);
 						EasyGuideDownloaderActivity activity = (EasyGuideDownloaderActivity) arg0
 								.getContext();
+						ZipUrls.GetTheZipUrls(activity).PutZipUrl(url);
 						ListView list_view = (ListView) activity
 								.findViewById(R.id.listViewUrls);
-						list_view.setAdapter(domains.GetArrayAdapter(activity));
+						list_view.setAdapter(ZipUrls.GetTheZipUrls(activity).GetArrayAdapter(activity));
 					}
 				});
 
 		ListView list_view = (ListView) findViewById(R.id.listViewUrls);
-		list_view.setAdapter(domains.GetArrayAdapter(this));
+		list_view.setAdapter(ZipUrls.GetTheZipUrls(this).GetArrayAdapter(this));
 		list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override

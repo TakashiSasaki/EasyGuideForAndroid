@@ -26,10 +26,10 @@ import android.widget.ListView;
  * 
  */
 public class EasyGuideDownloaderActivity extends Activity {
-	static MyOpenHelper myOpenHelper;
+	private static Domains domains;
 
 	@SuppressWarnings("serial")
-	class Exception extends RuntimeException {
+	static class Exception extends RuntimeException {
 
 		public Exception(String message_) {
 			super(message_);
@@ -41,44 +41,34 @@ public class EasyGuideDownloaderActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		myOpenHelper = new MyOpenHelper(this);
-		RenewUrlListView();
+		domains = new Domains(this);
 
 		((Button) findViewById(R.id.buttonAddUrl))
 				.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View arg0) {
-						// DatabaseHelper database_helper = new
-						// DatabaseHelper(arg0.getContext());
-						SQLiteDatabase readable_database = myOpenHelper
-								.getReadableDatabase();
-						readable_database.close();
-						SQLiteDatabase writable_database = myOpenHelper
-								.getWritableDatabase();
-						ContentValues content_values = new ContentValues();
 						String url_to_be_added = ((EditText) findViewById(R.id.editTextUrl))
 								.getEditableText().toString();
+
+						URL url;
 						try {
-							URL url = new URL(url_to_be_added);
-							content_values.put("zip_url", url.toString());
-							content_values.put("domain", url.getHost());
-							Log.d(Common.TAG, "domain part = " + url.getHost());
+							url = new URL(url_to_be_added);
 						} catch (MalformedURLException e) {
-							Log.e(Common.TAG, "Malformed URL given, "
-									+ url_to_be_added);
+							throw new Exception("Malformed URL "
+									+ url_to_be_added + ". " + e.getMessage());
 						}
-						// Log.d("EasyGuideDownloader",url_to_be_added);
-						writable_database.insert("zip_urls", null,
-								content_values);
-						writable_database.close();
+						domains.RegisterUrl(url);
 						EasyGuideDownloaderActivity activity = (EasyGuideDownloaderActivity) arg0
 								.getContext();
-						activity.RenewUrlListView();
+						ListView list_view = (ListView) activity
+								.findViewById(R.id.listViewUrls);
+						list_view.setAdapter(domains.GetArrayAdapter(activity));
 					}
 				});
 
 		ListView list_view = (ListView) findViewById(R.id.listViewUrls);
+		list_view.setAdapter(domains.GetArrayAdapter(this));
 		list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
@@ -98,30 +88,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 				activity.DownloadZipFile(zip_url);
 				button.setClickable(true);
 			}
-
 		});
-	}
-
-	private void RenewUrlListView() {
-		SQLiteDatabase readable_database = myOpenHelper.getReadableDatabase();
-		Cursor cursor = readable_database.query("zip_urls",
-				new String[] { "zip_url" }, null, null, null, null, null);
-
-		ArrayAdapter<String> array_adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1);
-		// array_adapter.add("test string");
-
-		for (boolean record_exists = cursor.moveToFirst(); record_exists; record_exists = cursor
-				.moveToNext()) {
-			array_adapter.add(cursor.getString(0));
-		}
-		cursor.close();
-		readable_database.close();
-		// Log.d("EasyGuideDownloader", readable_database.isOpen() ?
-		// "open":"close");
-
-		ListView list_view = (ListView) findViewById(R.id.listViewUrls);
-		list_view.setAdapter(array_adapter);
 	}
 
 	/**

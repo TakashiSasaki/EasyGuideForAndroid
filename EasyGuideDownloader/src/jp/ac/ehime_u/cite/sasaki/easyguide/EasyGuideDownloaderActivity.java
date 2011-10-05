@@ -8,7 +8,10 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipDownloader;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -55,41 +58,32 @@ public class EasyGuideDownloaderActivity extends Activity {
 						ZipUrls.GetTheZipUrls(activity).PutZipUrl(url);
 						ListView list_view = (ListView) activity
 								.findViewById(R.id.listViewUrls);
-						list_view.setAdapter(ZipUrls.GetTheZipUrls(activity).GetArrayAdapter(activity));
+						list_view.setAdapter(ZipUrls.GetTheZipUrls(activity)
+								.GetArrayAdapter(activity));
 					}
 				});
 
 		ListView list_view = (ListView) findViewById(R.id.listViewUrls);
 		list_view.setAdapter(ZipUrls.GetTheZipUrls(this).GetArrayAdapter(this));
 		list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				ListView list_view = (ListView) parent;
-				String zip_url = (String) list_view.getItemAtPosition(position);
-
-				EasyGuideDownloaderActivity activity = (EasyGuideDownloaderActivity) view
-						.getContext();
-				EditText edit_text = (EditText) activity
-						.findViewById(R.id.editTextUrl);
-				edit_text.setText(zip_url);
-				Button button = (Button) activity
-						.findViewById(R.id.buttonAddUrl);
-				button.setClickable(false);
-				activity.DownloadZipFile(zip_url);
-				button.setClickable(true);
-			}
+				final String zip_url = (String) list_view
+						.getItemAtPosition(position);
+				Handler handler = new Handler();
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						DownloadZipFile(zip_url);
+					}
+				});
+			}// onItemClick
 		});
-	}
+	}// onCreate
 
-	/**
-	 * 
-	 * 
-	 * @param url_
-	 */
-	public void DownloadZipFile(String url_) {
-		// ダウンロード元のURL
+	private void DownloadZipFile(String url_) {
 		URL url;
 		try {
 			url = new URL(url_);
@@ -105,7 +99,22 @@ public class EasyGuideDownloaderActivity extends Activity {
 		}
 		ZipDownloader zip_downloader;
 		zip_downloader = new ZipDownloader(domain, url);
-		zip_downloader.GetMethod();
+		try {
+			zip_downloader.GetMethod();
+		} catch (ZipDownloader.Exception e) {
+			AlertDialog.Builder alert_dialog_builder = new AlertDialog.Builder(
+					this);
+			alert_dialog_builder.setCancelable(false);
+			alert_dialog_builder.setMessage("コンテンツをダウンロードできません");
+			alert_dialog_builder.setPositiveButton("戻る",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+						}
+					});
+			alert_dialog_builder.show();
+			return;
+		}
 		zip_downloader.Unzip();
 	}
 }

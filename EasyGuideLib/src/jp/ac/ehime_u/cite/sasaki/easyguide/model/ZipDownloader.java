@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -71,7 +72,7 @@ public class ZipDownloader {
 		this.domainDirectory = domain_.getDomainDirectory();
 		this.sourceUrl = url_;
 		try {
-			this.downloadedFile = File.createTempFile("temp", "zip");
+			this.downloadedFile = File.createTempFile("temp", ".zip");
 		} catch (IOException e) {
 			throw new Exception("Can't create temporary file. "
 					+ e.getMessage());
@@ -79,12 +80,10 @@ public class ZipDownloader {
 	}
 
 	/**
-	 * @throws URISyntaxException
-	 * @throws IOException
-	 * @throws ClientProtocolException
+	 * @throws Exception 
 	 * 
 	 */
-	public void GetMethod() {
+	public void GetMethod() throws Exception {
 		final HttpGet http_get = new HttpGet();
 		final URI source_uri;
 		try {
@@ -95,29 +94,32 @@ public class ZipDownloader {
 		}
 		http_get.setURI(source_uri);
 
-		class Runnable2 implements Runnable {
+		class DownloadRunnable implements Runnable {
 			public HttpResponse http_response;
 			private HttpClient http_client;
+			public Exception exception;
 
 			@Override
 			public void run() {
 				http_client = new DefaultHttpClient();
 				http_client.getParams().setParameter("http.connection.timeout",
-						new Integer(20000));
+						new Integer(10000));
 				try {
 					http_response = http_client.execute(http_get);
 				} catch (ClientProtocolException e1) {
-					throw new Exception("Getting " + source_uri.toString()
-							+ ". " + e1.getMessage());
+					this.exception = new Exception("Getting "
+							+ source_uri.toString() + " failed. "
+							+ e1.getMessage());
 				} catch (IOException e1) {
-					throw new Exception("Getting " + source_uri.toString()
-							+ ". " + e1.getMessage());
+					this.exception = new Exception("Getting "
+							+ source_uri.toString() + " failed. "
+							+ e1.getMessage());
 				}// try
 			}// run()
 		}
-		;
-		Runnable2 runnable2 = new Runnable2();
-		Thread thread = new Thread(runnable2);
+
+		DownloadRunnable download_runnable = new DownloadRunnable();
+		Thread thread = new Thread(download_runnable);
 		Log.v(this.getClass().getSimpleName(), "Starting a thread to download "
 				+ source_uri.toString());
 		thread.start();
@@ -127,8 +129,11 @@ public class ZipDownloader {
 			throw new Exception("Can't download " + source_uri.toString()
 					+ ". " + e1.getMessage());
 		}
+		if(download_runnable.exception!=null){
+			throw download_runnable.exception;
+		}
 
-		int http_status_code = runnable2.http_response.getStatusLine()
+		int http_status_code = download_runnable.http_response.getStatusLine()
 				.getStatusCode();
 		if (http_status_code == HttpStatus.SC_REQUEST_TIMEOUT) {
 			throw new Exception("request for " + this.sourceUrl.toString()
@@ -139,12 +144,13 @@ public class ZipDownloader {
 		}
 		if (http_status_code != HttpStatus.SC_OK) {
 			throw new Exception("response : "
-					+ runnable2.http_response.getStatusLine().toString());
+					+ download_runnable.http_response.getStatusLine()
+							.toString());
 		}
-		WriteDownloadedFile(runnable2.http_response);
+		WriteDownloadedFile(download_runnable.http_response);
 		this.downloadedDate = new Date();
 		try {
-			this.lastModifiedDate = ParseLastModified(runnable2.http_response);
+			this.lastModifiedDate = ParseLastModified(download_runnable.http_response);
 		} catch (ParseException e) {
 			Log.v(this.getClass().getSimpleName(),
 					"Can't parse Last-Modified value in HTTP response header.");
@@ -367,8 +373,8 @@ public class ZipDownloader {
 			throw new Exception("Can't initialize SSLContext. "
 					+ e.getMessage());
 		}
-		
-		//TODO: not implemented completely.
+
+		// TODO: not implemented completely.
 		return http_client;
 	}
 

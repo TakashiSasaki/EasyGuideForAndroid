@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, EasyGuideDownloaderActivity!</string>
     <string name="app_name">EasyGuide Downloader</string>
+    <string name="instruction">URLを選択して下さい。Deployでコンテンツを展開します。RememberでURLを追加できます。file://assets/で始まるURLはEasyGuide Downloader内に組み込まれているサンプルコンテンツです。file://localhost/で始まるURLはSDカードなど本体内のローカルファイルシステムにあるコンテンツです。</string>
 </resources>

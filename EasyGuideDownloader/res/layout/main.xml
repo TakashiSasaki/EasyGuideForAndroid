@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
+	<TextView android:text="@string/instruction" android:id="@+id/textViewInstruction"
+		android:layout_height="wrap_content" android:layout_width="match_parent"></TextView>
 	<LinearLayout android:layout_width="match_parent"
 		android:id="@+id/linearLayout1" android:layout_height="wrap_content">
 		<TextView android:layout_height="wrap_content" android:text="URL of ZIP file"
@@ -19,5 +21,15 @@
 		android:layout_width="match_parent"></ProgressBar>
 	<ListView android:id="@+id/listViewUrls" android:layout_width="match_parent"
 		android:layout_height="match_parent" android:paddingLeft="20dp"
-		android:paddingRight="20dp" android:smoothScrollbar="true"></ListView>
+		android:paddingRight="20dp" android:smoothScrollbar="true"
+		android:layout_weight="1"></ListView>
+	<LinearLayout android:id="@+id/linearLayout2"
+		android:layout_width="match_parent" android:layout_height="wrap_content">
+		<Button android:text="Downloaderの終了" android:layout_height="wrap_content"
+			android:id="@+id/buttonQuit" android:layout_width="match_parent"
+			android:layout_weight="1"></Button>
+		<Button android:text="Playerの起動" android:layout_height="wrap_content"
+			android:id="@+id/buttonPlay" android:layout_width="match_parent"
+			android:layout_weight="1"></Button>
+	</LinearLayout>
 </LinearLayout>

@@ -4,12 +4,17 @@ import java.io.BufferedInputStream;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,6 +24,10 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -40,7 +49,7 @@ import android.util.Log;
 public class ZipDownloader {
 
 	@SuppressWarnings({ "javadoc", "serial" })
-	public class Exception extends RuntimeException {
+	public static class Exception extends RuntimeException {
 		public Exception(String message_) {
 			super(message_);
 		}
@@ -55,15 +64,18 @@ public class ZipDownloader {
 
 	/**
 	 * @param domain_
-	 * @param file_name
 	 * @param url_
 	 * @throws IOException
 	 */
-	public ZipDownloader(Domain domain_, String file_name, URL url_)
-			throws IOException {
+	public ZipDownloader(Domain domain_, URL url_) {
 		this.domainDirectory = domain_.getDomainDirectory();
 		this.sourceUrl = url_;
-		this.downloadedFile = File.createTempFile("temp", "zip");
+		try {
+			this.downloadedFile = File.createTempFile("temp", "zip");
+		} catch (IOException e) {
+			throw new Exception("Can't create temporary file. "
+					+ e.getMessage());
+		}
 	}
 
 	/**
@@ -72,17 +84,52 @@ public class ZipDownloader {
 	 * @throws ClientProtocolException
 	 * 
 	 */
-	public void GetMethod() throws URISyntaxException, ClientProtocolException,
-			IOException {
-		HttpClient http_client = new DefaultHttpClient();
-		HttpGet http_get = new HttpGet();
-		http_client.getParams().setParameter("http.connection.timeout",
-				new Integer(20000));
-		URI source_uri;
-		source_uri = sourceUrl.toURI();
+	public void GetMethod() {
+		final HttpGet http_get = new HttpGet();
+		final URI source_uri;
+		try {
+			source_uri = sourceUrl.toURI();
+		} catch (URISyntaxException e1) {
+			throw new Exception(sourceUrl.toString()
+					+ " seems to be malformed. " + e1.getMessage());
+		}
 		http_get.setURI(source_uri);
-		HttpResponse http_response = http_client.execute(http_get);
-		int http_status_code = http_response.getStatusLine().getStatusCode();
+
+		class Runnable2 implements Runnable {
+			public HttpResponse http_response;
+			private HttpClient http_client;
+
+			@Override
+			public void run() {
+				http_client = new DefaultHttpClient();
+				http_client.getParams().setParameter("http.connection.timeout",
+						new Integer(20000));
+				try {
+					http_response = http_client.execute(http_get);
+				} catch (ClientProtocolException e1) {
+					throw new Exception("Getting " + source_uri.toString()
+							+ ". " + e1.getMessage());
+				} catch (IOException e1) {
+					throw new Exception("Getting " + source_uri.toString()
+							+ ". " + e1.getMessage());
+				}// try
+			}// run()
+		}
+		;
+		Runnable2 runnable2 = new Runnable2();
+		Thread thread = new Thread(runnable2);
+		Log.v(this.getClass().getSimpleName(), "Starting a thread to download "
+				+ source_uri.toString());
+		thread.start();
+		try {
+			thread.join();
+		} catch (InterruptedException e1) {
+			throw new Exception("Can't download " + source_uri.toString()
+					+ ". " + e1.getMessage());
+		}
+
+		int http_status_code = runnable2.http_response.getStatusLine()
+				.getStatusCode();
 		if (http_status_code == HttpStatus.SC_REQUEST_TIMEOUT) {
 			throw new Exception("request for " + this.sourceUrl.toString()
 					+ " timed out.");
@@ -92,34 +139,75 @@ public class ZipDownloader {
 		}
 		if (http_status_code != HttpStatus.SC_OK) {
 			throw new Exception("response : "
-					+ http_response.getStatusLine().toString());
+					+ runnable2.http_response.getStatusLine().toString());
 		}
-		WriteDownloadedFile(http_response);
+		WriteDownloadedFile(runnable2.http_response);
 		this.downloadedDate = new Date();
 		try {
-			this.lastModifiedDate = ParseLastModified(http_response);
+			this.lastModifiedDate = ParseLastModified(runnable2.http_response);
 		} catch (ParseException e) {
-			Log.v(this.getClass().getName(),
+			Log.v(this.getClass().getSimpleName(),
 					"Can't parse Last-Modified value in HTTP response header.");
 			this.lastModifiedDate = null;
 		}
 	}
 
-	private void WriteDownloadedFile(HttpResponse http_response)
-			throws IllegalStateException, IOException {
-		InputStream input_stream = http_response.getEntity().getContent();
+	private void WriteDownloadedFile(HttpResponse http_response) {
+		InputStream input_stream;
+		try {
+			input_stream = http_response.getEntity().getContent();
+		} catch (IllegalStateException e1) {
+			throw new Exception("Unable to get content from HTTP response. "
+					+ e1.getMessage());
+		} catch (IOException e1) {
+			throw new Exception("Unable to get content from HTTP response. "
+					+ e1.getMessage());
+		}
 		BufferedInputStream buffered_input_stream = new BufferedInputStream(
 				input_stream, bufferSize);
-		BufferedOutputStream buffered_output_stream = new BufferedOutputStream(
-				new FileOutputStream(downloadedFile));
+		Log.v(this.getClass().getSimpleName(), "Writing downloaded file to "
+				+ downloadedFile.getAbsolutePath());
+		BufferedOutputStream buffered_output_stream;
+		try {
+			buffered_output_stream = new BufferedOutputStream(
+					new FileOutputStream(downloadedFile));
+		} catch (FileNotFoundException e) {
+			throw new Exception("Unable to open "
+					+ downloadedFile.getAbsolutePath() + " for output. "
+					+ e.getMessage());
+		}
 		byte buffer[] = new byte[bufferSize];
 		int read_size;
-		while ((read_size = buffered_input_stream.read(buffer)) != -1) {
-			buffered_output_stream.write(buffer, 0, read_size);
+		try {
+			while ((read_size = buffered_input_stream.read(buffer)) != -1) {
+				buffered_output_stream.write(buffer, 0, read_size);
+			}
+		} catch (IOException e) {
+			throw new Exception(
+					"Unable to copy from HTTP response to output stream. "
+							+ e.getMessage());
 		}
-		buffered_output_stream.flush();
-		buffered_output_stream.close();
-		buffered_input_stream.close();
+		Log.v(this.getClass().getSimpleName(), "Closing downloaded file to "
+				+ downloadedFile.getAbsolutePath());
+		try {
+			buffered_output_stream.flush();
+		} catch (IOException e) {
+			throw new Exception("Unable to flush output stream. "
+					+ e.getMessage());
+		}
+		try {
+			buffered_output_stream.close();
+		} catch (IOException e) {
+			throw new Exception("Unable to close output stream. "
+					+ e.getMessage());
+		}
+		try {
+			buffered_input_stream.close();
+		} catch (IOException e) {
+			throw new Exception(
+					"Unable to close HTTP response as a input stream. "
+							+ e.getMessage());
+		}
 	}
 
 	/**
@@ -128,16 +216,29 @@ public class ZipDownloader {
 	 * @throws ClientProtocolException
 	 * @throws ParseException
 	 */
-	public void HeadMethod() throws URISyntaxException,
-			ClientProtocolException, IOException {
+	public void HeadMethod() {
 		HttpClient http_client = new DefaultHttpClient();
 		HttpHead http_head = new HttpHead();
-		http_head.setURI(this.sourceUrl.toURI());
-		HttpResponse http_response = http_client.execute(http_head);
+		try {
+			http_head.setURI(this.sourceUrl.toURI());
+		} catch (URISyntaxException e1) {
+			throw new Exception("URL " + this.sourceUrl.toString()
+					+ " seems to be malformed. " + e1.getMessage());
+		}
+		HttpResponse http_response;
+		try {
+			http_response = http_client.execute(http_head);
+		} catch (ClientProtocolException e1) {
+			throw new Exception("Can't execute HEAD method to "
+					+ this.sourceUrl.toString() + ". " + e1.getMessage());
+		} catch (IOException e1) {
+			throw new Exception("Can't execute HEAD method to "
+					+ this.sourceUrl.toString() + ". " + e1.getMessage());
+		}
 		try {
 			this.lastModifiedDate = this.ParseLastModified(http_response);
 		} catch (ParseException e) {
-			Log.v(this.getClass().getName(),
+			Log.v(this.getClass().getSimpleName(),
 					"Can't parse Last-Modified value in HTTP response header.");
 			this.lastModifiedDate = null;
 		}
@@ -160,8 +261,19 @@ public class ZipDownloader {
 	 * @throws ZipException
 	 * 
 	 */
-	public void Unzip() throws ZipException, IOException {
-		ZipFile zip_file = new ZipFile(this.downloadedFile);
+	public void Unzip() {
+		ZipFile zip_file;
+		try {
+			zip_file = new ZipFile(this.downloadedFile);
+		} catch (ZipException e) {
+			throw new Exception("Unable to open "
+					+ this.downloadedFile.getAbsolutePath()
+					+ " as a ZIP file. " + e.getMessage());
+		} catch (IOException e) {
+			throw new Exception("Unable to open "
+					+ this.downloadedFile.getAbsolutePath()
+					+ " as a ZIP file. " + e.getMessage());
+		}
 		Enumeration<? extends ZipEntry> zip_entries = zip_file.entries();
 		while (zip_entries.hasMoreElements()) {
 			ZipEntry zip_entry = zip_entries.nextElement();
@@ -171,22 +283,94 @@ public class ZipDownloader {
 				destination_file.mkdirs();
 				continue;
 			}
-			BufferedInputStream buffered_input_stream = new BufferedInputStream(
-					zip_file.getInputStream(zip_entry));
+			BufferedInputStream buffered_input_stream;
+			try {
+				buffered_input_stream = new BufferedInputStream(
+						zip_file.getInputStream(zip_entry));
+			} catch (IOException e) {
+				throw new Exception("Unable to get an entry "
+						+ zip_entry.getName() + " in the ZIP file. "
+						+ e.getMessage());
+			}
 			if (!destination_file.getParentFile().exists()) {
 				destination_file.getParentFile().mkdirs();
 			}
-			BufferedOutputStream buffered_output_stream = new BufferedOutputStream(
-					new FileOutputStream(destination_file));
-			while (buffered_input_stream.available() > 0) {
-				byte[] buffer = new byte[this.bufferSize];
-				buffered_input_stream.read(buffer);
-				buffered_output_stream.write(buffer);
+			BufferedOutputStream buffered_output_stream;
+			try {
+				buffered_output_stream = new BufferedOutputStream(
+						new FileOutputStream(destination_file));
+			} catch (FileNotFoundException e) {
+				throw new Exception("Unable to get output stream of "
+						+ destination_file.getAbsolutePath() + ". "
+						+ e.getMessage());
+			}
+			try {
+				while (buffered_input_stream.available() > 0) {
+					byte[] buffer = new byte[this.bufferSize];
+					buffered_input_stream.read(buffer);
+					buffered_output_stream.write(buffer);
+				}
+			} catch (IOException e) {
+				throw new Exception(
+						"Unable to copy data from an ZIP entry to a file. "
+								+ e.getMessage());
 			}// while
-			buffered_input_stream.close();
-			buffered_output_stream.close();
+			try {
+				buffered_input_stream.close();
+			} catch (IOException e) {
+				throw new Exception("Failed to close input stream. "
+						+ e.getMessage());
+			}
+			try {
+				buffered_output_stream.close();
+			} catch (IOException e) {
+				throw new Exception("Failed to close output stream. "
+						+ e.getMessage());
+			}
 		}// while
 	}// UnZip()
+
+	/**
+	 * @param http_client
+	 * @return insecure HTTP client accepting invalid certification.
+	 */
+	public static HttpClient GetInsecureHttpClient(HttpClient http_client) {
+		X509TrustManager x509_trust_manager = new X509TrustManager() {
+
+			@Override
+			public X509Certificate[] getAcceptedIssuers() {
+				return null;
+			}
+
+			@Override
+			public void checkServerTrusted(X509Certificate[] arg0, String arg1)
+					throws CertificateException {
+			}
+
+			@Override
+			public void checkClientTrusted(X509Certificate[] arg0, String arg1)
+					throws CertificateException {
+			}
+		};
+
+		SSLContext ssl_context;
+		try {
+			ssl_context = SSLContext.getInstance("TLS");
+		} catch (NoSuchAlgorithmException e) {
+			throw new Exception("Can't get instance of SSLContext. "
+					+ e.getMessage());
+		}
+		try {
+			ssl_context.init(null, new TrustManager[] { x509_trust_manager },
+					null);
+		} catch (KeyManagementException e) {
+			throw new Exception("Can't initialize SSLContext. "
+					+ e.getMessage());
+		}
+		
+		//TODO: not implemented completely.
+		return http_client;
+	}
 
 	@Override
 	protected void finalize() throws Throwable {

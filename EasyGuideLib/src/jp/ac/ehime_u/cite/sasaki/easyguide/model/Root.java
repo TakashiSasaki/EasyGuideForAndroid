@@ -18,14 +18,17 @@ public class Root {
 	// private ArrayList<Domain> domains;
 	private File externalStorageDirectory;
 
-	private Root() {
+	/**
+	 * 
+	 */
+	public Root() {
 		externalStorageDirectory = Environment.getExternalStorageDirectory();
-		Log.v(this.getClass().getName(),
+		Log.v(this.getClass().getSimpleName(),
 				externalStorageDirectory.getAbsolutePath());
 		rootDirectory = new File(externalStorageDirectory, rootDirectoryName);
 		if (!rootDirectory.exists()) {
 			rootDirectory.mkdir();
-			Log.v(this.getClass().getName(), "creating directory "
+			Log.v(this.getClass().getSimpleName(), "creating directory "
 					+ rootDirectory.getAbsolutePath());
 		}
 		assert (rootDirectory.exists());

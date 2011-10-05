@@ -3,9 +3,12 @@ package jp.ac.ehime_u.cite.sasaki.easyguide;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Iterator;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipDownloader;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZippedAssets;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,7 +41,13 @@ public class EasyGuideDownloaderActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
+		
+		ZippedAssets zipped_assets = ZippedAssets.GetTheZippedAssets(this);
+		ZipUrls zip_urls = ZipUrls.GetTheZipUrls(this);
+		for(Iterator<URL> i=zipped_assets.iterator(); i.hasNext(); ){
+			zip_urls.PutZipUrl(i.next());
+		}
+		
 		((Button) findViewById(R.id.buttonAddUrl))
 				.setOnClickListener(new OnClickListener() {
 					@Override

@@ -11,7 +11,7 @@ public class UnzippedDirectory {
 	private File unzippedDirectory;
 
 	@SuppressWarnings({ "javadoc", "serial" })
-	public class Exception extends RuntimeException {
+	public static class Exception extends RuntimeException {
 		public Exception(String message_) {
 			super(message_);
 		}

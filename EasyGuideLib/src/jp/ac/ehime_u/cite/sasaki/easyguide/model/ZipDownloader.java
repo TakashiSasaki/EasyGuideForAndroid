@@ -79,7 +79,7 @@ public class ZipDownloader {
 	}
 
 	/**
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	public void GetMethod() throws Exception {
@@ -113,6 +113,10 @@ public class ZipDownloader {
 					this.exception = new Exception("Getting "
 							+ source_uri.toString() + " failed. "
 							+ e1.getMessage());
+				} catch (IllegalStateException e) {
+					this.exception = new Exception("Getting "
+							+ source_uri.toString() + " failed. "
+							+ e.getMessage());
 				}// try
 			}// run()
 		}
@@ -128,7 +132,7 @@ public class ZipDownloader {
 			throw new Exception("Can't download " + source_uri.toString()
 					+ ". " + e1.getMessage());
 		}
-		if(download_runnable.exception!=null){
+		if (download_runnable.exception != null) {
 			throw download_runnable.exception;
 		}
 
@@ -262,80 +266,6 @@ public class ZipDownloader {
 	}
 
 	/**
-	 * @throws IOException
-	 * @throws ZipException
-	 * 
-	 */
-	public void Unzip() {
-		ZipFile zip_file;
-		try {
-			zip_file = new ZipFile(this.downloadedFile);
-		} catch (ZipException e) {
-			throw new Exception("Unable to open "
-					+ this.downloadedFile.getAbsolutePath()
-					+ " as a ZIP file. " + e.getMessage());
-		} catch (IOException e) {
-			throw new Exception("Unable to open "
-					+ this.downloadedFile.getAbsolutePath()
-					+ " as a ZIP file. " + e.getMessage());
-		}
-		Enumeration<? extends ZipEntry> zip_entries = zip_file.entries();
-		while (zip_entries.hasMoreElements()) {
-			ZipEntry zip_entry = zip_entries.nextElement();
-			File destination_file = new File(this.domainDirectory,
-					zip_entry.getName());
-			if (zip_entry.isDirectory()) {
-				destination_file.mkdirs();
-				continue;
-			}
-			BufferedInputStream buffered_input_stream;
-			try {
-				buffered_input_stream = new BufferedInputStream(
-						zip_file.getInputStream(zip_entry));
-			} catch (IOException e) {
-				throw new Exception("Unable to get an entry "
-						+ zip_entry.getName() + " in the ZIP file. "
-						+ e.getMessage());
-			}
-			if (!destination_file.getParentFile().exists()) {
-				destination_file.getParentFile().mkdirs();
-			}
-			BufferedOutputStream buffered_output_stream;
-			try {
-				buffered_output_stream = new BufferedOutputStream(
-						new FileOutputStream(destination_file));
-			} catch (FileNotFoundException e) {
-				throw new Exception("Unable to get output stream of "
-						+ destination_file.getAbsolutePath() + ". "
-						+ e.getMessage());
-			}
-			try {
-				while (buffered_input_stream.available() > 0) {
-					byte[] buffer = new byte[this.bufferSize];
-					buffered_input_stream.read(buffer);
-					buffered_output_stream.write(buffer);
-				}
-			} catch (IOException e) {
-				throw new Exception(
-						"Unable to copy data from an ZIP entry to a file. "
-								+ e.getMessage());
-			}// while
-			try {
-				buffered_input_stream.close();
-			} catch (IOException e) {
-				throw new Exception("Failed to close input stream. "
-						+ e.getMessage());
-			}
-			try {
-				buffered_output_stream.close();
-			} catch (IOException e) {
-				throw new Exception("Failed to close output stream. "
-						+ e.getMessage());
-			}
-		}// while
-	}// UnZip()
-
-	/**
 	 * @param http_client
 	 * @return insecure HTTP client accepting invalid certification.
 	 */
@@ -395,5 +325,14 @@ public class ZipDownloader {
 	 */
 	public Date getLastModifiedDate() {
 		return lastModifiedDate;
+	}
+
+	/**
+	 * 
+	 */
+	public void Unzip() {
+		ZipInflator zip_inflator = new ZipInflator(this.downloadedFile,
+				this.domainDirectory);
+		zip_inflator.Inflate();
 	}
 }

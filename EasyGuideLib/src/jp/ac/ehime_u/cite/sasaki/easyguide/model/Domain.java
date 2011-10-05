@@ -36,9 +36,9 @@ public class Domain {
 	 * @throws UnknownHostException
 	 */
 	public Domain(Root root_, URL url_) throws UnknownHostException {
-		if (!IsResolvable(url_.getHost())) {
-			throw new Exception(url_.getHost() + " is not resolvable.");
-		}
+		//if (!IsResolvable(url_.getHost())) {
+		//	throw new Exception(url_.getHost() + " is not resolvable.");
+		//}
 		File domain_directory = new File(root_.getRootDirectory(), url_
 				.getHost().toLowerCase());
 		if (!domain_directory.exists()) {

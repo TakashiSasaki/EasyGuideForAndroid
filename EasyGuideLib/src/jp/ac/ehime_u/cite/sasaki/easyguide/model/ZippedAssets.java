@@ -1,6 +1,9 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -10,21 +13,26 @@ import android.util.Log;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class ZippedAssets {
+@SuppressWarnings("serial")
+public class ZippedAssets extends ArrayList<URL> {
 	private static ZippedAssets zippedAssets;
-	private String[] zipFiles;
 
 	private ZippedAssets(Context context_) {
 		AssetManager asset_manager = context_.getResources().getAssets();
 		try {
-			zipFiles = asset_manager.list("zip");
+			String[] list = asset_manager.list("zip");
+			if (list != null) {
+				for (int i = 0; i < list.length; ++i) {
+					this.add(new URL("file://assets/zip/" + list[i]));
+				}
+			}
 		} catch (IOException e) {
 			Log.v(this.getClass().getSimpleName(), e.getMessage());
 		}
 	}
 
 	/**
-	 * @param context_ 
+	 * @param context_
 	 * @return singleton object of ZippedAssets
 	 */
 	public static ZippedAssets GetTheZippedAssets(Context context_) {
@@ -33,11 +41,8 @@ public class ZippedAssets {
 		}
 		return zippedAssets;
 	}
-
-	/**
-	 * @return the zipFiles
-	 */
-	public String[] getZipFiles() {
-		return zipFiles;
+	
+	public void Unzip(String asset_path, File destination_directory){
+		
 	}
 }

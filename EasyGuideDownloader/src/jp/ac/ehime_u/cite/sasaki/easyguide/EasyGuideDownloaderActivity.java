@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipDownloader;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipInflator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZippedAssets;
 
 import android.app.Activity;
@@ -41,13 +44,13 @@ public class EasyGuideDownloaderActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+
 		ZippedAssets zipped_assets = ZippedAssets.GetTheZippedAssets(this);
 		ZipUrls zip_urls = ZipUrls.GetTheZipUrls(this);
-		for(Iterator<URL> i=zipped_assets.iterator(); i.hasNext(); ){
+		for (Iterator<URL> i = zipped_assets.iterator(); i.hasNext();) {
 			zip_urls.PutZipUrl(i.next());
 		}
-		
+
 		((Button) findViewById(R.id.buttonRemember))
 				.setOnClickListener(new OnClickListener() {
 					@Override
@@ -82,7 +85,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 						handler.post(new Runnable() {
 							@Override
 							public void run() {
-								DownloadZipFile(url_string);
+								DeployOrganization(url_string);
 							}
 						});
 					}
@@ -112,22 +115,46 @@ public class EasyGuideDownloaderActivity extends Activity {
 		((EditText) findViewById(R.id.editTextUrl)).setText(url_);
 	}
 
-	private void DownloadZipFile(String url_) {
+	private void DeployOrganization(String url_string) {
 		URL url;
 		try {
-			url = new URL(url_);
+			url = new URL(url_string);
 		} catch (MalformedURLException e) {
 			throw new Exception(e.getMessage());
 		}
-		Root root = new Root();
-		Domain domain;
-		try {
-			domain = new Domain(root, url);
-		} catch (UnknownHostException e) {
-			throw new Exception(e.getMessage());
+		if (url.getHost().equalsIgnoreCase("assets")) {
+			Log.v(this.getClass().getSimpleName(),"Clicked URL represents a file in assets.");
+			InflateZipFileInAssets(url.getFile());
+		} else if (url.getHost().equalsIgnoreCase("localhost")) {
+			Log.v(this.getClass().getSimpleName(),"Clicked URL represents a file in local file system.");
+			InflateLocalZipFile(url.getPath());
+		} else {
+			Log.v(this.getClass().getSimpleName(),"Clicked URL represents a file on the Internet.");
+			DownloadAndInflateZipFile(url);
 		}
+	}
+
+	private void InflateZipFileInAssets(String path_in_assets) {
+		// TODO:
+		Log.v(this.getClass().getSimpleName(), path_in_assets);
+		Domain domain;
+		domain = new Domain("assets");
+		InputStream input_stream = ZippedAssets.GetTheZippedAssets(this)
+				.GetInputStream(path_in_assets);
+		ZipInflator zip_inflator = new ZipInflator(input_stream, domain);
+		zip_inflator.Inflate();
+	}
+
+	private void InflateLocalZipFile(String local_path) {
+		// TODO:
+		Log.v(this.getClass().getSimpleName(), local_path);
+	}
+
+	private void DownloadAndInflateZipFile(URL url_) {
+		Domain domain;
+		domain = new Domain(url_.getHost());
 		ZipDownloader zip_downloader;
-		zip_downloader = new ZipDownloader(domain, url);
+		zip_downloader = new ZipDownloader(domain, url_);
 		try {
 			zip_downloader.GetMethod();
 		} catch (ZipDownloader.Exception e) {
@@ -144,6 +171,14 @@ public class EasyGuideDownloaderActivity extends Activity {
 			alert_dialog_builder.show();
 			return;
 		}
-		zip_downloader.Unzip();
+		ZipInflator zip_inflator;
+		try {
+			zip_inflator = new ZipInflator(zip_downloader.getDownloadedFile(),
+					zip_downloader.getDomainDirectory());
+		} catch (FileNotFoundException e) {
+			throw new Exception("Can't find downloaded ZIP file. "
+					+ e.getMessage());
+		}
+		zip_inflator.Inflate();
 	}
 }

@@ -4,11 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.Iterator;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipDownloader;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipInflator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZippedAssets;
@@ -155,6 +153,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 		Log.v(this.getClass().getSimpleName(), path_in_assets);
 		Domain domain;
 		domain = new Domain("assets");
+		domain.RemoveAllFiles();
 		InputStream input_stream = ZippedAssets.GetTheZippedAssets(this)
 				.GetInputStream(path_in_assets);
 		ZipInflator zip_inflator = new ZipInflator(input_stream, domain);

@@ -32,17 +32,18 @@ public class Domain {
 	/**
 	 * 
 	 * @param root_
-	 * @param domain_name 
+	 * @param domain_name
 	 * @throws UnknownHostException
 	 */
 	public Domain(String domain_name) {
-		//if (!IsResolvable(url_.getHost())) {
-		//	throw new Exception(url_.getHost() + " is not resolvable.");
-		//}
-		File domain_directory = new File(Root.GetTheRoot().getRootDirectory(), domain_name.toLowerCase());
+		// if (!IsResolvable(url_.getHost())) {
+		// throw new Exception(url_.getHost() + " is not resolvable.");
+		// }
+		File domain_directory = new File(Root.GetTheRoot().getRootDirectory(),
+				domain_name.toLowerCase());
 		if (!domain_directory.exists()) {
 			domain_directory.mkdirs();
-			assert(domain_directory.exists());
+			assert (domain_directory.exists());
 		}
 		if (domain_directory.isFile()) {
 			throw new Exception("Can't make domain directory for "
@@ -59,10 +60,11 @@ public class Domain {
 	 * @param domain_directory
 	 */
 	public Domain(File domain_directory) {
-		if (!IsValidFqdn(domain_directory.getName())) {
-			throw new Exception(domain_directory.getName()
-					+ " is invalid for FQDN.");
-		}
+		// TODO:
+		//if (!IsValidFqdn(domain_directory.getName())) {
+		//	throw new Exception(domain_directory.getName()
+		//			+ " is invalid for FQDN.");
+		//}
 		if (!domain_directory.exists()) {
 			throw new Exception(domain_directory.getPath() + " does not exist.");
 		}
@@ -79,13 +81,15 @@ public class Domain {
 		this.newestUnzippedDirectory = null;
 		this.unzippedDirectories = new ArrayList<UnzippedDirectory>();
 		File[] files = this.domainDirectory.listFiles();
-		Log.v(this.getClass().getSimpleName(), "Enumerating unzipped directories on "
-				+ this.domainDirectory);
-		if (files == null){
-			Log.v(this.getClass().getSimpleName(), "No unzipped directory in " + this.domainDirectory);
+		Log.v(this.getClass().getSimpleName(),
+				"Enumerating unzipped directories on " + this.domainDirectory);
+		if (files == null) {
+			Log.v(this.getClass().getSimpleName(), "No unzipped directory in "
+					+ this.domainDirectory);
 			return;
 		}
-		Log.v(this.getClass().getSimpleName(), files.length + " unzipped directory/directories found.");
+		Log.v(this.getClass().getSimpleName(), files.length
+				+ " unzipped directory/directories found.");
 		for (int i = 0; i < files.length; ++i) {
 			try {
 				UnzippedDirectory unzipped_directory = new UnzippedDirectory(
@@ -99,6 +103,15 @@ public class Domain {
 			} catch (UnzippedDirectory.Exception e) {
 				continue;
 			}
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void RemoveAllFiles() {
+		for (UnzippedDirectory unzipped_directory : unzippedDirectories) {
+			unzipped_directory.RemoveAllFiles();
 		}
 	}
 
@@ -139,7 +152,7 @@ public class Domain {
 		if (matcher.find()) {
 			return true;
 		} else {
-			return false;
+			return true;
 		}
 	}
 

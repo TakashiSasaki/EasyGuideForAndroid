@@ -215,10 +215,6 @@ public class ZipDownloader {
 	}
 
 	/**
-	 * @throws URISyntaxException
-	 * @throws IOException
-	 * @throws ClientProtocolException
-	 * @throws ParseException
 	 */
 	public void HeadMethod() {
 		HttpClient http_client = new DefaultHttpClient();

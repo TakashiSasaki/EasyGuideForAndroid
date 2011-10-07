@@ -2,8 +2,6 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import android.util.Log;
 
 /**

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -38,12 +39,24 @@ public class Facility extends ArrayList<Building> {
 	}
 
 	private void ScanBuildings() {
+		Log.v(this.getClass().getSimpleName(),
+				"Scanning building directories in "
+						+ this.facilityDirectory.getAbsolutePath());
 		for (File building_directory : this.facilityDirectory.listFiles()) {
 			if (!building_directory.isDirectory()) {
 				continue;
 			}
-			this.add(new Building(building_directory));
-
+			Log.v(this.getClass().getSimpleName(), "Building directory "
+					+ building_directory.getAbsolutePath() + " was found.");
+			try {
+				Building building = new Building(building_directory);
+				assert(building != null);
+				this.add(building);
+			} catch (Exception e) {
+				Log.v(this.getClass().getSimpleName(),
+						"an exception was catched while constructing a Building object for "
+								+ building_directory.getAbsolutePath());
+			}
 		}
 	}
 
@@ -68,5 +81,4 @@ public class Facility extends ArrayList<Building> {
 		return facilityBitmap;
 	}
 
-	
 }

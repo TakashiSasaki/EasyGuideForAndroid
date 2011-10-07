@@ -12,7 +12,7 @@ import android.util.Log;
  * 
  */
 @SuppressWarnings("serial")
-public class Organization extends ArrayList<Building> {
+public class Organization extends ArrayList<Facility> {
 	private static final String organizationImageName = "organization.png";
 	private static final int organizationThumbnailWidth = 50;
 	private static final int organizationThumbnailHeight = 50;
@@ -47,29 +47,42 @@ public class Organization extends ArrayList<Building> {
 
 		LoadOrganizationImage();
 		CreateOrganizationThumbnail();
-		ScanBuildings();
+		ScanFacilities();
 		Log.d(this.getClass().getName(), this.toString());
 	}
 
-	private void ScanBuildings() {
-		File[] building_directories = this.organizationDirectory.listFiles();
-		for (int i = 0; i < building_directories.length; ++i) {
-			File building_directory = building_directories[i];
-			if (!building_directory.isDirectory()) {
+	private void ScanFacilities() {
+		Log.v(this.getClass().getSimpleName(),
+				"Scanning facility directories in "
+						+ this.organizationDirectory);
+		File[] facility_directories = this.organizationDirectory.listFiles();
+		for (File facility_directory : facility_directories) {
+			if (!facility_directory.isDirectory()) {
 				continue;
 			}
-			this.add(new Building(building_directory));
-		}
-	}
+			Log.v(this.getClass().getSimpleName(), "Facility directory "
+					+ facility_directory.getAbsolutePath() + " found.");
+			try {
+				this.add(new Facility(facility_directory));
+			} catch (Exception e) {
+				Log.v(this.getClass().getSimpleName(),
+						"an exception was catched while constructing a Facility object for "
+								+ facility_directory.getAbsolutePath());
+			}// try
+		}// for
+	}// ScanFacilities
 
 	private void LoadOrganizationImage() {
+		// TODO: 画像ファイルが見つからなかった時の処理が必要。
 		File image_file = new File(this.organizationDirectory,
 				organizationImageName);
+		Log.v(this.getClass().getSimpleName(),
+				"Loading image, " + image_file.getAbsolutePath());
 		this.organizationImage = BitmapFactory.decodeFile(image_file.getPath());
-	}
+	}// LoadOrganizationImage
 
 	/**
-	 * @param original_bitmap 
+	 * @param original_bitmap
 	 * @param width
 	 * @param height
 	 * @return resized bitmap
@@ -85,13 +98,13 @@ public class Organization extends ArrayList<Building> {
 		Bitmap resized_bitmap = Bitmap.createBitmap(original_bitmap, 0, 0,
 				original_width, original_height, resize_matrix, true);
 		return resized_bitmap;
-	}
+	}// ResizeBitmap
 
 	private void CreateOrganizationThumbnail() {
 		this.organizationThumbnail = ResizeBitmap(this.organizationImage,
 				Organization.organizationThumbnailWidth,
 				Organization.organizationThumbnailHeight);
-	}
+	}// CreateOrganizationThumbnail
 
 	@Override
 	public String toString() {

@@ -19,6 +19,8 @@ public class Building extends ArrayList<Floor> {
 	private int buildingNumber;
 	private String buildingName;
 	private Bitmap buildingImage;
+	private int x;
+	private int y;
 
 	/**
 	 * @param building_directory
@@ -26,12 +28,12 @@ public class Building extends ArrayList<Floor> {
 	public Building(File building_directory) {
 		super();
 		this.buildingDirectory = building_directory;
-		// String building_directory_path = building_directory.getPath();
-		String building_directory_name = building_directory.getName();
-		String[] parts = building_directory_name.split("[ ]+");
-		this.buildingNumber = Integer.parseInt(parts[0]);
-		this.buildingName = parts[1];
-		assert(parts[1] != null);
+		DirectoryName directory_name = new DirectoryName(
+				building_directory.getName());
+		this.buildingNumber = directory_name.getNumber();
+		this.buildingName = directory_name.getName();
+		this.x = directory_name.getX();
+		this.x = directory_name.getY();
 		File building_image_file = new File(building_directory,
 				buildingImageName);
 		this.buildingImage = BitmapFactory.decodeFile(building_image_file
@@ -42,9 +44,7 @@ public class Building extends ArrayList<Floor> {
 	private void ScanFloors() {
 		Log.v(this.getClass().getSimpleName(), "Scanning floor directories in "
 				+ this.buildingDirectory);
-		File[] floor_directories = this.buildingDirectory.listFiles();
-		for (int i = 0; i < floor_directories.length; ++i) {
-			File floor_directory = floor_directories[i];
+		for (File floor_directory : this.buildingDirectory.listFiles()) {
 			if (!floor_directory.isDirectory()) {
 				continue;
 			}
@@ -56,9 +56,9 @@ public class Building extends ArrayList<Floor> {
 				Log.v(this.getClass().getSimpleName(),
 						"an exception was chatched while constructing a Floor object for "
 								+ floor_directory.getAbsolutePath());
-			}
-		}
-	}
+			}// try
+		}// for
+	}// ScanFloors
 
 	/**
 	 * @return the buildingNumber
@@ -79,6 +79,34 @@ public class Building extends ArrayList<Floor> {
 	 */
 	public Bitmap getBuildingImage() {
 		return buildingImage;
+	}
+
+	/**
+	 * @return the x
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
+	 * @param x the x to set
+	 */
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	/**
+	 * @return the y
+	 */
+	public int getY() {
+		return y;
+	}
+
+	/**
+	 * @param y the y to set
+	 */
+	public void setY(int y) {
+		this.y = y;
 	}
 
 }

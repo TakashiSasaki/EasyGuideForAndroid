@@ -42,7 +42,7 @@ public class ZipInflator {
 			throws FileNotFoundException {
 		this.inputStream = new FileInputStream(zip_file);
 		this.destinationDirectory = domain_directory;
-	}
+	}// an constructor
 
 	/**
 	 * @param input_stream
@@ -51,7 +51,7 @@ public class ZipInflator {
 	public ZipInflator(InputStream input_stream, Domain domain_) {
 		this.inputStream = input_stream;
 		this.destinationDirectory = domain_.getDomainDirectory();
-	}
+	}// an constructor
 
 	/**
 	 * 
@@ -68,12 +68,12 @@ public class ZipInflator {
 				Log.v(this.getClass().getSimpleName(),
 						"Can't find next ZIP entry. " + e1.getMessage());
 				return;
-			}
+			}// try
 			if (zip_entry == null) {
 				Log.v(this.getClass().getSimpleName(),
 						"No more entry in ZIP input stream.");
 				return;
-			}
+			}// if
 
 			Log.v(this.getClass().getSimpleName(), "Inflating ZIP entry "
 					+ zip_entry.getName() + ", size " + zip_entry.getSize());
@@ -82,10 +82,10 @@ public class ZipInflator {
 			if (zip_entry.isDirectory()) {
 				destination_file.mkdirs();
 				continue;
-			}
-			// BufferedInputStream buffered_input_stream;
-			// buffered_input_stream = new
-			// BufferedInputStream(zip_input_stream);
+			}// if
+				// BufferedInputStream buffered_input_stream;
+				// buffered_input_stream = new
+				// BufferedInputStream(zip_input_stream);
 			if (!destination_file.getParentFile().exists()) {
 				destination_file.getParentFile().mkdirs();
 			}
@@ -97,7 +97,7 @@ public class ZipInflator {
 				throw new Exception("Unable to get output stream of "
 						+ destination_file.getAbsolutePath() + ". "
 						+ e.getMessage());
-			}
+			}// try
 			try {
 				while (zip_input_stream.available() > 0) {
 					Log.v(this.getClass().getSimpleName(),
@@ -124,29 +124,29 @@ public class ZipInflator {
 					buffered_output_stream.write(buffer, 0, bytes_read);
 					Log.v(this.getClass().getSimpleName(), "finished to write "
 							+ bytes_read + " to " + destination_file.getName());
-				}
+				}// while
 			} catch (IOException e) {
 				throw new Exception(
 						"Unable to copy data from an ZIP entry to a file. "
 								+ e.getMessage());
-			}// while
+			}// try
 			try {
 				zip_input_stream.closeEntry();
 				// buffered_input_stream.close();
 			} catch (IOException e) {
 				throw new Exception("Failed to close input stream. "
 						+ e.getMessage());
-			}
+			}// try
 			try {
 				buffered_output_stream.close();
 			} catch (IOException e) {
 				throw new Exception("Failed to close output stream. "
 						+ e.getMessage());
-			}
+			}// try
 			zip_entry.clone();
 		}// while
 
-	}
+	}// Inflate
 
 	/**
 	 * @param file
@@ -218,5 +218,5 @@ public class ZipInflator {
 						+ e.getMessage());
 			}
 		}// while
-	}// UnZip()
-}
+	}// UnZip
+}// ZipInflator

@@ -6,9 +6,9 @@
 		android:layout_width="fill_parent" android:layout_height="fill_parent">
 		<Button android:textSize="50dp" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:id="@+id/button2"
-			android:text="近くの施設を探す" android:layout_below="@+id/listViewOrganizations"
+			android:text="choose a building" android:layout_below="@+id/listViewBuilding"
 			android:layout_centerHorizontal="true" android:layout_marginTop="100dp"></Button>
-		<ListView android:id="@+id/listViewOrganizations"
+		<ListView android:id="@+id/listViewBuilding"
 			android:layout_height="600dp" android:layout_width="400dp"
 			android:layout_centerVertical="true" android:layout_centerHorizontal="true"></ListView>
 	</RelativeLayout>

@@ -16,24 +16,22 @@ public class Root {
 	private static final String rootDirectoryName = "EASYGUIDE";
 	private static Root root;
 	private File rootDirectory;
-	// private ArrayList<Domain> domains;
-	private File externalStorageDirectory;
 
-	/**
-	 * 
-	 */
+	// private File externalStorageDirectory;
+
 	private Root() {
-		externalStorageDirectory = Environment.getExternalStorageDirectory();
+		File external_storage_directory = Environment
+				.getExternalStorageDirectory();
 		Log.v(this.getClass().getSimpleName(),
-				externalStorageDirectory.getAbsolutePath());
-		rootDirectory = new File(externalStorageDirectory, rootDirectoryName);
+				external_storage_directory.getAbsolutePath());
+		rootDirectory = new File(external_storage_directory, rootDirectoryName);
 		if (!rootDirectory.exists()) {
 			rootDirectory.mkdir();
 			Log.v(this.getClass().getSimpleName(), "creating directory "
 					+ rootDirectory.getAbsolutePath());
 		}
 		assert (rootDirectory.exists());
-	}
+	}// an constructor
 
 	@SuppressWarnings("javadoc")
 	public File getRootDirectory() {
@@ -57,12 +55,12 @@ public class Root {
 		else
 			return false;
 	}
-	
+
 	/**
-	 * @return singleton isntance of class Root
+	 * @return singleton instance of class Root
 	 */
 	public static Root GetTheRoot() {
-		if(root == null){
+		if (root == null) {
 			root = new Root();
 		}
 		return root;

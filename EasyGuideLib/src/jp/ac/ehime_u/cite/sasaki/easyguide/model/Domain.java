@@ -2,7 +2,6 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -30,10 +29,9 @@ public class Domain {
 	}
 
 	/**
+	 * a constructor
 	 * 
-	 * @param root_
 	 * @param domain_name
-	 * @throws UnknownHostException
 	 */
 	public Domain(String domain_name) {
 		// if (!IsResolvable(url_.getHost())) {
@@ -55,16 +53,16 @@ public class Domain {
 	}
 
 	/**
-	 * Constructor of class Domain.
+	 * a constructor
 	 * 
 	 * @param domain_directory
 	 */
 	public Domain(File domain_directory) {
 		// TODO:
-		//if (!IsValidFqdn(domain_directory.getName())) {
-		//	throw new Exception(domain_directory.getName()
-		//			+ " is invalid for FQDN.");
-		//}
+		// if (!IsValidFqdn(domain_directory.getName())) {
+		// throw new Exception(domain_directory.getName()
+		// + " is invalid for FQDN.");
+		// }
 		if (!domain_directory.exists()) {
 			throw new Exception(domain_directory.getPath() + " does not exist.");
 		}
@@ -117,6 +115,8 @@ public class Domain {
 
 	private String hostAddress;
 
+	@SuppressWarnings("unused")
+	@Deprecated
 	private boolean IsResolvable(final String host_) {
 		Thread thread = new Thread(new Runnable() {
 			@Override
@@ -142,6 +142,8 @@ public class Domain {
 		}
 	}
 
+	@SuppressWarnings("unused")
+	@Deprecated
 	private boolean IsValidFqdn(String host_) {
 		Pattern pattern = Pattern
 				.compile("^.{1,254}$)(^(?:(?!\\d+\\.)[a-zA-Z0-9_\\-]{1,63}\\.?)+(?:[a-zA-Z]{2,})$");

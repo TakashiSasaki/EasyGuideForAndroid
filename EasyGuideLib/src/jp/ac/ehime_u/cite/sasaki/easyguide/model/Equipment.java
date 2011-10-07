@@ -4,6 +4,7 @@ import java.io.File;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -21,6 +22,8 @@ public class Equipment {
 	 * @param equipment_directory
 	 */
 	public Equipment(File equipment_directory) {
+		Log.v(this.getClass().getSimpleName(), "Constructing equipment "
+				+ equipment_directory.getAbsolutePath());
 		File equipment_image_file = new File(equipment_directory,
 				Equipment.equipmentImageName);
 		this.equipmentImage = BitmapFactory.decodeFile(equipment_image_file
@@ -36,5 +39,4 @@ public class Equipment {
 	public Bitmap getEquipmentThumbnail() {
 		return equipmentThumbnail;
 	}
-
 }

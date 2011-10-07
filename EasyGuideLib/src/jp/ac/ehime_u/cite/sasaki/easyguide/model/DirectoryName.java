@@ -5,9 +5,9 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
  * 
  */
 public class DirectoryName {
-	private String name;
-	private int number;
-	private int x, y;
+	private String name = "unknown";
+	private int number = -1;
+	private int x = -1, y = -1;
 
 	@SuppressWarnings({ "javadoc", "serial" })
 	static public class Exception extends RuntimeException {
@@ -21,19 +21,34 @@ public class DirectoryName {
 	 */
 	public DirectoryName(String directory_name) {
 		String[] parts = directory_name.split("[ ]+");
-		try {
+		if (parts.length == 1) {
+			this.name = parts[0];
+			return;
+		}// if
+		if (parts.length == 2) {
+			try {
+				this.number = Integer.parseInt(parts[0]);
+			} catch (NumberFormatException e) {
+				throw new Exception("Invalid directory name " + directory_name
+						+ ", " + e.getMessage());
+			}// try
+			this.name = parts[1];
+			return;
+		}// if
+		if (parts.length == 4) {
 			this.number = Integer.parseInt(parts[0]);
 			this.name = parts[1];
-			this.x = Integer.parseInt(parts[2]);
-			this.y = Integer.parseInt(parts[3]);
-		} catch (NumberFormatException e) {
-			throw new Exception("Invalid directory name " + directory_name
-					+ ", " + e.getMessage());
-		} catch (IndexOutOfBoundsException e) {
-			throw new Exception("Invalid directory name " + directory_name
-					+ ", " + e.getMessage());
-		}
-	}
+			try {
+				this.x = Integer.parseInt(parts[2]);
+				this.y = Integer.parseInt(parts[3]);
+				return;
+			} catch (NumberFormatException e) {
+				throw new Exception("Invalid directory name " + directory_name
+						+ ", " + e.getMessage());
+			}// try
+		}// if
+		throw new Exception("Invalid directory name " + directory_name);
+	}// a constructor
 
 	/**
 	 * @return the name

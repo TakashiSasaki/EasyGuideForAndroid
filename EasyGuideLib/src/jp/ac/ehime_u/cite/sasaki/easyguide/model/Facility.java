@@ -19,6 +19,7 @@ public class Facility extends ArrayList<Building> {
 	private int facilityNumber;
 	private String facilityName;
 	private Bitmap facilityBitmap;
+	private int facilityX, facilityY;
 
 	/**
 	 * @param facility_directory
@@ -31,6 +32,8 @@ public class Facility extends ArrayList<Building> {
 				facility_directory.getName());
 		this.facilityNumber = directory_name.getNumber();
 		this.facilityName = directory_name.getName();
+		this.facilityX = directory_name.getX();
+		this.facilityY = directory_name.getY();
 		File facility_image_file = new File(facility_directory,
 				Facility.facilityImageName);
 		this.facilityBitmap = BitmapFactory.decodeFile(facility_image_file
@@ -50,15 +53,15 @@ public class Facility extends ArrayList<Building> {
 					+ building_directory.getAbsolutePath() + " was found.");
 			try {
 				Building building = new Building(building_directory);
-				assert(building != null);
+				assert (building != null);
 				this.add(building);
 			} catch (Exception e) {
 				Log.v(this.getClass().getSimpleName(),
 						"an exception was catched while constructing a Building object for "
 								+ building_directory.getAbsolutePath());
-			}
-		}
-	}
+			}// try
+		}// for
+	}// ScanBuildings
 
 	/**
 	 * @return the facilityNumber
@@ -79,6 +82,20 @@ public class Facility extends ArrayList<Building> {
 	 */
 	public Bitmap getFacilityBitmap() {
 		return facilityBitmap;
+	}
+
+	/**
+	 * @return the facilityX
+	 */
+	public int getFacilityX() {
+		return facilityX;
+	}
+
+	/**
+	 * @return the facilityY
+	 */
+	public int getFacilityY() {
+		return facilityY;
 	}
 
 }

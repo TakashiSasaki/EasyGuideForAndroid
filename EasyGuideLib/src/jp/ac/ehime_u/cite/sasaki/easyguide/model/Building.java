@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -30,6 +31,7 @@ public class Building extends ArrayList<Floor> {
 		String[] parts = building_directory_name.split("[ ]+");
 		this.buildingNumber = Integer.parseInt(parts[0]);
 		this.buildingName = parts[1];
+		assert(parts[1] != null);
 		File building_image_file = new File(building_directory,
 				buildingImageName);
 		this.buildingImage = BitmapFactory.decodeFile(building_image_file
@@ -38,13 +40,23 @@ public class Building extends ArrayList<Floor> {
 	}
 
 	private void ScanFloors() {
+		Log.v(this.getClass().getSimpleName(), "Scanning floor directories in "
+				+ this.buildingDirectory);
 		File[] floor_directories = this.buildingDirectory.listFiles();
 		for (int i = 0; i < floor_directories.length; ++i) {
 			File floor_directory = floor_directories[i];
 			if (!floor_directory.isDirectory()) {
 				continue;
 			}
-			this.add(new Floor(floor_directory));
+			Log.v(this.getClass().getSimpleName(), "floor directory "
+					+ floor_directory.getAbsolutePath() + " was found.");
+			try {
+				this.add(new Floor(floor_directory));
+			} catch (Exception e) {
+				Log.v(this.getClass().getSimpleName(),
+						"an exception was chatched while constructing a Floor object for "
+								+ floor_directory.getAbsolutePath());
+			}
 		}
 	}
 

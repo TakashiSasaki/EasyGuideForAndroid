@@ -19,7 +19,7 @@ public class UnzippedDirectory {
 
 	/**
 	 * @param file
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public UnzippedDirectory(File file) throws Exception {
 		if (!file.isDirectory()) {
@@ -38,4 +38,34 @@ public class UnzippedDirectory {
 		return unzippedDirectory;
 	}
 
+	/**
+	 * this function was copied a code fragment on
+	 * http://www.dreamincode.net/code/snippet1444.htm
+	 * 
+	 * @param path
+	 *            to be deleted
+	 * @return true if succeeded
+	 */
+	static public boolean RemoveAllFiles(File path) {
+		if (path.exists()) {
+			if (path.isDirectory()) {
+				File[] files = path.listFiles();
+				for (int i = 0; i < files.length; i++) {
+					if (files[i].isDirectory()) {
+						RemoveAllFiles(files[i]);
+					} else {
+						files[i].delete();
+					}
+				}
+			}
+		}
+		return (path.delete());
+	}
+
+	/**
+	 * remove all files recursively
+	 */
+	public void RemoveAllFiles() {
+		RemoveAllFiles(this.unzippedDirectory);
+	}
 }

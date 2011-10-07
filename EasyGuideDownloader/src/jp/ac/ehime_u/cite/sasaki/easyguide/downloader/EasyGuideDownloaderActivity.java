@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide;
+package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -13,7 +13,9 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZippedAssets;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -120,6 +122,21 @@ public class EasyGuideDownloaderActivity extends Activity {
 						});
 					}
 				});
+
+		((Button) findViewById(R.id.buttonPlay))
+				.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+						new Handler().post(new Runnable() {
+
+							@Override
+							public void run() {
+								InvokePlayer();
+							}
+						});
+					}// onClick
+				});// findViewById
 	}// onCreate
 
 	private void SetEditableText(String url_) {
@@ -195,5 +212,20 @@ public class EasyGuideDownloaderActivity extends Activity {
 					+ e.getMessage());
 		}
 		zip_inflator.Inflate();
+	}
+
+	private void InvokePlayer() {
+		Intent intent = new Intent();
+		intent.setClassName("jp.ac.ehime_u.cite.sasaki.easyguide.player",
+				"jp.ac.ehime_u.cite.sasaki.easyguide.player.OpeningActivity");
+		try {
+			startActivity(intent);
+		} catch (ActivityNotFoundException e) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("EasyGuide Player is not installed");
+			builder.setCancelable(false);
+			builder.setPositiveButton("OK", null);
+			builder.show();
+		}
 	}
 }

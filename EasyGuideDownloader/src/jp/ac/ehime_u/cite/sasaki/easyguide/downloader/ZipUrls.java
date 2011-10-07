@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide;
+package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
 import java.net.URL;
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,12 +17,12 @@ import android.util.Log;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class Domain {
-	private ArrayList<UnzippedDirectory> unzippedDirectories;
-	private UnzippedDirectory newestUnzippedDirectory;
+@SuppressWarnings("serial")
+public class Domain extends ArrayList<UnzippedDirectory> {
+	// private UnzippedDirectory newestUnzippedDirectory;
 	private File domainDirectory;
 
-	@SuppressWarnings({ "javadoc", "serial" })
+	@SuppressWarnings({ "javadoc" })
 	public class Exception extends RuntimeException {
 		public Exception(String message_) {
 			super(message_);
@@ -49,7 +50,7 @@ public class Domain {
 		}
 		assert (domain_directory.isDirectory());
 		this.domainDirectory = domain_directory;
-		EnumerateUnzippedDirectories();
+		ScanUnzippedDirectories();
 	}
 
 	/**
@@ -58,7 +59,6 @@ public class Domain {
 	 * @param domain_directory
 	 */
 	public Domain(File domain_directory) {
-		// TODO:
 		// if (!IsValidFqdn(domain_directory.getName())) {
 		// throw new Exception(domain_directory.getName()
 		// + " is invalid for FQDN.");
@@ -67,48 +67,49 @@ public class Domain {
 			throw new Exception(domain_directory.getPath() + " does not exist.");
 		}
 		this.domainDirectory = domain_directory;
-		EnumerateUnzippedDirectories();
+		ScanUnzippedDirectories();
 	}
 
 	/**
 	 * enumerate all unzipped directories under the domain directory. It also
 	 * finds the latest directory and save into this.newestUnzippedDirectory.
 	 */
-	public void EnumerateUnzippedDirectories() {
-		long newest_time = 0l;
-		this.newestUnzippedDirectory = null;
-		this.unzippedDirectories = new ArrayList<UnzippedDirectory>();
-		File[] files = this.domainDirectory.listFiles();
+	public void ScanUnzippedDirectories() {
 		Log.v(this.getClass().getSimpleName(),
-				"Enumerating unzipped directories on " + this.domainDirectory);
-		if (files == null) {
-			Log.v(this.getClass().getSimpleName(), "No unzipped directory in "
+				"scanning unzipped directories on " + this.domainDirectory);
+		for (File file : this.domainDirectory.listFiles()) {
+			Log.v(this.getClass().getSimpleName(),
+					"unzipped directory " + file.getAbsolutePath()
+							+ " was found.");
+			this.add(new UnzippedDirectory(file));
+		}// for
+	}// ScanUnzippedDirectories
+
+	/**
+	 * @return last unzipped directory in this domain directory
+	 */
+	public UnzippedDirectory GetLastUnzippedDirectory() {
+		if (this.size() == 0) {
+			throw new Exception("No unzipped directory in "
 					+ this.domainDirectory);
-			return;
 		}
-		Log.v(this.getClass().getSimpleName(), files.length
-				+ " unzipped directory/directories found.");
-		for (int i = 0; i < files.length; ++i) {
-			try {
-				UnzippedDirectory unzipped_directory = new UnzippedDirectory(
-						files[i]);
-				long last_modified = files[i].lastModified();
-				this.unzippedDirectories.add(unzipped_directory);
-				if (last_modified >= newest_time) {
-					this.newestUnzippedDirectory = unzipped_directory;
-					newest_time = last_modified;
-				}
-			} catch (UnzippedDirectory.Exception e) {
-				continue;
-			}
-		}
+		Date temp_date = new Date(0l);
+		UnzippedDirectory temp_unzipped_directory = null;
+
+		for (UnzippedDirectory unzipped_directory : this) {
+			if (unzipped_directory.getModfiedDateTime().after(temp_date)) {
+				temp_date = unzipped_directory.getModfiedDateTime();
+				temp_unzipped_directory = unzipped_directory;
+			}// if
+		}// for
+		return temp_unzipped_directory;
 	}
 
 	/**
 	 * 
 	 */
 	public void RemoveAllFiles() {
-		for (UnzippedDirectory unzipped_directory : unzippedDirectories) {
+		for (UnzippedDirectory unzipped_directory : this) {
 			unzipped_directory.RemoveAllFiles();
 		}
 	}
@@ -165,10 +166,4 @@ public class Domain {
 		return domainDirectory;
 	}
 
-	/**
-	 * @return the newestUnzippedDirectory
-	 */
-	public UnzippedDirectory getNewestUnzippedDirectory() {
-		return newestUnzippedDirectory;
-	}
 }

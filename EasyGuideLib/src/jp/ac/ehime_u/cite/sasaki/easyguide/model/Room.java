@@ -19,28 +19,28 @@ public class Room extends ArrayList<Equipment> {
 	private int number;
 	private static final String roomImageName = "room.png";
 	private Bitmap roomImage;
+	private int roomX, roomY;
 
 	/**
 	 * @param room_directory
 	 */
 	public Room(File room_directory) {
 		this.roomDirectory = room_directory;
-		String room_directory_name = room_directory.getName();
-		String[] parts = room_directory_name.split("[ ]+");
-		this.number = Integer.parseInt(parts[0]);
-		this.roomName = parts[1];
+		DirectoryName directory_name = new DirectoryName(
+				room_directory.getName());
+		this.roomName = directory_name.getName();
+		this.number = directory_name.getNumber();
+		this.roomX = directory_name.getX();
+		this.roomY = directory_name.getY();
 		File room_image_file = new File(room_directory, roomImageName);
 		this.roomImage = BitmapFactory.decodeFile(room_image_file.getPath());
-		// this.equipments = new Equipments(room_directory);
-		ScanEquipments();
-	}
+		ScanRoomForEquipments();
+	}// a constructor
 
-	private void ScanEquipments() {
+	private void ScanRoomForEquipments() {
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning equipment directories in " + this.roomDirectory);
-		File[] equipment_directories = this.roomDirectory.listFiles();
-		for (int i = 0; i < equipment_directories.length; ++i) {
-			File equipment_directory = equipment_directories[i];
+		for (File equipment_directory : this.roomDirectory.listFiles()) {
 			if (!equipment_directory.isDirectory()) {
 				continue;
 			}
@@ -52,9 +52,9 @@ public class Room extends ArrayList<Equipment> {
 				Log.v(this.getClass().getSimpleName(),
 						"Exception catched while constructing an equipment on "
 								+ equipment_directory.getAbsolutePath());
-			}
-		}
-	}
+			}// try
+		}// for
+	}// ScanRoomForEquipments
 
 	/**
 	 * @return the roomName
@@ -75,5 +75,19 @@ public class Room extends ArrayList<Equipment> {
 	 */
 	public Bitmap getRoomImage() {
 		return roomImage;
+	}
+
+	/**
+	 * @return the roomX
+	 */
+	public int getRoomX() {
+		return roomX;
+	}
+
+	/**
+	 * @return the roomY
+	 */
+	public int getRoomY() {
+		return roomY;
 	}
 }

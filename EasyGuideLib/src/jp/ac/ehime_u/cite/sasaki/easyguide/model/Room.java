@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -35,13 +36,23 @@ public class Room extends ArrayList<Equipment> {
 	}
 
 	private void ScanEquipments() {
+		Log.v(this.getClass().getSimpleName(),
+				"Scanning equipment directories in " + this.roomDirectory);
 		File[] equipment_directories = this.roomDirectory.listFiles();
 		for (int i = 0; i < equipment_directories.length; ++i) {
 			File equipment_directory = equipment_directories[i];
 			if (!equipment_directory.isDirectory()) {
 				continue;
 			}
-			this.add(new Equipment(equipment_directory));
+			Log.v(this.getClass().getSimpleName(), "Equipment directory "
+					+ equipment_directory.getAbsolutePath() + " was found.");
+			try {
+				this.add(new Equipment(equipment_directory));
+			} catch (Exception e) {
+				Log.v(this.getClass().getSimpleName(),
+						"Exception catched while constructing an equipment on "
+								+ equipment_directory.getAbsolutePath());
+			}
 		}
 	}
 

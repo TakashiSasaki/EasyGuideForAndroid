@@ -16,7 +16,7 @@ import android.util.Log;
 @SuppressWarnings("serial")
 public class ZippedAssets extends ArrayList<URL> {
 	private static final String zipAssetDirectory = "zip";
-	
+
 	static class Exception extends RuntimeException {
 		public Exception(String message_) {
 			super(message_);
@@ -38,10 +38,10 @@ public class ZippedAssets extends ArrayList<URL> {
 		} catch (IOException e) {
 			Log.v(this.getClass().getSimpleName(), e.getMessage());
 		}
-	}
+	}// an constructor
 
 	/**
-	 * @param slash_and_zip_file_name 
+	 * @param slash_and_zip_file_name
 	 * @return InputStream for the file in assets
 	 */
 	public InputStream GetInputStream(String slash_and_zip_file_name) {
@@ -49,10 +49,10 @@ public class ZippedAssets extends ArrayList<URL> {
 		try {
 			return this.assetManager.open(asset_path);
 		} catch (IOException e) {
-			throw new Exception("Can't get " + asset_path
-					+ " in assets. " + e.getMessage());
+			throw new Exception("Can't get " + asset_path + " in assets. "
+					+ e.getMessage());
 		}
-	}
+	}// GetInputStream
 
 	/**
 	 * @param context_
@@ -63,5 +63,5 @@ public class ZippedAssets extends ArrayList<URL> {
 			zippedAssets = new ZippedAssets(context_);
 		}
 		return zippedAssets;
-	}
-}
+	}// GetTheZippedAssets
+}// ZippedAssets

@@ -9,7 +9,7 @@ import android.util.Log;
 /**
  * 複数の施設を表すシングルトンクラス。 インスタンスを生成すると自動的に外部記憶を走査して施設の一覧を作成する。
  * 
- * @author Takashi SASAKI @
+ * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
 @SuppressWarnings("serial")
 public class Organizations extends ArrayList<Organization> {
@@ -19,9 +19,9 @@ public class Organizations extends ArrayList<Organization> {
 
 	private static Organizations theOrganizations;
 
-	private Organizations(Root root_) {
+	private Organizations() {
 		super();
-		ScanRootDirectory(root_);
+		ScanRootDirectory();
 
 		class OrganizationComparator implements Comparator<Organization> {
 			public int compare(Organization object1, Organization object2) {
@@ -40,11 +40,13 @@ public class Organizations extends ArrayList<Organization> {
 		Collections.sort(this, new OrganizationComparator());
 	}
 
-	private void ScanRootDirectory(Root root_) {
-		File[] domain_directories = root_.getRootDirectory().listFiles();
+	private void ScanRootDirectory() {
+		Log.v(this.getClass().getSimpleName(),"Enumerating domain directories");
+		File[] domain_directories = Root.GetTheRoot().getRootDirectory()
+				.listFiles();
 		for (int i = 0; i < domain_directories.length; ++i) {
 			File domain_directory = domain_directories[i];
-			Log.v(this.getClass().getName(), domain_directory.getPath());
+			Log.v(this.getClass().getSimpleName(), domain_directory.getPath());
 			if (!domain_directory.isDirectory())
 				continue;
 			if (!domain_directory.canRead())
@@ -55,6 +57,7 @@ public class Organizations extends ArrayList<Organization> {
 	}
 
 	private void ScanDomainDirectory(Domain domain_) {
+		
 		File[] organization_directories = domain_.getDomainDirectory()
 				.listFiles();
 		for (int i = 0; i < organization_directories.length; ++i) {
@@ -70,12 +73,11 @@ public class Organizations extends ArrayList<Organization> {
 	}
 
 	/**
-	 * @param root_
 	 * @return singleton object of Organizations
 	 */
-	public static Organizations GetTheOrganizations(Root root_) {
+	public static Organizations GetTheOrganizations() {
 		if (theOrganizations == null) {
-			theOrganizations = new Organizations(root_);
+			theOrganizations = new Organizations();
 		}
 		return theOrganizations;
 	}

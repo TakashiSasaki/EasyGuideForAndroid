@@ -15,16 +15,22 @@ import android.util.Log;
 public class Floor extends ArrayList<Room> {
 	private static final String floorImageName = "floor.png";
 	private Bitmap floorImage;
-	public int floorNumber;
-	public File floorDirectory;
-	public String floorName;
+	private int floorNumber;
+	private File floorDirectory;
+	private String floorName;
+	private int floorX, floorY;
 
+	/**
+	 * @param floor_directory
+	 */
 	public Floor(File floor_directory) {
 		this.floorDirectory = floor_directory;
-		String floor_directory_name = floor_directory.getName();
-		String[] parts = floor_directory_name.split("[ ]+");
-		this.floorNumber = Integer.parseInt(parts[0]);
-		this.floorName = parts[1];
+		DirectoryName directory_name = new DirectoryName(
+				floor_directory.getName());
+		this.floorName = directory_name.getName();
+		this.floorNumber = directory_name.getNumber();
+		this.floorX = directory_name.getX();
+		this.floorY = directory_name.getY();
 		File floor_image_file = new File(floor_directory, floorImageName);
 		this.floorImage = BitmapFactory.decodeFile(floor_image_file.getPath());
 		ScanRooms();
@@ -33,9 +39,7 @@ public class Floor extends ArrayList<Room> {
 	private void ScanRooms() {
 		Log.v(this.getClass().getSimpleName(), "Scanning room directories in "
 				+ this.floorDirectory);
-		File[] room_directories = this.floorDirectory.listFiles();
-		for (int i = 0; i < room_directories.length; ++i) {
-			File room_directory = room_directories[i];
+		for (File room_directory : this.floorDirectory.listFiles()) {
 			if (!room_directory.isDirectory()) {
 				continue;
 			}
@@ -47,8 +51,8 @@ public class Floor extends ArrayList<Room> {
 				Log.v(this.getClass().getSimpleName(),
 						"an exception was chatched while constructing Room object for "
 								+ room_directory.getAbsolutePath());
-			}
-		}
+			}// try
+		}// for
 	}// ScanRooms
 
 	/**
@@ -56,6 +60,34 @@ public class Floor extends ArrayList<Room> {
 	 */
 	public Bitmap getFloorImage() {
 		return floorImage;
+	}
+
+	/**
+	 * @return the floorNumber
+	 */
+	public int getFloorNumber() {
+		return floorNumber;
+	}
+
+	/**
+	 * @return the floorName
+	 */
+	public String getFloorName() {
+		return floorName;
+	}
+
+	/**
+	 * @return the floorX
+	 */
+	public int getFloorX() {
+		return floorX;
+	}
+
+	/**
+	 * @return the floorY
+	 */
+	public int getFloorY() {
+		return floorY;
 	}
 
 }

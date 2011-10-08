@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 /**
@@ -15,11 +14,9 @@ import android.util.Log;
 public class Equipment extends ArrayList<Panel> {
 
 	private static final String equipmentImageName = "equipment.png";
-	private static final int equipmentThumbnailHeight = 50;
-	private static final int equipmentThumbnailWidth = 50;
 	private File equipmentDirectory;
 	private DirectoryName equipmentDirectoryName;
-	private DirectoryImage equipmentImage;
+	private DirectoryImage equipmentDirectoryImage;
 
 	/**
 	 * @param equipment_directory
@@ -30,33 +27,46 @@ public class Equipment extends ArrayList<Panel> {
 		this.equipmentDirectory = equipment_directory;
 		this.equipmentDirectoryName = new DirectoryName(
 				equipment_directory.getName());
-		this.equipmentImage = new DirectoryImage(equipment_directory,
-				equipmentImageName, equipmentThumbnailWidth,
-				equipmentThumbnailHeight);
+		this.equipmentDirectoryImage = new DirectoryImage(equipment_directory,
+				equipmentImageName);
 		for (File panel_directory : this.equipmentDirectory.listFiles()) {
 			this.add(new Panel(panel_directory));
 		}// for
 	}// a constructor
 
-	/**
-	 * @return the equipmentDirectory
-	 */
+	@SuppressWarnings("javadoc")
 	public File getEquipmentDirectory() {
 		return equipmentDirectory;
 	}
 
-	/**
-	 * @return the equipmentDirectoryName
-	 */
-	public DirectoryName getEquipmentDirectoryName() {
-		return equipmentDirectoryName;
+	@SuppressWarnings("javadoc")
+	public String getEquipmentName() {
+		return equipmentDirectoryName.getName();
 	}
 
-	/**
-	 * @return the equipmentImage
-	 */
-	public DirectoryImage getEquipmentImage() {
-		return equipmentImage;
+	@SuppressWarnings("javadoc")
+	public int getEquipmentNumber() {
+		return equipmentDirectoryName.getNumber();
+	}
+
+	@SuppressWarnings("javadoc")
+	public int getEquipmentX() {
+		return equipmentDirectoryName.getX();
+	}
+
+	@SuppressWarnings("javadoc")
+	public int getEquipmentY() {
+		return equipmentDirectoryName.getY();
+	}
+
+	@SuppressWarnings("javadoc")
+	public Bitmap getEquipmentImage() {
+		return equipmentDirectoryImage.getImage();
+	}
+
+	@SuppressWarnings("javadoc")
+	public Bitmap getEquipmentThumbnail() {
+		return equipmentDirectoryImage.getThumbnail();
 	}
 
 }

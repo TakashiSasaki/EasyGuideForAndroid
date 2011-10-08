@@ -133,8 +133,23 @@ public class EasyGuideDownloaderActivity extends Activity {
 							@Override
 							public void run() {
 								InvokePlayer();
-							}
-						});
+							}// run
+						});// post
+					}// onClick
+				});// findViewById
+
+		((Button) findViewById(R.id.buttonListContents))
+				.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+						new Handler().post(new Runnable() {
+
+							@Override
+							public void run() {
+								InvokeSummary();
+							}// run
+						});// post
 					}// onClick
 				});// findViewById
 	}// onCreate
@@ -227,5 +242,11 @@ public class EasyGuideDownloaderActivity extends Activity {
 			builder.setPositiveButton("OK", null);
 			builder.show();
 		}
+	}
+
+	private void InvokeSummary() {
+		Intent intent = new Intent();
+		intent.setClass(this, SummaryActivity.class);
+		startActivity(intent);
 	}
 }

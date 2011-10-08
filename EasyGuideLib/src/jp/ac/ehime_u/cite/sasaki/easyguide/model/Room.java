@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 /**
@@ -13,81 +12,54 @@ import android.util.Log;
  */
 @SuppressWarnings("serial")
 public class Room extends ArrayList<Equipment> {
-	// public Equipments equipments;
-	private File roomDirectory;
-	private String roomName;
-	private int number;
 	private static final String roomImageName = "room.png";
-	private Bitmap roomImage;
-	private int roomX, roomY;
+	private File roomDirectory;
+	private DirectoryName roomDirectoryName;
+	private DirectoryImage roomImage;
 
 	/**
 	 * @param room_directory
 	 */
 	public Room(File room_directory) {
 		this.roomDirectory = room_directory;
-		DirectoryName directory_name = new DirectoryName(
-				room_directory.getName());
-		this.roomName = directory_name.getName();
-		this.number = directory_name.getNumber();
-		this.roomX = directory_name.getX();
-		this.roomY = directory_name.getY();
-		File room_image_file = new File(room_directory, roomImageName);
-		this.roomImage = BitmapFactory.decodeFile(room_image_file.getPath());
-		ScanRoomForEquipments();
-	}// a constructor
-
-	private void ScanRoomForEquipments() {
+		this.roomDirectoryName = new DirectoryName(room_directory.getName());
+		this.roomImage = new DirectoryImage(room_directory, Room.roomImageName);
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning equipment directories in " + this.roomDirectory);
 		for (File equipment_directory : this.roomDirectory.listFiles()) {
-			if (!equipment_directory.isDirectory()) {
-				continue;
-			}
 			Log.v(this.getClass().getSimpleName(), "Equipment directory "
 					+ equipment_directory.getAbsolutePath() + " was found.");
-			try {
-				this.add(new Equipment(equipment_directory));
-			} catch (Exception e) {
-				Log.v(this.getClass().getSimpleName(),
-						"Exception catched while constructing an equipment on "
-								+ equipment_directory.getAbsolutePath());
-			}// try
+			this.add(new Equipment(equipment_directory));
 		}// for
-	}// ScanRoomForEquipments
+	}// a constructor
 
-	/**
-	 * @return the roomName
-	 */
+	@SuppressWarnings("javadoc")
 	public String getRoomName() {
-		return roomName;
+		return this.roomDirectoryName.getName();
 	}
 
-	/**
-	 * @return the number
-	 */
-	public int getNumber() {
-		return number;
+	@SuppressWarnings("javadoc")
+	public int getRoomNumber() {
+		return this.roomDirectoryName.getNumber();
 	}
 
-	/**
-	 * @return the roomImage
-	 */
+	@SuppressWarnings("javadoc")
 	public Bitmap getRoomImage() {
-		return roomImage;
+		return this.roomImage.getImage();
 	}
 
-	/**
-	 * @return the roomX
-	 */
+	@SuppressWarnings("javadoc")
+	public Bitmap getRoomThumbnail() {
+		return this.roomImage.getThumbnail();
+	}
+
+	@SuppressWarnings("javadoc")
 	public int getRoomX() {
-		return roomX;
+		return this.roomDirectoryName.getX();
 	}
 
-	/**
-	 * @return the roomY
-	 */
+	@SuppressWarnings("javadoc")
 	public int getRoomY() {
-		return roomY;
+		return this.roomDirectoryName.getY();
 	}
 }

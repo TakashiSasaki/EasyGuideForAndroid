@@ -14,6 +14,8 @@ public class DirectoryImage {
 
 	private Bitmap image;
 	private Bitmap thumbnail;
+	private static int thumbnailWidth = 50;
+	private static int thumbnailHeight = 50;
 
 	/**
 	 * @param directory
@@ -21,11 +23,11 @@ public class DirectoryImage {
 	 * @param thumbnail_x
 	 * @param thumbnail_y
 	 */
-	public DirectoryImage(File directory, String file_name, int thumbnail_x,
-			int thumbnail_y) {
+	public DirectoryImage(File directory, String file_name) {
 		File image_file = new File(directory, file_name);
 		this.image = BitmapFactory.decodeFile(image_file.getPath());
-		this.thumbnail = ResizeBitmap(this.image, thumbnail_x, thumbnail_y);
+		this.thumbnail = ResizeBitmap(this.image, thumbnailWidth,
+				thumbnailHeight);
 	}// a constructor
 
 	/**
@@ -59,5 +61,21 @@ public class DirectoryImage {
 	 */
 	public Bitmap getThumbnail() {
 		return thumbnail;
+	}
+
+	/**
+	 * @param thumbnailWidth
+	 *            the thumbnailWidth to set
+	 */
+	public static void setThumbnailWidth(int thumbnailWidth) {
+		DirectoryImage.thumbnailWidth = thumbnailWidth;
+	}
+
+	/**
+	 * @param thumbnailHeight
+	 *            the thumbnailHeight to set
+	 */
+	public static void setThumbnailHeight(int thumbnailHeight) {
+		DirectoryImage.thumbnailHeight = thumbnailHeight;
 	}
 }

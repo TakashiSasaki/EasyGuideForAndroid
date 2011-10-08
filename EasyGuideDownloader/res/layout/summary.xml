@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:id="@+id/relativeLayoutSummary"
+	android:layout_height="match_parent">
+	<TextView android:text="Title" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:id="@+id/textViewSummaryTitle" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"></TextView>
+	<ImageView android:id="@+id/imageViewSummary" android:src="@drawable/default_icon"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_alignParentTop="true" android:layout_toRightOf="@+id/textView1"></ImageView>
+	<TextView android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:id="@+id/textViewSummaryX" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_alignParentTop="true"
+		android:layout_toRightOf="@+id/imageView1"></TextView>
+	<TextView android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:id="@+id/textViewSummaryY" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_alignParentTop="true"
+		android:layout_toRightOf="@+id/textView2"></TextView>
+</RelativeLayout>

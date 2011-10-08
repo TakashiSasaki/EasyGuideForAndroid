@@ -14,10 +14,6 @@ public class Organizations extends ArrayList<Organization> {
 
 	private Organizations() {
 		super();
-		ScanRootDirectory();
-	}// a constructor
-
-	private void ScanRootDirectory() {
 		Log.v(this.getClass().getSimpleName(),
 				"Enumerating organization directories");
 		for (File organization_directory : Root.GetTheRoot().getRootDirectory()
@@ -29,7 +25,7 @@ public class Organizations extends ArrayList<Organization> {
 			}
 			this.add(new Organization(organization_directory));
 		}// for
-	}// ScanRootDirectory
+	}// a constructor
 
 	/**
 	 * @return singleton object of Organizations

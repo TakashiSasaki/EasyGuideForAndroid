@@ -16,11 +16,8 @@ public class Building extends ArrayList<Floor> {
 
 	private static final String buildingImageName = "building.png";
 	private File buildingDirectory;
-	private int buildingNumber;
-	private String buildingName;
-	private Bitmap buildingImage;
-	private int x;
-	private int y;
+	private DirectoryName buildingDirectoryName;
+	private DirectoryImage buildingDirectoryImage;
 
 	/**
 	 * @param building_directory
@@ -28,57 +25,33 @@ public class Building extends ArrayList<Floor> {
 	public Building(File building_directory) {
 		super();
 		this.buildingDirectory = building_directory;
-		DirectoryName directory_name = new DirectoryName(
+		this.buildingDirectoryName = new DirectoryName(
 				building_directory.getName());
-		this.buildingNumber = directory_name.getNumber();
-		this.buildingName = directory_name.getName();
-		this.x = directory_name.getX();
-		this.x = directory_name.getY();
-		File building_image_file = new File(building_directory,
-				buildingImageName);
-		this.buildingImage = BitmapFactory.decodeFile(building_image_file
-				.getPath());
-		ScanFloors();
-	}
-
-	private void ScanFloors() {
-		Log.v(this.getClass().getSimpleName(), "Scanning floor directories in "
-				+ this.buildingDirectory);
+		this.buildingDirectoryImage = new DirectoryImage(
+				this.buildingDirectory, buildingImageName);
 		for (File floor_directory : this.buildingDirectory.listFiles()) {
-			if (!floor_directory.isDirectory()) {
-				continue;
-			}
-			Log.v(this.getClass().getSimpleName(), "floor directory "
-					+ floor_directory.getAbsolutePath() + " was found.");
-			try {
-				this.add(new Floor(floor_directory));
-			} catch (Exception e) {
-				Log.v(this.getClass().getSimpleName(),
-						"an exception was chatched while constructing a Floor object for "
-								+ floor_directory.getAbsolutePath());
-			}// try
+			this.add(new Floor(floor_directory));
 		}// for
-	}// ScanFloors
+	}// a constructor
 
-	/**
-	 * @return the buildingNumber
-	 */
+	@SuppressWarnings("javadoc")
 	public int getBuildingNumber() {
-		return buildingNumber;
+		return buildingDirectoryName.getNumber();
 	}
 
-	/**
-	 * @return the buildingName
-	 */
+	@SuppressWarnings("javadoc")
 	public String getBuildingName() {
-		return buildingName;
+		return buildingDirectoryName.getName();
 	}
 
-	/**
-	 * @return the buildingImage
-	 */
+	@SuppressWarnings("javadoc")
 	public Bitmap getBuildingImage() {
-		return buildingImage;
+		return this.buildingDirectoryImage.getImage();
+	}
+
+	@SuppressWarnings("javadoc")
+	public Bitmap getBuildingThumbnail() {
+		return this.buildingDirectoryImage.getThumbnail();
 	}
 
 	/**

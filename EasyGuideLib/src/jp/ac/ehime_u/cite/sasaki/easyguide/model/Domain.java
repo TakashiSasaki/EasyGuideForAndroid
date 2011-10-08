@@ -141,7 +141,7 @@ public class Domain extends ArrayList<UnzippedDirectory> {
 		} catch (InterruptedException e) {
 			return false;
 		}
-	}
+	}// IsResolvable
 
 	@SuppressWarnings("unused")
 	@Deprecated

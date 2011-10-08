@@ -18,6 +18,7 @@ public class Organization extends ArrayList<Facility> {
 	private static final int organizationThumbnailHeight = 50;
 
 	private File organizationDirectory;
+	private DirectoryImage directoryImage;
 	private Bitmap organizationImage;
 	private Bitmap organizationThumbnail;
 	private int organizationOrder;
@@ -35,28 +36,18 @@ public class Organization extends ArrayList<Facility> {
 	public Organization(File organization_directory) {
 		super();
 		organizationDirectory = organization_directory;
-		String organization_directory_name = organization_directory.getName();
-		String[] parts = organization_directory_name.split("[ ]+");
-		if (parts.length == 2) {
-			this.organizationOrder = Integer.parseInt(parts[0]);
-			this.organizationName = parts[1];
-		} else {
-			this.organizationOrder = 9999;
-			this.organizationName = parts[0];
-		}
-
-		LoadOrganizationImage();
-		CreateOrganizationThumbnail();
+		this.directoryImage = new DirectoryImage(this.organizationDirectory,
+				organizationImageName, organizationThumbnailWidth,
+				organizationThumbnailHeight);
 		ScanFacilities();
 		Log.d(this.getClass().getName(), this.toString());
-	}
+	}// a constructor
 
 	private void ScanFacilities() {
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning facility directories in "
 						+ this.organizationDirectory);
-		File[] facility_directories = this.organizationDirectory.listFiles();
-		for (File facility_directory : facility_directories) {
+		for (File facility_directory : this.organizationDirectory.listFiles()) {
 			if (!facility_directory.isDirectory()) {
 				continue;
 			}
@@ -71,40 +62,6 @@ public class Organization extends ArrayList<Facility> {
 			}// try
 		}// for
 	}// ScanFacilities
-
-	private void LoadOrganizationImage() {
-		// TODO: 画像ファイルが見つからなかった時の処理が必要。
-		File image_file = new File(this.organizationDirectory,
-				organizationImageName);
-		Log.v(this.getClass().getSimpleName(),
-				"Loading image, " + image_file.getAbsolutePath());
-		this.organizationImage = BitmapFactory.decodeFile(image_file.getPath());
-	}// LoadOrganizationImage
-
-	/**
-	 * @param original_bitmap
-	 * @param width
-	 * @param height
-	 * @return resized bitmap
-	 */
-	public static Bitmap ResizeBitmap(Bitmap original_bitmap, int width,
-			int height) {
-		int original_height = original_bitmap.getHeight();
-		int original_width = original_bitmap.getWidth();
-		float height_scale = height / (float) original_height;
-		float width_scale = width / (float) original_width;
-		Matrix resize_matrix = new Matrix();
-		resize_matrix.postScale(width_scale, height_scale);
-		Bitmap resized_bitmap = Bitmap.createBitmap(original_bitmap, 0, 0,
-				original_width, original_height, resize_matrix, true);
-		return resized_bitmap;
-	}// ResizeBitmap
-
-	private void CreateOrganizationThumbnail() {
-		this.organizationThumbnail = ResizeBitmap(this.organizationImage,
-				Organization.organizationThumbnailWidth,
-				Organization.organizationThumbnailHeight);
-	}// CreateOrganizationThumbnail
 
 	@Override
 	public String toString() {

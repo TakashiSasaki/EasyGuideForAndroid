@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -54,18 +52,14 @@ public class Building extends ArrayList<Floor> {
 		return this.buildingDirectoryImage.getThumbnail();
 	}
 
-	/**
-	 * @return the x
-	 */
+	@SuppressWarnings("javadoc")
 	public int getX() {
-		return x;
+		return this.buildingDirectoryName.getX();
 	}
 
-	/**
-	 * @return the y
-	 */
+	@SuppressWarnings("javadoc")
 	public int getY() {
-		return y;
+		return this.buildingDirectoryName.getY();
 	}
 
 }

@@ -304,30 +304,22 @@ public class ZipDownloader {
 		super.finalize();
 	}
 
-	/**
-	 * @return the downloadedDate
-	 */
+	@SuppressWarnings("javadoc")
 	public Date getDownloadedDate() {
 		return downloadedDate;
 	}
 
-	/**
-	 * @return the lastModifiedDate
-	 */
+	@SuppressWarnings("javadoc")
 	public Date getLastModifiedDate() {
 		return lastModifiedDate;
 	}
 
-	/**
-	 * @return downloaded file
-	 */
+	@SuppressWarnings("javadoc")
 	public File getDownloadedFile() {
 		return downloadedFile;
 	}
 
-	/**
-	 * @return domain directory
-	 */
+	@SuppressWarnings("javadoc")
 	public File getDomainDirectory() {
 		return domainDirectory;
 	}

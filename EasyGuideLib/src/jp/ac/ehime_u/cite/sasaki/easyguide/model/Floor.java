@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 /**
@@ -14,80 +13,54 @@ import android.util.Log;
 @SuppressWarnings("serial")
 public class Floor extends ArrayList<Room> {
 	private static final String floorImageName = "floor.png";
-	private Bitmap floorImage;
-	private int floorNumber;
+	private DirectoryName floorDirectoryName;
+	private DirectoryImage floorImage;
 	private File floorDirectory;
-	private String floorName;
-	private int floorX, floorY;
 
 	/**
 	 * @param floor_directory
 	 */
 	public Floor(File floor_directory) {
 		this.floorDirectory = floor_directory;
-		DirectoryName directory_name = new DirectoryName(
-				floor_directory.getName());
-		this.floorName = directory_name.getName();
-		this.floorNumber = directory_name.getNumber();
-		this.floorX = directory_name.getX();
-		this.floorY = directory_name.getY();
-		File floor_image_file = new File(floor_directory, floorImageName);
-		this.floorImage = BitmapFactory.decodeFile(floor_image_file.getPath());
-		ScanRooms();
-	}// Floor
-
-	private void ScanRooms() {
+		this.floorDirectoryName = new DirectoryName(floor_directory.getName());
+		this.floorImage = new DirectoryImage(floorDirectory, floorImageName);
 		Log.v(this.getClass().getSimpleName(), "Scanning room directories in "
 				+ this.floorDirectory);
 		for (File room_directory : this.floorDirectory.listFiles()) {
-			if (!room_directory.isDirectory()) {
-				continue;
-			}
 			Log.v(this.getClass().getSimpleName(), "Room directory "
 					+ room_directory.getAbsolutePath() + " was found.");
-			try {
-				this.add(new Room(room_directory));
-			} catch (Exception e) {
-				Log.v(this.getClass().getSimpleName(),
-						"an exception was chatched while constructing Room object for "
-								+ room_directory.getAbsolutePath());
-			}// try
+			this.add(new Room(room_directory));
 		}// for
-	}// ScanRooms
+	}// a constructor
 
-	/**
-	 * @return the floorImage
-	 */
+	@SuppressWarnings("javadoc")
 	public Bitmap getFloorImage() {
-		return floorImage;
+		return floorImage.getImage();
 	}
 
-	/**
-	 * @return the floorNumber
-	 */
+	@SuppressWarnings("javadoc")
+	public Bitmap getFloorThumbnail() {
+		return floorImage.getThumbnail();
+	}
+
+	@SuppressWarnings("javadoc")
 	public int getFloorNumber() {
-		return floorNumber;
+		return floorDirectoryName.getNumber();
 	}
 
-	/**
-	 * @return the floorName
-	 */
+	@SuppressWarnings("javadoc")
 	public String getFloorName() {
-		return floorName;
+		return floorDirectoryName.getName();
 	}
 
-	/**
-	 * @return the floorX
-	 */
+	@SuppressWarnings("javadoc")
 	public int getFloorX() {
-		return floorX;
+		return floorDirectoryName.getX();
 	}
 
-	/**
-	 * @return the floorY
-	 */
+	@SuppressWarnings("javadoc")
 	public int getFloorY() {
-		return floorY;
+		return floorDirectoryName.getY();
 	}
 
 }

@@ -3,8 +3,6 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 import java.io.File;
 import java.util.ArrayList;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.util.Log;
 
 /**
@@ -14,17 +12,9 @@ import android.util.Log;
 @SuppressWarnings("serial")
 public class Organization extends ArrayList<Facility> {
 	private static final String organizationImageName = "organization.png";
-	private static final int organizationThumbnailWidth = 50;
-	private static final int organizationThumbnailHeight = 50;
-
 	private File organizationDirectory;
-	private DirectoryImage directoryImage;
-	private Bitmap organizationImage;
-	private Bitmap organizationThumbnail;
-	private int organizationOrder;
-
-	private String organizationName;
-
+	private DirectoryImage organizationDirectoryImage;
+	private DirectoryName organizationDirectoryName;
 	private String macAddress;
 	private float longitude;
 	private float latitude;
@@ -35,86 +25,53 @@ public class Organization extends ArrayList<Facility> {
 	 */
 	public Organization(File organization_directory) {
 		super();
-		organizationDirectory = organization_directory;
-		this.directoryImage = new DirectoryImage(this.organizationDirectory,
-				organizationImageName, organizationThumbnailWidth,
-				organizationThumbnailHeight);
-		ScanFacilities();
-		Log.d(this.getClass().getName(), this.toString());
-	}// a constructor
-
-	private void ScanFacilities() {
+		this.organizationDirectory = organization_directory;
+		this.organizationDirectoryName = new DirectoryName(
+				this.organizationDirectory.getName());
+		this.organizationDirectoryImage = new DirectoryImage(
+				this.organizationDirectory, Organization.organizationImageName);
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning facility directories in "
 						+ this.organizationDirectory);
 		for (File facility_directory : this.organizationDirectory.listFiles()) {
-			if (!facility_directory.isDirectory()) {
-				continue;
-			}
 			Log.v(this.getClass().getSimpleName(), "Facility directory "
 					+ facility_directory.getAbsolutePath() + " found.");
-			try {
-				this.add(new Facility(facility_directory));
-			} catch (Exception e) {
-				Log.v(this.getClass().getSimpleName(),
-						"an exception was catched while constructing a Facility object for "
-								+ facility_directory.getAbsolutePath());
-			}// try
+			this.add(new Facility(facility_directory));
 		}// for
-	}// ScanFacilities
+	}// a constructor
 
-	@Override
-	public String toString() {
-		return "Organization:" + this.organizationName;
-	}
-
-	/**
-	 * @return the macAddress
-	 */
+	@SuppressWarnings("javadoc")
 	public String getMacAddress() {
 		return macAddress;
 	}
 
-	/**
-	 * @return the longitude
-	 */
+	@SuppressWarnings("javadoc")
 	public float getLongitude() {
 		return longitude;
 	}
 
-	/**
-	 * @return the latitude
-	 */
+	@SuppressWarnings("javadoc")
 	public float getLatitude() {
 		return latitude;
 	}
 
-	/**
-	 * @return the altitude
-	 */
+	@SuppressWarnings("javadoc")
 	public float getAltitude() {
 		return altitude;
 	}
 
-	/**
-	 * @return the organization order
-	 */
-	public int getOrganizationOrder() {
-		return organizationOrder;
+	@SuppressWarnings("javadoc")
+	public Bitmap getOrganizationImage() {
+		return this.organizationDirectoryImage.getImage();
 	}
 
-	/**
-	 * @return the organization name
-	 */
-	public String getOrganizationName() {
-		return organizationName;
-	}
-
-	/**
-	 * @return the organizationThumbnail
-	 */
+	@SuppressWarnings("javadoc")
 	public Bitmap getOrganizationThumbnail() {
-		return organizationThumbnail;
+		return this.organizationDirectoryImage.getThumbnail();
 	}
 
+	@SuppressWarnings("javadoc")
+	public String getOrganizatonName() {
+		return this.organizationDirectoryName.getName();
+	}
 }

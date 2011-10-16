@@ -49,7 +49,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_marginLeft="10dp"
             android:text="path"
-            android:id="@+id/textViewSummaryFilePath"></TextView>
+            android:id="@+id/textViewSummaryPath"></TextView>
     </LinearLayout>
     <ImageView
         android:id="@+id/imageViewSummary"

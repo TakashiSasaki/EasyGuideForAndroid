@@ -2,6 +2,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -34,6 +35,8 @@ public class Organization extends ArrayList<Facility> {
 				"Scanning facility directories in "
 						+ this.organizationDirectory);
 		for (File facility_directory : this.organizationDirectory.listFiles()) {
+			if (!facility_directory.isDirectory())
+				continue;
 			Log.v(this.getClass().getSimpleName(), "Facility directory "
 					+ facility_directory.getAbsolutePath() + " found.");
 			this.add(new Facility(facility_directory));

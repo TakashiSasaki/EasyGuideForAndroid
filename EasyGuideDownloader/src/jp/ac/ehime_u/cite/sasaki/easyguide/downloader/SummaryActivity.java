@@ -1,7 +1,9 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.DirectoryImageException;
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -9,28 +11,25 @@ import android.os.Bundle;
  */
 public class SummaryActivity extends ListActivity {
 
-	private SummaryArrayAdapter summary_array_adapter;
-
 	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		summary_array_adapter = new SummaryArrayAdapter(this, R.layout.summary);
+		try {
+			this.setListAdapter(new SummaryArrayAdapter(this, R.layout.summary));
+		} catch (DirectoryImageException e) {
+			Log.d(this.getClass().getSimpleName(),
+					"Can't create instance of SummaryArrayAdapter.");
+		}
 	}// onCreate
 
 	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see android.app.Activity#onStart()
 	 */
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 	}// onStart
 

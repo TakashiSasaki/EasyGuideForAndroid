@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="jp.ac.ehime_u.cite.sasaki.easyguide"
-      android:versionCode="014" android:versionName="0.1.4">
+      android:versionName="0.1.5" android:versionCode="015">
     <uses-sdk android:minSdkVersion="12" />
 </manifest>

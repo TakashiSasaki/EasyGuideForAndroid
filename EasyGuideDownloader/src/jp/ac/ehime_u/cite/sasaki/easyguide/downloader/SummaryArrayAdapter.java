@@ -1,6 +1,18 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.DirectoryImage;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.DirectoryImageException;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Panel;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
 import android.content.Context;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +25,47 @@ import android.widget.TextView;
  * 
  */
 public class SummaryArrayAdapter extends ArrayAdapter<Summary> {
-	private int resourceId;
 
 	/**
 	 * @param context
 	 * @param resource_id
+	 * @throws DirectoryImageException
 	 */
-	public SummaryArrayAdapter(Context context, int resource_id) {
+	public SummaryArrayAdapter(Context context, int resource_id)
+			throws DirectoryImageException {
 		super(context, resource_id);
-		this.resourceId = resource_id;
+		DirectoryImage.SetDefaultImage(context, R.drawable.unknown);
+		for (Organization organization : Organizations.GetTheOrganizations()) {
+			this.add(new Summary(organization));
+			for (Facility facility : organization) {
+				this.add(new Summary(facility));
+				for (Building building : facility) {
+					this.add(new Summary(building));
+					for (Floor floor : building) {
+						this.add(new Summary(floor));
+						for (Room room : floor) {
+							this.add(new Summary(room));
+							for (Equipment equipment : room) {
+								this.add(new Summary(equipment));
+								for (Panel panel : equipment) {
+									this.add(new Summary(panel));
+								}// for panel
+							}// for equipment
+						}// for room
+					}// for floor
+				}// for building
+			}// for facility
+		}// for organization
+		Log.v(this.getClass().getSimpleName(), this.getCount()
+				+ " item(s) found.");
 	}// a constructor
 
 	private class SummaryViews {
 		private TextView textViewSummaryTitle;
-
 		private TextView textViewSummaryX;
 		private TextView textViewSummaryY;
 		private ImageView imageViewSummary;
+		private TextView textViewSummaryPath;
 
 		public SummaryViews(View view) {
 			this.textViewSummaryTitle = (TextView) view
@@ -40,13 +76,16 @@ public class SummaryArrayAdapter extends ArrayAdapter<Summary> {
 					.findViewById(R.id.textViewSummaryY);
 			this.imageViewSummary = (ImageView) view
 					.findViewById(R.id.imageViewSummary);
+			this.textViewSummaryPath = (TextView) view
+					.findViewById(R.id.textViewSummaryPath);
 		}
 
 		public void SetViews(Summary summary) {
-			textViewSummaryTitle.setText(summary.getTitle());
-			textViewSummaryX.setText(summary.getX());
-			textViewSummaryY.setText(summary.getY());
-			imageViewSummary.setImageBitmap(summary.getImage());
+			this.textViewSummaryTitle.setText(summary.getTitle());
+			this.textViewSummaryX.setText("x=" + summary.getX());
+			this.textViewSummaryY.setText("y=" + summary.getY());
+			this.imageViewSummary.setImageBitmap(summary.getImage());
+			this.textViewSummaryPath.setText(summary.getPath());
 		}// SetViews
 	}// SummaryViews
 

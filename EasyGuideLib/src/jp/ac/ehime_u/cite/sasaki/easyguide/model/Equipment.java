@@ -32,7 +32,8 @@ public class Equipment extends ArrayList<Panel> {
 		this.equipmentDirectoryImage = new DirectoryImage(equipment_directory,
 				equipmentImageName);
 		for (File panel_directory : this.equipmentDirectory.listFiles()) {
-			this.add(new Panel(panel_directory));
+			if (panel_directory.isDirectory())
+				this.add(new Panel(panel_directory));
 		}// for
 	}// a constructor
 

@@ -9,6 +9,5 @@ import java.io.File;
 public class PanelHtml {
 	@SuppressWarnings("javadoc")
 	public PanelHtml(File panel_directory) throws PanelException {
-
 	}// a constructor
 }// PanelUrl

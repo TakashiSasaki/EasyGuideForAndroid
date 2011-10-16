@@ -27,6 +27,8 @@ public class Room extends ArrayList<Equipment> {
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning equipment directories in " + this.roomDirectory);
 		for (File equipment_directory : this.roomDirectory.listFiles()) {
+			if (!equipment_directory.isDirectory())
+				continue;
 			Log.v(this.getClass().getSimpleName(), "Equipment directory "
 					+ equipment_directory.getAbsolutePath() + " was found.");
 			this.add(new Equipment(equipment_directory));

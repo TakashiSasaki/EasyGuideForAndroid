@@ -242,11 +242,11 @@ public class EasyGuideDownloaderActivity extends Activity {
 			builder.setPositiveButton("OK", null);
 			builder.show();
 		}
-	}
+	}// InvokePlayer
 
 	private void InvokeSummary() {
 		Intent intent = new Intent();
 		intent.setClass(this, SummaryActivity.class);
 		startActivity(intent);
-	}
+	}// InvokeSummary
 }

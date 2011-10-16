@@ -33,7 +33,8 @@ public class Facility extends ArrayList<Building> {
 				"Scanning building directories in "
 						+ this.facilityDirectory.getAbsolutePath());
 		for (File building_directory : this.facilityDirectory.listFiles()) {
-			this.add(new Building(building_directory));
+			if (building_directory.isDirectory())
+				this.add(new Building(building_directory));
 		}// for
 	}// a constructor
 

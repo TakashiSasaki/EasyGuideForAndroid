@@ -20,6 +20,7 @@ public class Summary {
 	private int x;
 	private int y;
 	private Bitmap image;
+	private String path;
 
 	/**
 	 * a constructor
@@ -32,6 +33,7 @@ public class Summary {
 		this.x = -1;
 		this.y = -1;
 		this.image = organization.getOrganizationThumbnail();
+		this.path = organization.getOrganizationDirectory().getAbsolutePath();
 	}// a constructor
 
 	/**
@@ -45,6 +47,7 @@ public class Summary {
 		this.x = facility.getFacilityX();
 		this.y = facility.getFacilityY();
 		this.image = facility.getFacilityThumbnail();
+		this.path = facility.getFacilityDirectory().getAbsolutePath();
 	}// a constructor
 
 	/**
@@ -58,6 +61,7 @@ public class Summary {
 		this.x = building.getBuildingX();
 		this.y = building.getBuildingY();
 		this.image = building.getBuildingThumbnail();
+		this.path = building.getBuildingDirectory().getAbsolutePath();
 	}// a constructor
 
 	/**
@@ -70,7 +74,8 @@ public class Summary {
 		this.order = floor.getFloorNumber();
 		this.x = floor.getFloorX();
 		this.y = floor.getFloorY();
-		this.image = floor.getFloorImage();
+		this.image = floor.getFloorThumbnail();
+		this.path = floor.getFloorDirectory().getAbsolutePath();
 	}// a constructor
 
 	/**
@@ -84,6 +89,7 @@ public class Summary {
 		this.x = room.getRoomX();
 		this.y = room.getRoomY();
 		this.image = room.getRoomThumbnail();
+		this.path = room.getRoomDirectory().getAbsolutePath();
 	}// a constructor
 
 	/**
@@ -97,6 +103,7 @@ public class Summary {
 		this.x = equipment.getEquipmentX();
 		this.y = equipment.getEquipmentY();
 		this.image = equipment.getEquipmentThumbnail();
+		this.path = equipment.getEquipmentDirectory().getAbsolutePath();
 	}// a constructor
 
 	/**
@@ -109,7 +116,8 @@ public class Summary {
 		this.order = panel.getPanelNumber();
 		this.x = -1;
 		this.y = -1;
-		this.image = null;
+		this.image = panel.getPanelThumbnail();
+		this.path = panel.getPanelDirectory().getAbsolutePath();
 	}// a constructor
 
 	@SuppressWarnings("javadoc")
@@ -135,5 +143,10 @@ public class Summary {
 	@SuppressWarnings("javadoc")
 	public int getOrder() {
 		return this.order;
+	}
+
+	@SuppressWarnings("javadoc")
+	public String getPath() {
+		return this.path;
 	}
 }// Summary

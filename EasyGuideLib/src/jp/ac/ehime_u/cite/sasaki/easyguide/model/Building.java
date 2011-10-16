@@ -28,7 +28,8 @@ public class Building extends ArrayList<Floor> {
 		this.buildingDirectoryImage = new DirectoryImage(
 				this.buildingDirectory, buildingImageName);
 		for (File floor_directory : this.buildingDirectory.listFiles()) {
-			this.add(new Floor(floor_directory));
+			if (floor_directory.isDirectory())
+				this.add(new Floor(floor_directory));
 		}// for
 	}// a constructor
 

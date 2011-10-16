@@ -27,6 +27,8 @@ public class Floor extends ArrayList<Room> {
 		Log.v(this.getClass().getSimpleName(), "Scanning room directories in "
 				+ this.floorDirectory);
 		for (File room_directory : this.floorDirectory.listFiles()) {
+			if (!room_directory.isDirectory())
+				continue;
 			Log.v(this.getClass().getSimpleName(), "Room directory "
 					+ room_directory.getAbsolutePath() + " was found.");
 			this.add(new Room(room_directory));

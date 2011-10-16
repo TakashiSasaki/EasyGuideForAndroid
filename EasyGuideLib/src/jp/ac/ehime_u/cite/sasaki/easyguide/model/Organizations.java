@@ -2,6 +2,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import android.util.Log;
 
 /**
@@ -18,11 +19,10 @@ public class Organizations extends ArrayList<Organization> {
 				"Enumerating organization directories");
 		for (File organization_directory : Root.GetTheRoot().getRootDirectory()
 				.listFiles()) {
+			if (!organization_directory.isDirectory())
+				continue;
 			Log.v(this.getClass().getSimpleName(),
 					organization_directory.getPath());
-			if (!organization_directory.isDirectory()) {
-				continue;
-			}
 			this.add(new Organization(organization_directory));
 		}// for
 	}// a constructor

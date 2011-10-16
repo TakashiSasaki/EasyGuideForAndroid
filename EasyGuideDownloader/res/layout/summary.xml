@@ -1,20 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:id="@+id/relativeLayoutSummary"
-	android:layout_height="match_parent">
-	<TextView android:text="Title" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:id="@+id/textViewSummaryTitle" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true"></TextView>
-	<ImageView android:id="@+id/imageViewSummary" android:src="@drawable/default_icon"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_alignParentTop="true" android:layout_toRightOf="@+id/textView1"></ImageView>
-	<TextView android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:id="@+id/textViewSummaryX" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_toRightOf="@+id/imageView1"></TextView>
-	<TextView android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:id="@+id/textViewSummaryY" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_toRightOf="@+id/textView2"></TextView>
-</RelativeLayout>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:id="@+id/linearLayout3"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/linearLayout2"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:baselineAligned="true"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Title"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textViewSummaryTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"></TextView>
+            <TextView
+                android:text="X"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textViewSummaryX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="right"></TextView>
+            <TextView
+                android:text="Y"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textViewSummaryY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="right"></TextView>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginLeft="10dp"
+            android:text="path"
+            android:id="@+id/textViewSummaryFilePath"></TextView>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/imageViewSummary"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/default_icon"></ImageView>
+</LinearLayout>

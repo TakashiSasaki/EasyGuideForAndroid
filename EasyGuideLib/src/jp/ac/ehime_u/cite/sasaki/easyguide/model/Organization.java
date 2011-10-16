@@ -78,10 +78,6 @@ public class Organization extends ArrayList<Facility> {
 		return this.organizationDirectoryImage.getThumbnail();
 	}
 
-	@SuppressWarnings("javadoc")
-	public String getOrganizatonName() {
-		return this.organizationDirectoryName.getName();
-	}
 
 	@SuppressWarnings("javadoc")
 	public File getOrganizationDirectory() {

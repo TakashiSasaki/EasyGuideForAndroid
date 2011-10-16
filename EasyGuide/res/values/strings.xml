@@ -2,4 +2,12 @@
 <resources>
     <string name="hello">Hello World, EasyGuideActivity!</string>
     <string name="app_name">EasyGuide</string>
+    <string name="organizations"> コンテンツの発行者(organization)を選択して下さい。
+        EasyGuideではコンテンツの発行者をインターネットドメイン（FQDN）単位で管理します。
+        コンテンツの発行者は複数の施設(facility)を持つことができます。 施設には複数の建物(building)が含まれます。
+        通常は他のアプリケーションから自動的にコンテンツの発行者が選択された状態で起動され、施設および建物の選択が促されるか、
+        もしくは位置情報により自動的に建物が選択されます。 そのためこの画面が表示されることはありません。
+        この画面はコンテンツの発行者がテストに用いるための目的で表示されています。
+        現時点では発行者を選択してもデモ用の発行者が選択されたものとみなされます。
+    </string>
 </resources>

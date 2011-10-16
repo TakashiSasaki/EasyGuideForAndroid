@@ -19,6 +19,8 @@ public class Equipment extends ArrayList<Panel> {
 	private DirectoryImage equipmentDirectoryImage;
 
 	/**
+	 * a constructor
+	 * 
 	 * @param equipment_directory
 	 */
 	public Equipment(File equipment_directory) {

@@ -61,6 +61,11 @@ public class Organization extends ArrayList<Facility> {
 	}
 
 	@SuppressWarnings("javadoc")
+	public String getOrganizationDomain() {
+		return this.organizationDirectoryName.getName();
+	}
+
+	@SuppressWarnings("javadoc")
 	public Bitmap getOrganizationImage() {
 		return this.organizationDirectoryImage.getImage();
 	}

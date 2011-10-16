@@ -62,4 +62,9 @@ public class Room extends ArrayList<Equipment> {
 	public int getRoomY() {
 		return this.roomDirectoryName.getY();
 	}
+
+	@SuppressWarnings("javadoc")
+	public File getRoomDirectory() {
+		return this.roomDirectory;
+	}
 }

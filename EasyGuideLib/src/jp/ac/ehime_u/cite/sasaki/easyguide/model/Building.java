@@ -53,13 +53,18 @@ public class Building extends ArrayList<Floor> {
 	}
 
 	@SuppressWarnings("javadoc")
-	public int getX() {
+	public int getBuildingX() {
 		return this.buildingDirectoryName.getX();
 	}
 
 	@SuppressWarnings("javadoc")
-	public int getY() {
+	public int getBuildingY() {
 		return this.buildingDirectoryName.getY();
+	}
+
+	@SuppressWarnings("javadoc")
+	public File getBuildingDirectory() {
+		return this.buildingDirectory;
 	}
 
 }

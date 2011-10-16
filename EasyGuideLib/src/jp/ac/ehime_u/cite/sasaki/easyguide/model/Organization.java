@@ -79,4 +79,9 @@ public class Organization extends ArrayList<Facility> {
 	public String getOrganizatonName() {
 		return this.organizationDirectoryName.getName();
 	}
+
+	@SuppressWarnings("javadoc")
+	public File getOrganizationDirectory() {
+		return this.organizationDirectory;
+	}
 }

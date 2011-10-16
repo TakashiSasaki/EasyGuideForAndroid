@@ -66,4 +66,9 @@ public class Facility extends ArrayList<Building> {
 	public Bitmap getFacilityThumbnail() {
 		return this.facilityDirectoryImage.getThumbnail();
 	}
+
+	@SuppressWarnings("javadoc")
+	public File getFacilityDirectory() {
+		return this.facilityDirectory;
+	}
 }// Facility

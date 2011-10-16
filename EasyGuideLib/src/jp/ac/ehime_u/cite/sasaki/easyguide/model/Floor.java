@@ -35,32 +35,42 @@ public class Floor extends ArrayList<Room> {
 
 	@SuppressWarnings("javadoc")
 	public Bitmap getFloorImage() {
-		return floorImage.getImage();
+		return this.floorImage.getImage();
 	}
 
 	@SuppressWarnings("javadoc")
 	public Bitmap getFloorThumbnail() {
-		return floorImage.getThumbnail();
+		return this.floorImage.getThumbnail();
 	}
 
 	@SuppressWarnings("javadoc")
 	public int getFloorNumber() {
-		return floorDirectoryName.getNumber();
+		return this.floorDirectoryName.getNumber();
 	}
 
 	@SuppressWarnings("javadoc")
 	public String getFloorName() {
-		return floorDirectoryName.getName();
+		return this.floorDirectoryName.getName();
 	}
 
 	@SuppressWarnings("javadoc")
 	public int getFloorX() {
-		return floorDirectoryName.getX();
+		return this.floorDirectoryName.getX();
 	}
 
 	@SuppressWarnings("javadoc")
 	public int getFloorY() {
-		return floorDirectoryName.getY();
+		return this.floorDirectoryName.getY();
 	}
 
-}
+	@SuppressWarnings("javadoc")
+	public File getFloorDirectory() {
+		return this.floorDirectory;
+	}
+
+	@SuppressWarnings("javadoc")
+	public DirectoryName getFloorDirectoryName() {
+		return this.floorDirectoryName;
+	}
+
+}// Floor

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.widget.ImageView;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -13,6 +15,7 @@ import android.util.Log;
 @SuppressWarnings("serial")
 public class Organization extends ArrayList<Facility> {
 	private static final String organizationImageName = "organization.png";
+	private static final double maxDistance = 3000.0 * 3000.0;
 	private File organizationDirectory;
 	private DirectoryImage organizationDirectoryImage;
 	private DirectoryName organizationDirectoryName;
@@ -78,9 +81,26 @@ public class Organization extends ArrayList<Facility> {
 		return this.organizationDirectoryImage.getThumbnail();
 	}
 
-
 	@SuppressWarnings("javadoc")
 	public File getOrganizationDirectory() {
 		return this.organizationDirectory;
 	}
+
+	public Facility GetNearestFacility(ImageView image_view,
+			MotionEvent motion_event) {
+		Facility candidate_facility = null;
+		double candidate_distance = maxDistance;
+		DistanceCalculator distance_calculator = new DistanceCalculator(
+				image_view);
+		for (Facility facility : this) {
+			double distance = distance_calculator.GetDistanceBetween(
+					motion_event, facility.getFacilityX(),
+					facility.getFacilityY());
+			if (distance < candidate_distance) {
+				candidate_distance = distance;
+				candidate_facility = facility;
+			}// if
+		}// for
+		return candidate_facility;
+	}// GetNearestFacility
 }

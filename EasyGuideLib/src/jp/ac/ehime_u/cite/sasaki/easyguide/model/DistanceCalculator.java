@@ -77,4 +77,10 @@ public class DistanceCalculator {
 				touched_x_on_drawable - (float) x_on_drawable, 2)
 				+ Math.pow(touched_y_on_drawable - (float) y_on_drawable, 2));
 	}// GetDistanceBetween
+
+	public double GetDistanceBetween(MotionEvent motion_event,
+			DirectoryName directory_name) {
+		return GetDistanceBetween(motion_event, directory_name.getX(),
+				directory_name.getY());
+	}
 } // DistanceCalculator

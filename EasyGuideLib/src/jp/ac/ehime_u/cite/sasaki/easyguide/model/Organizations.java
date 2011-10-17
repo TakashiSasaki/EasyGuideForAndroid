@@ -36,4 +36,14 @@ public class Organizations extends ArrayList<Organization> {
 		}
 		return theOrganizations;
 	}// GetTheOrganizations
+
+	public Organization GetOrganization(String organization_domain) {
+		for (Organization organization : this) {
+			if (organization.getOrganizationDomain()
+					.equals(organization_domain)) {
+				return organization;
+			}
+		}
+		return null;
+	}// GetOrganization
 }// Organizations

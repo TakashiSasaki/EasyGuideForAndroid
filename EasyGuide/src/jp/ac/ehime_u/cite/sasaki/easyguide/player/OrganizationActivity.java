@@ -1,6 +1,9 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,10 +21,16 @@ import android.widget.ImageView;
  * 
  */
 public class OrganizationActivity extends Activity {
+
+	Organization organization;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.organization);
+
+		organization = Organizations.GetTheOrganizations().GetOrganization(
+				"assets");
 
 		ImageView image_view = (ImageView) findViewById(R.id.imageViewOrganization);
 		image_view.setOnTouchListener(new OnTouchListener() {
@@ -33,7 +42,8 @@ public class OrganizationActivity extends Activity {
 				float x = distance_calculator.GetXOnDrawable(motion_event);
 				float y = distance_calculator.GetYOnDrawable(motion_event);
 				Log.v(this.getClass().getSimpleName(), "x=" + x + " y=" + y);
-				return false;
+				InvokeNearestFacilityActivity(image_view, motion_event);
+				return true; // stops event propagation
 			}// onTouch
 		});// setOnTouchListener
 	}// onCreate
@@ -89,6 +99,14 @@ public class OrganizationActivity extends Activity {
 		builder.setPositiveButton("OK", null);
 		builder.show();
 	}// ShowDialog for Drawable
+
+	private void InvokeNearestFacilityActivity(ImageView image_view,
+			MotionEvent motion_event) {
+		Facility facility = this.organization.GetNearestFacility(image_view,
+				motion_event);
+		Log.v(this.getClass().getSimpleName(), "The nearest facility is "
+				+ facility.getFacilityName());
+	}// InvokeNearestFacilityActivity
 
 }// OrganizationActivity
 

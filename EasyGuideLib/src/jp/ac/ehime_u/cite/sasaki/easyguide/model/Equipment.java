@@ -72,4 +72,13 @@ public class Equipment extends ArrayList<Panel> {
 		return equipmentDirectoryImage.getThumbnail();
 	}
 
-}
+	public Panel GetPanel(String panel_name) {
+		for (Panel panel : this) {
+			if (panel.getPanelName().equals(panel_name)) {
+				return panel;
+			}
+		}// for
+		return null;
+	}// GetPanel
+
+}// Equipment

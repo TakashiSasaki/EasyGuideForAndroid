@@ -103,4 +103,13 @@ public class Organization extends ArrayList<Facility> {
 		}// for
 		return candidate_facility;
 	}// GetNearestFacility
+
+	public Facility GetFacility(String facility_name) {
+		for (Facility facility : this) {
+			if (facility.getFacilityName().equals(facility_name)) {
+				return facility;
+			}
+		}// for
+		return null;
+	}// GetFacility
 }

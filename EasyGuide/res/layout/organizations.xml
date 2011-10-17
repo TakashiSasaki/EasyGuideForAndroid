@@ -16,7 +16,7 @@
         <TextView
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textView2"
-            android:text="EasyGuide Player コンテンツ発行者選択"
+            android:text="EasyGuide Player コンテンツ発行者の選択"
             android:layout_width="match_parent"
             android:gravity="center"
             android:layout_weight="1" android:layout_height="match_parent"></TextView>

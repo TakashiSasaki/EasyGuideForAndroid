@@ -75,4 +75,13 @@ public class Floor extends ArrayList<Room> {
 		return this.floorDirectoryName;
 	}
 
+	public Room GetRoom(String room_name) {
+		for (Room room : this) {
+			if (room.getRoomName().equals(room_name)) {
+				return room;
+			}
+		}// for
+		return null;
+	}
+
 }// Floor

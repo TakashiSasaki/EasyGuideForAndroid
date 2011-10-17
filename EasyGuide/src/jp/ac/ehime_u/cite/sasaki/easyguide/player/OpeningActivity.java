@@ -72,7 +72,7 @@ public class OpeningActivity extends Activity {
 
 	private void InvokeMapActivity(Building building_) {
 		OpeningActivity.chosenBuilding = building_;
-		Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+		Intent intent = new Intent(getApplicationContext(), BuildingActivity.class);
 		intent.putExtra("jp.ac.ehime_u.cite.sasaki.easyguide.model.Building",
 				building_.getBuildingName());
 		startActivity(intent);

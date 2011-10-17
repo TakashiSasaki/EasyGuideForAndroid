@@ -17,11 +17,10 @@ public class DirectoryImage {
 
 	private Bitmap image;
 	private Bitmap thumbnail;
-	private static int thumbnailWidth = 50;
-	private static int thumbnailHeight = 50;
+	private static int thumbnailWidth = 100;
+	private static int thumbnailHeight = 100;
 	private static Bitmap defaultImage;
 	private static Bitmap defaultThumbnail;
-	
 
 	/**
 	 * loads default image and create default thumbnail. They are used when no

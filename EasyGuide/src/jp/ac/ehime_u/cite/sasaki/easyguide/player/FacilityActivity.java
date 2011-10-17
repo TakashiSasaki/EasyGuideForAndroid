@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
@@ -21,19 +22,24 @@ import android.widget.ImageView;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class OrganizationActivity extends Activity {
+public class FacilityActivity extends Activity {
 
-	Organization organization;
+	Facility facility;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.organization);
+		setContentView(R.layout.facility);
 
-		organization = Organizations.GetTheOrganizations().GetOrganization(
-				"assets");
-
-		ImageView image_view = (ImageView) findViewById(R.id.imageViewOrganization);
+		Organization organization = Organizations.GetTheOrganizations()
+				.GetOrganization("assets");
+		this.facility = organization.GetFacility("facility_a");
+		if (this.facility == null) {
+			Log.v(this.getClass().getSimpleName(),
+					"Can't find facility facility_a");
+		}
+		ImageView image_view = (ImageView) findViewById(R.id.imageViewFacility);
+		image_view.setImageBitmap(this.facility.getFacilityImage());
 		image_view.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent motion_event) {
@@ -43,7 +49,7 @@ public class OrganizationActivity extends Activity {
 				float x = distance_calculator.GetXOnDrawable(motion_event);
 				float y = distance_calculator.GetYOnDrawable(motion_event);
 				Log.v(this.getClass().getSimpleName(), "x=" + x + " y=" + y);
-				InvokeNearestFacilityActivity(image_view, motion_event);
+				InvokeNearestBuildingActivity(image_view, motion_event);
 				return true; // stops event propagation
 			}// onTouch
 		});// setOnTouchListener
@@ -101,16 +107,16 @@ public class OrganizationActivity extends Activity {
 		builder.show();
 	}// ShowDialog for Drawable
 
-	private void InvokeNearestFacilityActivity(ImageView image_view,
+	private void InvokeNearestBuildingActivity(ImageView image_view,
 			MotionEvent motion_event) {
-		Facility facility = this.organization.GetNearestFacility(image_view,
+		Building building = this.facility.GetNearestBuilding(image_view,
 				motion_event);
-		Log.v(this.getClass().getSimpleName(), "The nearest facility is "
-				+ facility.getFacilityName());
+		Log.v(this.getClass().getSimpleName(), "The nearest building is "
+				+ building.getBuildingName());
 		Intent intent = new Intent();
-		intent.setClass(this, FacilityActivity.class);
+		intent.setClass(this, BuildingActivity.class);
 		startActivity(intent);
-	}// InvokeNearestFacilityActivity
+	}// InvokeNearestBuildingActivity
 
-}// OrganizationActivity
+}// FacilityActivity
 

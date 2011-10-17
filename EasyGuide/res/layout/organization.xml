@@ -19,7 +19,7 @@
                 android:src="@drawable/icon48"></ImageView>
         </LinearLayout>
         <TextView
-            android:text="施設の選択"
+            android:text="EasyGuide Player 施設の選択"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textView1"
             android:layout_gravity="center"
@@ -27,6 +27,12 @@
             android:layout_width="match_parent"
             android:gravity="center"></TextView>
     </LinearLayout>
+    <TextView
+        android:layout_height="wrap_content"
+        android:text="@string/organization"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"></TextView>
     <ImageView
         android:id="@+id/imageViewOrganization"
         android:src="@drawable/h512w512"

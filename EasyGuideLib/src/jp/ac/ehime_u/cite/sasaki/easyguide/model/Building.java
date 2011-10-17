@@ -68,4 +68,13 @@ public class Building extends ArrayList<Floor> {
 		return this.buildingDirectory;
 	}
 
+	public Floor GetFloor(String floor_name) {
+		for (Floor floor : this) {
+			if (floor.getFloorName().equals(floor_name)) {
+				return floor;
+			}
+		}// for
+		return null;
+	}
+
 }

@@ -1,5 +1,9 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,27 +23,32 @@ import android.widget.ImageView;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class MapActivity extends Activity {
+public class BuildingActivity extends Activity {
 	protected static final float SWIPE_MAX_OFF_PATH = 200;
 	protected static final float SWIPE_MIN_DISTANCE = 100;
 	protected static final float SWIPE_THRESHOLD_VELOCITY = 10;
 	private GestureDetector mGestureDetector;
+	private Building building;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.map);
+		setContentView(R.layout.building);
 		mGestureDetector = new GestureDetector(this, mOnGestureListener);
 
+		Organizations organizations = Organizations.GetTheOrganizations();
+		Organization organization = organizations.GetOrganization("assets");
+		Facility facility = organization.GetFacility("facility_a");
+		Building building = facility.GetBuilding("building_a");
+
 		ImageView image_view_building = (ImageView) findViewById(R.id.imageViewBuilding);
-		image_view_building.setImageBitmap(OpeningActivity.getChosenBuilding()
-				.getBuildingImage());
+		image_view_building.setImageBitmap(building.getBuildingImage());
 		image_view_building.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
 				AlertDialog.Builder alert_dialog_builder = new AlertDialog.Builder(
-						MapActivity.this);
+						BuildingActivity.this);
 				alert_dialog_builder.setTitle("ダイアログボックスのタイトル");
 				alert_dialog_builder.setPositiveButton("YES デバッグ用",
 						new OnClickListener() {
@@ -76,8 +85,7 @@ public class MapActivity extends Activity {
 
 		ImageView image_view_floor = (ImageView) findViewById(R.id.imageViewFloor);
 		// TODO: クリッカブルマップを実装
-		image_view_floor.setImageBitmap(OpeningActivity.getChosenBuilding()
-				.get(1).getFloorImage());
+		image_view_floor.setImageBitmap(building.get(1).getFloorImage());
 		image_view_floor.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
@@ -106,8 +114,7 @@ public class MapActivity extends Activity {
 		});
 
 		ImageView image_view_room = (ImageView) findViewById(R.id.imageViewRoom);
-		image_view_room.setImageBitmap(OpeningActivity.getChosenBuilding()
-				.get(1).get(1).getRoomImage());
+		image_view_room.setImageBitmap(building.get(1).get(1).getRoomImage());
 		image_view_room.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -159,7 +166,8 @@ public class MapActivity extends Activity {
 	};// SimpleOnGestureListener
 
 	private void InvokeMediaActivity() {
-		Intent intent = new Intent(getApplicationContext(), MediaActivity.class);
+		Intent intent = new Intent(getApplicationContext(),
+				EquipmentActivity.class);
 		startActivity(intent);
 	}
 }

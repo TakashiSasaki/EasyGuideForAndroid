@@ -69,4 +69,13 @@ public class Room extends ArrayList<Equipment> {
 	public File getRoomDirectory() {
 		return this.roomDirectory;
 	}
-}
+
+	public Equipment GetEquipment(String equipment_name) {
+		for (Equipment equipment : this) {
+			if (equipment.getEquipmentName().equals(equipment_name)) {
+				return equipment;
+			}
+		}// for
+		return null;
+	}// GetEquipment
+}// Equipment

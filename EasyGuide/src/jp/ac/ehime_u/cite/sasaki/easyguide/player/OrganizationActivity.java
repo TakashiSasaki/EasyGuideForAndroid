@@ -1,11 +1,13 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -26,13 +28,18 @@ public class OrganizationActivity extends Activity {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent motion_event) {
 				ImageView image_view = (ImageView) arg0;
+				DistanceCalculator distance_calculator = new DistanceCalculator(
+						image_view);
+				float x = distance_calculator.GetXOnDrawable(motion_event);
+				float y = distance_calculator.GetYOnDrawable(motion_event);
+				Log.v(this.getClass().getSimpleName(), "x=" + x + " y=" + y);
 				return false;
 			}// onTouch
 		});// setOnTouchListener
 	}// onCreate
 
+	@SuppressWarnings("unused")
 	private static void ShowDialog(Context context, ImageView image_view) {
-		Drawable drawable = image_view.getDrawable();
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage("Bottom=" + image_view.getBottom() + " Top="
 				+ image_view.getTop() + " Left=" + image_view.getLeft()
@@ -46,6 +53,7 @@ public class OrganizationActivity extends Activity {
 		builder.show();
 	}// ShowDialog for ImageView
 
+	@SuppressWarnings("unused")
 	private static void ShowDialog(Context context, MotionEvent motion_event) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage("RawX=" + motion_event.getRawX() + " RawY="
@@ -56,6 +64,7 @@ public class OrganizationActivity extends Activity {
 		builder.show();
 	}// ShowDialog for MotionEvent
 
+	@SuppressWarnings("unused")
 	private static void ShowDialog(Context context, Rect rect) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage("bottom=" + rect.bottom + " left=" + rect.left
@@ -65,6 +74,7 @@ public class OrganizationActivity extends Activity {
 		builder.show();
 	}// ShowDialog for Rect
 
+	@SuppressWarnings("unused")
 	private static void ShowDialog(Context context, Drawable drawable) {
 		Rect bounds = drawable.getBounds();
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);

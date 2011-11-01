@@ -29,11 +29,15 @@ public class OrganizationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.organization);
+		Intent intent = getIntent();
+		int position = intent.getIntExtra("position", 0);
 
-		organization = Organizations.GetTheOrganizations().GetOrganization(
-				"assets");
+		// organization = Organizations.GetTheOrganizations().GetOrganization(
+		// "assets");
+		this.organization = Organizations.GetTheOrganizations().get(position);
 
 		ImageView image_view = (ImageView) findViewById(R.id.imageViewOrganization);
+		image_view.setImageBitmap(this.organization.getOrganizationImage());
 		image_view.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent motion_event) {

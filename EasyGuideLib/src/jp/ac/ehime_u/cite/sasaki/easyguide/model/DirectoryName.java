@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
+import android.util.Log;
+
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
@@ -20,6 +22,7 @@ public class DirectoryName {
 	 * @param directory_name
 	 */
 	public DirectoryName(String directory_name) {
+		Log.v(this.getClass().getSimpleName(), "parsing " + directory_name);
 		String[] parts = directory_name.split("[ ]+");
 		if (parts.length == 1) {
 			this.name = parts[0];
@@ -29,8 +32,11 @@ public class DirectoryName {
 			try {
 				this.number = Integer.parseInt(parts[0]);
 			} catch (NumberFormatException e) {
-				throw new Exception("Invalid directory name " + directory_name
-						+ ", " + e.getMessage());
+				// throw new RuntimeException("Invalid directory name "
+				// + directory_name + ", " + e.getMessage());
+				Log.e(this.getClass().getSimpleName(),
+						"Invalid directory name "
+						+ directory_name + ", " + e.getMessage());
 			}// try
 			this.name = parts[1];
 			return;

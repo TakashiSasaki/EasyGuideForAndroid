@@ -54,6 +54,15 @@ public class DirectoryImage {
 	 */
 	public DirectoryImage(File directory, String file_name) {
 		File image_file = new File(directory, file_name);
+		if (!image_file.exists()) {
+			image_file = new File(directory, "index.png");
+		}
+		if (!image_file.exists()) {
+			image_file = new File(directory, "index.jpg");
+		}
+		if (!image_file.exists()) {
+			image_file = new File(directory, "index.gif");
+		}
 		Log.v(this.getClass().getSimpleName(),
 				"Loading image " + image_file.getPath());
 		this.image = BitmapFactory.decodeFile(image_file.getPath());

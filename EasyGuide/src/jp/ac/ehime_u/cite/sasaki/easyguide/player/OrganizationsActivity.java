@@ -33,17 +33,18 @@ public class OrganizationsActivity extends Activity {
 
 		list_view.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				InvokeOrganizationActivity();
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				InvokeOrganizationActivity(position);
 			}// onItemClick
 		});// setOnItemClickListener
 	}// onCreate
 
-	private void InvokeOrganizationActivity() {
+	private void InvokeOrganizationActivity(int position) {
 		Intent intent = new Intent();
 		intent.setClass(this, OrganizationActivity.class);
+		intent.putExtra("position", position);
 		startActivity(intent);
-	}
+	}// InvokeOrganizationActivity
 }// OrganizationActivity
 

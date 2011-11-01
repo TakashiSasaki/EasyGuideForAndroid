@@ -19,7 +19,7 @@ public class ZipUrls extends SQLiteOpenHelper {
 
 	final static String CREATE_TABLE = "CREATE TABLE zip_urls(domain TEXT NOT NULL, zip_url TEXT NOT NULL);";
 	final static String DROP_TABLE = "DROP TABLE IF EXISTS zip_urls;";
-	final static String INSERT_TEST = "INSERT INTO zip_urls(domain,zip_url) VALUES(\"sasakinas.cite.ehime-u.ac.jp\", \"http://sasakinas.cite.ehime-u.ac.jp/easyguide/easyguide.zip\");";
+	final static String INSERT_TEST = "INSERT INTO zip_urls(domain,zip_url) VALUES(\"lms.intdesign.org\", \"http://lms.ictdesign.org/easyguide.zip\");";
 
 	@Override
 	public void onCreate(SQLiteDatabase sqlite_database) {

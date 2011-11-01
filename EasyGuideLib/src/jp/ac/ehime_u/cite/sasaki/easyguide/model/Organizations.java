@@ -25,6 +25,7 @@ public class Organizations extends ArrayList<Organization> {
 					organization_directory.getPath());
 			this.add(new Organization(organization_directory));
 		}// for
+		
 	}// a constructor
 
 	/**

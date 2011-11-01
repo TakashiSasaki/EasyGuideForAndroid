@@ -25,19 +25,27 @@ import android.widget.ImageView;
 public class FacilityActivity extends Activity {
 
 	Facility facility;
+	Intent intent;
+	int organizationIndex;
+	int facilityIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.facility);
+		this.intent = this.getIntent();
+		this.organizationIndex = intent.getIntExtra("organizationIndex", 1);
+		this.facilityIndex = intent.getIntExtra("facilityIndex", 0);
 
-		Organization organization = Organizations.GetTheOrganizations()
-				.GetOrganization("assets");
-		this.facility = organization.GetFacility("facility_a");
+		// this.facility = organization.GetFacility("facility_a");
+		Organizations organizations = Organizations.GetTheOrganizations();
+		Organization organization = organizations.get(organizationIndex);
+		this.facility = organization.get(facilityIndex);
 		if (this.facility == null) {
 			Log.v(this.getClass().getSimpleName(),
-					"Can't find facility facility_a");
-		}
+					"Can't find organizationIndex " + this.organizationIndex
+							+ " facilityIndex " + this.facilityIndex);
+		}// if
 		ImageView image_view = (ImageView) findViewById(R.id.imageViewFacility);
 		image_view.setImageBitmap(this.facility.getFacilityImage());
 		image_view.setOnTouchListener(new OnTouchListener() {
@@ -111,8 +119,8 @@ public class FacilityActivity extends Activity {
 			MotionEvent motion_event) {
 		Building building = this.facility.GetNearestBuilding(image_view,
 				motion_event);
-		Log.v(this.getClass().getSimpleName(), "The nearest building is "
-				+ building.getBuildingName());
+		//Log.v(this.getClass().getSimpleName(), "The nearest building is "
+		//		+ building.getBuildingName());
 		Intent intent = new Intent();
 		intent.setClass(this, BuildingActivity.class);
 		startActivity(intent);

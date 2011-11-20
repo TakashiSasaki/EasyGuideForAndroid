@@ -1,0 +1,9 @@
+*.BASE
+*.OTHER
+*.THIS
+*.class
+*.pyc
+*.pyo
+.bzr
+.deployables
+.~*~

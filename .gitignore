@@ -7,3 +7,5 @@
 .bzr
 .deployables
 .~*~
+bin
+gen

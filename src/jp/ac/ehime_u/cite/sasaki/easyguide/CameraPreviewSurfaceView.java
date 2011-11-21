@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.hardware.Camera.AutoFocusCallback;
+import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PreviewCallback;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,7 +16,7 @@ import android.view.SurfaceView;
 
 @SuppressWarnings("javadoc")
 public class CameraPreviewSurfaceView extends SurfaceView implements
-		SurfaceHolder.Callback, PreviewCallback {
+		SurfaceHolder.Callback, PreviewCallback, AutoFocusCallback {
 
 	// private SurfaceHolder surfaceHolder;
 	protected Camera camera;
@@ -42,6 +44,10 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	public void surfaceChanged(SurfaceHolder surfacee_holder, int format,
 			int width, int height) {
 		this.camera.startPreview();
+		Camera.Parameters params = this.camera.getParameters();
+		params.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+		params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+		this.camera.setParameters(params);
 	}
 
 	@Override
@@ -59,11 +65,10 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 			Camera.Parameters params = this.camera.getParameters();
 			// params.setPreviewSize(this.getWidth(), this.getHeight());
 			// params.setRotation(270);
-			params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-			params.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 			this.camera.setParameters(params);
 			this.camera.setDisplayOrientation(90);
 			this.camera.setPreviewDisplay(surface_holder);
+			this.camera.setPreviewCallback(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,6 +76,9 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder arg0) {
+		Camera.Parameters params = this.camera.getParameters();
+		params.setFlashMode(Parameters.FLASH_MODE_OFF);
+		this.camera.setParameters(params);
 		this.camera.release();
 		this.camera = null;
 	}
@@ -138,5 +146,14 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 			}
 		}
 	}// DecodeYuvToRgb
+
+	public void GetPreviewImage() {
+
+	}
+
+	@Override
+	public void onAutoFocus(boolean success, Camera camera) {
+
+	}
 
 }

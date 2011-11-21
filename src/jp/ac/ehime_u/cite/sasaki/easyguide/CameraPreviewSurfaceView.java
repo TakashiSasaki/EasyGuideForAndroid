@@ -41,10 +41,6 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	@Override
 	public void surfaceChanged(SurfaceHolder surfacee_holder, int format,
 			int width, int height) {
-		Camera.Parameters params = this.camera.getParameters();
-		params.setPreviewSize(this.getWidth(), this.getHeight());
-		params.setRotation(270);
-		// this.camera.setParameters(params);
 		this.camera.startPreview();
 	}
 
@@ -58,10 +54,16 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 		// canvas.drawRect(0, 0, 50, 50, paint);
 		// arg0.unlockCanvasAndPost(canvas);
 
-		camera = Camera.open();
+		this.camera = Camera.open();
 		try {
-			camera.setDisplayOrientation(90);
-			camera.setPreviewDisplay(surface_holder);
+			Camera.Parameters params = this.camera.getParameters();
+			// params.setPreviewSize(this.getWidth(), this.getHeight());
+			// params.setRotation(270);
+			params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+			params.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+			this.camera.setParameters(params);
+			this.camera.setDisplayOrientation(90);
+			this.camera.setPreviewDisplay(surface_holder);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

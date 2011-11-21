@@ -1,18 +1,18 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide;
 
-import java.text.SimpleDateFormat;
+import java.util.concurrent.Semaphore;
 
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PreviewCallback;
+import android.os.Handler;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.ImageView;
 
 @SuppressWarnings("javadoc")
 public class CameraPreviewSurfaceView extends SurfaceView implements
@@ -20,11 +20,16 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 
 	// private SurfaceHolder surfaceHolder;
 	protected Camera camera;
-	private byte[] rawImage;
-	private int[] rgbImage;
-	private Bitmap bitmapImage;
-	private int width;
-	private int height;
+	private byte[] yuvByteArray;
+	private int[] rgbIntArray;
+	private Bitmap ongoingBitmap;
+	private int previewWidth;
+	private int previewHeight;
+	private Handler handler;
+	private ImageView ongoingImageView;
+	private Semaphore ongoingImageSemaphore = new Semaphore(1);
+	private ImageView processedImageView;
+	private Semaphore processedImageSemaphore = new Semaphore(1);
 
 	public Camera getCamera() throws Exception {
 		if (camera == null) {
@@ -33,12 +38,16 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 		return camera;
 	}
 
-	public CameraPreviewSurfaceView(Context context) {
+	public CameraPreviewSurfaceView(Context context, Handler handler_,
+			ImageView ongoing_image, ImageView processed_image) {
 		super(context);
+		this.handler = handler_;
+		this.ongoingImageView = ongoing_image;
+		this.processedImageView = processed_image;
 		SurfaceHolder surface_holder = this.getHolder();
 		surface_holder.addCallback(this);
 		surface_holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-	}
+	}// constructor
 
 	@Override
 	public void surfaceChanged(SurfaceHolder surfacee_holder, int format,
@@ -63,6 +72,12 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 		this.camera = Camera.open();
 		try {
 			Camera.Parameters params = this.camera.getParameters();
+			Log.v(this.getClass().getSimpleName(),
+					"preview format=" + params.getPreviewFormat() + " width="
+							+ params.getPreviewSize().width + " height="
+							+ params.getPreviewSize().height);
+			this.previewWidth = params.getPreviewSize().width;
+			this.previewHeight = params.getPreviewSize().height;
 			// params.setPreviewSize(this.getWidth(), this.getHeight());
 			// params.setRotation(270);
 			this.camera.setParameters(params);
@@ -85,20 +100,22 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 
 	@Override
 	public void onPreviewFrame(byte[] data, Camera camera) {
-		// TODO Auto-generated method stub
 		this.camera.setPreviewCallback(null);
-		this.camera.stopPreview();
-		this.rawImage = data;
-		this.width = getWidth();
-		this.height = getHeight();
-		this.rgbImage = new int[(width * height)];
-		DecodeYuvToRgb(this.rgbImage, this.rawImage, this.width, this.height);
-		this.bitmapImage = Bitmap.createBitmap(this.width, this.height,
+		this.yuvByteArray = data;
+		Log.v(this.getClass().getSimpleName(), "raw data length " + data.length
+				+ " width " + camera.getParameters().getPreviewFormat()
+				+ " height " + getHeight());
+		this.rgbIntArray = new int[(previewWidth * previewHeight)];
+		DecodeYuvToRgb(this.rgbIntArray, this.yuvByteArray, previewWidth,
+				previewHeight);
+		this.ongoingBitmap = Bitmap.createBitmap(previewWidth, previewHeight,
 				Bitmap.Config.ARGB_8888);
-		this.bitmapImage.setPixels(this.rgbImage, 0, this.width, 0, 0,
-				this.width, this.height);
+		this.ongoingBitmap.setPixels(this.rgbIntArray, 0, previewWidth, 0, 0,
+				previewWidth, previewHeight);
+		// this.bitmapImage = BitmapFactory.decodeByteArray(data, 0,
+		// previewWidth);
+		this.SetOngoingImage();
 		this.camera.setPreviewCallback(this);
-		this.camera.startPreview();
 	}// onPreviewFrame
 
 	/**
@@ -151,9 +168,43 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 
 	}
 
+	public void SetOngoingImage() {
+		class OngoingImageRunnable implements Runnable {
+			Bitmap bitmapToSet;
+			ImageView imageView;
+			Semaphore semaphore;
+
+			public OngoingImageRunnable(Bitmap bitmap_to_set,
+					ImageView image_view, Semaphore semaphore_) {
+				bitmapToSet = bitmap_to_set;
+				imageView = image_view;
+				semaphore = semaphore_;
+			}
+
+			@Override
+			public void run() {
+				// assert (b != null);
+				// Resources r = getResources();
+				// Bitmap b2 = BitmapFactory.decodeResource(r,
+				// R.drawable.ic_launcher);
+				imageView.setImageBitmap(bitmapToSet);
+				semaphore.release();
+			}
+		}// OngoingImageRunnable
+		if (ongoingImageSemaphore.availablePermits() > 0) {
+			handler.post(new OngoingImageRunnable(ongoingBitmap,
+					ongoingImageView, ongoingImageSemaphore));
+		} else {
+			Log.v(this.getClass().getSimpleName(),
+					"SetOngoingImageRunnable#run is in the UI thread queue.");
+		}
+	}// SetOngoingImage
+
+	public void SetProcessedImage() {
+	}
+
 	@Override
 	public void onAutoFocus(boolean success, Camera camera) {
 
 	}
-
 }

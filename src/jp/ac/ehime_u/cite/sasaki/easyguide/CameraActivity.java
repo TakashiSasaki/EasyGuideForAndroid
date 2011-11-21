@@ -3,14 +3,17 @@ package jp.ac.ehime_u.cite.sasaki.easyguide;
 import jp.ac.ehime_u.cite.sasaki.easyguide.R.id;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 @SuppressWarnings("javadoc")
 public class CameraActivity extends Activity {
@@ -22,7 +25,9 @@ public class CameraActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		FrameLayout frame_layout = (FrameLayout) findViewById(id.frameLayoutCamera);
-		this.cameraPreviewSurfaceView = new CameraPreviewSurfaceView(this);
+		this.cameraPreviewSurfaceView = new CameraPreviewSurfaceView(this,
+				new Handler(), (ImageView) findViewById(R.id.imageViewOngoing),
+				(ImageView) findViewById(id.imageViewProcessed));
 		frame_layout.addView(this.cameraPreviewSurfaceView);
 
 		((Button) findViewById(id.buttonFocus))
@@ -59,5 +64,9 @@ public class CameraActivity extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void SetProcessedImage() {
+
 	}
 }

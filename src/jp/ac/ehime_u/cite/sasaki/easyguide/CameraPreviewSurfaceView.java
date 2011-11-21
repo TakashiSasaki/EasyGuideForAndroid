@@ -100,37 +100,43 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	}
 
 	@Override
-	public void onPreviewFrame(byte[] data, Camera camera) {
+	public void onPreviewFrame(byte[] data, final Camera camera) {
 		this.camera.setPreviewCallback(null);
 		this.yuvByteArray = data;
 		Log.v(this.getClass().getSimpleName(), "raw data length " + data.length
 				+ " width " + camera.getParameters().getPreviewFormat()
 				+ " height " + getHeight());
-		this.rgbIntArray = new int[(previewWidth * previewHeight)];
-		DecodeYuvToRgb(this.rgbIntArray, this.yuvByteArray, previewWidth,
-				previewHeight);
-		this.ongoingBitmap = Bitmap.createBitmap(previewWidth, previewHeight,
-				Bitmap.Config.ARGB_8888);
-		this.ongoingBitmap.setPixels(this.rgbIntArray, 0, previewWidth, 0, 0,
-				previewWidth, previewHeight);
-		// this.bitmapImage = BitmapFactory.decodeByteArray(data, 0,
-		// previewWidth);
-		this.SetOngoingImage();
+		final PreviewCallback preview_callback = this;
+		Thread format_conversion_thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				rgbIntArray = new int[(previewWidth * previewHeight)];
+				DecodeYuvToRgb(rgbIntArray, yuvByteArray, previewWidth,
+						previewHeight);
+				ongoingBitmap = Bitmap.createBitmap(previewWidth, previewHeight,
+						Bitmap.Config.ARGB_8888);
+				ongoingBitmap.setPixels(rgbIntArray, 0, previewWidth, 0, 0,
+						previewWidth, previewHeight);
+				// this.bitmapImage = BitmapFactory.decodeByteArray(data, 0,
+				// previewWidth);
+				SetOngoingImageView();
+				Integer equipment_id = null;
+				RecognitionThread recognition_thread = new RecognitionThread(
+						equipment_id, yuvByteArray, rgbIntArray, ongoingBitmap,
+						previewWidth, previewHeight);
+				recognition_thread.start();
+				try {
+					recognition_thread.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				processedBitmap = ongoingBitmap;
+				SetProcessedImageView();
+				camera.setPreviewCallback(preview_callback);
+			}
+		});
+		format_conversion_thread.start();
 
-		Integer equipment_id = null;
-		RecognitionThread recognition_thread = new RecognitionThread(
-				equipment_id, yuvByteArray, rgbIntArray, ongoingBitmap,
-				previewWidth, previewHeight);
-		recognition_thread.start();
-		try {
-			recognition_thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		this.processedBitmap = this.ongoingBitmap;
-		this.SetProcessedImage();
-		this.camera.setPreviewCallback(this);
 	}// onPreviewFrame
 
 	/**
@@ -179,11 +185,7 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 		}
 	}// DecodeYuvToRgb
 
-	public void GetPreviewImage() {
-
-	}
-
-	public void SetOngoingImage() {
+	public void SetOngoingImageView() {
 		if (ongoingImageSemaphore.availablePermits() > 0) {
 			handler.post(new SetImageBitmapRunnable(ongoingBitmap,
 					ongoingImageView, ongoingImageSemaphore));
@@ -193,7 +195,7 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 		}
 	}// SetOngoingImage
 
-	public void SetProcessedImage() {
+	public void SetProcessedImageView() {
 		if (processedImageSemaphore.availablePermits() > 0) {
 			handler.post(new SetImageBitmapRunnable(processedBitmap,
 					processedImageView, processedImageSemaphore));

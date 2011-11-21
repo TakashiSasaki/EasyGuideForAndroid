@@ -23,6 +23,7 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	private byte[] yuvByteArray;
 	private int[] rgbIntArray;
 	private Bitmap ongoingBitmap;
+	private Bitmap processedBitmap;
 	private int previewWidth;
 	private int previewHeight;
 	private Handler handler;
@@ -115,6 +116,20 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 		// this.bitmapImage = BitmapFactory.decodeByteArray(data, 0,
 		// previewWidth);
 		this.SetOngoingImage();
+
+		Integer equipment_id = null;
+		RecognitionThread recognition_thread = new RecognitionThread(
+				equipment_id, yuvByteArray, rgbIntArray, ongoingBitmap,
+				previewWidth, previewHeight);
+		recognition_thread.start();
+		try {
+			recognition_thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		this.processedBitmap = this.ongoingBitmap;
+		this.SetProcessedImage();
 		this.camera.setPreviewCallback(this);
 	}// onPreviewFrame
 
@@ -169,30 +184,8 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	}
 
 	public void SetOngoingImage() {
-		class OngoingImageRunnable implements Runnable {
-			Bitmap bitmapToSet;
-			ImageView imageView;
-			Semaphore semaphore;
-
-			public OngoingImageRunnable(Bitmap bitmap_to_set,
-					ImageView image_view, Semaphore semaphore_) {
-				bitmapToSet = bitmap_to_set;
-				imageView = image_view;
-				semaphore = semaphore_;
-			}
-
-			@Override
-			public void run() {
-				// assert (b != null);
-				// Resources r = getResources();
-				// Bitmap b2 = BitmapFactory.decodeResource(r,
-				// R.drawable.ic_launcher);
-				imageView.setImageBitmap(bitmapToSet);
-				semaphore.release();
-			}
-		}// OngoingImageRunnable
 		if (ongoingImageSemaphore.availablePermits() > 0) {
-			handler.post(new OngoingImageRunnable(ongoingBitmap,
+			handler.post(new SetImageBitmapRunnable(ongoingBitmap,
 					ongoingImageView, ongoingImageSemaphore));
 		} else {
 			Log.v(this.getClass().getSimpleName(),
@@ -201,6 +194,10 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	}// SetOngoingImage
 
 	public void SetProcessedImage() {
+		if (processedImageSemaphore.availablePermits() > 0) {
+			handler.post(new SetImageBitmapRunnable(processedBitmap,
+					processedImageView, processedImageSemaphore));
+		}
 	}
 
 	@Override

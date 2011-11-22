@@ -1,6 +1,10 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import android.graphics.Bitmap;
+import android.text.method.DateTimeKeyListener;
 
 public class RecognitionThread extends Thread {
 
@@ -8,7 +12,9 @@ public class RecognitionThread extends Thread {
 	 * The result is expected to be one integer value. Store it to equipmentId
 	 * member at the end of run() method.
 	 */
-	private Integer equipmentId;
+	public int equipmentId;
+	public long startDateTime;
+	public long endDateTime;
 
 	private int width;
 	private int height;
@@ -35,9 +41,9 @@ public class RecognitionThread extends Thread {
 	 * @param context
 	 * @param equipment_id
 	 */
-	public RecognitionThread(Integer equipment_id, byte[] yuv_byte_array,
-			int[] rgb_int_array, Bitmap android_bitmap, int width_, int height_) {
-		equipmentId = equipment_id;
+	public RecognitionThread(byte[] yuv_byte_array, int[] rgb_int_array,
+			Bitmap android_bitmap, int width_, int height_) {
+		equipmentId = 0;
 		yuvByteArray = yuv_byte_array;
 		rgbIntArray = rgb_int_array;
 		androidBitmap = android_bitmap;
@@ -46,12 +52,15 @@ public class RecognitionThread extends Thread {
 	}// constructor
 
 	public void run() {
+		Calendar startCalendar = Calendar.getInstance();
+		startDateTime = startCalendar.getTimeInMillis();
+		equipmentId = 9999;
 
 		// TODO: recognition algorithm is to be implemented here.
 		// The image is given in three data formats,
 		// YUV420, ARGB_8888 and android.graphics.Bitmap .
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -60,6 +69,8 @@ public class RecognitionThread extends Thread {
 		equipmentId = 9999;
 
 		// that'll be all
+		Calendar endCalendar = Calendar.getInstance();
+		endDateTime = endCalendar.getTimeInMillis();
 	}// run
 }// RecognitionThread
 

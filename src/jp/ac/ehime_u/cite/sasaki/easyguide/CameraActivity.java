@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -24,7 +25,10 @@ public class CameraActivity extends Activity {
 		FrameLayout frame_layout = (FrameLayout) findViewById(id.frameLayoutCamera);
 		this.cameraPreviewSurfaceView = new CameraPreviewSurfaceView(this,
 				new Handler(), (ImageView) findViewById(R.id.imageViewOngoing),
-				(ImageView) findViewById(id.imageViewProcessed));
+				(ImageView) findViewById(id.imageViewProcessed),
+				(EditText) findViewById(id.editTextCount),
+				(EditText) findViewById(id.editTextProcessingTime),
+				(EditText) findViewById(id.editTextRecognitionResult));
 		frame_layout.addView(this.cameraPreviewSurfaceView);
 
 		((Button) findViewById(id.buttonFocus))
@@ -61,9 +65,5 @@ public class CameraActivity extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void SetProcessedImage() {
-
 	}
 }

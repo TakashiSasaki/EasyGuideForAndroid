@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide;
 
+import java.util.Date;
 import java.util.concurrent.Semaphore;
 
 import android.content.Context;
@@ -9,10 +10,13 @@ import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PreviewCallback;
 import android.os.Handler;
 import android.graphics.Bitmap;
+import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 @SuppressWarnings("javadoc")
 public class CameraPreviewSurfaceView extends SurfaceView implements
@@ -31,6 +35,12 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	private Semaphore ongoingImageSemaphore = new Semaphore(1);
 	private ImageView processedImageView;
 	private Semaphore processedImageSemaphore = new Semaphore(1);
+	private EditText editTextProcessingTime;
+	private EditText editTextCount;
+	private EditText editTextRecognitionResult;
+	private int count;
+	private long processingTime;
+	private int recognitionResult;
 
 	public Camera getCamera() throws Exception {
 		if (camera == null) {
@@ -40,11 +50,16 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	}
 
 	public CameraPreviewSurfaceView(Context context, Handler handler_,
-			ImageView ongoing_image, ImageView processed_image) {
+			ImageView ongoing_image, ImageView processed_image,
+			EditText edit_text_count, EditText edit_text_processing_time,
+			EditText edit_text_recognition_result) {
 		super(context);
 		this.handler = handler_;
 		this.ongoingImageView = ongoing_image;
 		this.processedImageView = processed_image;
+		this.editTextCount = edit_text_count;
+		this.editTextProcessingTime = edit_text_processing_time;
+		this.editTextRecognitionResult = edit_text_recognition_result;
 		SurfaceHolder surface_holder = this.getHolder();
 		surface_holder.addCallback(this);
 		surface_holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -85,6 +100,7 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 			this.camera.setDisplayOrientation(90);
 			this.camera.setPreviewDisplay(surface_holder);
 			this.camera.setPreviewCallback(this);
+			rgbIntArray = new int[(previewWidth * previewHeight)];
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,43 +116,64 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	}
 
 	@Override
-	public void onPreviewFrame(byte[] data, final Camera camera) {
-		this.camera.setPreviewCallback(null);
+	public void onPreviewFrame(final byte[] data, final Camera camera) {
+		// this.camera.stopPreview();
+		camera.setPreviewCallback(null);
 		this.yuvByteArray = data;
-		Log.v(this.getClass().getSimpleName(), "raw data length " + data.length
-				+ " width " + camera.getParameters().getPreviewFormat()
-				+ " height " + getHeight());
+		// Log.v(this.getClass().getSimpleName(), "raw data length " +
+		// data.length
+		// + " width " + camera.getParameters().getPreviewFormat()
+		// + " height " + getHeight());
 		final PreviewCallback preview_callback = this;
 		Thread format_conversion_thread = new Thread(new Runnable() {
+
 			@Override
 			public void run() {
-				rgbIntArray = new int[(previewWidth * previewHeight)];
+				// rgbIntArray = new int[(previewWidth * previewHeight)];
 				DecodeYuvToRgb(rgbIntArray, yuvByteArray, previewWidth,
 						previewHeight);
-				ongoingBitmap = Bitmap.createBitmap(previewWidth, previewHeight,
-						Bitmap.Config.ARGB_8888);
+				ongoingBitmap = Bitmap.createBitmap(previewWidth,
+						previewHeight, Bitmap.Config.ARGB_4444);
 				ongoingBitmap.setPixels(rgbIntArray, 0, previewWidth, 0, 0,
 						previewWidth, previewHeight);
-				// this.bitmapImage = BitmapFactory.decodeByteArray(data, 0,
-				// previewWidth);
 				SetOngoingImageView();
-				Integer equipment_id = null;
 				RecognitionThread recognition_thread = new RecognitionThread(
-						equipment_id, yuvByteArray, rgbIntArray, ongoingBitmap,
-						previewWidth, previewHeight);
+						yuvByteArray, rgbIntArray, ongoingBitmap, previewWidth,
+						previewHeight);
 				recognition_thread.start();
 				try {
 					recognition_thread.join();
+					processingTime = recognition_thread.endDateTime
+							- recognition_thread.startDateTime;
+					recognitionResult = recognition_thread.equipmentId;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				Log.v(this.getClass().getSimpleName(), "equipmentId = "
+						+ recognition_thread.equipmentId);
+				recognition_thread = null;
 				processedBitmap = ongoingBitmap;
 				SetProcessedImageView();
+				SetEditText();
+				if (ongoingBitmap != null) {
+					ongoingBitmap.recycle();
+				}
+				if (processedBitmap != null) {
+					processedBitmap.recycle();
+				}
 				camera.setPreviewCallback(preview_callback);
+				// camera.startPreview();
 			}
 		});
+		if (ongoingBitmap != null) {
+			ongoingBitmap.recycle();
+		}
+		if (processedBitmap != null) {
+			processedBitmap.recycle();
+		}
 		format_conversion_thread.start();
-
+		count += 1;
+		// invalidate();
 	}// onPreviewFrame
 
 	/**
@@ -150,7 +187,7 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	 * @param height
 	 */
 	// YUV420 to BMP
-	public static final void DecodeYuvToRgb(int[] rgb, byte[] yuv420sp,
+	public static final void DecodeYuvToRgb(int[] rgb, final byte[] yuv420sp,
 			int width, int height) {
 		final int frameSize = width * height;
 		for (int j = 0, yp = 0; j < height; j++) {
@@ -186,20 +223,36 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	}// DecodeYuvToRgb
 
 	public void SetOngoingImageView() {
-		if (ongoingImageSemaphore.availablePermits() > 0) {
+		try {
+			ongoingImageSemaphore.acquire();
 			handler.post(new SetImageBitmapRunnable(ongoingBitmap,
 					ongoingImageView, ongoingImageSemaphore));
-		} else {
+		} catch (InterruptedException e) {
 			Log.v(this.getClass().getSimpleName(),
 					"SetOngoingImageRunnable#run is in the UI thread queue.");
 		}
 	}// SetOngoingImage
 
 	public void SetProcessedImageView() {
-		if (processedImageSemaphore.availablePermits() > 0) {
+		try {
+			processedImageSemaphore.acquire();
 			handler.post(new SetImageBitmapRunnable(processedBitmap,
 					processedImageView, processedImageSemaphore));
+		} catch (InterruptedException e) {
+			Log.v(this.getClass().getSimpleName(),
+					"SetProcessedImageRunnable#run is in the UI thread queue.");
 		}
+	}
+
+	private void SetEditText() {
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				editTextCount.setText("" + count);
+				editTextProcessingTime.setText("" + (int) processingTime);
+				editTextRecognitionResult.setText("" + recognitionResult);
+			}
+		});
 	}
 
 	@Override

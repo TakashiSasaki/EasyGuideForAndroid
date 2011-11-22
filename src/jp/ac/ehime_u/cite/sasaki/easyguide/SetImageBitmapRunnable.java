@@ -24,6 +24,7 @@ public class SetImageBitmapRunnable implements Runnable {
 		// Bitmap b2 = BitmapFactory.decodeResource(r,
 		// R.drawable.ic_launcher);
 		imageView.setImageBitmap(bitmapToSet);
+		//bitmapToSet.recycle();
 		semaphore.release();
 	}
 }// SetImageBitmapRunnable

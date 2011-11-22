@@ -68,11 +68,11 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 	@Override
 	public void surfaceChanged(SurfaceHolder surfacee_holder, int format,
 			int width, int height) {
-		this.camera.startPreview();
 		Camera.Parameters params = this.camera.getParameters();
 		params.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 		params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-		this.camera.setParameters(params);
+		//this.camera.setParameters(params);
+		this.camera.startPreview();
 	}
 
 	@Override
@@ -155,22 +155,10 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 				processedBitmap = ongoingBitmap;
 				SetProcessedImageView();
 				SetEditText();
-				if (ongoingBitmap != null) {
-					ongoingBitmap.recycle();
-				}
-				if (processedBitmap != null) {
-					processedBitmap.recycle();
-				}
 				camera.setPreviewCallback(preview_callback);
 				// camera.startPreview();
 			}
 		});
-		if (ongoingBitmap != null) {
-			ongoingBitmap.recycle();
-		}
-		if (processedBitmap != null) {
-			processedBitmap.recycle();
-		}
 		format_conversion_thread.start();
 		count += 1;
 		// invalidate();

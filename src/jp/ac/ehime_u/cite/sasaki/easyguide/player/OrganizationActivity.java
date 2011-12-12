@@ -58,11 +58,8 @@ public class OrganizationActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage("Bottom=" + image_view.getBottom() + " Top="
 				+ image_view.getTop() + " Left=" + image_view.getLeft()
-				+ " Right=" + image_view.getRight() + "\n" + " X="
-				+ image_view.getX() + " Y=" + image_view.getY() + " Height="
-				+ image_view.getHeight() + " Width=" + image_view.getWidth()
-				+ "\nScaleX=" + image_view.getScaleX() + " ScaleY="
-				+ image_view.getScaleY());
+				+ " Right=" + image_view.getRight() + "\nHeight="
+				+ image_view.getHeight() + " Width=" + image_view.getWidth());
 		builder.setCancelable(false);
 		builder.setPositiveButton("OK", null);
 		builder.show();

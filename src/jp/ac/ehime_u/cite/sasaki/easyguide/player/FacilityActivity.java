@@ -68,11 +68,8 @@ public class FacilityActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage("Bottom=" + image_view.getBottom() + " Top="
 				+ image_view.getTop() + " Left=" + image_view.getLeft()
-				+ " Right=" + image_view.getRight() + "\n" + " X="
-				+ image_view.getX() + " Y=" + image_view.getY() + " Height="
-				+ image_view.getHeight() + " Width=" + image_view.getWidth()
-				+ "\nScaleX=" + image_view.getScaleX() + " ScaleY="
-				+ image_view.getScaleY());
+				+ " Right=" + image_view.getRight() + "\n" + " Height="
+				+ image_view.getHeight() + " Width=" + image_view.getWidth());
 		builder.setCancelable(false);
 		builder.setPositiveButton("OK", null);
 		builder.show();
@@ -119,8 +116,8 @@ public class FacilityActivity extends Activity {
 			MotionEvent motion_event) {
 		Building building = this.facility.GetNearestBuilding(image_view,
 				motion_event);
-		//Log.v(this.getClass().getSimpleName(), "The nearest building is "
-		//		+ building.getBuildingName());
+		// Log.v(this.getClass().getSimpleName(), "The nearest building is "
+		// + building.getBuildingName());
 		Intent intent = new Intent();
 		intent.setClass(this, BuildingActivity.class);
 		startActivity(intent);

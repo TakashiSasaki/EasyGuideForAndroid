@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/itemDebug" android:title="開発用情報表示" android:checkable="false" android:visible="true" android:enabled="true" android:checked="false"></item>
-    <item android:id="@+id/itemAssets" android:title="アセット管理"></item>
-    
-</menu>

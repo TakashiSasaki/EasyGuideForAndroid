@@ -7,6 +7,7 @@ import java.util.Date;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
+@Deprecated
 public class UnzippedDirectory {
 
 	private File unzippedDirectory;
@@ -79,4 +80,4 @@ public class UnzippedDirectory {
 		return unzippedDirectory;
 	}
 
-}
+}//UnzippedDirectory

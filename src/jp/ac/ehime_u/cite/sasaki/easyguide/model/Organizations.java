@@ -1,6 +1,5 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import android.util.Log;
@@ -17,15 +16,11 @@ public class Organizations extends ArrayList<Organization> {
 		super();
 		Log.v(this.getClass().getSimpleName(),
 				"Enumerating organization directories");
-		for (File organization_directory : Root.GetTheRoot().getRootDirectory()
-				.listFiles()) {
-			if (!organization_directory.isDirectory())
-				continue;
-			Log.v(this.getClass().getSimpleName(),
-					organization_directory.getPath());
-			this.add(new Organization(organization_directory));
+		for (Domain domain : Root.GetTheRoot()) {
+			for (Organization organization : domain) {
+				this.add(organization);
+			}// for
 		}// for
-		
 	}// a constructor
 
 	/**
@@ -34,17 +29,16 @@ public class Organizations extends ArrayList<Organization> {
 	public static Organizations GetTheOrganizations() {
 		if (theOrganizations == null) {
 			theOrganizations = new Organizations();
-		}
+		}// if
 		return theOrganizations;
 	}// GetTheOrganizations
 
-	public Organization GetOrganization(String organization_domain) {
+	public Organization GetOrganization(String organization_name) {
 		for (Organization organization : this) {
-			if (organization.getOrganizationDomain()
-					.equals(organization_domain)) {
+			if (organization.getOrganizationDomain().equals(organization_name)) {
 				return organization;
-			}
-		}
+			}// if
+		}// for
 		return null;
 	}// GetOrganization
 }// Organizations

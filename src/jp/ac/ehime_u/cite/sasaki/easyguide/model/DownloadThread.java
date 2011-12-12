@@ -3,37 +3,28 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 import java.io.BufferedInputStream;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.Log;
 
 /**
@@ -43,13 +34,13 @@ import android.util.Log;
  * 
  */
 public class DownloadThread extends Thread {
-	private final URL url;
-	private File downloadedFile;
-	private Date downloadedDate;
+	private final ZipUrl zipUrl;
 	private final int bufferSize = 65536;
 	private final HttpGet httpGet;
-	private HttpResponse httpResponse;
 	private final HttpClient httpClient;
+	private HttpResponse httpResponse;
+	private Context context;
+	private AssetManager assetManager;
 
 	/**
 	 * @param domain_
@@ -57,21 +48,28 @@ public class DownloadThread extends Thread {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	public DownloadThread(Domain domain_, URL url_) throws URISyntaxException {
-		this.url = url_;
-		Calendar calendar = Calendar.getInstance();
-		this.downloadedDate = calendar.getTime();
-		this.downloadedFile = new File(domain_.getDomainDirectory(), ""
-				+ this.downloadedDate.getTime() + ".zip");
-		URI uri = url_.toURI();
-		this.httpGet = new HttpGet(uri);
+	public DownloadThread(ZipUrl zip_url, Context context_)
+			throws URISyntaxException {
+		this.zipUrl = zip_url;
+		this.zipUrl.SetDownloadedFile();
+		this.httpGet = new HttpGet(zipUrl.getUrl().toURI());
 		this.httpClient = new DefaultHttpClient();
 		this.httpClient.getParams().setParameter("http.connection.timeout",
 				new Integer(10000));
+		this.context = context_;
+		this.assetManager = context.getResources().getAssets();
 	}// a constructor
 
 	@Override
 	public void run() {
+		if (zipUrl.getUrl().getHost() == "assets") {
+			CopyFromAssets();
+		} else {
+			DownloadViaHttp();
+		}
+	}// run()
+
+	private void DownloadViaHttp() {
 		try {
 			this.httpResponse = this.httpClient.execute(this.httpGet);
 		} catch (ClientProtocolException e) {
@@ -84,16 +82,18 @@ public class DownloadThread extends Thread {
 		int http_status_code = this.httpResponse.getStatusLine()
 				.getStatusCode();
 		if (http_status_code == HttpStatus.SC_REQUEST_TIMEOUT) {
-			throw new RuntimeException("request for " + this.url.toString()
-					+ " timed out.");
+			throw new RuntimeException("request for "
+					+ this.httpGet.getURI().toString() + " timed out.");
 		}// if
 		if (http_status_code == HttpStatus.SC_NOT_FOUND) {
-			throw new RuntimeException(this.url.toString() + " was not found.");
+			throw new RuntimeException(this.httpGet.getURI().toString()
+					+ " was not found.");
 		}// if
 		if (http_status_code != HttpStatus.SC_OK) {
 			throw new RuntimeException("response : "
 					+ this.httpResponse.getStatusLine().toString());
 		}// if
+
 		InputStream input_stream;
 		try {
 			input_stream = this.httpResponse.getEntity().getContent();
@@ -106,13 +106,30 @@ public class DownloadThread extends Thread {
 		}// try
 		BufferedInputStream buffered_input_stream = new BufferedInputStream(
 				input_stream, bufferSize);
-		Log.v(this.getClass().getSimpleName(), "Writing downloaded file to "
-				+ downloadedFile.getAbsolutePath());
+		SaveStream(buffered_input_stream);
+	}// DownloadViaHttp
 
+	private void CopyFromAssets() {
+		InputStream input_stream;
+		try {
+			input_stream = this.assetManager.open(this.zipUrl.getUrl()
+					.getPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}// try
+		BufferedInputStream buffered_input_stream = new BufferedInputStream(
+				input_stream);
+		SaveStream(buffered_input_stream);
+	}// CopyFromAssets
+
+	private void SaveStream(BufferedInputStream buffered_input_stream) {
+		Log.v(this.getClass().getSimpleName(), "Writing downloaded file to "
+				+ zipUrl.getDownloadedFile().getAbsolutePath());
 		BufferedOutputStream buffered_output_stream;
 		try {
 			buffered_output_stream = new BufferedOutputStream(
-					new FileOutputStream(downloadedFile));
+					new FileOutputStream(zipUrl.getDownloadedFile()));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 			return;
@@ -129,7 +146,7 @@ public class DownloadThread extends Thread {
 			return;
 		}// try
 		Log.v(this.getClass().getSimpleName(), "Closing downloaded file to "
-				+ downloadedFile.getAbsolutePath());
+				+ zipUrl.getDownloadedFile().getAbsolutePath());
 		try {
 			buffered_output_stream.flush();
 		} catch (IOException e) {
@@ -148,7 +165,7 @@ public class DownloadThread extends Thread {
 			e.printStackTrace();
 			return;
 		}// try
-	}// run()
+	}// SaveStream
 
 	/**
 	 * @param http_client

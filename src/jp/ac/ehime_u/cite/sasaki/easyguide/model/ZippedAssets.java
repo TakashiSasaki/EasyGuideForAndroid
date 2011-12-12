@@ -1,67 +1,39 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
 @SuppressWarnings("serial")
-public class ZippedAssets extends ArrayList<URL> {
-	private static final String zipAssetDirectory = "zip";
+public class ZippedAssets extends ArrayList<ZipUrl> {
+	// private static final String zipAssetDirectory = "zip";
 
-	static class Exception extends RuntimeException {
-		public Exception(String message_) {
-			super(message_);
-		}
-	}
-
-	private static ZippedAssets zippedAssets;
 	private AssetManager assetManager;
 
 	private ZippedAssets(Context context_) {
+		final Domain assets_domain = new Domain("assets");
 		assetManager = context_.getResources().getAssets();
 		try {
-			String[] list = assetManager.list("zip");
+			String[] list = assetManager.list("");
 			if (list != null) {
-				for (int i = 0; i < list.length; ++i) {
-					this.add(new URL("file://assets/" + list[i]));
-				}
+				for (String s : list) {
+					this.add(new ZipUrl(assets_domain, new URL("file://assets/"
+							+ s)));
+				}// for
 			}
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			Log.v(this.getClass().getSimpleName(), e.getMessage());
-		}
+			e.printStackTrace();
+		}// try
 	}// an constructor
 
-	/**
-	 * @param slash_and_zip_file_name
-	 * @return InputStream for the file in assets
-	 */
-	public InputStream GetInputStream(String slash_and_zip_file_name) {
-		String asset_path = zipAssetDirectory + slash_and_zip_file_name;
-		try {
-			return this.assetManager.open(asset_path);
-		} catch (IOException e) {
-			throw new Exception("Can't get " + asset_path + " in assets. "
-					+ e.getMessage());
-		}
-	}// GetInputStream
-
-	/**
-	 * @param context_
-	 * @return singleton object of ZippedAssets
-	 */
-	public static ZippedAssets GetTheZippedAssets(Context context_) {
-		if (zippedAssets == null) {
-			zippedAssets = new ZippedAssets(context_);
-		}
-		return zippedAssets;
-	}// GetTheZippedAssets
 }// ZippedAssets

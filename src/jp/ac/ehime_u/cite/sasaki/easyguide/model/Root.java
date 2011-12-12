@@ -1,6 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +13,7 @@ import android.util.Log;
  * 
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
-public class Root {
+public class Root extends ArrayList<Domain> {
 	private static final String rootDirectoryName = "EASYGUIDE";
 	private static Root root;
 	private File rootDirectory;
@@ -26,10 +27,14 @@ public class Root {
 				external_storage_directory.getAbsolutePath());
 		rootDirectory = new File(external_storage_directory, rootDirectoryName);
 		if (!rootDirectory.exists()) {
-			rootDirectory.mkdir();
-			Log.v(this.getClass().getSimpleName(), "creating directory "
-					+ rootDirectory.getAbsolutePath());
+			throw new RuntimeException(rootDirectory.getPath()
+					+ " is not found");
 		}
+		/*
+		 * if (!rootDirectory.exists()) { rootDirectory.mkdir();
+		 * Log.v(this.getClass().getSimpleName(), "creating directory " +
+		 * rootDirectory.getAbsolutePath()); }
+		 */
 		assert (rootDirectory.exists());
 	}// an constructor
 

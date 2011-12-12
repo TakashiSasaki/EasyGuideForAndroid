@@ -41,7 +41,7 @@ public class Root extends ArrayList<Domain> {
 	@SuppressWarnings("javadoc")
 	public File getRootDirectory() {
 		return rootDirectory;
-	}
+	}// getRootDirectory
 
 	/**
 	 * @param file
@@ -59,7 +59,7 @@ public class Root extends ArrayList<Domain> {
 			return true;
 		else
 			return false;
-	}
+	}// IsValidDomainDirectory
 
 	/**
 	 * @return singleton instance of class Root
@@ -69,5 +69,5 @@ public class Root extends ArrayList<Domain> {
 			root = new Root();
 		}
 		return root;
-	}
-}
+	}// GetTheRoot
+}// Root

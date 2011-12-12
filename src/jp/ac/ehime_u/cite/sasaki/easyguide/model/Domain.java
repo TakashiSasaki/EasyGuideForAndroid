@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,7 +68,7 @@ public class Domain extends ArrayList<Organization> {
 				this.add(new Organization(file));
 			}// if
 		}// for
-	}
+	}// EnumerateOrganizations
 
 	static private void RemoveDirectory(File directory) {
 		assert (directory.isDirectory());
@@ -143,6 +142,6 @@ public class Domain extends ArrayList<Organization> {
 	 */
 	public File getDomainDirectory() {
 		return domainDirectory;
-	}
+	}// getDomainDirectory
 
-}
+}// Domain

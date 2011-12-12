@@ -1,6 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -18,22 +19,9 @@ import android.util.Log;
  * 
  */
 @SuppressWarnings("serial")
-public class Domain extends ArrayList<UnzippedDirectory> {
-	// private UnzippedDirectory newestUnzippedDirectory;
+public class Domain extends ArrayList<Organization> {
 	private File domainDirectory;
 
-	@SuppressWarnings({ "javadoc" })
-	public class Exception extends RuntimeException {
-		public Exception(String message_) {
-			super(message_);
-		}
-	}
-
-	/**
-	 * a constructor
-	 * 
-	 * @param domain_name
-	 */
 	public Domain(String domain_name) {
 		// if (!IsResolvable(url_.getHost())) {
 		// throw new Exception(url_.getHost() + " is not resolvable.");
@@ -45,74 +33,64 @@ public class Domain extends ArrayList<UnzippedDirectory> {
 			assert (domain_directory.exists());
 		}
 		if (domain_directory.isFile()) {
-			throw new Exception("Can't make domain directory for "
+			throw new RuntimeException("Can't make domain directory for "
 					+ domain_name.toLowerCase());
 		}
 		assert (domain_directory.isDirectory());
 		this.domainDirectory = domain_directory;
-		ScanUnzippedDirectories();
-	}
+
+	}// a constructor of class Domain
 
 	/**
 	 * a constructor
 	 * 
 	 * @param domain_directory
+	 * @throws FileNotFoundException
 	 */
-	public Domain(File domain_directory) {
+	public Domain(File domain_directory) throws FileNotFoundException {
 		// if (!IsValidFqdn(domain_directory.getName())) {
 		// throw new Exception(domain_directory.getName()
 		// + " is invalid for FQDN.");
 		// }
-		if (!domain_directory.exists()) {
-			throw new Exception(domain_directory.getPath() + " does not exist.");
-		}
 		this.domainDirectory = domain_directory;
-		ScanUnzippedDirectories();
-	}
+		if (!domain_directory.exists()) {
+			throw new FileNotFoundException(domain_directory.getPath());
+		}
+	}// a constructor of class Domain
 
-	/**
-	 * enumerate all unzipped directories under the domain directory. It also
-	 * finds the latest directory and save into this.newestUnzippedDirectory.
-	 */
-	public void ScanUnzippedDirectories() {
-		Log.v(this.getClass().getSimpleName(),
-				"scanning unzipped directories on " + this.domainDirectory);
+	public void EnumerateOrganizations() {
 		for (File file : this.domainDirectory.listFiles()) {
 			Log.v(this.getClass().getSimpleName(),
 					"unzipped directory " + file.getAbsolutePath()
 							+ " was found.");
-			this.add(new UnzippedDirectory(file));
-		}// for
-	}// ScanUnzippedDirectories
-
-	/**
-	 * @return last unzipped directory in this domain directory
-	 */
-	public UnzippedDirectory GetLastUnzippedDirectory() {
-		if (this.size() == 0) {
-			throw new Exception("No unzipped directory in "
-					+ this.domainDirectory);
-		}
-		Date temp_date = new Date(0l);
-		UnzippedDirectory temp_unzipped_directory = null;
-
-		for (UnzippedDirectory unzipped_directory : this) {
-			if (unzipped_directory.getModfiedDateTime().after(temp_date)) {
-				temp_date = unzipped_directory.getModfiedDateTime();
-				temp_unzipped_directory = unzipped_directory;
+			if (file.isDirectory()) {
+				Log.v(this.getClass().getSimpleName(), file.getName()
+						+ " was found as unzipped directory.");
+				this.add(new Organization(file));
 			}// if
 		}// for
-		return temp_unzipped_directory;
 	}
 
-	/**
-	 * 
-	 */
-	public void RemoveAllFiles() {
-		for (UnzippedDirectory unzipped_directory : this) {
-			unzipped_directory.RemoveAllFiles();
-		}
-	}
+	static private void RemoveDirectory(File directory) {
+		assert (directory.isDirectory());
+		for (File f : directory.listFiles()) {
+			if (f.isDirectory()) {
+				f.delete();
+			} else {
+				RemoveDirectory(f);
+			}
+		}// for
+		directory.delete();
+	}// RemoveDirectory
+
+	public void RemoveAllOrganizations() {
+		for (File f : this.domainDirectory.listFiles()) {
+			if (f.isDirectory()) {
+				RemoveDirectory(f);
+			}
+		}// for
+		this.clear();
+	}// RemoveAllFiles
 
 	private String hostAddress;
 
@@ -127,13 +105,14 @@ public class Domain extends ArrayList<UnzippedDirectory> {
 					inet_address = InetAddress.getByName(host_);
 					hostAddress = inet_address.getHostAddress();
 				} catch (UnknownHostException e) {
+					hostAddress = null;
 				}
-			}
+			}// run
 		});
 		thread.start();
 		try {
 			thread.join(10000);
-			if (hostAddress == null || hostAddress.isEmpty()) {
+			if (hostAddress == null) {
 				return false;
 			} else {
 				return true;

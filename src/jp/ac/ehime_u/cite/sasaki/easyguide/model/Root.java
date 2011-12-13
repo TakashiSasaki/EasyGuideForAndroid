@@ -13,6 +13,7 @@ import android.util.Log;
  * 
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
+@SuppressWarnings("serial")
 public class Root extends ArrayList<Domain> {
 	private static final String rootDirectoryName = "EASYGUIDE";
 	private static Root root;

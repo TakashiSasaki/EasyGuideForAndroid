@@ -3,7 +3,6 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,20 +26,21 @@ public class LastModifiedHeaderThread extends Thread {
 	private Date lastModified;
 	private Header lastModifiedHeader;
 
-	public LastModifiedHeaderThread(URL url) throws URISyntaxException {
+	public LastModifiedHeaderThread(URI uri_) throws URISyntaxException {
 		// this.simpleDataFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-		uri = url.toURI();
-		httpHead = new HttpHead(uri);
-		httpClient = new DefaultHttpClient();
-		httpClient.getParams().setParameter("http.connection.timeout",
+		this.uri = uri_;
+		this.httpHead = new HttpHead(this.uri);
+		this.httpClient = new DefaultHttpClient();
+		this.httpClient.getParams().setParameter("http.connection.timeout",
 				new Integer(10000));
 	}// a constructor
 
 	@Override
 	public void run() {
 		try {
-			httpResponse = httpClient.execute(httpHead);
-			lastModifiedHeader = httpResponse.getLastHeader("Last-Modified");
+			this.httpResponse = this.httpClient.execute(this.httpHead);
+			this.lastModifiedHeader = this.httpResponse
+					.getLastHeader("Last-Modified");
 		} catch (ClientProtocolException e1) {
 			e1.printStackTrace();
 			return;
@@ -53,28 +53,29 @@ public class LastModifiedHeaderThread extends Thread {
 		}// try
 
 		try {
-			this.lastModified = simpleDataFormat.parse(lastModifiedHeader
-					.getValue());
+			this.lastModified = this.simpleDataFormat
+					.parse(this.lastModifiedHeader.getValue());
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return;
 		}
-		int http_status_code = httpResponse.getStatusLine().getStatusCode();
+		int http_status_code = this.httpResponse.getStatusLine()
+				.getStatusCode();
 		if (http_status_code == HttpStatus.SC_REQUEST_TIMEOUT) {
 			throw new RuntimeException("request for " + this.uri.toString()
 					+ " timed out.");
 		}
 		if (http_status_code == HttpStatus.SC_NOT_FOUND) {
-			throw new RuntimeException(uri.toString() + " was not found.");
+			throw new RuntimeException(this.uri.toString() + " was not found.");
 		}
 		if (http_status_code != HttpStatus.SC_OK) {
 			throw new RuntimeException("response : "
-					+ httpResponse.getStatusLine().toString());
+					+ this.httpResponse.getStatusLine().toString());
 		}
 		assert (this.lastModified != null);
 	}// run
 
 	public Date getLastModified() {
-		return lastModified;
-	}
+		return this.lastModified;
+	}// getLastModified
 }// LastModifiedHeader

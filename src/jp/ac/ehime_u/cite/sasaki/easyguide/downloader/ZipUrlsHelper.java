@@ -11,12 +11,10 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUrl;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.SyncStateContract.Columns;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -105,6 +103,12 @@ public class ZipUrlsHelper extends SQLiteOpenHelper {
 		cursor.close();
 		return zip_url_array_list;
 	}// GetZipUrls
+
+	public void Insert(ZipUrl zip_url) {
+		SQLiteDatabase writable = this.getWritableDatabase();
+		writable.insert(TABLE_zip_urls, null, zip_url.GetContentValues());
+		writable.close();
+	}
 
 	public void Insert(ArrayList<ZipUrl> zip_url_array_list) {
 		SQLiteDatabase writable = this.getWritableDatabase();

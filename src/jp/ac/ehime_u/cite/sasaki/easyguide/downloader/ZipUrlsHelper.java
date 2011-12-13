@@ -2,11 +2,10 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
-
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUrl;
 
@@ -74,18 +73,18 @@ public class ZipUrlsHelper extends SQLiteOpenHelper {
 		cursor.moveToFirst();
 		while (true) {
 			Domain domain = new Domain(cursor.getString(0));
-			URL url;
+			URI uri;
 			try {
-				url = new URL(cursor.getString(1));
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				break;
-			}
+				uri = new URI(cursor.getString(1));
+			} catch (URISyntaxException e1) {
+				e1.printStackTrace();
+				continue;
+			}// try
 			File downloaded_file = new File(cursor.getString(3));
 			Date last_modified_time = new Date(cursor.getLong(4));
 			ZipUrl zip_url;
 			try {
-				zip_url = new ZipUrl(domain, url, downloaded_file,
+				zip_url = new ZipUrl(domain, uri, downloaded_file,
 						last_modified_time);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();

@@ -12,6 +12,9 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -52,17 +55,17 @@ public class DownloadThread extends Thread {
 			throws URISyntaxException {
 		this.zipUrl = zip_url;
 		this.zipUrl.SetDownloadedFile();
-		this.httpGet = new HttpGet(zipUrl.getUrl().toURI());
+		this.httpGet = new HttpGet(this.zipUrl.getUri());
 		this.httpClient = new DefaultHttpClient();
 		this.httpClient.getParams().setParameter("http.connection.timeout",
 				new Integer(10000));
 		this.context = context_;
-		this.assetManager = context.getResources().getAssets();
+		this.assetManager = this.context.getResources().getAssets();
 	}// a constructor
 
 	@Override
 	public void run() {
-		if (zipUrl.getUrl().getHost() == "assets") {
+		if (this.zipUrl.getUri().getHost().equals("assets")) {
 			CopyFromAssets();
 		} else {
 			DownloadViaHttp();
@@ -105,15 +108,23 @@ public class DownloadThread extends Thread {
 			return;
 		}// try
 		BufferedInputStream buffered_input_stream = new BufferedInputStream(
-				input_stream, bufferSize);
+				input_stream, this.bufferSize);
 		SaveStream(buffered_input_stream);
 	}// DownloadViaHttp
 
 	private void CopyFromAssets() {
 		InputStream input_stream;
+		Pattern pattern = Pattern.compile("^/(.+\\.zip)$");
+		String path_in_assets = this.zipUrl.getUri().getPath();
+		Matcher matcher = pattern.matcher(path_in_assets);
+		if (!matcher.find()) {
+			throw new RuntimeException("Malformed path in assets : "
+					+ path_in_assets);
+		}//if
+		String path_in_assets_without_heading_slash = matcher.group(1);
 		try {
-			input_stream = this.assetManager.open(this.zipUrl.getUrl()
-					.getPath());
+			input_stream = this.assetManager
+					.open(path_in_assets_without_heading_slash);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
@@ -125,17 +136,17 @@ public class DownloadThread extends Thread {
 
 	private void SaveStream(BufferedInputStream buffered_input_stream) {
 		Log.v(this.getClass().getSimpleName(), "Writing downloaded file to "
-				+ zipUrl.getDownloadedFile().getAbsolutePath());
+				+ this.zipUrl.getDownloadedFile().getAbsolutePath());
 		BufferedOutputStream buffered_output_stream;
 		try {
 			buffered_output_stream = new BufferedOutputStream(
-					new FileOutputStream(zipUrl.getDownloadedFile()));
+					new FileOutputStream(this.zipUrl.getDownloadedFile()));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 			return;
 		}// try
 
-		byte buffer[] = new byte[bufferSize];
+		byte buffer[] = new byte[this.bufferSize];
 		int read_size;
 		try {
 			while ((read_size = buffered_input_stream.read(buffer)) != -1) {
@@ -146,7 +157,7 @@ public class DownloadThread extends Thread {
 			return;
 		}// try
 		Log.v(this.getClass().getSimpleName(), "Closing downloaded file to "
-				+ zipUrl.getDownloadedFile().getAbsolutePath());
+				+ this.zipUrl.getDownloadedFile().getAbsolutePath());
 		try {
 			buffered_output_stream.flush();
 		} catch (IOException e) {

@@ -81,7 +81,7 @@ public class DirectoryImage {
 		Log.v(this.getClass().getSimpleName(),
 				"Loading image " + image_file.getPath());
 		this.image = BitmapFactory.decodeFile(image_file.getPath());
-		if (image == null) {
+		if (this.image == null) {
 			// if (defaultImage == null || defaultThumbnail == null) {
 			// throw new DirectoryImageException("Can't load image "
 			// + image_file.getPath()
@@ -118,14 +118,14 @@ public class DirectoryImage {
 	 * @return the image
 	 */
 	public Bitmap getImage() {
-		return image;
+		return this.image;
 	}
 
 	/**
 	 * @return the thumbnail
 	 */
 	public Bitmap getThumbnail() {
-		return thumbnail;
+		return this.thumbnail;
 	}
 
 	/**

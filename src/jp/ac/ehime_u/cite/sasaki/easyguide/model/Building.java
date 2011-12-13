@@ -59,12 +59,12 @@ public class Building extends ArrayList<Floor> {
 
 	@SuppressWarnings("javadoc")
 	public int getBuildingNumber() {
-		return buildingDirectoryName.getNumber();
+		return this.buildingDirectoryName.getNumber();
 	}
 
 	@SuppressWarnings("javadoc")
 	public String getBuildingName() {
-		return buildingDirectoryName.getName();
+		return this.buildingDirectoryName.getName();
 	}
 
 	@SuppressWarnings("javadoc")

@@ -23,9 +23,10 @@ import android.widget.ArrayAdapter;
  */
 public class ZipUrlsHelper extends SQLiteOpenHelper {
 	final static String TABLE_zip_urls = "zip_urls";
-	final static String CREATE_TABLE = "CREATE TABLE "
-			+ TABLE_zip_urls
-			+ "(domain TEXT NOT NULL, url TEXT NOT NULL,downloadedFile TEXT,lastModified LONG);";
+	final static String CREATE_TABLE = "CREATE TABLE " + TABLE_zip_urls + "("
+			+ ZipUrl.COLUMN_domain + " TEXT NOT NULL, " + ZipUrl.COLUMN_url
+			+ " TEXT NOT NULL, " + ZipUrl.COLUMN_downloadedFile + " TEXT, "
+			+ ZipUrl.COLUMN_lastModified + " LONG);";
 	final static String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_zip_urls
 			+ ";";
 
@@ -33,7 +34,7 @@ public class ZipUrlsHelper extends SQLiteOpenHelper {
 	// "INSERT INTO zip_urls(domain,zip_url) VALUES(\"lms.intdesign.org\", \"http://lms.ictdesign.org/easyguide.zip\");";
 
 	private ZipUrlsHelper(Context context_) {
-		super(context_, "EasyGuideDownloader.sqlite", null, 4);
+		super(context_, "EasyGuideDownloader.sqlite", null, 5);
 	}// a constructor
 
 	@Override

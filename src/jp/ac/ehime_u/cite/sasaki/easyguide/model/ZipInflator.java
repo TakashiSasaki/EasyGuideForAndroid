@@ -33,33 +33,48 @@ public class ZipInflator {
 		}
 	}
 
+	public ZipInflator(ZipUrl zip_url) throws FileNotFoundException {
+		this.destinationDirectory = zip_url.GetDomainDirectory();
+		this.inputStream = new FileInputStream(zip_url.getDownloadedFile());
+	}// a constructor
+
 	/**
 	 * @param zip_file
 	 * @param domain_directory
 	 * @throws FileNotFoundException
 	 */
+	@Deprecated
 	public ZipInflator(File zip_file, File domain_directory)
 			throws FileNotFoundException {
 		this.inputStream = new FileInputStream(zip_file);
 		this.destinationDirectory = domain_directory;
-	}// an constructor
+	}// a constructor
 
 	/**
 	 * @param input_stream
 	 * @param domain_
 	 */
+	@Deprecated
 	public ZipInflator(InputStream input_stream, Domain domain_) {
 		this.inputStream = input_stream;
 		this.destinationDirectory = domain_.getDomainDirectory();
-	}// an constructor
+	}// a constructor
 
-	/**
-	 * 
-	 */
 	public void Inflate() {
-		ZipInputStream zip_input_stream = new ZipInputStream(inputStream);
+		ZipInputStream zip_input_stream = new ZipInputStream(this.inputStream);
 		Log.v(this.getClass().getSimpleName(),
 				"Inflating ZIP entries from ZIP input stream.");
+		ZipEntry first_zip_entry;
+		try {
+			first_zip_entry = zip_input_stream.getNextEntry();
+		} catch (IOException e2) {
+			e2.printStackTrace();
+			throw new RuntimeException("Failed to get fisrt entry in ZIP file");
+		}// try
+		if (first_zip_entry.isDirectory()) {
+			throw new RuntimeException(
+					"The first entry in ZIP file should be a directory");
+		}// if
 		while (true) {
 			ZipEntry zip_entry;
 			try {

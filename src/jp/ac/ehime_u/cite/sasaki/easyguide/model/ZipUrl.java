@@ -1,7 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,7 +25,7 @@ public class ZipUrl {
 	final static public String COLUMN_lastModified = "lastModified";
 
 	public ZipUrl(Domain domain_, URI uri_, File downloaded_file,
-			Date last_modified) throws FileNotFoundException {
+			Date last_modified) {
 		this.domain = domain_;
 		this.uri = uri_;
 		this.downloadedFile = downloaded_file;
@@ -55,16 +54,16 @@ public class ZipUrl {
 		}// if
 	}// SetLastModified
 
-	public void SetDownloadedFile(File downloaded_file)
-			throws FileNotFoundException {
-		if (!downloaded_file.exists()) {
-			throw new FileNotFoundException(downloaded_file.getPath());
-		}
+	public void SetDownloadedFile(File downloaded_file) {
 		Pattern pattern = Pattern.compile("([0-9+]).zip");
 		Matcher matcher = pattern.matcher(downloaded_file.getName());
 		String time_in_milliseconds;
-		time_in_milliseconds = matcher.group(1);
-		this.downloadedDate = new Date(Long.parseLong(time_in_milliseconds));
+		if (matcher.find()) {
+			time_in_milliseconds = matcher.group(1);
+			this.downloadedDate = new Date(Long.parseLong(time_in_milliseconds));
+		} else {
+			this.downloadedDate = null;
+		} // if
 	}// SetDownloadedFile
 
 	/*
@@ -111,6 +110,10 @@ public class ZipUrl {
 			return this.lastModified;
 		}// getLastModified
 	}// getLastModified
+
+	public Date getLastModifiedNonBlocking() {
+		return this.lastModified;
+	}// getLastModifiedNonBlocking
 
 	public ContentValues GetContentValues() {
 		ContentValues cv = new ContentValues();

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -13,6 +12,7 @@ import java.util.regex.Pattern;
 
 import android.content.ContentValues;
 
+//TODO: class name should be renamed to ZipUri
 public class ZipUrl {
 	private Domain domain;
 	private URI uri;

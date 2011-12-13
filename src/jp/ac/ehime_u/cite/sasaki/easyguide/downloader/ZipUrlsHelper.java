@@ -84,13 +84,8 @@ public class ZipUrlsHelper extends SQLiteOpenHelper {
 			File downloaded_file = new File(cursor.getString(3));
 			Date last_modified_time = new Date(cursor.getLong(4));
 			ZipUrl zip_url;
-			try {
-				zip_url = new ZipUrl(domain, uri, downloaded_file,
-						last_modified_time);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				break;
-			}
+			zip_url = new ZipUrl(domain, uri, downloaded_file,
+					last_modified_time);
 			Log.v(this.getClass().getSimpleName(), "Zip URL for domain "
 					+ zip_url.toString());
 			zip_url_array_list.add(zip_url);
@@ -163,6 +158,34 @@ public class ZipUrlsHelper extends SQLiteOpenHelper {
 		readable_database.close();
 		return array_adapter;
 	}// GetArrayAdapter
+
+	public ArrayList<ZipUrl> GetArrayList() {
+		ArrayList<ZipUrl> array_list = new ArrayList<ZipUrl>();
+		SQLiteDatabase readable_database = this.getReadableDatabase();
+		Cursor cursor = readable_database.query(TABLE_zip_urls, new String[] {
+				ZipUrl.COLUMN_domain, ZipUrl.COLUMN_url,
+				ZipUrl.COLUMN_downloadedFile, ZipUrl.COLUMN_lastModified },
+				null, null, null, null, null);
+		for (boolean record_exists = cursor.moveToFirst(); record_exists; record_exists = cursor
+				.moveToNext()) {
+			Domain domain = new Domain(cursor.getString(0));
+			URI uri;
+			try {
+				uri = new URI(cursor.getString(1));
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+				continue;
+			}// try
+			File downloaded_file = new File(cursor.getString(2));
+			Date last_modified = new Date(cursor.getLong(3));
+			ZipUrl zip_url = new ZipUrl(domain, uri, downloaded_file,
+					last_modified);
+			array_list.add(zip_url);
+		}// for
+		cursor.close();
+		readable_database.close();
+		return array_list;
+	}
 
 	static ZipUrlsHelper theDomains;
 

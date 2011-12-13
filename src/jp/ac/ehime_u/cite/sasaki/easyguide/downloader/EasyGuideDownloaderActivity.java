@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -99,8 +100,12 @@ public class EasyGuideDownloaderActivity extends Activity {
 		 */
 
 		ListView list_view = (ListView) findViewById(R.id.listViewUrls);
-		list_view.setAdapter(ZipUrlsHelper.GetTheZipUrls(this).GetArrayAdapter(
-				this));
+		ArrayAdapter<ZipUrl> array_adapter = new ZipUrisAdapter(this,
+				R.id.listViewUrls, ZipUrlsHelper.GetTheZipUrls(this)
+						.GetArrayList());
+		// list_view.setAdapter(ZipUrlsHelper.GetTheZipUrls(this).GetArrayAdapter(
+		// this));
+		list_view.setAdapter(array_adapter);
 		list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, final View view,

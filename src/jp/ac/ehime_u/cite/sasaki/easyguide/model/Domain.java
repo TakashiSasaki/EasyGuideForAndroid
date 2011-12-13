@@ -71,13 +71,15 @@ public class Domain extends ArrayList<Organization> {
 	}// EnumerateOrganizations
 
 	static private void RemoveDirectory(File directory) {
+		if (directory == null)
+			return;
 		assert (directory.isDirectory());
 		for (File f : directory.listFiles()) {
-			if (f.isDirectory()) {
+			if (f.isFile()) {
 				f.delete();
 			} else {
 				RemoveDirectory(f);
-			}
+			}// if
 		}// for
 		directory.delete();
 	}// RemoveDirectory

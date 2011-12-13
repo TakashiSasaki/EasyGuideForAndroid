@@ -2,110 +2,157 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_marginBottom="5dp"
+    android:orientation="horizontal" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@android:drawable/btn_star_big_on" />
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1" >
 
-        <TextView
-            android:id="@+id/textView1"
+        <TableRow
+            android:id="@+id/tableRow5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/domain"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/textViewDomain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/domain"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/textViewDomain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/textView2"
+        <TableRow
+            android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/url"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/textViewUrl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/url"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutLastModified"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/textViewUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/textView4"
+        <TableRow
+            android:id="@+id/tableRow3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lastModified"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/textViewLastModified"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/lastModified"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/textViewLastModified"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/textView3"
+        <TableRow
+            android:id="@+id/tableRow4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/downloadedFile"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/textViewDownloadedFile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/downloadedFile"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
+            <TextView
+                android:id="@+id/textViewDownloadedFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/downloadedTime"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/textViewDownloadedTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+    </TableLayout>
+
     <LinearLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+         >
 
-        <TextView
-            android:id="@+id/textView5"
+        <ImageButton
+            android:id="@+id/imageButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/downloadedTime"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_gravity="center_vertical"
+            android:src="@android:drawable/stat_sys_download" />
 
-        <TextView
-            android:id="@+id/textViewDownloadedTime"
+        <ImageButton
+            android:id="@+id/imageButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_gravity="center_vertical"
+            android:src="@android:drawable/ic_menu_slideshow" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@android:drawable/ic_menu_view" />
     </LinearLayout>
 
 </LinearLayout>

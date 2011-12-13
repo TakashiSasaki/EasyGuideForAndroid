@@ -27,12 +27,12 @@ public class ZipUrisAdapter extends ArrayAdapter<ZipUrl> {
 	public View getView(int position, View view, ViewGroup parent) {
 		if (view == null) {
 			view = this.layoutInflater.inflate(R.layout.listviewrow, null);
-			view.setBackgroundColor(Color.DKGRAY);
+			//view.setBackgroundColor(Color.DKGRAY);
 		}// if
 		ZipUrl zip_url = this.getItem(position);
 		TextView text_view_domain = (TextView) view
 				.findViewById(R.id.textViewDomain);
-		text_view_domain.setText(zip_url.getUri().toString());
+		text_view_domain.setText(zip_url.GetDomainByString());
 
 		TextView text_view_downloaded_file = (TextView) view
 				.findViewById(R.id.textViewDownloadedFile);

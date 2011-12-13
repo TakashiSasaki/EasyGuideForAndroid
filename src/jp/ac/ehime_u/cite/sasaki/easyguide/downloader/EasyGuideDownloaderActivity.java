@@ -172,8 +172,11 @@ public class EasyGuideDownloaderActivity extends Activity {
 	 */
 	private void DownloadZipInAssets() {
 		ZippedAssets zipped_assets = new ZippedAssets(this);
+		ZipUrlsHelper zip_urls_helper = ZipUrlsHelper.GetTheZipUrls(this);
 		for (ZipUrl zip_url : zipped_assets) {
 			zip_url.GetDomain().RemoveAllOrganizations();
+			zip_url.GetDomain().RemoveAllZipFiles();
+			zip_urls_helper.Delete(zip_url.GetDomain());
 		}// for
 		for (ZipUrl zip_url : zipped_assets) {
 			try {
@@ -191,7 +194,6 @@ public class EasyGuideDownloaderActivity extends Activity {
 				continue;
 			}// try
 		}// for
-		ZipUrlsHelper zip_urls_helper = ZipUrlsHelper.GetTheZipUrls(this);
 		zip_urls_helper.Insert(zipped_assets);
 	}// DownloadZipInAssets
 

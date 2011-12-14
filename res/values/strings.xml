@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="hello">Hello World, EasyGuideDownloaderActivity!</string>
     <string name="app_name">EasyGuide Downloader</string>
     <string name="instruction">URLを選択して下さい。Deployでコンテンツを展開します。RememberでURLを追加できます。file://assets/で始まるURLはEasyGuide Downloader内に組み込まれているサンプルコンテンツです。file://localhost/で始まるURLはSDカードなど本体内のローカルファイルシステムにあるコンテンツです。</string>
-    <string name="domain">発行者</string>
+    <string name="domain">配布者</string>
     <string name="url">ダウンロード元</string>
-    <string name="downloadedFile">保存先</string>
+    <string name="downloadedFile">保存場所</string>
     <string name="lastModified">最終更新</string>
     <string name="downloadedTime">保存時刻</string>
+    <string name="domainDefinition">コンテンツの配布者。配布者はインターネットドメイン名で表されます。配布者は一つまたは複数のコンテンツを配信します。
+       配布者の正当性は当該ドメインのウェブサーバが持つ証明書に依存します。デバッグモードでは証明書を確認しません。ベータ版ではデバッグモードになっています。</string>
+    <string name="urlDefinition">配布者が指定したコンテンツのダウンロード元。コンテンツはZIPファイルとして配布されます。
+        配布されるコンテンツの正当性は当該URLで示されるウェブサーバが持つ証明書に依存します。デバッグモードでは証明書を確認しません。ベータ版ではデバッグモードになっています。</string>
+    <string name="downloadedFileDefinition">ダウンロードしたZIPファイルが保存されている場所、もしくはこれからダウンロードするZIPファイルを保存する場所です。</string>
+    <string name="downloadTimeDefinition">ZIPファイルをダウンロードした時刻です。</string>
+    <string name="lastModifiedDefinition">ダウンロード元が通知したZIPファイルの最終更新時刻です。ダウンロード元によっては最終更新時刻を確認できない場合があります。</string>
+    <string name="organization">作成者</string>
+    <string name="organizationDefinition">コンテンツの作成者です。配布者とは異なる場合があります。コンテンツそのものには電子的署名がありませんので、その正当性は配布者に依存します。
+        信頼できない配布者からのコンテンツはダウンロードしないでください。</string>
+
 </resources>

@@ -2,6 +2,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -91,7 +92,19 @@ public class Domain extends ArrayList<Organization> {
 			}
 		}// for
 		this.clear();
-	}// RemoveAllFiles
+	}// RemoveAllOrganizations
+
+	public void RemoveAllZipFiles() {
+		FilenameFilter file_name_filter = new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(".zip");
+			}// accept
+		};// FileNameFilter
+		for (File f : this.domainDirectory.listFiles(file_name_filter)) {
+			f.delete();
+		}// for
+	}// RemoveAllZipFiles
 
 	private String hostAddress;
 

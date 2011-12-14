@@ -168,10 +168,21 @@ public class EasyGuideDownloaderActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Glossary glossary = new Glossary(EasyGuideDownloaderActivity.this.self);
+						Glossary glossary = new Glossary(
+								EasyGuideDownloaderActivity.this.self);
 						glossary.show();
 					}// onClick
 				});// OnClickListener()
+
+		((ImageButton) findViewById(R.id.imageButtonWifi))
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						WifiListDialog wifi_list_dialog = new WifiListDialog(
+								EasyGuideDownloaderActivity.this.self);
+						wifi_list_dialog.show();
+					}// onClick
+				});// onClickListener
 	}// onCreate
 
 	/*

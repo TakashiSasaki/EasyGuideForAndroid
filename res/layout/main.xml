@@ -121,6 +121,13 @@
         </Button>
 
         <ImageButton
+            android:id="@+id/imageButtonWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/stat_sys_tether_wifi" />
+
+        <ImageButton
             android:id="@+id/imageButtonGlossary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

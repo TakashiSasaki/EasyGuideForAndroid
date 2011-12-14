@@ -1,14 +1,13 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUrl;
-
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;

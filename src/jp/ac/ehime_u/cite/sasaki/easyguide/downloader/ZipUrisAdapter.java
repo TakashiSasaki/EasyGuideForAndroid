@@ -6,7 +6,6 @@ import java.util.Date;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUrl;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

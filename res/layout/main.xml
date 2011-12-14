@@ -18,7 +18,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical" >
@@ -38,9 +38,10 @@
 
                 <EditText
                     android:id="@+id/editTextDomain"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:inputType="textPhonetic" >
                 </EditText>
             </LinearLayout>
 
@@ -58,9 +59,10 @@
 
                 <EditText
                     android:id="@+id/editTextUrl"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:inputType="textUri" >
 
                     <requestFocus />
                 </EditText>
@@ -93,7 +95,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1" >
 
         <Button
@@ -125,6 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:contentDescription="show list of Wi-Fi access points"
             android:src="@drawable/stat_sys_tether_wifi" />
 
         <ImageButton
@@ -133,6 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="false"
+            android:contentDescription="show glossary"
             android:src="@android:drawable/ic_menu_help" />
     </LinearLayout>
 

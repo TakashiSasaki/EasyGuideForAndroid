@@ -9,7 +9,7 @@
     <string name="downloadedFile">保存場所</string>
     <string name="lastModified">最終更新</string>
     <string name="downloadedTime">保存時刻</string>
-    <string name="domainDefinition">コンテンツの配布者。配布者はインターネットドメイン名で表されます。配布者は一つまたは複数のコンテンツを配信します。
+    <string name="domainDefinition">コンテンツの配布者。配布者はインターネットドメイン名で表されます。配布者は日本語版と英語版のような複数のバージョンのコンテンツを配信することができます。
        配布者の正当性は当該ドメインのウェブサーバが持つ証明書に依存します。デバッグモードでは証明書を確認しません。ベータ版ではデバッグモードになっています。</string>
     <string name="urlDefinition">配布者が指定したコンテンツのダウンロード元。コンテンツはZIPファイルとして配布されます。
         配布されるコンテンツの正当性は当該URLで示されるウェブサーバが持つ証明書に依存します。デバッグモードでは証明書を確認しません。ベータ版ではデバッグモードになっています。</string>
@@ -20,5 +20,7 @@
     <string name="organizationDefinition">コンテンツの作成者です。配布者とは異なる場合があります。コンテンツそのものには電子的署名がありませんので、その正当性は配布者に依存します。
         信頼できない配布者からのコンテンツはダウンロードしないでください。</string>
     <string name="glossary">用語集</string>
+    <string name="downloadZip">コンテンツのダウンロード</string>
+    <string name="anContent">コンテンツのダウンロード単位</string>
 
 </resources>

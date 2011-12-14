@@ -10,11 +10,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@android:drawable/btn_star_big_on" />
+        android:src="@android:drawable/btn_star_big_on" 
+        android:contentDescription="@string/anContent"/>
 
     <TableLayout
         android:id="@+id/tableLayout1"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -37,7 +38,7 @@
                 android:id="@+id/textViewDomain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Medium Text"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -58,7 +59,7 @@
                 android:id="@+id/textViewUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Medium Text"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -79,7 +80,7 @@
                 android:id="@+id/textViewLastModified"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Medium Text"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -100,12 +101,12 @@
                 android:id="@+id/textViewDownloadedFile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Medium Text"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow5"
+            android:id="@+id/tableRow6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
@@ -121,7 +122,7 @@
                 android:id="@+id/textViewDownloadedTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Medium Text"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
     </TableLayout>
@@ -138,7 +139,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@android:drawable/stat_sys_download" />
+            android:src="@android:drawable/stat_sys_download"
+            android:contentDescription="@string/downloadZip" />
 
         <ImageButton
             android:id="@+id/imageButton3"

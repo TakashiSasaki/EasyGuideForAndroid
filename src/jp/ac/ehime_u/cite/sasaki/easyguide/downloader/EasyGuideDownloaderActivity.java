@@ -21,7 +21,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ImageButton;
 
+;
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
@@ -138,11 +140,9 @@ public class EasyGuideDownloaderActivity extends Activity {
 
 		((Button) findViewById(R.id.buttonPlay))
 				.setOnClickListener(new OnClickListener() {
-
 					@Override
 					public void onClick(View arg0) {
 						new Handler().post(new Runnable() {
-
 							@Override
 							public void run() {
 								InvokePlayer();
@@ -163,6 +163,15 @@ public class EasyGuideDownloaderActivity extends Activity {
 						});// post
 					}// onClick
 				});// OnClickListener
+
+		((ImageButton) findViewById(R.id.imageButtonGlossary))
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Glossary glossary = new Glossary(EasyGuideDownloaderActivity.this.self);
+						glossary.show();
+					}// onClick
+				});// OnClickListener()
 	}// onCreate
 
 	/*

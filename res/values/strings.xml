@@ -19,5 +19,6 @@
     <string name="organization">作成者</string>
     <string name="organizationDefinition">コンテンツの作成者です。配布者とは異なる場合があります。コンテンツそのものには電子的署名がありませんので、その正当性は配布者に依存します。
         信頼できない配布者からのコンテンツはダウンロードしないでください。</string>
+    <string name="glossary">用語集</string>
 
 </resources>

@@ -21,33 +21,49 @@ public class ZippedAssets extends ArrayList<ZipUrl> {
 	private AssetManager assetManager;
 
 	public ZippedAssets(Context context_) {
-		final Domain assets_domain = new Domain("assets");
 		this.assetManager = context_.getResources().getAssets();
-		String[] list;
+
+		Pattern domain_pattern = Pattern.compile("^[^.][a-zA-Z_0-9.-]+[^.]$");
+		String[] domain_list;
 		try {
-			list = this.assetManager.list("");
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			domain_list = this.assetManager.list("");
+		} catch (IOException e2) {
+			e2.printStackTrace();
 			return;
 		}// try
-		if (list == null)
-			return;
-		Pattern pattern = Pattern.compile(".+\\.zip$");
-		for (String s : list) {
-			// we need to exclude files and directories implicitly placed on
-			// assets
-			Matcher matcher = pattern.matcher(s);
-			if (matcher.find()) {
+		for (String domain_string : domain_list) {
+			Matcher domain_matcher = domain_pattern.matcher(domain_string);
+			if (!domain_matcher.find())
+				continue;
+			String[] zip_list;
+			try {
+				zip_list = this.assetManager.list(domain_string);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				return;
+			}// try
+			if (zip_list == null)
+				return;
+
+			Domain domain = new Domain(domain_string);
+
+			Pattern zip_pattern = Pattern.compile(".+\\.zip$");
+			for (String zip_string : zip_list) {
+				// we need to exclude files and directories implicitly placed on
+				// assets
+				Matcher zip_matcher = zip_pattern.matcher(zip_string);
+				if (!zip_matcher.find())
+					continue;
 				URI uri;
 				try {
-					uri = new URI("file", null, "assets", -1, "/" + s, null,
-							null);
+					uri = new URI("file", null, "assets", -1, "/"
+							+ domain_string + "/" + zip_string, null, null);
 				} catch (URISyntaxException e) {
 					e.printStackTrace();
 					continue;
 				}// try
 				try {
-					this.add(new ZipUrl(assets_domain, uri));
+					this.add(new ZipUrl(domain, uri));
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 					continue;
@@ -55,7 +71,7 @@ public class ZippedAssets extends ArrayList<ZipUrl> {
 					e.printStackTrace();
 					continue;
 				}// try
-			}// if
+			}// for
 		}// for
 	}// an constructor
 }// ZippedAssets

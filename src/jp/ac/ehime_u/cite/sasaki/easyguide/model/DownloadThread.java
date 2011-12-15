@@ -114,13 +114,13 @@ public class DownloadThread extends Thread {
 
 	private void CopyFromAssets() {
 		InputStream input_stream;
-		Pattern pattern = Pattern.compile("^/(.+\\.zip)$");
+		Pattern pattern = Pattern.compile("^/([0-9a-zA-Z_-.]+/.+\\.zip)$");
 		String path_in_assets = this.zipUrl.getUri().getPath();
 		Matcher matcher = pattern.matcher(path_in_assets);
 		if (!matcher.find()) {
 			throw new RuntimeException("Malformed path in assets : "
 					+ path_in_assets);
-		}//if
+		}// if
 		String path_in_assets_without_heading_slash = matcher.group(1);
 		try {
 			input_stream = this.assetManager

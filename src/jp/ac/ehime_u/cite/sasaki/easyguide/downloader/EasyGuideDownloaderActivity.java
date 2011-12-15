@@ -102,7 +102,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 		 */
 
 		ListView list_view = (ListView) findViewById(R.id.listViewUrls);
-		ArrayAdapter<ZipUrl> array_adapter = new ZipUrisAdapter(this,
+		ArrayAdapter<?> array_adapter = new ZipUrisAdapter(this,
 				R.id.listViewUrls, ZipUrlsHelper.GetTheZipUrls(this)
 						.GetArrayList());
 		// list_view.setAdapter(ZipUrlsHelper.GetTheZipUrls(this).GetArrayAdapter(

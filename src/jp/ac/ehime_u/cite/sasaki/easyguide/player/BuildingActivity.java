@@ -35,7 +35,7 @@ public class BuildingActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.building);
-		mGestureDetector = new GestureDetector(this, mOnGestureListener);
+		this.mGestureDetector = new GestureDetector(this, this.mOnGestureListener);
 
 		Organizations organizations = Organizations.GetTheOrganizations();
 		Organization organization = organizations.GetOrganization("assets");
@@ -135,7 +135,7 @@ public class BuildingActivity extends Activity {
 	public boolean onTouchEvent(MotionEvent event) {
 		// return super.onTouchEvent(event);
 		Log.d("onTouchEvent", "");
-		return mGestureDetector.onTouchEvent(event);
+		return this.mGestureDetector.onTouchEvent(event);
 	}
 
 	private final SimpleOnGestureListener mOnGestureListener = new SimpleOnGestureListener() {

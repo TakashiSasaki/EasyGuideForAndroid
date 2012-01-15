@@ -1,3 +1,5 @@
 .bzr/*
 .gitignore.swp
 bin/*
+default.properties
+gen/*

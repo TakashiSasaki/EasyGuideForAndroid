@@ -22,6 +22,12 @@ import android.util.Log;
 public class Domain extends ArrayList<Organization> {
 	private File domainDirectory;
 
+	/**
+	 * class Domain represents domain directory.
+	 * This constructor makes corresponding directory if not exists.
+	 * 
+	 * @param domain_name
+	 */
 	public Domain(String domain_name) {
 		// if (!IsResolvable(url_.getHost())) {
 		// throw new Exception(url_.getHost() + " is not resolvable.");
@@ -44,7 +50,7 @@ public class Domain extends ArrayList<Organization> {
 	/**
 	 * a constructor
 	 * 
-	 * @param domain_directory
+	 * @param domain_directory : Already existing domain directory.
 	 * @throws FileNotFoundException
 	 */
 	public Domain(File domain_directory) throws FileNotFoundException {
@@ -58,6 +64,11 @@ public class Domain extends ArrayList<Organization> {
 		}
 	}// a constructor of class Domain
 
+	/**
+	 * Domain class inherits ArrayList<Organization>
+	 * and an instance of Domain class holds organization directories.
+	 * The enumeration of organization directories are not performed automatically.
+	 */
 	public void EnumerateOrganizations() {
 		for (File file : this.domainDirectory.listFiles()) {
 			Log.v(this.getClass().getSimpleName(),
@@ -85,6 +96,9 @@ public class Domain extends ArrayList<Organization> {
 		directory.delete();
 	}// RemoveDirectory
 
+	/**
+	 * Removes all organization directories under the domain directory.
+	 */
 	public void RemoveAllOrganizations() {
 		for (File f : this.domainDirectory.listFiles()) {
 			if (f.isDirectory()) {
@@ -94,6 +108,11 @@ public class Domain extends ArrayList<Organization> {
 		this.clear();
 	}// RemoveAllOrganizations
 
+	
+	/**
+	 * Removes all files with zip extension under the domain directory.
+	 * Domain directory holds ZIP files and one or more organization directoryies.
+	 */
 	public void RemoveAllZipFiles() {
 		FilenameFilter file_name_filter = new FilenameFilter() {
 			@Override

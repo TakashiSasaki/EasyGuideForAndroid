@@ -7,6 +7,7 @@ import android.util.Log;
  * 
  */
 public class DirectoryName {
+	private String rawName = "unknown";
 	private String name = "unknown";
 	private int number = -1;
 	private int x = -1, y = -1;
@@ -19,10 +20,14 @@ public class DirectoryName {
 	}
 
 	/**
+	 * a constructor takes directory name.
+	 * 
 	 * @param directory_name
+	 *            : directory name to be parsed
 	 */
 	public DirectoryName(String directory_name) {
 		Log.v(this.getClass().getSimpleName(), "parsing " + directory_name);
+		this.rawName = directory_name;
 		String[] parts = directory_name.split("[ ]+");
 		if (parts.length == 1) {
 			this.name = parts[0];
@@ -35,8 +40,8 @@ public class DirectoryName {
 				// throw new RuntimeException("Invalid directory name "
 				// + directory_name + ", " + e.getMessage());
 				Log.e(this.getClass().getSimpleName(),
-						"Invalid directory name "
-						+ directory_name + ", " + e.getMessage());
+						"Invalid directory name " + directory_name + ", "
+								+ e.getMessage());
 			}// try
 			this.name = parts[1];
 			return;
@@ -60,27 +65,31 @@ public class DirectoryName {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
 	 * @return the number
 	 */
 	public int getNumber() {
-		return number;
+		return this.number;
 	}
 
 	/**
 	 * @return the x
 	 */
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	/**
 	 * @return the y
 	 */
 	public int getY() {
-		return y;
+		return this.y;
+	}
+
+	public String getRawName() {
+		return this.rawName;
 	}
 }

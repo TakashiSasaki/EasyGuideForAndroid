@@ -37,20 +37,27 @@ public class Facility extends ArrayList<Building> {
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning building directories in "
 						+ this.facilityDirectory.getAbsolutePath());
+		this.EnumerateBuildings();
+	}// a constructor
+
+	public void EnumerateBuildings() {
 		for (File building_directory : this.facilityDirectory.listFiles()) {
 			if (building_directory.isDirectory())
 				this.add(new Building(building_directory));
 		}// for
-	}// a constructor
+	}// EnumerateBuildings
 
-	public void Sort() {
+	/**
+	 * Sort buildings by building number.
+	 */
+	public void SortByBuildingNumber() {
 		Collections.sort(this, new Comparator<Building>() {
 			@Override
 			public int compare(Building arg0, Building arg1) {
 				return arg0.getBuildingNumber() - arg1.getBuildingNumber();
 			}// compare
 		});// sort
-	}// Sort
+	}// SortByBuildingNumber
 
 	@SuppressWarnings("javadoc")
 	public int getFacilityNumber() {

@@ -37,6 +37,10 @@ public class Organization extends ArrayList<Facility> {
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning facility directories in "
 						+ this.organizationDirectory);
+		this.EnumerateFacilities();
+	}// a constructor
+	
+	public void EnumerateFacilities(){
 		for (File facility_directory : this.organizationDirectory.listFiles()) {
 			if (!facility_directory.isDirectory())
 				continue;
@@ -44,7 +48,7 @@ public class Organization extends ArrayList<Facility> {
 					+ facility_directory.getAbsolutePath() + " found.");
 			this.add(new Facility(facility_directory));
 		}// for
-	}// a constructor
+	}
 
 	@SuppressWarnings("javadoc")
 	public String getMacAddress() {

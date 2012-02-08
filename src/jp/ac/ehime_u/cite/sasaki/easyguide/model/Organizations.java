@@ -16,12 +16,16 @@ public class Organizations extends ArrayList<Organization> {
 		super();
 		Log.v(this.getClass().getSimpleName(),
 				"Enumerating organization directories");
+		this.EnumerateOrganizations();
+	}// a constructor
+
+	public void EnumerateOrganizations() {
 		for (Domain domain : Root.GetTheRoot()) {
 			for (Organization organization : domain) {
 				this.add(organization);
 			}// for
 		}// for
-	}// a constructor
+	}// EnumerateOrganizations
 
 	/**
 	 * @return singleton object of Organizations

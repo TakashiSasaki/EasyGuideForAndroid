@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.StorageException;
+
 import android.os.Environment;
 import android.util.Log;
 
@@ -21,15 +23,18 @@ public class Root extends ArrayList<Domain> {
 
 	// private File externalStorageDirectory;
 
-	private Root() {
+	private Root() throws StorageException {
 		File external_storage_directory = Environment
 				.getExternalStorageDirectory();
 		Log.v(this.getClass().getSimpleName(),
 				external_storage_directory.getAbsolutePath());
 		rootDirectory = new File(external_storage_directory, rootDirectoryName);
 		if (!rootDirectory.exists()) {
-			throw new RuntimeException(rootDirectory.getPath()
-					+ " is not found");
+			rootDirectory.mkdir();
+		}
+		if (!rootDirectory.exists()) {
+			throw new StorageException(rootDirectory.getPath()
+					+ " can not be created.");
 		}
 		/*
 		 * if (!rootDirectory.exists()) { rootDirectory.mkdir();

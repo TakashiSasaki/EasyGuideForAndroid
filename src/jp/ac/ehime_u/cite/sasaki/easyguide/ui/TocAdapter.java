@@ -25,9 +25,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class TocAdapter extends ArrayAdapter<TocArrayItem> {
+public class TocAdapter extends BaseAdapter {
 
 	Organizations organizations = Organizations.GetTheOrganizations();
 
@@ -101,7 +102,7 @@ public class TocAdapter extends ArrayAdapter<TocArrayItem> {
 	 * @param context
 	 */
 	public TocAdapter(Context context) {
-		super(context, R.id.textViewTitle);
+		super();
 
 		this.layoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -198,4 +199,22 @@ public class TocAdapter extends ArrayAdapter<TocArrayItem> {
 		}// try
 		return view;
 	}// getView
+
+	@Override
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Object getItem(int position) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long getItemId(int position) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }// TocAdapter

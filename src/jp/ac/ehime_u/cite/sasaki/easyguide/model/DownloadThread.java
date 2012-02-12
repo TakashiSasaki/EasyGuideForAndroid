@@ -37,7 +37,7 @@ import android.util.Log;
  * 
  */
 public class DownloadThread extends Thread {
-	private final ZipUrl zipUrl;
+	private final ZipUri zipUrl;
 	private final int bufferSize = 65536;
 	private final HttpGet httpGet;
 	private final HttpClient httpClient;
@@ -51,7 +51,7 @@ public class DownloadThread extends Thread {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	public DownloadThread(ZipUrl zip_url, Context context_)
+	public DownloadThread(ZipUri zip_url, Context context_)
 			throws URISyntaxException {
 		this.zipUrl = zip_url;
 		this.zipUrl.SetDownloadedFile();
@@ -114,7 +114,7 @@ public class DownloadThread extends Thread {
 
 	private void CopyFromAssets() {
 		InputStream input_stream;
-		Pattern pattern = Pattern.compile("^/([0-9a-zA-Z_-.]+/.+\\.zip)$");
+		Pattern pattern = Pattern.compile("^/([0-9a-zA-Z_\\-.]+/.+\\.zip)$");
 		String path_in_assets = this.zipUrl.getUri().getPath();
 		Matcher matcher = pattern.matcher(path_in_assets);
 		if (!matcher.find()) {
@@ -122,6 +122,8 @@ public class DownloadThread extends Thread {
 					+ path_in_assets);
 		}// if
 		String path_in_assets_without_heading_slash = matcher.group(1);
+		Log.v(this.getClass().getSimpleName(), "Reading from "
+				+ path_in_assets_without_heading_slash);
 		try {
 			input_stream = this.assetManager
 					.open(path_in_assets_without_heading_slash);
@@ -131,10 +133,12 @@ public class DownloadThread extends Thread {
 		}// try
 		BufferedInputStream buffered_input_stream = new BufferedInputStream(
 				input_stream);
-		SaveStream(buffered_input_stream);
+		final int count = SaveStream(buffered_input_stream);
+		Log.v(this.getClass().getSimpleName(), "" + count + " bytes wrote.");
 	}// CopyFromAssets
 
-	private void SaveStream(BufferedInputStream buffered_input_stream) {
+	private int SaveStream(BufferedInputStream buffered_input_stream) {
+		int count = 0;
 		Log.v(this.getClass().getSimpleName(), "Writing downloaded file to "
 				+ this.zipUrl.getDownloadedFile().getAbsolutePath());
 		BufferedOutputStream buffered_output_stream;
@@ -143,7 +147,7 @@ public class DownloadThread extends Thread {
 					new FileOutputStream(this.zipUrl.getDownloadedFile()));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
-			return;
+			return count;
 		}// try
 
 		byte buffer[] = new byte[this.bufferSize];
@@ -151,10 +155,11 @@ public class DownloadThread extends Thread {
 		try {
 			while ((read_size = buffered_input_stream.read(buffer)) != -1) {
 				buffered_output_stream.write(buffer, 0, read_size);
+				count += read_size;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			return;
+			return count;
 		}// try
 		Log.v(this.getClass().getSimpleName(), "Closing downloaded file to "
 				+ this.zipUrl.getDownloadedFile().getAbsolutePath());
@@ -162,20 +167,21 @@ public class DownloadThread extends Thread {
 			buffered_output_stream.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
-			return;
+			return count;
 		}// try
 		try {
 			buffered_output_stream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			return;
+			return count;
 		}// try
 		try {
 			buffered_input_stream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			return;
+			return count;
 		}// try
+		return count;
 	}// SaveStream
 
 	/**

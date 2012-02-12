@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Accessor.SetterOnlyReflection;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.R;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DirectoryName;
@@ -18,6 +20,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
 import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocAdapter.TocItem;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +78,14 @@ public class TocAdapter extends ArrayAdapter<TocArrayItem> {
 			return "" + this.directoryName.getX();
 		}
 
+		public String getY() {
+			return "" + this.directoryName.getY();
+		}
+
+		public String getNumber() {
+			return "" + this.directoryName.getNumber();
+		}
+
 		public Bitmap getThumbnail() {
 			return this.thumbnail;
 		}
@@ -88,11 +99,9 @@ public class TocAdapter extends ArrayAdapter<TocArrayItem> {
 	 * the constructor of TocAdapter
 	 * 
 	 * @param context
-	 * @param resource
-	 * @param textViewResourceId
 	 */
-	public TocAdapter(Context context, int resource) {
-		super(context, resource);
+	public TocAdapter(Context context) {
+		super(context, R.id.textViewTitle);
 
 		this.layoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -171,26 +180,22 @@ public class TocAdapter extends ArrayAdapter<TocArrayItem> {
 			((TextView) (view.findViewById(R.id.textViewDirectoryName)))
 					.setText(toc_item.directoryName.getRawName());
 			((TextView) (view.findViewById(R.id.textViewLevelName)))
-					.setText(getLayerTypeName(toc_item.layerType));
+					.setText(toc_item.getLayerTypeName());
+			((TextView) (view.findViewById(R.id.textViewTitle)))
+					.setText(toc_item.getTitle());
+			((TextView) (view.findViewById(R.id.textViewNumber)))
+					.setText(toc_item.getNumber());
+			((TextView) (view.findViewById(R.id.textViewPath)))
+					.setText(toc_item.getPath());
+			((TextView) (view.findViewById(R.id.textViewX))).setText(toc_item
+					.getX());
+			((TextView) (view.findViewById(R.id.textViewY))).setText(toc_item
+					.getY());
 		} catch (IndexOutOfBoundsException e) {
+			Log.e(this.getClass().getSimpleName(),
+					"no item in tocArrayList at position" + position);
 			return null;
-		}
-		TwitterStatus item = (TwitterStatus) items.get(position);
-		if (item != null) {
-			TextView screenName = (TextView) view.findViewById(R.id.toptext);
-			screenName.setTypeface(Typeface.DEFAULT_BOLD);
-
-			// スクリーンネームをビューにセット
-			TextView text = (TextView) view.findViewById(R.id.bottomtext);
-			if (screenName != null) {
-				screenName.setText(item.getScreenName());
-			}
-
-			// テキストをビューにセット
-			if (text != null) {
-				text.setText(item.getText());
-			}
-		}
+		}// try
 		return view;
 	}// getView
 }// TocAdapter

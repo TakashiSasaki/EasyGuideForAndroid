@@ -31,7 +31,6 @@ import android.widget.ImageButton;
  * 
  */
 public class EasyGuideDownloaderActivity extends Activity {
-	private static final long DOWNLOAD_WAIT = 100;
 	final EasyGuideDownloaderActivity self = this;
 	private ListView listViewUrls;
 	private EditText editTextDomain;
@@ -121,14 +120,9 @@ public class EasyGuideDownloaderActivity extends Activity {
 	 * just each domain directory. Finally zip_urls database is updated.
 	 */
 	private void DownloadZipFilesInAssets(Context context_) {
-		for (Source zip_uri : zipFilesInAssets) {
+		for (Source source : zipFilesInAssets) {
 			try {
-				zip_uri.SetDownloadedFile();
-				DownloadThread download_thread = new DownloadThread(zip_uri,
-						this);
-				download_thread.start();
-				Thread.sleep(DOWNLOAD_WAIT, 0);
-				download_thread.join();
+				source.Download(context_);
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 				continue;

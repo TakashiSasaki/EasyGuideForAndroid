@@ -12,12 +12,9 @@ import java.util.regex.Pattern;
 import android.content.ContentValues;
 import android.content.Context;
 
-//TODO: class name should be renamed to ZipUri
 public class Source {
 	private Domain domain;
 	private URI uri;
-	private Date downloadedDate;
-	private File downloadedFile;
 	private Date lastModified;
 	private LastModifiedHeaderThread lastModifiedThread;
 	final static public String COLUMN_domain = "domain";
@@ -30,8 +27,8 @@ public class Source {
 			Date last_modified) {
 		this.domain = domain_;
 		this.uri = uri_;
-		this.downloadedFile = downloaded_file;
-		this.SetDownloadedFile(this.downloadedFile);
+		// this.downloadedFile = downloaded_file;
+		// this.SetDownloadedFile(this.downloadedFile);
 		this.lastModified = last_modified;
 	}// a constructor
 
@@ -56,36 +53,17 @@ public class Source {
 		}// if
 	}// SetLastModified
 
-	public void SetDownloadedFile(File downloaded_file) {
-		Pattern pattern = Pattern.compile("([0-9+]).zip");
-		Matcher matcher = pattern.matcher(downloaded_file.getName());
-		String time_in_milliseconds;
-		if (matcher.find()) {
-			time_in_milliseconds = matcher.group(1);
-			this.downloadedDate = new Date(Long.parseLong(time_in_milliseconds));
-		} else {
-			this.downloadedDate = null;
-		} // if
-	}// SetDownloadedFile
-
-	/*
-	 * Set local file name in which downloaded byte stream is stored.
-	 */
-	public void SetDownloadedFile() {
-		Calendar calendar = Calendar.getInstance();
-		this.downloadedDate = calendar.getTime();
-		this.downloadedFile = new File(this.domain.getDomainDirectory(), ""
-				+ this.downloadedDate.getTime() + ".zip");
-	}// SetDownloadedFile
-
-	public void Download(Context context_) throws InterruptedException,
-			URISyntaxException {
-		SetDownloadedFile();
-		DownloadThread download_thread = new DownloadThread(this, context_);
+	public DownloadedItem Download(Context context_)
+			throws InterruptedException, URISyntaxException {
+		// SetDownloadedFile();
+		DownloadedItem downloaded_item = new DownloadedItem(this.domain);
+		DownloadThread download_thread = new DownloadThread(this, context_,
+				downloaded_item);
 		download_thread.start();
 		Thread.sleep(DOWNLOAD_WAIT, 0);
 		download_thread.join();
-	}//Download
+		return downloaded_item;
+	}// Download
 
 	public Domain GetDomain() {
 		return this.domain;
@@ -101,14 +79,6 @@ public class Source {
 
 	public URI getUri() {
 		return this.uri;
-	}
-
-	public Date getDownloadedDate() {
-		return this.downloadedDate;
-	}
-
-	public File getDownloadedFile() {
-		return this.downloadedFile;
 	}
 
 	public Date getLastModified() throws InterruptedException {
@@ -129,11 +99,6 @@ public class Source {
 	public ContentValues GetContentValues() {
 		ContentValues cv = new ContentValues();
 		cv.put(COLUMN_domain, this.domain.getDomainDirectory().getName());
-		try {
-			cv.put(COLUMN_downloadedFile, this.downloadedFile.getName());
-		} catch (NullPointerException nurupo) {
-			cv.put(COLUMN_downloadedFile, "");
-		}
 		try {
 			cv.put(COLUMN_lastModified, this.lastModified.getTime());
 		} catch (NullPointerException nurupo) {

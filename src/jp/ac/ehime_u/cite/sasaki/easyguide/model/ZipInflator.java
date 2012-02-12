@@ -33,9 +33,17 @@ public class ZipInflator {
 		}
 	}
 
-	public ZipInflator(Source zip_url) throws FileNotFoundException {
-		this.destinationDirectory = zip_url.GetDomainDirectory();
-		this.inputStream = new FileInputStream(zip_url.getDownloadedFile());
+	public ZipInflator(DownloadedItem downloaded_item)
+			throws FileNotFoundException {
+		File parent_directory = downloaded_item.getDownloadedFile();
+		if (!parent_directory.isDirectory()) {
+			throw new FileNotFoundException(parent_directory.getPath()
+					+ " is not a directory.");
+		}
+		this.destinationDirectory = downloaded_item.getDownloadedFile()
+				.getParentFile();
+		this.inputStream = new FileInputStream(
+				downloaded_item.getDownloadedFile());
 	}// a constructor
 
 	/**

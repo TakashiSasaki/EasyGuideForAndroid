@@ -44,6 +44,7 @@ public class DownloadThread extends Thread {
 	private HttpResponse httpResponse;
 	private Context context;
 	private AssetManager assetManager;
+	private DownloadedItem downloadedItem;
 
 	/**
 	 * @param domain_
@@ -51,10 +52,11 @@ public class DownloadThread extends Thread {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	public DownloadThread(Source zip_url, Context context_)
+	public DownloadThread(Source zip_url, Context context_, DownloadedItem downloaded_item)
 			throws URISyntaxException {
 		this.zipUrl = zip_url;
-		this.zipUrl.SetDownloadedFile();
+		this.downloadedItem = downloaded_item;
+		//this.zipUrl.SetDownloadedFile();
 		this.httpGet = new HttpGet(this.zipUrl.getUri());
 		this.httpClient = new DefaultHttpClient();
 		this.httpClient.getParams().setParameter("http.connection.timeout",
@@ -109,7 +111,7 @@ public class DownloadThread extends Thread {
 		}// try
 		BufferedInputStream buffered_input_stream = new BufferedInputStream(
 				input_stream, this.bufferSize);
-		SaveStream(buffered_input_stream);
+		this.downloadedItem.SaveStream(buffered_input_stream);
 	}// DownloadViaHttp
 
 	private void CopyFromAssets() {
@@ -133,56 +135,9 @@ public class DownloadThread extends Thread {
 		}// try
 		BufferedInputStream buffered_input_stream = new BufferedInputStream(
 				input_stream);
-		final int count = SaveStream(buffered_input_stream);
+		final int count = this.downloadedItem.SaveStream(buffered_input_stream);
 		Log.v(this.getClass().getSimpleName(), "" + count + " bytes wrote.");
 	}// CopyFromAssets
-
-	private int SaveStream(BufferedInputStream buffered_input_stream) {
-		int count = 0;
-		Log.v(this.getClass().getSimpleName(), "Writing downloaded file to "
-				+ this.zipUrl.getDownloadedFile().getAbsolutePath());
-		BufferedOutputStream buffered_output_stream;
-		try {
-			buffered_output_stream = new BufferedOutputStream(
-					new FileOutputStream(this.zipUrl.getDownloadedFile()));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-			return count;
-		}// try
-
-		byte buffer[] = new byte[this.bufferSize];
-		int read_size;
-		try {
-			while ((read_size = buffered_input_stream.read(buffer)) != -1) {
-				buffered_output_stream.write(buffer, 0, read_size);
-				count += read_size;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			return count;
-		}// try
-		Log.v(this.getClass().getSimpleName(), "Closing downloaded file to "
-				+ this.zipUrl.getDownloadedFile().getAbsolutePath());
-		try {
-			buffered_output_stream.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return count;
-		}// try
-		try {
-			buffered_output_stream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return count;
-		}// try
-		try {
-			buffered_input_stream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return count;
-		}// try
-		return count;
-	}// SaveStream
 
 	/**
 	 * @param http_client

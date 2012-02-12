@@ -33,15 +33,15 @@ public class ZipUrisAdapter extends ArrayAdapter<Source> {
 				.findViewById(R.id.textViewDomain);
 		text_view_domain.setText(zip_url.GetDomainByString());
 
-		TextView text_view_downloaded_file = (TextView) view
-				.findViewById(R.id.textViewDownloadedFile);
-		text_view_downloaded_file
-				.setText(zip_url.getDownloadedFile().getPath());
+//		TextView text_view_downloaded_file = (TextView) view
+//				.findViewById(R.id.textViewDownloadedFile);
+//		text_view_downloaded_file
+//				.setText(zip_url.getDownloadedFile().getPath());
 
-		TextView text_view_downloaded_time = (TextView) view
-				.findViewById(R.id.textViewDownloadedTime);
-		text_view_downloaded_time.setText(zip_url.getDownloadedDate()
-				.toString());
+//		TextView text_view_downloaded_time = (TextView) view
+//				.findViewById(R.id.textViewDownloadedTime);
+//		text_view_downloaded_time.setText(zip_url.getDownloadedDate()
+//				.toString());
 
 		TextView text_view_url = (TextView) view.findViewById(R.id.textViewUrl);
 		text_view_url.setText(zip_url.getUri().toString());

@@ -26,6 +26,11 @@ public class Room extends ArrayList<Equipment> {
 		this.roomImage = new DirectoryImage(room_directory, Room.roomImageName);
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning equipment directories in " + this.roomDirectory);
+		this.EnumerateEquipments();
+	}// a constructor
+
+	@SuppressWarnings("javadoc")
+	public void EnumerateEquipments() {
 		for (File equipment_directory : this.roomDirectory.listFiles()) {
 			if (!equipment_directory.isDirectory())
 				continue;
@@ -33,11 +38,16 @@ public class Room extends ArrayList<Equipment> {
 					+ equipment_directory.getAbsolutePath() + " was found.");
 			this.add(new Equipment(equipment_directory));
 		}// for
-	}// a constructor
+	}// EnumerateEquipments
 
 	@SuppressWarnings("javadoc")
 	public String getRoomName() {
 		return this.roomDirectoryName.getName();
+	}
+
+	@SuppressWarnings("javadoc")
+	public DirectoryName getRoomDirectoryName() {
+		return this.roomDirectoryName;
 	}
 
 	@SuppressWarnings("javadoc")

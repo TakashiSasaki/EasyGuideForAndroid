@@ -34,15 +34,20 @@ public class Equipment extends ArrayList<Panel> {
 				equipment_directory.getName());
 		this.equipmentDirectoryImage = new DirectoryImage(equipment_directory,
 				equipmentImageName);
+		this.EnumeratePanels();
+	}// a constructor
+
+	@SuppressWarnings("javadoc")
+	public void EnumeratePanels() {
 		for (File panel_directory : this.equipmentDirectory.listFiles()) {
 			if (panel_directory.isDirectory())
 				this.add(new Panel(panel_directory));
 		}// for
-		this.Sort();
-	}// a constructor
+		this.SortByPanelNumber();
+	}// EnumeratePanels
 
 	@SuppressWarnings("javadoc")
-	public void Sort() {
+	public void SortByPanelNumber() {
 		Collections.sort(this, new Comparator<Panel>() {
 
 			@Override
@@ -50,7 +55,7 @@ public class Equipment extends ArrayList<Panel> {
 				return arg0.getPanelNumber() - arg1.getPanelNumber();
 			}// compare
 		});// sort
-	}// Sort
+	}// SortByPanelNumber
 
 	@SuppressWarnings("javadoc")
 	public File getEquipmentDirectory() {
@@ -60,6 +65,11 @@ public class Equipment extends ArrayList<Panel> {
 	@SuppressWarnings("javadoc")
 	public String getEquipmentName() {
 		return equipmentDirectoryName.getName();
+	}
+
+	@SuppressWarnings("javadoc")
+	public DirectoryName getEquipmentDirectoryName() {
+		return this.equipmentDirectoryName;
 	}
 
 	@SuppressWarnings("javadoc")

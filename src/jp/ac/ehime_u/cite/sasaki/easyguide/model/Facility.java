@@ -70,6 +70,11 @@ public class Facility extends ArrayList<Building> {
 	}
 
 	@SuppressWarnings("javadoc")
+	public DirectoryName getFacilityDirectoryName() {
+		return this.facilityDirectoryName;
+	}
+
+	@SuppressWarnings("javadoc")
 	public int getFacilityX() {
 		return this.facilityDirectoryName.getX();
 	}

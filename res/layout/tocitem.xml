@@ -10,7 +10,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textViewLevel"
+            android:id="@+id/textViewLevelName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="階層" />
@@ -39,21 +39,20 @@
             android:layout_height="wrap_content"
             android:text="Y座標" />
     </LinearLayout>
-
+
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="right" >
-
+
         <TextView
-            android:id="@+id/textViewRawName"
+            android:id="@+id/textViewDirectoryName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ディレクトリ名" />
-
     </LinearLayout>
-
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"

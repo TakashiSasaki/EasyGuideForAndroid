@@ -48,6 +48,11 @@ public class Panel {
 	public File getPanelDirectory() {
 		return panelDirectory;
 	}
+	
+	@SuppressWarnings("javadoc")
+	public DirectoryName getPanelDirectoryName(){
+		return this.panelDirectoryName;
+	}
 
 	@SuppressWarnings("javadoc")
 	public String getPanelName() {

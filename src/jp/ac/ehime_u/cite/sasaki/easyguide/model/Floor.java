@@ -30,6 +30,11 @@ public class Floor extends ArrayList<Room> {
 		this.floorImage = new DirectoryImage(floorDirectory, floorImageName);
 		Log.v(this.getClass().getSimpleName(), "Scanning room directories in "
 				+ this.floorDirectory);
+		this.EnumerateRooms();
+	}// a constructor
+
+	@SuppressWarnings("javadoc")
+	public void EnumerateRooms() {
 		for (File room_directory : this.floorDirectory.listFiles()) {
 			if (!room_directory.isDirectory())
 				continue;
@@ -37,18 +42,18 @@ public class Floor extends ArrayList<Room> {
 					+ room_directory.getAbsolutePath() + " was found.");
 			this.add(new Room(room_directory));
 		}// for
-		this.Sort();
-	}// a constructor
+		this.SortByRoomNumber();
+	}// EnumerateRooms
 
 	@SuppressWarnings("javadoc")
-	public void Sort() {
+	public void SortByRoomNumber() {
 		Collections.sort(this, new Comparator<Room>() {
 			@Override
 			public int compare(Room arg0, Room arg1) {
 				return arg0.getRoomNumber() - arg1.getRoomNumber();
 			}// compare
 		});// sort
-	}// Sort
+	}// SortByRoomNumber
 
 	@SuppressWarnings("javadoc")
 	public Bitmap getFloorImage() {
@@ -91,6 +96,7 @@ public class Floor extends ArrayList<Room> {
 	}
 
 	@SuppressWarnings("javadoc")
+	@Deprecated
 	public Room GetRoom(String room_name) {
 		for (Room room : this) {
 			if (room.getRoomName().equals(room_name)) {
@@ -102,6 +108,7 @@ public class Floor extends ArrayList<Room> {
 	}// GetRoom
 
 	@SuppressWarnings("javadoc")
+	@Deprecated
 	public Room GetRoom(int room_number) {
 		for (Room room : this) {
 			if (room.getRoomName().equals(room_number)) {

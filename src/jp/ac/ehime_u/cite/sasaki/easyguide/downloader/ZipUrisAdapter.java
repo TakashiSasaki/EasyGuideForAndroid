@@ -3,7 +3,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 import java.util.ArrayList;
 import java.util.Date;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUrl;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUri;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class ZipUrisAdapter extends ArrayAdapter<ZipUrl> {
+public class ZipUrisAdapter extends ArrayAdapter<ZipUri> {
 	private LayoutInflater layoutInflater;
 
 	public ZipUrisAdapter(Context context, int layout_id,
-			ArrayList<ZipUrl> array_list) {
+			ArrayList<ZipUri> array_list) {
 		super(context, layout_id, array_list);
 		this.layoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -28,7 +28,7 @@ public class ZipUrisAdapter extends ArrayAdapter<ZipUrl> {
 			view = this.layoutInflater.inflate(R.layout.listviewrow, null);
 			//view.setBackgroundColor(Color.DKGRAY);
 		}// if
-		ZipUrl zip_url = this.getItem(position);
+		ZipUri zip_url = this.getItem(position);
 		TextView text_view_domain = (TextView) view
 				.findViewById(R.id.textViewDomain);
 		text_view_domain.setText(zip_url.GetDomainByString());

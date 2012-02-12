@@ -3,27 +3,29 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.StorageException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadThread;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUrl;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZippedAssets;
-
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUri;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipFilesInAssets;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ImageButton;
 
-;
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
@@ -31,6 +33,16 @@ import android.widget.ImageButton;
 public class EasyGuideDownloaderActivity extends Activity {
 	private static final long DOWNLOAD_WAIT = 100;
 	final EasyGuideDownloaderActivity self = this;
+	private ListView listViewUrls;
+	private EditText editTextDomain;
+	private EditText editTextUri;
+	private Button buttonQuit;
+	private Button buttonPlay;
+	private Button buttonListContents;
+	private ImageButton imageButtonGlossary;
+	private ImageButton imageButtonWifi;
+	ZipUrisSQLiteOpenHelper zipUrisSQLiteOpenHelper;
+	ZipFilesInAssets zipFilesInAssets;
 
 	@SuppressWarnings("serial")
 	static class Exception extends RuntimeException {
@@ -43,49 +55,22 @@ public class EasyGuideDownloaderActivity extends Activity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.v(this.getClass().getSimpleName(), "onCreate");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		this.setContentView(R.layout.main);
 
-		DownloadZipInAssets();
+		this.zipUrisSQLiteOpenHelper = ZipUrisSQLiteOpenHelper
+				.GetTheInstance(this);
+		this.zipFilesInAssets = ZipFilesInAssets.GetTheInstance(this);
 
-		((Button) findViewById(R.id.buttonRegister))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
-						String url_string = ((EditText) findViewById(R.id.editTextUrl))
-								.getEditableText().toString();
-						URI uri;
-						try {
-							uri = new URI(url_string);
-						} catch (URISyntaxException e) {
-							e.printStackTrace();
-							return;
-						}// try
-
-						String domain_string = ((EditText) findViewById(R.id.editTextDomain))
-								.getEditableText().toString();
-						Domain domain = new Domain(domain_string);
-
-						ZipUrlsHelper zip_urls_helper = ZipUrlsHelper
-								.GetTheZipUrls(arg0.getContext());
-						ZipUrl zip_url;
-						try {
-							zip_url = new ZipUrl(domain, uri);
-						} catch (MalformedURLException e) {
-							e.printStackTrace();
-							return;
-						} catch (URISyntaxException e) {
-							e.printStackTrace();
-							return;
-						}// try
-						zip_urls_helper.Insert(zip_url);
-						ListView list_view = (ListView) findViewById(R.id.listViewUrls);
-						list_view.setAdapter(ZipUrlsHelper.GetTheZipUrls(
-								EasyGuideDownloaderActivity.this)
-								.GetArrayAdapter(
-										EasyGuideDownloaderActivity.this));
-					}// onClick
-				});// OnClicKListener
+		this.listViewUrls = (ListView) findViewById(R.id.listViewUrls);
+		this.editTextDomain = (EditText) findViewById(R.id.editTextDomain);
+		this.editTextUri = (EditText) findViewById(R.id.editTextUrl);
+		this.buttonQuit = ((Button) findViewById(R.id.buttonQuit));
+		this.buttonPlay = ((Button) findViewById(R.id.buttonPlay));
+		this.buttonListContents = (Button) findViewById(R.id.buttonListContents);
+		this.imageButtonGlossary = (ImageButton) findViewById(R.id.imageButtonGlossary);
+		this.imageButtonWifi = (ImageButton) findViewById(R.id.imageButtonWifi);
 
 		// TODO: this button no longer exists
 		/*
@@ -101,107 +86,45 @@ public class EasyGuideDownloaderActivity extends Activity {
 		 * });// Runnable }// onClick });// OnClickListener
 		 */
 
-		ListView list_view = (ListView) findViewById(R.id.listViewUrls);
-		ArrayAdapter<?> array_adapter = new ZipUrisAdapter(this,
-				R.id.listViewUrls, ZipUrlsHelper.GetTheZipUrls(this)
-						.GetArrayList());
-		// list_view.setAdapter(ZipUrlsHelper.GetTheZipUrls(this).GetArrayAdapter(
-		// this));
-		list_view.setAdapter(array_adapter);
-		list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, final View view,
-					int position, long id) {
-				ListView list_view = (ListView) parent;
-				final String url_string = (String) list_view
-						.getItemAtPosition(position);
-				Handler handler = new Handler();
-				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						SetEditableText(url_string);
-					}// run
-				});// Runnable
-			}// onItemClick
-		});// OnItemClickListener
+		this.SetListViewListeners();
+		this.SetButtonRegisterListeners();
+		this.SetButtonQuitListeners();
+		this.SetButtonPlayListeners();
+		this.SetButtonListContentsListeners();
+		this.SetImageButtonGlossaryListeners();
 
-		((Button) findViewById(R.id.buttonQuit))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(final View arg0) {
-						new Handler().post(new Runnable() {
-							@Override
-							public void run() {
-								moveTaskToBack(true);
-							}// run
-						});// Runnable
-					}// onClick
-				});// OnClickListener
-
-		((Button) findViewById(R.id.buttonPlay))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
-						new Handler().post(new Runnable() {
-							@Override
-							public void run() {
-								InvokePlayer();
-							}// run
-						});// post
-					}// onClick
-				});// OnClickListener
-
-		((Button) findViewById(R.id.buttonListContents))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
-						new Handler().post(new Runnable() {
-							@Override
-							public void run() {
-								InvokeSummary();
-							}// run
-						});// post
-					}// onClick
-				});// OnClickListener
-
-		((ImageButton) findViewById(R.id.imageButtonGlossary))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Glossary glossary = new Glossary(
-								EasyGuideDownloaderActivity.this.self);
-						glossary.show();
-					}// onClick
-				});// OnClickListener()
-
-		((ImageButton) findViewById(R.id.imageButtonWifi))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						WifiListDialog wifi_list_dialog = new WifiListDialog(
-								EasyGuideDownloaderActivity.this.self);
-						wifi_list_dialog.show();
-					}// onClick
-				});// onClickListener
+		// ZipUrlsHelper zip_urls_helper = ZipUrlsHelper.GetTheZipUrls(this);
+		ClearZipFilesInAssets();
+		DownloadZipFilesInAssets(this);
+		this.zipFilesInAssets.ScanAssets();
+		this.zipUrisSQLiteOpenHelper.Insert(this.zipFilesInAssets);
+		this.SetListViewUrlsAdapter();
+		// zip_urls_helper.Insert(zipped_assets);
+		// try {
+		// DownloadZipInAssets();
+		// } catch (StorageException e) {
+		// Log.e(this.getClass().getSimpleName(), e.getMessage());
+		// }// try
 	}// onCreate
+
+	private void ClearZipFilesInAssets() {
+		for (ZipUri zip_uri : zipFilesInAssets) {
+			zip_uri.GetDomain().RemoveAllOrganizations();
+			zip_uri.GetDomain().RemoveAllZipFiles();
+			zipUrisSQLiteOpenHelper.Delete(zip_uri);
+		}// for
+	}// ClearZipFilesInAssets
 
 	/*
 	 * DownloadZipInAssets removes all organization directories which belongs to
 	 * each domain. Then it copies ZIP stream from assets to corresponding files
 	 * just each domain directory. Finally zip_urls database is updated.
 	 */
-	private void DownloadZipInAssets() {
-		ZippedAssets zipped_assets = new ZippedAssets(this);
-		ZipUrlsHelper zip_urls_helper = ZipUrlsHelper.GetTheZipUrls(this);
-		for (ZipUrl zip_url : zipped_assets) {
-			zip_url.GetDomain().RemoveAllOrganizations();
-			zip_url.GetDomain().RemoveAllZipFiles();
-			zip_urls_helper.Delete(zip_url.GetDomain());
-		}// for
-		for (ZipUrl zip_url : zipped_assets) {
+	private void DownloadZipFilesInAssets(Context context_) {
+		for (ZipUri zip_uri : zipFilesInAssets) {
 			try {
-				zip_url.SetDownloadedFile();
-				DownloadThread download_thread = new DownloadThread(zip_url,
+				zip_uri.SetDownloadedFile();
+				DownloadThread download_thread = new DownloadThread(zip_uri,
 						this);
 				download_thread.start();
 				Thread.sleep(DOWNLOAD_WAIT, 0);
@@ -214,11 +137,10 @@ public class EasyGuideDownloaderActivity extends Activity {
 				continue;
 			}// try
 		}// for
-		zip_urls_helper.Insert(zipped_assets);
 	}// DownloadZipInAssets
 
 	private void SetEditableText(String url_) {
-		((EditText) findViewById(R.id.editTextUrl)).setText(url_);
+		this.editTextUri.setText(url_);
 	}
 
 	/*
@@ -277,4 +199,132 @@ public class EasyGuideDownloaderActivity extends Activity {
 		intent.setClass(this, SummaryActivity.class);
 		startActivity(intent);
 	}// InvokeSummary
-}// EasyGuideDownloader
+
+	private void SetButtonRegisterListeners() {
+		Button b = (Button) findViewById(R.id.buttonRegister);
+		b.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				String url_string = editTextUri.getEditableText().toString();
+				URI uri;
+				try {
+					uri = new URI(url_string);
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+					return;
+				}// try
+
+				String domain_string = editTextDomain.getEditableText()
+						.toString();
+				Domain domain = new Domain(domain_string);
+				try {
+					ZipUri zip_uri = new ZipUri(domain, uri);
+					zipUrisSQLiteOpenHelper.Insert(zip_uri);
+				} catch (MalformedURLException e) {
+					ShowAlertDialog(e.getMessage());
+				} catch (URISyntaxException e) {
+					ShowAlertDialog(e.getMessage());
+				}
+				SetListViewUrlsAdapter();
+			}// onClick
+		});// OnClicKListener
+	}// SetButtonRegisterListeners
+
+	private void SetListViewListeners() {
+		OnItemClickListener o;
+		o = new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, final View view,
+					int position, long id) {
+				ListView list_view = (ListView) parent;
+				final String url_string = (String) list_view
+						.getItemAtPosition(position);
+				// Handler handler = new Handler();
+				// handler.post(new Runnable() {
+				// @Override
+				// public void run() {
+				// SetEditableText(url_string);
+				// }// run
+				// });// Runnable
+				SetEditableText(url_string);
+			}// onItemClick
+		};
+		listViewUrls.setOnItemClickListener(o);// OnItemClickListener
+	}// SetListViewListeners
+
+	private void SetListViewUrlsAdapter() {
+		this.listViewUrls.setAdapter(this.zipUrisSQLiteOpenHelper
+				.GetArrayAdapter());
+	}// SetListViewUrlsAdapter
+
+	private void SetButtonQuitListeners() {
+		this.buttonQuit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				new Handler().post(new Runnable() {
+					@Override
+					public void run() {
+						moveTaskToBack(true);
+					}// run
+				});// Runnable
+			}// onClick
+		});// OnClickListener
+	}// SetButtonQuitListeners
+
+	private void SetButtonPlayListeners() {
+		this.buttonPlay.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				new Handler().post(new Runnable() {
+					@Override
+					public void run() {
+						InvokePlayer();
+					}// run
+				});// post
+			}// onClick
+		});// OnClickListener
+	}// SetButtonPlayListeners
+
+	private void SetButtonListContentsListeners() {
+		buttonListContents.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				new Handler().post(new Runnable() {
+					@Override
+					public void run() {
+						InvokeSummary();
+					}// run
+				});// post
+			}// onClick
+		});// OnClickListener
+	}// SetButtonListContentsListeners
+
+	private void SetImageButtonGlossaryListeners() {
+		imageButtonGlossary.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Glossary glossary = new Glossary(
+						EasyGuideDownloaderActivity.this.self);
+				glossary.show();
+			}// onClick
+		});// OnClickListener()
+	}// SetImageButtonglossaryListeners
+
+	private void SetImageButtonWifiListeners() {
+		imageButtonWifi.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				WifiListDialog wifi_list_dialog = new WifiListDialog(
+						EasyGuideDownloaderActivity.this.self);
+				wifi_list_dialog.show();
+			}// onClick
+		});// onClickListener
+	}// SetImageButtonWifiListeners
+
+	private void ShowAlertDialog(String s) {
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle(s);
+		alertDialogBuilder.create().show();
+	}// ShowAlertDialog
+
+}// EasyGuideDownloaderActivity

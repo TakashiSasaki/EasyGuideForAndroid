@@ -22,5 +22,8 @@
     <string name="glossary">用語集</string>
     <string name="downloadZip">コンテンツのダウンロード</string>
     <string name="anContent">コンテンツのダウンロード単位</string>
+    <string name="itemSources">List Sources</string>
+    <string name="itemDownloadedItems">List Downloaded Items</string>
+    <string name="itemToc">Table of Contents</string>
 
 </resources>

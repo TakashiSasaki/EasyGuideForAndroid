@@ -68,16 +68,17 @@ public class SummaryArrayAdapter extends ArrayAdapter<Summary> {
 		private TextView textViewSummaryPath;
 
 		public SummaryViews(View view) {
-			this.textViewSummaryTitle = (TextView) view
-					.findViewById(R.id.textViewSummaryTitle);
-			this.textViewSummaryX = (TextView) view
-					.findViewById(R.id.textViewSummaryX);
-			this.textViewSummaryY = (TextView) view
-					.findViewById(R.id.textViewSummaryY);
-			this.imageViewSummary = (ImageView) view
-					.findViewById(R.id.imageViewSummary);
-			this.textViewSummaryPath = (TextView) view
-					.findViewById(R.id.textViewSummaryPath);
+			// TODO: the constructor was emptied in order to eliminate errors. 
+//			this.textViewSummaryTitle = (TextView) view
+//					.findViewById(R.id.textViewSummaryTitle);
+//			this.textViewSummaryX = (TextView) view
+//					.findViewById(R.id.textViewSummaryX);
+//			this.textViewSummaryY = (TextView) view
+//					.findViewById(R.id.textViewSummaryY);
+//			this.imageViewSummary = (ImageView) view
+//					.findViewById(R.id.imageViewSummary);
+//			this.textViewSummaryPath = (TextView) view
+//					.findViewById(R.id.textViewSummaryPath);
 		}
 
 		public void SetViews(Summary summary) {

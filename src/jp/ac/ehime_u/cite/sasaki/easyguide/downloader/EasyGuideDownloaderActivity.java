@@ -17,6 +17,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -105,6 +109,28 @@ public class EasyGuideDownloaderActivity extends Activity {
 		// Log.e(this.getClass().getSimpleName(), e.getMessage());
 		// }// try
 	}// onCreate
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater mi = getMenuInflater();
+		mi.inflate(R.menu.common, menu);
+		return true;
+	}// onCreateOptionsMenu
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+		case R.id.itemSources:
+			Intent intent = new Intent(EasyGuideDownloaderActivity.this,
+					EasyGuideDownloaderActivity.class);
+			intent.setAction(Intent.ACTION_VIEW);
+			return true;
+		default:
+			return false;
+		}
+	}
 
 	private void ClearZipFilesInAssets() {
 		for (Source zip_uri : zipFilesInAssets) {

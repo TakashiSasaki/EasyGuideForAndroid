@@ -36,25 +36,25 @@ public class Building extends ArrayList<Floor> {
 				building_directory.getName());
 		this.buildingDirectoryImage = new DirectoryImage(
 				this.buildingDirectory, buildingImageName);
+		this.EnumerateFloors();
+	}// a constructor
+
+	@SuppressWarnings("javadoc")
+	public void EnumerateFloors() {
 		for (File floor_directory : this.buildingDirectory.listFiles()) {
 			if (floor_directory.isDirectory())
 				this.add(new Floor(floor_directory));
 		}// for
-		this.Sort();
-	}// a constructor
+		this.SortByFloorNumber();
+	}// EnumerateFloors
 
-	/**
-	 * 
-	 */
-	public void Sort() {
+	public void SortByFloorNumber() {
 		Collections.sort(this, new Comparator<Floor>() {
-
 			@Override
 			public int compare(Floor arg0, Floor arg1) {
 				return arg0.getFloorNumber() - arg1.getFloorNumber();
 			}// compare
 		});// sort
-
 	}// Sort
 
 	@SuppressWarnings("javadoc")
@@ -65,6 +65,11 @@ public class Building extends ArrayList<Floor> {
 	@SuppressWarnings("javadoc")
 	public String getBuildingName() {
 		return this.buildingDirectoryName.getName();
+	}
+
+	@SuppressWarnings("javadoc")
+	public DirectoryName getBuildingDirectoryName() {
+		return this.buildingDirectoryName;
 	}
 
 	@SuppressWarnings("javadoc")

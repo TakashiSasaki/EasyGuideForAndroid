@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.ContentValues;
+import android.content.Context;
 
 //TODO: class name should be renamed to ZipUri
 public class Source {
@@ -23,6 +24,7 @@ public class Source {
 	final static public String COLUMN_url = "url";
 	final static public String COLUMN_downloadedFile = "downloadedFile";
 	final static public String COLUMN_lastModified = "lastModified";
+	private static final long DOWNLOAD_WAIT = 100;
 
 	public Source(Domain domain_, URI uri_, File downloaded_file,
 			Date last_modified) {
@@ -75,6 +77,15 @@ public class Source {
 		this.downloadedFile = new File(this.domain.getDomainDirectory(), ""
 				+ this.downloadedDate.getTime() + ".zip");
 	}// SetDownloadedFile
+
+	public void Download(Context context_) throws InterruptedException,
+			URISyntaxException {
+		SetDownloadedFile();
+		DownloadThread download_thread = new DownloadThread(this, context_);
+		download_thread.start();
+		Thread.sleep(DOWNLOAD_WAIT, 0);
+		download_thread.join();
+	}//Download
 
 	public Domain GetDomain() {
 		return this.domain;

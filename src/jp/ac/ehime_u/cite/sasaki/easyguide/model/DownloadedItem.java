@@ -11,12 +11,15 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.content.ContentValues;
 import android.util.Log;
 
 public class DownloadedItem {
 	private Date downloadedDate;
 	private File downloadedFile;
 	private final int bufferSize = 65536;
+	public static final String COLUMN_DOWNLOADED_DATE = "DownloadedDate";
+	public static final String COLUMN_DOWNLOADED_FILE = "DownloadedFile";
 
 	public Date getDownloadedDate() {
 		return downloadedDate;
@@ -96,4 +99,12 @@ public class DownloadedItem {
 		}// try
 		return count;
 	}// SaveStream
+
+	public ContentValues getContentValues() {
+		ContentValues cv = new ContentValues();
+		cv.put(COLUMN_DOWNLOADED_DATE, getDownloadedDate().getTime());
+		cv.put(COLUMN_DOWNLOADED_FILE, getDownloadedFile().getPath());
+		return cv;
+	}
+
 }// DownloadedItem

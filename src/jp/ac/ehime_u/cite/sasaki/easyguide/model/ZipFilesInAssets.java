@@ -18,7 +18,7 @@ import android.content.res.AssetManager;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
 @SuppressWarnings("serial")
-public class ZipFilesInAssets extends ArrayList<ZipUri> {
+public class ZipFilesInAssets extends ArrayList<Source> {
 	// private static final String zipAssetDirectory = "zip";
 	private static ZipFilesInAssets theZipFilesInAssets;
 	private AssetManager assetManager;
@@ -72,7 +72,7 @@ public class ZipFilesInAssets extends ArrayList<ZipUri> {
 					continue;
 				}// try
 				try {
-					this.add(new ZipUri(new Domain(domain_string), uri));
+					this.add(new Source(new Domain(domain_string), uri));
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 					continue;

@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import android.content.ContentValues;
 
 //TODO: class name should be renamed to ZipUri
-public class ZipUri {
+public class Source {
 	private Domain domain;
 	private URI uri;
 	private Date downloadedDate;
@@ -24,7 +24,7 @@ public class ZipUri {
 	final static public String COLUMN_downloadedFile = "downloadedFile";
 	final static public String COLUMN_lastModified = "lastModified";
 
-	public ZipUri(Domain domain_, URI uri_, File downloaded_file,
+	public Source(Domain domain_, URI uri_, File downloaded_file,
 			Date last_modified) {
 		this.domain = domain_;
 		this.uri = uri_;
@@ -33,7 +33,7 @@ public class ZipUri {
 		this.lastModified = last_modified;
 	}// a constructor
 
-	public ZipUri(Domain domain_, URI uri_) throws URISyntaxException,
+	public Source(Domain domain_, URI uri_) throws URISyntaxException,
 			MalformedURLException {
 		this.uri = uri_;
 		this.domain = domain_;

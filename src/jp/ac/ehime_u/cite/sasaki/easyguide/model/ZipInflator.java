@@ -33,7 +33,7 @@ public class ZipInflator {
 		}
 	}
 
-	public ZipInflator(ZipUri zip_url) throws FileNotFoundException {
+	public ZipInflator(Source zip_url) throws FileNotFoundException {
 		this.destinationDirectory = zip_url.GetDomainDirectory();
 		this.inputStream = new FileInputStream(zip_url.getDownloadedFile());
 	}// a constructor

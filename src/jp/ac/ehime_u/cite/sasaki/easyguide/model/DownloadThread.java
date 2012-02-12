@@ -37,7 +37,7 @@ import android.util.Log;
  * 
  */
 public class DownloadThread extends Thread {
-	private final ZipUri zipUrl;
+	private final Source zipUrl;
 	private final int bufferSize = 65536;
 	private final HttpGet httpGet;
 	private final HttpClient httpClient;
@@ -51,7 +51,7 @@ public class DownloadThread extends Thread {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	public DownloadThread(ZipUri zip_url, Context context_)
+	public DownloadThread(Source zip_url, Context context_)
 			throws URISyntaxException {
 		this.zipUrl = zip_url;
 		this.zipUrl.SetDownloadedFile();

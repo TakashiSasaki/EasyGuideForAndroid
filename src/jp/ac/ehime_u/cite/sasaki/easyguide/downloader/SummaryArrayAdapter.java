@@ -95,7 +95,7 @@ public class SummaryArrayAdapter extends ArrayAdapter<Summary> {
 		if (convert_view == null) {
 			LayoutInflater layout_inflater = LayoutInflater.from(this
 					.getContext());
-			convert_view = layout_inflater.inflate(R.layout.summary, null);
+			convert_view = layout_inflater.inflate(R.layout.listviewrow, null);
 			summary_views = new SummaryViews(convert_view);
 			convert_view.setTag(summary_views);
 		} else {

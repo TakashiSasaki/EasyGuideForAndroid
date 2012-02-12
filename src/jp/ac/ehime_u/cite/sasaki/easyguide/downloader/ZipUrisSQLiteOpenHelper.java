@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUri;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Source;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
@@ -24,9 +24,9 @@ public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
 	Context context;
 	final static String TABLE_zip_urls = "zip_urls";
 	final static String CREATE_TABLE = "CREATE TABLE " + TABLE_zip_urls + "("
-			+ ZipUri.COLUMN_domain + " TEXT NOT NULL, " + ZipUri.COLUMN_url
-			+ " TEXT NOT NULL, " + ZipUri.COLUMN_downloadedFile + " TEXT, "
-			+ ZipUri.COLUMN_lastModified + " LONG);";
+			+ Source.COLUMN_domain + " TEXT NOT NULL, " + Source.COLUMN_url
+			+ " TEXT NOT NULL, " + Source.COLUMN_downloadedFile + " TEXT, "
+			+ Source.COLUMN_lastModified + " LONG);";
 	final static String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_zip_urls
 			+ ";";
 
@@ -63,15 +63,15 @@ public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
 	 * @param domain_
 	 * @return zip url
 	 */
-	public ArrayList<ZipUri> Select(Domain domain_) {
+	public ArrayList<Source> Select(Domain domain_) {
 		SQLiteDatabase readable_database = this.getReadableDatabase();
 		Cursor cursor = readable_database.query("zip_urls", new String[] {
-				ZipUri.COLUMN_domain, ZipUri.COLUMN_url,
-				ZipUri.COLUMN_downloadedFile, ZipUri.COLUMN_lastModified },
-				ZipUri.COLUMN_domain + " = ?", new String[] { domain_
+				Source.COLUMN_domain, Source.COLUMN_url,
+				Source.COLUMN_downloadedFile, Source.COLUMN_lastModified },
+				Source.COLUMN_domain + " = ?", new String[] { domain_
 						.getDomainDirectory().getName() }, null, null, null);
 
-		ArrayList<ZipUri> zip_url_array_list = new ArrayList<ZipUri>();
+		ArrayList<Source> zip_url_array_list = new ArrayList<Source>();
 		cursor.moveToFirst();
 		while (true) {
 			Domain domain = new Domain(cursor.getString(0));
@@ -84,8 +84,8 @@ public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
 			}// try
 			File downloaded_file = new File(cursor.getString(3));
 			Date last_modified_time = new Date(cursor.getLong(4));
-			ZipUri zip_url;
-			zip_url = new ZipUri(domain, uri, downloaded_file,
+			Source zip_url;
+			zip_url = new Source(domain, uri, downloaded_file,
 					last_modified_time);
 			Log.v(this.getClass().getSimpleName(), "Zip URL for domain "
 					+ zip_url.toString());
@@ -100,23 +100,23 @@ public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
 		return zip_url_array_list;
 	}// GetZipUrls
 
-	public void Insert(ZipUri zip_url) {
+	public void Insert(Source zip_url) {
 		SQLiteDatabase writable = this.getWritableDatabase();
 		writable.insert(TABLE_zip_urls, null, zip_url.GetContentValues());
 		writable.close();
 	}// Insert
 
-	public void Insert(ArrayList<ZipUri> zip_url_array_list) {
+	public void Insert(ArrayList<Source> zip_url_array_list) {
 		SQLiteDatabase writable = this.getWritableDatabase();
-		for (ZipUri zip_url : zip_url_array_list) {
+		for (Source zip_url : zip_url_array_list) {
 			writable.insert(TABLE_zip_urls, null, zip_url.GetContentValues());
 		}// for
 		writable.close();
 	}// Insert
 
-	public void Delete(ZipUri zip_uri) {
+	public void Delete(Source zip_uri) {
 		SQLiteDatabase writable_database = this.getWritableDatabase();
-		writable_database.delete(TABLE_zip_urls, ZipUri.COLUMN_domain + " = ?",
+		writable_database.delete(TABLE_zip_urls, Source.COLUMN_domain + " = ?",
 				new String[] { zip_uri.GetDomain().getDomainDirectory()
 						.getName() });
 		writable_database.close();
@@ -130,10 +130,10 @@ public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
 				new String[] { domain_ });
 	}
 
-	public void Delete(ArrayList<ZipUri> zip_url_array_list) {
+	public void Delete(ArrayList<Source> zip_url_array_list) {
 		SQLiteDatabase writable = this.getWritableDatabase();
-		for (ZipUri zip_url : zip_url_array_list) {
-			writable.delete(TABLE_zip_urls, ZipUri.COLUMN_domain + " = ?",
+		for (Source zip_url : zip_url_array_list) {
+			writable.delete(TABLE_zip_urls, Source.COLUMN_domain + " = ?",
 					new String[] { zip_url.GetDomainByString() });
 		}// for
 		writable.close();
@@ -146,7 +146,7 @@ public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
 	public ArrayAdapter<String> GetArrayAdapter() {
 		SQLiteDatabase readable_database = this.getReadableDatabase();
 		Cursor cursor = readable_database.query(TABLE_zip_urls,
-				new String[] { ZipUri.COLUMN_url }, null, null, null, null,
+				new String[] { Source.COLUMN_url }, null, null, null, null,
 				null);
 
 		ArrayAdapter<String> array_adapter = new ArrayAdapter<String>(
@@ -161,12 +161,12 @@ public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
 		return array_adapter;
 	}// GetArrayAdapter
 
-	public ArrayList<ZipUri> GetArrayList() {
-		ArrayList<ZipUri> array_list = new ArrayList<ZipUri>();
+	public ArrayList<Source> GetArrayList() {
+		ArrayList<Source> array_list = new ArrayList<Source>();
 		SQLiteDatabase readable_database = this.getReadableDatabase();
 		Cursor cursor = readable_database.query(TABLE_zip_urls, new String[] {
-				ZipUri.COLUMN_domain, ZipUri.COLUMN_url,
-				ZipUri.COLUMN_downloadedFile, ZipUri.COLUMN_lastModified },
+				Source.COLUMN_domain, Source.COLUMN_url,
+				Source.COLUMN_downloadedFile, Source.COLUMN_lastModified },
 				null, null, null, null, null);
 		for (boolean record_exists = cursor.moveToFirst(); record_exists; record_exists = cursor
 				.moveToNext()) {
@@ -180,7 +180,7 @@ public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
 			}// try
 			File downloaded_file = new File(cursor.getString(2));
 			Date last_modified = new Date(cursor.getLong(3));
-			ZipUri zip_url = new ZipUri(domain, uri, downloaded_file,
+			Source zip_url = new Source(domain, uri, downloaded_file,
 					last_modified);
 			array_list.add(zip_url);
 		}// for

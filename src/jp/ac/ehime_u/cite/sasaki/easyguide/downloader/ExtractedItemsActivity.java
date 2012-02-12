@@ -9,7 +9,7 @@ import android.util.Log;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class SummaryActivity extends ListActivity {
+public class ExtractedItemsActivity extends ListActivity {
 
 	/*
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -18,7 +18,7 @@ public class SummaryActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		try {
-			this.setListAdapter(new SummaryArrayAdapter(this, R.layout.summary));
+			this.setListAdapter(new SummaryArrayAdapter(this, R.layout.extracted_items));
 		} catch (DirectoryImageException e) {
 			Log.d(this.getClass().getSimpleName(),
 					"Can't create instance of SummaryArrayAdapter.");

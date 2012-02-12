@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.StorageException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadThread;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipUri;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Source;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipFilesInAssets;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -57,7 +57,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		Log.v(this.getClass().getSimpleName(), "onCreate");
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.main);
+		this.setContentView(R.layout.sources);
 
 		this.zipUrisSQLiteOpenHelper = ZipUrisSQLiteOpenHelper
 				.GetTheInstance(this);
@@ -108,7 +108,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 	}// onCreate
 
 	private void ClearZipFilesInAssets() {
-		for (ZipUri zip_uri : zipFilesInAssets) {
+		for (Source zip_uri : zipFilesInAssets) {
 			zip_uri.GetDomain().RemoveAllOrganizations();
 			zip_uri.GetDomain().RemoveAllZipFiles();
 			zipUrisSQLiteOpenHelper.Delete(zip_uri);
@@ -121,7 +121,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 	 * just each domain directory. Finally zip_urls database is updated.
 	 */
 	private void DownloadZipFilesInAssets(Context context_) {
-		for (ZipUri zip_uri : zipFilesInAssets) {
+		for (Source zip_uri : zipFilesInAssets) {
 			try {
 				zip_uri.SetDownloadedFile();
 				DownloadThread download_thread = new DownloadThread(zip_uri,
@@ -196,7 +196,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 
 	private void InvokeSummary() {
 		Intent intent = new Intent();
-		intent.setClass(this, SummaryActivity.class);
+		intent.setClass(this, ExtractedItemsActivity.class);
 		startActivity(intent);
 	}// InvokeSummary
 
@@ -218,7 +218,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 						.toString();
 				Domain domain = new Domain(domain_string);
 				try {
-					ZipUri zip_uri = new ZipUri(domain, uri);
+					Source zip_uri = new Source(domain, uri);
 					zipUrisSQLiteOpenHelper.Insert(zip_uri);
 				} catch (MalformedURLException e) {
 					ShowAlertDialog(e.getMessage());

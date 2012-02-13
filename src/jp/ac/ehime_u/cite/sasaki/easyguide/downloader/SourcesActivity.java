@@ -1,15 +1,14 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
 import java.net.MalformedURLException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.exception.StorageException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadThread;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Source;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipFilesInAssets;
-import android.app.Activity;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.SourceTable;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -17,10 +16,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -44,8 +39,9 @@ public class SourcesActivity extends CommonMenuActivity {
 	private Button buttonListContents;
 	private ImageButton imageButtonGlossary;
 	private ImageButton imageButtonWifi;
-	ZipUrisSQLiteOpenHelper zipUrisSQLiteOpenHelper;
+	//ZipUrisSQLiteOpenHelper zipUrisSQLiteOpenHelper;
 	ZipFilesInAssets zipFilesInAssets;
+	private SourceTable sourceTable;
 
 	@SuppressWarnings("serial")
 	static class Exception extends RuntimeException {
@@ -62,8 +58,9 @@ public class SourcesActivity extends CommonMenuActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.sources);
 
-		this.zipUrisSQLiteOpenHelper = ZipUrisSQLiteOpenHelper
-				.GetTheInstance(this);
+		this.sourceTable = SourceTable.GetTheInstance(this);
+		//this.zipUrisSQLiteOpenHelper = ZipUrisSQLiteOpenHelper
+			//	.GetTheInstance(this);
 		this.zipFilesInAssets = ZipFilesInAssets.GetTheInstance(this);
 
 		this.listViewUrls = (ListView) findViewById(R.id.listViewUrls);
@@ -75,7 +72,7 @@ public class SourcesActivity extends CommonMenuActivity {
 		this.imageButtonGlossary = (ImageButton) findViewById(R.id.imageButtonGlossary);
 		this.imageButtonWifi = (ImageButton) findViewById(R.id.imageButtonWifi);
 
-		// TODO: this button no longer exists
+		// this button no longer exists
 		/*
 		 * ((Button) findViewById(100)).setOnClickListener(new OnClickListener()
 		 * {
@@ -100,7 +97,7 @@ public class SourcesActivity extends CommonMenuActivity {
 		ClearZipFilesInAssets();
 		DownloadZipFilesInAssets(this);
 		this.zipFilesInAssets.ScanAssets();
-		this.zipUrisSQLiteOpenHelper.Insert(this.zipFilesInAssets);
+		this.sourceTable.Insert(this.zipFilesInAssets);
 		this.SetListViewUrlsAdapter();
 		// zip_urls_helper.Insert(zipped_assets);
 		// try {
@@ -111,10 +108,10 @@ public class SourcesActivity extends CommonMenuActivity {
 	}// onCreate
 
 	private void ClearZipFilesInAssets() {
-		for (Source zip_uri : zipFilesInAssets) {
+		for (Source zip_uri : this.zipFilesInAssets) {
 			zip_uri.GetDomain().RemoveAllOrganizations();
 			zip_uri.GetDomain().RemoveAllZipFiles();
-			zipUrisSQLiteOpenHelper.Delete(zip_uri);
+			this.sourceTable.Delete(zip_uri);
 		}// for
 	}// ClearZipFilesInAssets
 
@@ -124,7 +121,7 @@ public class SourcesActivity extends CommonMenuActivity {
 	 * just each domain directory. Finally zip_urls database is updated.
 	 */
 	private void DownloadZipFilesInAssets(Context context_) {
-		for (Source source : zipFilesInAssets) {
+		for (Source source : this.zipFilesInAssets) {
 			try {
 				source.Download(context_);
 			} catch (URISyntaxException e) {
@@ -203,7 +200,7 @@ public class SourcesActivity extends CommonMenuActivity {
 		b.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				String url_string = editTextUri.getEditableText().toString();
+				String url_string = SourcesActivity.this.editTextUri.getEditableText().toString();
 				URI uri;
 				try {
 					uri = new URI(url_string);
@@ -212,12 +209,12 @@ public class SourcesActivity extends CommonMenuActivity {
 					return;
 				}// try
 
-				String domain_string = editTextDomain.getEditableText()
+				String domain_string = SourcesActivity.this.editTextDomain.getEditableText()
 						.toString();
 				Domain domain = new Domain(domain_string);
 				try {
-					Source zip_uri = new Source(domain, uri);
-					zipUrisSQLiteOpenHelper.Insert(zip_uri);
+					Source s = new Source(domain, uri);
+					SourcesActivity.this.sourceTable.Insert(s);
 				} catch (MalformedURLException e) {
 					ShowAlertDialog(e.getMessage());
 				} catch (URISyntaxException e) {
@@ -247,11 +244,11 @@ public class SourcesActivity extends CommonMenuActivity {
 				SetEditableText(url_string);
 			}// onItemClick
 		};
-		listViewUrls.setOnItemClickListener(o);// OnItemClickListener
+		this.listViewUrls.setOnItemClickListener(o);// OnItemClickListener
 	}// SetListViewListeners
 
 	private void SetListViewUrlsAdapter() {
-		this.listViewUrls.setAdapter(this.zipUrisSQLiteOpenHelper
+		this.listViewUrls.setAdapter(this.sourceTable
 				.GetArrayAdapter());
 	}// SetListViewUrlsAdapter
 
@@ -284,7 +281,7 @@ public class SourcesActivity extends CommonMenuActivity {
 	}// SetButtonPlayListeners
 
 	private void SetButtonListContentsListeners() {
-		buttonListContents.setOnClickListener(new OnClickListener() {
+		this.buttonListContents.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				new Handler().post(new Runnable() {
@@ -298,7 +295,7 @@ public class SourcesActivity extends CommonMenuActivity {
 	}// SetButtonListContentsListeners
 
 	private void SetImageButtonGlossaryListeners() {
-		imageButtonGlossary.setOnClickListener(new OnClickListener() {
+		this.imageButtonGlossary.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Glossary glossary = new Glossary(SourcesActivity.this.self);
@@ -308,7 +305,7 @@ public class SourcesActivity extends CommonMenuActivity {
 	}// SetImageButtonglossaryListeners
 
 	private void SetImageButtonWifiListeners() {
-		imageButtonWifi.setOnClickListener(new OnClickListener() {
+		this.imageButtonWifi.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				WifiListDialog wifi_list_dialog = new WifiListDialog(

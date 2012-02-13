@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
+import jp.ac.ehime_u.cite.sasaki.easyguide.db.SourceTable;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;

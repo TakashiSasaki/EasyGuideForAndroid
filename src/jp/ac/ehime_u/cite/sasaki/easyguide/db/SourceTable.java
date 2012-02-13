@@ -1,10 +1,13 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.model;
+package jp.ac.ehime_u.cite.sasaki.easyguide.db;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Source;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -1,6 +1,5 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadedItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.db.SimpleCursorLoader;
 import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
 import android.app.LoaderManager.LoaderCallbacks;

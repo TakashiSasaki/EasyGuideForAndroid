@@ -45,19 +45,18 @@ public class SourceTable extends TableBase {
 		db.execSQL(CREATE_TABLE);
 		// Log.d(this.getClass().getSimpleName(), INSERT_TEST);
 		// sqlite_database.execSQL(INSERT_TEST);
-		db.close();
+		// db.close();
 	}// CreateTable
 
 	static public void UpgradeTable(SQLiteDatabase db, int oldVersion,
 			int newVersion) {
-		Log.d(SourceTable.class.getSimpleName(), "MyOpenHelper#onUpgrade");
+		Log.d(SourceTable.class.getSimpleName(), DROP_TABLE + " old_version="
+				+ oldVersion + ", new_version=" + newVersion);
 		if (oldVersion != newVersion) {
-			Log.d(SourceTable.class.getSimpleName(), DROP_TABLE
-					+ " old_version=" + oldVersion + ", new_version="
-					+ newVersion);
 			db.execSQL(DROP_TABLE);
+			CreateTable(db);
 		}// if
-		db.close();
+			// db.close();
 	}// UpgradeTable
 
 	/**

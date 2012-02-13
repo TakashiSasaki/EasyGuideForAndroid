@@ -1,7 +1,5 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.model;
+package jp.ac.ehime_u.cite.sasaki.easyguide.db;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
-import jp.ac.ehime_u.cite.sasaki.easyguide.db.SourceTable;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -13,7 +11,7 @@ public class CommonSQLiteOpenHelper extends SQLiteOpenHelper {
 
 	public CommonSQLiteOpenHelper(Context context) {
 		// super(context, name, factory, version);
-		super(context, "EasyGuideLib.sqlite", null, 1);
+		super(context, "EasyGuideLib.sqlite", null, 3);
 		this.context = context;
 	}
 

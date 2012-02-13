@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class ZipUrisAdapter extends ArrayAdapter<Source> {
+public class SourcesAdapter extends ArrayAdapter<Source> {
 	private LayoutInflater layoutInflater;
 
-	public ZipUrisAdapter(Context context, int layout_id,
+	public SourcesAdapter(Context context, int layout_id,
 			ArrayList<Source> array_list) {
 		super(context, layout_id, array_list);
 		this.layoutInflater = (LayoutInflater) context

@@ -1,7 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadedItem;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadedItemTable;
+import jp.ac.ehime_u.cite.sasaki.easyguide.db.SimpleCursorLoader;
+import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
@@ -62,7 +63,8 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 		return new SimpleCursorLoader(this) {
 			@Override
 			public Cursor loadInBackground() {
-				return downloadedItemsTable.Select();
+				return DownloadedItemsActivity.this.downloadedItemsTable
+						.Select();
 			}// loadInBackground
 		};// DownloadedItemsCursorLoader(this);
 	}// onCreateLoader

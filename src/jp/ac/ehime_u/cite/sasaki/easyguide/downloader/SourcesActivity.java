@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Source;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipFilesInAssets;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.SourceTable;
+import jp.ac.ehime_u.cite.sasaki.easyguide.db.SourceTable;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;

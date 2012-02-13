@@ -19,11 +19,14 @@ public class CommonSQLiteOpenHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		Log.v(this.getClass().getSimpleName(), "onCreate");
 		SourceTable.CreateTable(db);
-	}
+		DownloadedItemTable.CreateTable(db);
+	}// onCreate
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.v(this.getClass().getSimpleName(), "onUpgrade from " + oldVersion + " to " + newVersion);
+		Log.v(this.getClass().getSimpleName(), "onUpgrade from " + oldVersion
+				+ " to " + newVersion);
 		SourceTable.UpgradeTable(db, oldVersion, newVersion);
-	}
+		DownloadedItemTable.UpgradeTable(db, oldVersion, newVersion);
+	}// onUpgrade
 }

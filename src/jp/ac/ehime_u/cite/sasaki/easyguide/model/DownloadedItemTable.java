@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DownloadedItemsSQLiteOpenHelper extends SQLiteOpenHelper {
+public class DownloadedItemTable extends TableBase	 {
 	Context context;
 	final static String TABLE_NAME = "DownloadedItems";
 
@@ -16,23 +16,21 @@ public class DownloadedItemsSQLiteOpenHelper extends SQLiteOpenHelper {
 			+ DownloadedItem.COLUMN_DOWNLOADED_FILE + " TEXT NOT NULL;";
 	final static String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 
-	public DownloadedItemsSQLiteOpenHelper(Context context) {
+	public DownloadedItemTable(Context context) {
+		super(context);
 		// super(context, name, factory, version);
-		super(context, "EasyGuideDownloader.sqlite", null, 5);
+		//super(context, "EasyGuideDownloader.sqlite", null, 5);
 		this.context = context;
 	} // the constructor of DownloadedItemsSQLiteOpenHelper
 
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		Log.v(this.getClass().getSimpleName(), "onCreate");
+	static public void CreateTable(SQLiteDatabase db) {
+		Log.v(DownloadedItemTable.class.getSimpleName(), "onCreate");
 		db.execSQL(CREATE_TABLE);
 	}// onCreatae
 
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.v(this.getClass().getSimpleName(), "onUpgrade");
+	static public void UpgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
+		Log.v(DownloadedItemTable.class.getSimpleName(), "onUpgrade");
 		db.execSQL(DROP_TABLE);
-		this.onCreate(db);
 	}// onUpgrade
 
 	public void Insert(DownloadedItem downloaded_item) {
@@ -62,4 +60,5 @@ public class DownloadedItemsSQLiteOpenHelper extends SQLiteOpenHelper {
 				DownloadedItem.COLUMN_DOWNLOADED_FILE }, null, null, null,
 				null, null);
 	}// Select
+	
 }// DownloadedItemsSQLiteOpenHelper

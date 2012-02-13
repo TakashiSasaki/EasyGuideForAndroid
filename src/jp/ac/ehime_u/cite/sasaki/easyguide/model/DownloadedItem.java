@@ -22,11 +22,11 @@ public class DownloadedItem {
 	public static final String COLUMN_DOWNLOADED_FILE = "DownloadedFile";
 
 	public Date getDownloadedDate() {
-		return downloadedDate;
+		return this.downloadedDate;
 	}
 
 	public File getDownloadedFile() {
-		return downloadedFile;
+		return this.downloadedFile;
 	}
 
 	public DownloadedItem(File downloaded_file) {
@@ -43,7 +43,7 @@ public class DownloadedItem {
 	}// a constructor
 
 	public DownloadedItem(String time_in_milliseconds) {
-		downloadedDate = new Date(Long.parseLong(time_in_milliseconds));
+		this.downloadedDate = new Date(Long.parseLong(time_in_milliseconds));
 	}// a constructor
 
 	public DownloadedItem(Domain domain) {

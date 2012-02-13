@@ -17,10 +17,6 @@ public class Source {
 	private URI uri;
 	private Date lastModified;
 	private LastModifiedHeaderThread lastModifiedThread;
-	final static public String COLUMN_domain = "domain";
-	final static public String COLUMN_url = "url";
-	final static public String COLUMN_downloadedFile = "downloadedFile";
-	final static public String COLUMN_lastModified = "lastModified";
 	private static final long DOWNLOAD_WAIT = 100;
 
 	public Source(Domain domain_, URI uri_, File downloaded_file,
@@ -81,7 +77,7 @@ public class Source {
 		return this.uri;
 	}
 
-	public Date getLastModified() throws InterruptedException {
+	public Date getLastModified() throws InterruptedException  {
 		if (this.lastModified != null) {
 			return this.lastModified;
 		} else {
@@ -95,17 +91,5 @@ public class Source {
 	public Date getLastModifiedNonBlocking() {
 		return this.lastModified;
 	}// getLastModifiedNonBlocking
-
-	public ContentValues GetContentValues() {
-		ContentValues cv = new ContentValues();
-		cv.put(COLUMN_domain, this.domain.getDomainDirectory().getName());
-		try {
-			cv.put(COLUMN_lastModified, this.lastModified.getTime());
-		} catch (NullPointerException nurupo) {
-			cv.put(COLUMN_lastModified, 0L);
-		}// try
-		cv.put(COLUMN_url, this.uri.toString());
-		return cv;
-	}// GetContentValues
 
 }// ZipUrl

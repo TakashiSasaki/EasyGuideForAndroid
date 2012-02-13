@@ -20,8 +20,7 @@ import android.widget.ArrayAdapter;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
-	Context context;
+public class ZipUrisSQLiteOpenHelper extends CommonSQLiteOpenHelper {
 	final static String TABLE_zip_urls = "zip_urls";
 	final static String CREATE_TABLE = "CREATE TABLE " + TABLE_zip_urls + "("
 			+ Source.COLUMN_domain + " TEXT NOT NULL, " + Source.COLUMN_url
@@ -34,8 +33,7 @@ public class ZipUrisSQLiteOpenHelper extends SQLiteOpenHelper {
 	// "INSERT INTO zip_urls(domain,zip_url) VALUES(\"lms.intdesign.org\", \"http://lms.ictdesign.org/easyguide.zip\");";
 
 	private ZipUrisSQLiteOpenHelper(Context context_) {
-		super(context_, "EasyGuideDownloader.sqlite", null, 5);
-		this.context = context_;
+		super(context_);
 	}// a constructor
 
 	@Override

@@ -34,8 +34,8 @@ import android.widget.ImageButton;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class EasyGuideDownloaderActivity extends Activity {
-	final EasyGuideDownloaderActivity self = this;
+public class SourcesActivity extends CommonMenuActivity {
+	final SourcesActivity self = this;
 	private ListView listViewUrls;
 	private EditText editTextDomain;
 	private EditText editTextUri;
@@ -109,28 +109,6 @@ public class EasyGuideDownloaderActivity extends Activity {
 		// Log.e(this.getClass().getSimpleName(), e.getMessage());
 		// }// try
 	}// onCreate
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		MenuInflater mi = getMenuInflater();
-		mi.inflate(R.menu.common, menu);
-		return true;
-	}// onCreateOptionsMenu
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
-		switch (item.getItemId()) {
-		case R.id.itemSources:
-			Intent intent = new Intent(EasyGuideDownloaderActivity.this,
-					EasyGuideDownloaderActivity.class);
-			intent.setAction(Intent.ACTION_VIEW);
-			return true;
-		default:
-			return false;
-		}
-	}
 
 	private void ClearZipFilesInAssets() {
 		for (Source zip_uri : zipFilesInAssets) {
@@ -323,8 +301,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 		imageButtonGlossary.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Glossary glossary = new Glossary(
-						EasyGuideDownloaderActivity.this.self);
+				Glossary glossary = new Glossary(SourcesActivity.this.self);
 				glossary.show();
 			}// onClick
 		});// OnClickListener()
@@ -335,7 +312,7 @@ public class EasyGuideDownloaderActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				WifiListDialog wifi_list_dialog = new WifiListDialog(
-						EasyGuideDownloaderActivity.this.self);
+						SourcesActivity.this.self);
 				wifi_list_dialog.show();
 			}// onClick
 		});// onClickListener

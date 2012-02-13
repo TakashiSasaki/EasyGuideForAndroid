@@ -17,7 +17,7 @@
         android:icon="@drawable/icon48"
         android:label="@string/app_name" >
         <activity
-            android:name=".EasyGuideDownloaderActivity"
+            android:name=".SourcesActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -28,6 +28,7 @@
         </activity>
         <activity android:name=".ExtractedItemsActivity" >
         </activity>
+        <activity android:name="DownloadedItemsActivity"></activity>
     </application>
 
 </manifest>

@@ -51,7 +51,7 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 			public void bindView(View arg0, Context arg1, Cursor arg2) {
 				TextView tv = (TextView) arg0.findViewById(android.R.id.text1);
 				String s = arg2.getString(arg2
-						.getColumnIndex(DownloadedItem.COLUMN_DOWNLOADED_FILE));
+						.getColumnIndex(DownloadedItemTable.COLUMN_DOWNLOADED_FILE));
 				tv.setText(s);
 			}// bindView
 		};// CursorAdapter

@@ -6,8 +6,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadedItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Source;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipFilesInAssets;
+import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
 import jp.ac.ehime_u.cite.sasaki.easyguide.db.SourceTable;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -42,6 +44,7 @@ public class SourcesActivity extends CommonMenuActivity {
 	//ZipUrisSQLiteOpenHelper zipUrisSQLiteOpenHelper;
 	ZipFilesInAssets zipFilesInAssets;
 	private SourceTable sourceTable;
+	private DownloadedItemTable downloadedItemTable;
 
 	@SuppressWarnings("serial")
 	static class Exception extends RuntimeException {
@@ -108,10 +111,10 @@ public class SourcesActivity extends CommonMenuActivity {
 	}// onCreate
 
 	private void ClearZipFilesInAssets() {
-		for (Source zip_uri : this.zipFilesInAssets) {
-			zip_uri.GetDomain().RemoveAllOrganizations();
-			zip_uri.GetDomain().RemoveAllZipFiles();
-			this.sourceTable.Delete(zip_uri);
+		for (Source s : this.zipFilesInAssets) {
+			s.GetDomain().RemoveAllOrganizations();
+			s.GetDomain().RemoveAllZipFiles();
+			this.sourceTable.Delete(s);
 		}// for
 	}// ClearZipFilesInAssets
 
@@ -121,9 +124,11 @@ public class SourcesActivity extends CommonMenuActivity {
 	 * just each domain directory. Finally zip_urls database is updated.
 	 */
 	private void DownloadZipFilesInAssets(Context context_) {
+		downloadedItemTable = new DownloadedItemTable(this);
 		for (Source source : this.zipFilesInAssets) {
 			try {
-				source.Download(context_);
+				DownloadedItem di = source.Download(context_);
+				downloadedItemTable.Insert(di);
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 				continue;

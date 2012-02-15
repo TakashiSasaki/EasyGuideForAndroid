@@ -16,6 +16,7 @@ import android.util.Log;
 public class DownloadedItem {
 	private Date downloadedDate;
 	private File downloadedFile;
+	private String domain;
 	private final int bufferSize = 65536;
 
 	public Date getDownloadedDate() {
@@ -37,14 +38,16 @@ public class DownloadedItem {
 		} else {
 			throw new RuntimeException("Malformed file name.");
 		} // if
+		this.domain = downloaded_file.getParentFile().getName();
 	}// a constructor
 
-	public DownloadedItem(String time_in_milliseconds) {
-		this.downloadedDate = new Date(Long.parseLong(time_in_milliseconds));
-	}// a constructor
+	//public DownloadedItem(String time_in_milliseconds) {
+	//	this.downloadedDate = new Date(Long.parseLong(time_in_milliseconds));
+	//}// a constructor
 
 	public DownloadedItem(Domain domain) {
 		Calendar calendar = Calendar.getInstance();
+		this.domain = domain.getDomainDirectory().getName();
 		this.downloadedDate = calendar.getTime();
 		this.downloadedFile = new File(domain.getDomainDirectory(), ""
 				+ this.downloadedDate.getTime() + ".zip");

@@ -18,7 +18,6 @@ public class TableBase {
 
 	protected SQLiteDatabase getWritableDatabase() {
 		CommonSQLiteOpenHelper oh = new CommonSQLiteOpenHelper(this.context);
-		Log.d(this.getClass().getSimpleName(),"An instance of CommonSQLiteOpenHelperget was got in getWritableDatabase.");
 		return oh.getWritableDatabase();
 	}
 }

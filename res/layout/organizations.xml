@@ -9,31 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon48" >
-        </ImageView>
-
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="EasyGuide Player コンテンツ発行者の選択"
-            android:textAppearance="?android:attr/textAppearanceLarge" >
-        </TextView>
+            android:layout_height="wrap_content"
+            android:text="Choose an Organizaton"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/organizations"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
-    </TextView>
 
     <ListView
         android:id="@+id/listViewOrganizations"

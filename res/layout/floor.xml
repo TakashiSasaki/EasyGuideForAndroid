@@ -9,16 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Choose a floor"
+        android:text="Choose a room"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Spinner
-        android:id="@+id/spinnerFloors"
+        android:id="@+id/spinnerRooms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <ImageView
-        android:id="@+id/imageViewBuilding"
+        android:id="@+id/imageViewFloor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"

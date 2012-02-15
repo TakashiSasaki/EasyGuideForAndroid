@@ -33,10 +33,10 @@ public class OrganizationsActivity extends Activity {
 			throw new java.lang.Error("Can't set default image and thumbnail");
 		}// try
 
-		ArrayAdapter<String> array_adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1);
+		ArrayAdapter<Organization> array_adapter = new ArrayAdapter<Organization>(this,
+				android.R.layout.simple_list_item_1 );
 		for (Organization organization : Organizations.GetTheOrganizations()) {
-			array_adapter.add(organization.getOrganizationDomain());
+			array_adapter.add(organization);
 		}// for
 		ListView list_view = (ListView) findViewById(R.id.listViewOrganizations);
 		list_view.setAdapter(array_adapter);

@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
     <LinearLayout
-        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
-        android:id="@+id/linearLayout1">
+        android:layout_height="wrap_content" >
+
         <LinearLayout
-            android:layout_height="match_parent"
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
-            android:id="@+id/linearLayout2">
+            android:layout_height="match_parent" >
+
             <ImageView
-                android:layout_height="wrap_content"
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
-                android:src="@drawable/icon48"></ImageView>
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon48" >
+            </ImageView>
         </LinearLayout>
+
         <TextView
-            android:text="EasyGuide Player 施設の選択"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textView1"
-            android:layout_gravity="center"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:gravity="center"></TextView>
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Choose a facility"
+            android:textAppearance="?android:attr/textAppearanceLarge" >
+        </TextView>
     </LinearLayout>
-    <TextView
-        android:layout_height="wrap_content"
-        android:text="@string/organization"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"></TextView>
+
+    <Spinner
+        android:id="@+id/spinnerFacilities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ImageView
         android:id="@+id/imageViewOrganization"
-        android:src="@drawable/h512w512"
-        android:scaleType="fitCenter"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ImageView>
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/h512w512" >
+    </ImageView>
+
 </LinearLayout>

@@ -26,6 +26,10 @@ public class DownloadedItem {
 	public File getDownloadedFile() {
 		return this.downloadedFile;
 	}
+	
+	public String getDomain(){
+		return this.domain;
+	}
 
 	public DownloadedItem(File downloaded_file) {
 		this.downloadedFile = downloaded_file;

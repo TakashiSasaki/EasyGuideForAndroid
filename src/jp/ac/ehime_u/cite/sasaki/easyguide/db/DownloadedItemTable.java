@@ -68,11 +68,15 @@ public class DownloadedItemTable extends TableBase {
 		}
 	}// Insert
 
-	public void Delete(DownloadedItem downloaded_item) {
+	public void Delete(String file_path) {
 		SQLiteDatabase wdb = getWritableDatabase();
 		wdb.delete(TABLE_NAME, COLUMN_DOWNLOADED_FILE + " = ?",
-				new String[] { downloaded_item.getDownloadedFile().getPath() });
+				new String[] { file_path });
 		wdb.close();
+	}// Delete
+
+	public void Delete(DownloadedItem downloaded_item) {
+		Delete(downloaded_item.getDownloadedFile().getPath());
 	}// Delete
 
 	public void Delete(ArrayList<DownloadedItem> a) {

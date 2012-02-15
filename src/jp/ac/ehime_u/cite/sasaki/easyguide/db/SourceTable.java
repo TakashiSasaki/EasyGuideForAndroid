@@ -1,6 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.db;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -8,12 +9,12 @@ import java.util.Date;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Source;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 
 /**
@@ -40,8 +41,8 @@ public class SourceTable extends TableBase {
 	}
 
 	static public void CreateTable(SQLiteDatabase db) {
-		Log.d(SourceTable.class.getSimpleName(), db.getPath());
-		Log.d(SourceTable.class.getClass().getSimpleName(), CREATE_TABLE);
+		Log.v(new Throwable(), db.getPath());
+		Log.v(new Throwable(), CREATE_TABLE);
 		db.execSQL(CREATE_TABLE);
 		// Log.d(this.getClass().getSimpleName(), INSERT_TEST);
 		// sqlite_database.execSQL(INSERT_TEST);
@@ -50,8 +51,8 @@ public class SourceTable extends TableBase {
 
 	static public void UpgradeTable(SQLiteDatabase db, int oldVersion,
 			int newVersion) {
-		Log.d(SourceTable.class.getSimpleName(), DROP_TABLE + " old_version="
-				+ oldVersion + ", new_version=" + newVersion);
+		Log.v(new Throwable(), DROP_TABLE + " old_version=" + oldVersion
+				+ ", new_version=" + newVersion);
 		if (oldVersion != newVersion) {
 			db.execSQL(DROP_TABLE);
 			CreateTable(db);
@@ -85,8 +86,7 @@ public class SourceTable extends TableBase {
 			Source zip_url;
 			zip_url = new Source(domain, uri, downloaded_file,
 					last_modified_time);
-			Log.v(this.getClass().getSimpleName(), "Zip URL for domain "
-					+ zip_url.toString());
+			Log.v(new Throwable(), "Zip URL for domain " + zip_url.toString());
 			zip_url_array_list.add(zip_url);
 			if (cursor.isLast()) {
 				break;
@@ -159,7 +159,7 @@ public class SourceTable extends TableBase {
 	 */
 	public ArrayAdapter<String> GetArrayAdapter() {
 		SQLiteDatabase rdb = getReadableDatabase();
-		Cursor cursor = rdb.query(TABLE_NAME, new String[] { COLUMN_URL },
+		Cursor cursor = rdb.query(TABLE_NAME, new String[] { COLUMN_URL, COLUMN_DOMAIN },
 				null, null, null, null, null);
 
 		ArrayAdapter<String> array_adapter = new ArrayAdapter<String>(
@@ -167,12 +167,36 @@ public class SourceTable extends TableBase {
 
 		for (boolean record_exists = cursor.moveToFirst(); record_exists; record_exists = cursor
 				.moveToNext()) {
-			array_adapter.add(cursor.getString(0));
+			array_adapter.add(GetSource(cursor).getUri().toString());
 		}
 		cursor.close();
 		rdb.close();
 		return array_adapter;
 	}// GetArrayAdapter
+
+	private static Source GetSource(Cursor c) {
+		int di = c.getColumnIndex(COLUMN_DOMAIN);
+		String ds = c.getString(di);
+		Domain d = new Domain(ds);
+		URI u;
+		try {
+			u = new URI(c.getString(c.getColumnIndex(COLUMN_URL)));
+		} catch (URISyntaxException e) {
+			Log.v(new Throwable(), e.getMessage());
+			return null;
+		}// try
+		Source s;
+		try {
+			s = new Source(d, u);
+		} catch (MalformedURLException e) {
+			Log.v(new Throwable(), e.getMessage());
+			return null;
+		} catch (URISyntaxException e) {
+			Log.v(new Throwable(), e.getMessage());
+			return null;
+		}// try
+		return s;
+	}// GetSource
 
 	public ArrayList<Source> GetArrayList() {
 		SQLiteDatabase rdb = getReadableDatabase();

@@ -31,10 +31,10 @@ public class Asset extends ArrayList<Source> {
 	 */
 	public Asset(Context context_) {
 		this.assetManager = context_.getResources().getAssets();
-		ScanAssets();
 	}// an constructor
 
-	public void ScanAssets() {
+	public void EnumerateSources() {
+		this.clear();
 		Pattern domain_pattern = Pattern.compile("^[^.][a-zA-Z_0-9.-]+[^.]$");
 		String[] domain_list;
 		try {
@@ -84,7 +84,7 @@ public class Asset extends ArrayList<Source> {
 			}// for
 		}// for
 	}// ScanAssets
-
+	
 	public static Asset GetTheInstance(Context context_) {
 		if (theZipFilesInAssets == null) {
 			theZipFilesInAssets = new Asset(context_);

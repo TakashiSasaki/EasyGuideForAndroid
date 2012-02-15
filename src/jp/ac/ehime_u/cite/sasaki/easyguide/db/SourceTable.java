@@ -131,15 +131,16 @@ public class SourceTable extends TableBase {
 
 	public String GetDomainByUrl(URI uri) {
 		SQLiteDatabase rdb = getReadableDatabase();
-		Cursor c = rdb.query(TABLE_NAME, new String[] { COLUMN_URL, COLUMN_DOMAIN },
-				COLUMN_URL + " = ?", new String[] { uri.toString() }, null,
-				null, null);
+		Cursor c = rdb.query(TABLE_NAME, new String[] { COLUMN_URL,
+				COLUMN_DOMAIN }, COLUMN_URL + " = ?",
+				new String[] { uri.toString() }, null, null, null);
 		if (c.getCount() <= 0)
 			return null;
 		c.moveToFirst();
+		String domain_string = c.getString(c.getColumnIndex(COLUMN_DOMAIN));
 		c.close();
 		rdb.close();
-		return c.getString(c.getColumnIndex(COLUMN_DOMAIN));
+		return domain_string;
 	}// GetDomainByUrl
 
 	public void Delete(Source zip_uri) {
@@ -148,6 +149,12 @@ public class SourceTable extends TableBase {
 				.GetDomain().getDomainDirectory().getName() });
 		wdb.close();
 	}// Delete
+
+	public void DeleteAll() {
+		SQLiteDatabase wdb = getWritableDatabase();
+		wdb.delete(TABLE_NAME, null, null);
+		wdb.close();
+	}// DeleteAll
 
 	@Deprecated
 	public void DeleteZipUrl(String domain_) {
@@ -183,6 +190,8 @@ public class SourceTable extends TableBase {
 				.moveToNext()) {
 			array_adapter.add(GetSource(cursor).getUri().toString());
 		}
+		Log.v(new Throwable(), "" + array_adapter.getCount()
+				+ " items in array adapter.");
 		cursor.close();
 		rdb.close();
 		return array_adapter;

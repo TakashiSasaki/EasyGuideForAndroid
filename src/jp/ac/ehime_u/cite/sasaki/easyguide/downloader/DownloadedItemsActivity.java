@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
@@ -15,8 +16,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 	ListView listViewDownloadedItems;
 	// LayoutInflater layoutInflator;
 	CursorAdapter cursorAdapter;
+	Button buttonDeleteZips;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,33 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 		// SetSimpleArrayAdapter();
 		SetCursorAdapter();
 		getLoaderManager().initLoader(0, null, this);
+		SetButtonDeleteZips();
 	}// onCreate
+
+	private void SetButtonDeleteZips() {
+		this.buttonDeleteZips = (Button) findViewById(R.id.buttonDeleteZips);
+		OnClickListener ocl = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Cursor c = DownloadedItemTable.getInstance().Select();
+				c.moveToFirst();
+				int ci = c
+						.getColumnIndex(DownloadedItemTable.COLUMN_DOWNLOADED_FILE);
+				for (int i = 0; i < c.getCount(); ++i) {
+					String file_path = c.getString(ci);
+					Log.v(new Throwable(), "Deleting " + file_path);
+					File file = new File(file_path);
+					file.delete();
+					DownloadedItemTable.getInstance().Delete(file_path);
+					c.moveToNext();
+				}// for
+				getLoaderManager().restartLoader(0, null,
+						DownloadedItemsActivity.this);
+			}// onClick
+		};
+		this.buttonDeleteZips.setOnClickListener(ocl);
+	}// SetButtonDeleteZips
 
 	private void SetSimpleArrayAdapter() {
 		ArrayAdapter<String> aas = new ArrayAdapter<String>(this,

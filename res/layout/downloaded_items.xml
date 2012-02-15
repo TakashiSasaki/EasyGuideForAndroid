@@ -8,8 +8,15 @@
     <ListView
         android:id="@+id/listViewDownloadedItems"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" >
+        android:layout_height="wrap_content"
+        android:layout_weight="2" >
     </ListView>
+
+    <Button
+        android:id="@+id/buttonDeleteZips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Delete All Zips" />
 
 </LinearLayout>

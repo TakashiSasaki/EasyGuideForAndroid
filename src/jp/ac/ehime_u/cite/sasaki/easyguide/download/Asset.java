@@ -19,9 +19,9 @@ import android.content.res.AssetManager;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
 @SuppressWarnings("serial")
-public class ZipFilesInAssets extends ArrayList<Source> {
+public class Asset extends ArrayList<Source> {
 	// private static final String zipAssetDirectory = "zip";
-	private static ZipFilesInAssets theZipFilesInAssets;
+	private static Asset theZipFilesInAssets;
 	private AssetManager assetManager;
 
 	/**
@@ -29,7 +29,7 @@ public class ZipFilesInAssets extends ArrayList<Source> {
 	 * 
 	 * @param context_
 	 */
-	public ZipFilesInAssets(Context context_) {
+	public Asset(Context context_) {
 		this.assetManager = context_.getResources().getAssets();
 		ScanAssets();
 	}// an constructor
@@ -85,9 +85,9 @@ public class ZipFilesInAssets extends ArrayList<Source> {
 		}// for
 	}// ScanAssets
 
-	public static ZipFilesInAssets GetTheInstance(Context context_) {
+	public static Asset GetTheInstance(Context context_) {
 		if (theZipFilesInAssets == null) {
-			theZipFilesInAssets = new ZipFilesInAssets(context_);
+			theZipFilesInAssets = new Asset(context_);
 		}
 		return theZipFilesInAssets;
 	}// GetTheZipFilesInAssets

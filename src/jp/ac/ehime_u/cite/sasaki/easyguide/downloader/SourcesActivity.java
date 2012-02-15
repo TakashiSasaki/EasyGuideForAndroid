@@ -114,28 +114,41 @@ public class SourcesActivity extends CommonMenuActivity {
 	}// onCreate
 
 	private void SetListViewUrls() {
-		OnItemSelectedListener oisl = new OnItemSelectedListener() {
-
+		OnItemClickListener l = new OnItemClickListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				Source source = (Source) arg0.getSelectedItem();
-				DownloadFromSource(source);
-			}// onItemSelected
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-			}// onNothingSelected
-		};// OnItemSelectedListener
-		this.listViewUrls.setOnItemSelectedListener(oisl);
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				String uri_string = (String) parent.getItemAtPosition(position);
+				String domain_string;
+				try {
+					domain_string = SourcesActivity.this.sourceTable
+							.GetDomainByUrl(new URI(uri_string));
+				} catch (URISyntaxException e) {
+					Log.v(new Throwable(), e.getMessage());
+					return;
+				}
+				Source s;
+				try {
+					s = new Source(new Domain(domain_string), new URI(
+							uri_string));
+				} catch (MalformedURLException e) {
+					Log.v(new Throwable(), e.getMessage());
+					return;
+				} catch (URISyntaxException e) {
+					Log.v(new Throwable(), e.getMessage());
+					return;
+				}
+				DownloadFromSource(s);
+			}// onItemClick
+		};// OnItemClickListener
+		this.listViewUrls.setOnItemClickListener(l);
 		this.listViewUrls.setAdapter(this.sourceTable.GetArrayAdapter());
 	}// SetListViewUrls
 
 	private void DownloadFromSource(Source source) {
 		try {
 			DownloadedItem di = source.Download(this);
-			this.downloadedItemTable.Insert(di);
+			DownloadedItemTable.getInstance(this).Insert(di);
 		} catch (URISyntaxException e) {
 			Log.v(new Throwable(), e.getMessage());
 		} catch (InterruptedException e) {

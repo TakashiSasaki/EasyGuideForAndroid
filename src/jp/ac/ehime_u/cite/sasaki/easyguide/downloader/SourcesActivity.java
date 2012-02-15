@@ -124,11 +124,11 @@ public class SourcesActivity extends CommonMenuActivity {
 	 * just each domain directory. Finally zip_urls database is updated.
 	 */
 	private void DownloadZipFilesInAssets(Context context_) {
-		downloadedItemTable = new DownloadedItemTable(this);
+		this.downloadedItemTable = new DownloadedItemTable(this);
 		for (Source source : this.asset) {
 			try {
 				DownloadedItem di = source.Download(context_);
-				downloadedItemTable.Insert(di);
+				this.downloadedItemTable.Insert(di);
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 				continue;

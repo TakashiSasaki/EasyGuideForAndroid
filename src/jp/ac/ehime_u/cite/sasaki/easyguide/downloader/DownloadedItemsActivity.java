@@ -7,15 +7,16 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.db.SimpleCursorLoader;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,46 +25,62 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 		LoaderCallbacks<Cursor> {
 	DownloadedItemTable downloadedItemsTable;
 	ListView listViewDownloadedItems;
-	LayoutInflater layoutInflator;
+	// LayoutInflater layoutInflator;
 	CursorAdapter cursorAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.v(this.getClass().getSimpleName(), "onCreate() invoked");
+		Log.v(new Throwable(), "onCreate() invoked");
 		setContentView(R.layout.downloaded_items);
-		this.layoutInflator = (LayoutInflater) this
-				.getSystemService(LAYOUT_INFLATER_SERVICE);
+		// this.layoutInflator = (LayoutInflater) this
+		// .getSystemService(LAYOUT_INFLATER_SERVICE);
 		this.downloadedItemsTable = new DownloadedItemTable(this);
 		Root.GetTheRoot().EnumerateDomainDirectories();
-		for(Domain d : Root.GetTheRoot()){
+		for (Domain d : Root.GetTheRoot()) {
 			ArrayList<DownloadedItem> adi = d.ScanDownloadedItems();
 			DownloadedItemTable.getInstance(this).Insert(adi);
 		}
-		SetListViewDownloadedItems();
+		this.listViewDownloadedItems = (ListView) findViewById(R.id.listViewDownloadedItems);
+		// SetSimpleArrayAdapter();
+		SetCursorAdapter();
+		getLoaderManager().initLoader(0, null, this);
 	}// onCreate
 
-	private void SetListViewDownloadedItems() {
-		this.listViewDownloadedItems = (ListView) findViewById(R.id.listViewDownloadedItems);
+	private void SetSimpleArrayAdapter() {
+		ArrayAdapter<String> aas = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1);
+		aas.add("aaa");
+		aas.add("bbb");
+		aas.add("ccc");
+		this.listViewDownloadedItems.setAdapter(aas);
+	}
+
+	private void SetCursorAdapter() {
 		// Cursor c = downloadedItemsSQLiteOpenHelper.Select();
 		// Here CursorAdapter is initialized with null cursor.
 		// Actual cursor is set by onLoadFinished
 		this.cursorAdapter = new CursorAdapter(this, null) {
 			@Override
 			public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
-				View v = DownloadedItemsActivity.this.layoutInflator.inflate(
-						android.R.layout.simple_list_item_1, arg2);
+				LayoutInflater li = (LayoutInflater) arg0
+						.getSystemService(LAYOUT_INFLATER_SERVICE);
+				// arg2 is ListView
+				View v = li.inflate(android.R.layout.simple_list_item_1, null);
 				return v;
 			}// newView
 
 			@Override
 			public void bindView(View arg0, Context arg1, Cursor arg2) {
 				TextView tv = (TextView) arg0.findViewById(android.R.id.text1);
-				String s = arg2.getString(arg2
-						.getColumnIndex(DownloadedItemTable.COLUMN_DOWNLOADED_FILE));
+				String s = arg2
+						.getString(arg2
+								.getColumnIndex(DownloadedItemTable.COLUMN_DOWNLOADED_FILE));
 				tv.setText(s);
 			}// bindView
 		};// CursorAdapter
+		Log.v(new Throwable(),
+				"Setting cursor adapter to list view of DownloadedItemsActivity.");
 		this.listViewDownloadedItems.setAdapter(this.cursorAdapter);
 	}// SetListViewDownloadedItems
 
@@ -77,7 +94,8 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 
 		@Override
 		public Cursor loadInBackground() {
-			DownloadedItemTable dit = DownloadedItemTable.getInstance(context);
+			DownloadedItemTable dit = DownloadedItemTable
+					.getInstance(this.context);
 			return dit.Select();
 		}// loadInBackground
 	}// DownloadedItemsCursorLoader

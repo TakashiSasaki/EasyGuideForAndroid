@@ -4,11 +4,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadThread;
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.Source;
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.ZipFilesInAssets;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.StorageException;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Domain;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadThread;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Source;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ZipFilesInAssets;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;

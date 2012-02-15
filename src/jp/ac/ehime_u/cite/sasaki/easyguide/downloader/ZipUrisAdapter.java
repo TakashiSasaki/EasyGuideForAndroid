@@ -3,7 +3,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 import java.util.ArrayList;
 import java.util.Date;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Source;
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.Source;
 
 import android.content.Context;
 import android.view.LayoutInflater;

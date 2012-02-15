@@ -1,12 +1,14 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadedItem;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadedItemsSQLiteOpenHelper;
+import java.awt.Robot;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItemsSQLiteOpenHelper;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
 		downloadedItemsSQLiteOpenHelper = new DownloadedItemsSQLiteOpenHelper(
 				this);
+		Root.GetTheRoot().EnumerateDomainDirectories();
 		SetListViewDownloadedItems();
 	}// onCreate
 

@@ -1,15 +1,12 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
-import java.awt.Robot;
-
 import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
-import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
+import jp.ac.ehime_u.cite.sasaki.easyguide.db.SimpleCursorLoader;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +18,7 @@ import android.widget.TextView;
 
 public class DownloadedItemsActivity extends CommonMenuActivity implements
 		LoaderCallbacks<Cursor> {
-	//DownloadedItemsSQLiteOpenHelper downloadedItemsSQLiteOpenHelper;
+	DownloadedItemTable downloadedItemsTable;
 	ListView listViewDownloadedItems;
 	LayoutInflater layoutInflator;
 	CursorAdapter cursorAdapter;
@@ -31,23 +28,22 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 		super.onCreate(savedInstanceState);
 		Log.v(this.getClass().getSimpleName(), "onCreate() invoked");
 		setContentView(R.layout.downloaded_items);
-		layoutInflator = (LayoutInflater) this
+		this.layoutInflator = (LayoutInflater) this
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
-		//downloadedItemsSQLiteOpenHelper = new DownloadedItemsSQLiteOpenHelper(
-		//		this);
+		this.downloadedItemsTable = new DownloadedItemTable(this);
 		Root.GetTheRoot().EnumerateDomainDirectories();
 		SetListViewDownloadedItems();
 	}// onCreate
 
 	private void SetListViewDownloadedItems() {
-		listViewDownloadedItems = (ListView) findViewById(R.id.listViewDownloadedItems);
-		//Cursor c = downloadedItemsSQLiteOpenHelper.Select();
+		this.listViewDownloadedItems = (ListView) findViewById(R.id.listViewDownloadedItems);
+		// Cursor c = downloadedItemsSQLiteOpenHelper.Select();
 		// Here CursorAdapter is initialized with null cursor.
-		// Actual cursor is set by onLoadFinished  
+		// Actual cursor is set by onLoadFinished
 		this.cursorAdapter = new CursorAdapter(this, null) {
 			@Override
 			public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
-				View v = layoutInflator.inflate(
+				View v = DownloadedItemsActivity.this.layoutInflator.inflate(
 						android.R.layout.simple_list_item_1, arg2);
 				return v;
 			}// newView
@@ -60,7 +56,7 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 				tv.setText(s);
 			}// bindView
 		};// CursorAdapter
-		listViewDownloadedItems.setAdapter(this.cursorAdapter);
+		this.listViewDownloadedItems.setAdapter(this.cursorAdapter);
 	}// SetListViewDownloadedItems
 
 	class DownloadedItemsCursorLoader extends SimpleCursorLoader {
@@ -80,7 +76,13 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new DownloadedItemsCursorLoader(this);
+		return new SimpleCursorLoader(this) {
+			@Override
+			public Cursor loadInBackground() {
+				return DownloadedItemsActivity.this.downloadedItemsTable
+						.Select();
+			}// loadInBackground
+		};// DownloadedItemsCursorLoader(this);
 	}// onCreateLoader
 
 	@Override

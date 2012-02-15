@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 
@@ -77,8 +78,8 @@ public class Domain extends ArrayList<Organization> {
 		for (File zip_file_candidate : this.domainDirectory.listFiles()) {
 			Matcher m = ZIP_FILE_PATTERN.matcher(zip_file_candidate.getName());
 			if (m.find()) {
-				r.add(new DownloadedItem(zip_file_candidate));
-				
+				DownloadedItem di = new DownloadedItem(zip_file_candidate);
+				r.add(di);
 			}
 		}// for
 		return r;

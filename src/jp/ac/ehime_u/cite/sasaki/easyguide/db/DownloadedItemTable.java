@@ -1,11 +1,13 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.db;
 
+import java.util.ArrayList;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class DownloadedItemTable extends TableBase {
 	Context context;
@@ -26,7 +28,7 @@ public class DownloadedItemTable extends TableBase {
 	} // the constructor of DownloadedItemsSQLiteOpenHelper
 
 	static public void CreateTable(SQLiteDatabase db) {
-		Log.d(DownloadedItemTable.class.getSimpleName(), CREATE_TABLE);
+		Log.v(new Throwable(), CREATE_TABLE);
 		db.execSQL(CREATE_TABLE);
 		// db.close();
 	}// UpgradeTable
@@ -40,8 +42,8 @@ public class DownloadedItemTable extends TableBase {
 
 	static public void UpgradeTable(SQLiteDatabase db, int oldVersion,
 			int newVersion) {
-		Log.d(DownloadedItemTable.class.getSimpleName(), "onUpgrade from "
-				+ oldVersion + " to " + newVersion);
+		Log.v(new Throwable(), "onUpgrade from " + oldVersion + " to "
+				+ newVersion);
 		if (oldVersion != newVersion) {
 			db.execSQL(DROP_TABLE);
 			CreateTable(db);
@@ -50,28 +52,40 @@ public class DownloadedItemTable extends TableBase {
 	}// UpgradeTable
 
 	public void Insert(DownloadedItem downloaded_item) {
-		Log.d(this.getClass().getSimpleName(), "Insert "
-				+ downloaded_item.getDownloadedFile().getPath());
+		Log.v(new Throwable(), "aaa");
 		Delete(downloaded_item);
 		SQLiteDatabase wdb = getWritableDatabase();
 		wdb.insert(TABLE_NAME, null, getContentValues(downloaded_item));
 		wdb.close();
-	}
+	}// Insert
+
+	public void Insert(ArrayList<DownloadedItem> a) {
+		// TODO: to be in batch
+		for (DownloadedItem d : a) {
+			Insert(d);
+		}
+	}// Insert
 
 	public void Delete(DownloadedItem downloaded_item) {
-		Log.d(this.getClass().getSimpleName(), "Delete "
+		Log.v(new Throwable(), "Delete "
 				+ downloaded_item.getDownloadedFile().getPath());
 		SQLiteDatabase wdb = getWritableDatabase();
 		wdb.delete(TABLE_NAME, COLUMN_DOWNLOADED_FILE + " = ?",
 				new String[] { downloaded_item.getDownloadedFile().getPath() });
 		wdb.close();
-	}
+	}// Delete
+
+	public void Delete(ArrayList<DownloadedItem> a) {
+		// TODO: to be in batch
+		for (DownloadedItem d : a) {
+			Delete(d);
+		}
+	}// Delete
 
 	public Cursor Select() {
-		Log.d(this.getClass().getSimpleName(),
-				"Select: getting readable database.");
+		Log.v(new Throwable(), "Select: getting readable database.");
 		SQLiteDatabase rdb = getReadableDatabase();
-		Log.d(this.getClass().getSimpleName(), "Select: querying");
+		Log.v(new Throwable()						, "Select: querying");
 		return rdb.query(TABLE_NAME, new String[] { COLUMN_DOWNLOADED_DATE,
 				COLUMN_DOWNLOADED_FILE }, null, null, null, null, null);
 	}// Select

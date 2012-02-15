@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 
@@ -24,10 +26,12 @@ import android.util.Log;
 @SuppressWarnings("serial")
 public class Domain extends ArrayList<Organization> {
 	private File domainDirectory;
+	private Pattern ZIP_FILE_PATTERN = Pattern
+			.compile("^[0-9]+\\.[zZ][iI][pP]$");
 
 	/**
-	 * class Domain represents domain directory.
-	 * This constructor makes corresponding directory if not exists.
+	 * class Domain represents domain directory. This constructor makes
+	 * corresponding directory if not exists.
 	 * 
 	 * @param domain_name
 	 */
@@ -53,7 +57,8 @@ public class Domain extends ArrayList<Organization> {
 	/**
 	 * a constructor
 	 * 
-	 * @param domain_directory : Already existing domain directory.
+	 * @param domain_directory
+	 *            : Already existing domain directory.
 	 * @throws FileNotFoundException
 	 */
 	public Domain(File domain_directory) throws FileNotFoundException {
@@ -67,10 +72,22 @@ public class Domain extends ArrayList<Organization> {
 		}
 	}// a constructor of class Domain
 
+	public ArrayList<DownloadedItem> ScanDownloadedItems() {
+		ArrayList<DownloadedItem> r = new ArrayList<DownloadedItem>();
+		for (File zip_file_candidate : this.domainDirectory.listFiles()) {
+			Matcher m = ZIP_FILE_PATTERN.matcher(zip_file_candidate.getName());
+			if (m.find()) {
+				r.add(new DownloadedItem(zip_file_candidate));
+				
+			}
+		}// for
+		return r;
+	}// ScanDownloadedItems
+
 	/**
-	 * Domain class inherits ArrayList<Organization>
-	 * and an instance of Domain class holds organization directories.
-	 * The enumeration of organization directories are not performed automatically.
+	 * Domain class inherits ArrayList<Organization> and an instance of Domain
+	 * class holds organization directories. The enumeration of organization
+	 * directories are not performed automatically.
 	 */
 	public void EnumerateOrganizations() {
 		for (File file : this.domainDirectory.listFiles()) {
@@ -111,10 +128,9 @@ public class Domain extends ArrayList<Organization> {
 		this.clear();
 	}// RemoveAllOrganizations
 
-	
 	/**
-	 * Removes all files with zip extension under the domain directory.
-	 * Domain directory holds ZIP files and one or more organization directoryies.
+	 * Removes all files with zip extension under the domain directory. Domain
+	 * directory holds ZIP files and one or more organization directoryies.
 	 */
 	public void RemoveAllZipFiles() {
 		FilenameFilter file_name_filter = new FilenameFilter() {

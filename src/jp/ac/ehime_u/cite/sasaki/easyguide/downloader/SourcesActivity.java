@@ -11,17 +11,17 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Source;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Asset;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -41,7 +41,7 @@ public class SourcesActivity extends CommonMenuActivity {
 	private Button buttonListContents;
 	private ImageButton imageButtonGlossary;
 	private ImageButton imageButtonWifi;
-	//ZipUrisSQLiteOpenHelper zipUrisSQLiteOpenHelper;
+	// ZipUrisSQLiteOpenHelper zipUrisSQLiteOpenHelper;
 	Asset asset;
 	private SourceTable sourceTable;
 	private DownloadedItemTable downloadedItemTable;
@@ -57,13 +57,12 @@ public class SourcesActivity extends CommonMenuActivity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.v(this.getClass().getSimpleName(), "onCreate");
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.sources);
 
 		this.sourceTable = SourceTable.GetTheInstance(this);
-		//this.zipUrisSQLiteOpenHelper = ZipUrisSQLiteOpenHelper
-			//	.GetTheInstance(this);
+		// this.zipUrisSQLiteOpenHelper = ZipUrisSQLiteOpenHelper
+		// .GetTheInstance(this);
 		this.asset = Asset.GetTheInstance(this);
 
 		this.listViewUrls = (ListView) findViewById(R.id.listViewUrls);
@@ -97,47 +96,60 @@ public class SourcesActivity extends CommonMenuActivity {
 		this.SetImageButtonGlossaryListeners();
 
 		// ZipUrlsHelper zip_urls_helper = ZipUrlsHelper.GetTheZipUrls(this);
-		ClearZipFilesInAssets();
-		DownloadZipFilesInAssets(this);
-		this.asset.ScanAssets();
+		this.asset.EnumerateSources();
+		// ClearZipFilesInAssets();
+		// DownloadZipFilesInAssets(this);
+		Log.v(new Throwable(), "Delete and insert " + this.asset.size()
+				+ " source items.");
+		this.sourceTable.Delete(this.asset);
 		this.sourceTable.Insert(this.asset);
-		this.SetListViewUrlsAdapter();
+		// this.SetListViewUrlsAdapter();
 		// zip_urls_helper.Insert(zipped_assets);
 		// try {
 		// DownloadZipInAssets();
 		// } catch (StorageException e) {
 		// Log.e(this.getClass().getSimpleName(), e.getMessage());
 		// }// try
+		this.SetListViewUrls();
 	}// onCreate
 
-	private void ClearZipFilesInAssets() {
-		for (Source s : this.asset) {
-			s.GetDomain().RemoveAllOrganizations();
-			s.GetDomain().RemoveAllZipFiles();
-			this.sourceTable.Delete(s);
-		}// for
-	}// ClearZipFilesInAssets
+	private void SetListViewUrls() {
+		OnItemSelectedListener oisl = new OnItemSelectedListener() {
 
-	/*
-	 * DownloadZipInAssets removes all organization directories which belongs to
-	 * each domain. Then it copies ZIP stream from assets to corresponding files
-	 * just each domain directory. Finally zip_urls database is updated.
-	 */
-	private void DownloadZipFilesInAssets(Context context_) {
-		this.downloadedItemTable = new DownloadedItemTable(this);
-		for (Source source : this.asset) {
-			try {
-				DownloadedItem di = source.Download(context_);
-				this.downloadedItemTable.Insert(di);
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-				continue;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				continue;
-			}// try
-		}// for
-	}// DownloadZipInAssets
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				Source source = (Source) arg0.getSelectedItem();
+				DownloadFromSource(source);
+			}// onItemSelected
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+			}// onNothingSelected
+		};// OnItemSelectedListener
+		this.listViewUrls.setOnItemSelectedListener(oisl);
+		this.listViewUrls.setAdapter(this.sourceTable.GetArrayAdapter());
+	}// SetListViewUrls
+
+	private void DownloadFromSource(Source source) {
+		try {
+			DownloadedItem di = source.Download(this);
+			this.downloadedItemTable.Insert(di);
+		} catch (URISyntaxException e) {
+			Log.v(new Throwable(), e.getMessage());
+		} catch (InterruptedException e) {
+			Log.v(new Throwable(), e.getMessage());
+		}// try
+	}
+
+	// private void ClearZipFilesInAssets() {
+	// for (Source s : this.asset) {
+	// s.GetDomain().RemoveAllOrganizations();
+	// s.GetDomain().RemoveAllZipFiles();
+	// this.sourceTable.Delete(s);
+	// }// for
+	// }// ClearZipFilesInAssets
 
 	private void SetEditableText(String url_) {
 		this.editTextUri.setText(url_);
@@ -205,7 +217,8 @@ public class SourcesActivity extends CommonMenuActivity {
 		b.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				String url_string = SourcesActivity.this.editTextUri.getEditableText().toString();
+				String url_string = SourcesActivity.this.editTextUri
+						.getEditableText().toString();
 				URI uri;
 				try {
 					uri = new URI(url_string);
@@ -214,8 +227,8 @@ public class SourcesActivity extends CommonMenuActivity {
 					return;
 				}// try
 
-				String domain_string = SourcesActivity.this.editTextDomain.getEditableText()
-						.toString();
+				String domain_string = SourcesActivity.this.editTextDomain
+						.getEditableText().toString();
 				Domain domain = new Domain(domain_string);
 				try {
 					Source s = new Source(domain, uri);
@@ -225,7 +238,7 @@ public class SourcesActivity extends CommonMenuActivity {
 				} catch (URISyntaxException e) {
 					ShowAlertDialog(e.getMessage());
 				}
-				SetListViewUrlsAdapter();
+				// SetListViewUrlsAdapter();
 			}// onClick
 		});// OnClicKListener
 	}// SetButtonRegisterListeners
@@ -251,11 +264,6 @@ public class SourcesActivity extends CommonMenuActivity {
 		};
 		this.listViewUrls.setOnItemClickListener(o);// OnItemClickListener
 	}// SetListViewListeners
-
-	private void SetListViewUrlsAdapter() {
-		this.listViewUrls.setAdapter(this.sourceTable
-				.GetArrayAdapter());
-	}// SetListViewUrlsAdapter
 
 	private void SetButtonQuitListeners() {
 		this.buttonQuit.setOnClickListener(new OnClickListener() {

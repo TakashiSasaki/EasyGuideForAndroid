@@ -15,6 +15,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.widget.ArrayAdapter;
 
 /**
@@ -128,6 +129,19 @@ public class SourceTable extends TableBase {
 		wdb.close();
 	}// Insert
 
+	public String GetDomainByUrl(URI uri) {
+		SQLiteDatabase rdb = getReadableDatabase();
+		Cursor c = rdb.query(TABLE_NAME, new String[] { COLUMN_URL, COLUMN_DOMAIN },
+				COLUMN_URL + " = ?", new String[] { uri.toString() }, null,
+				null, null);
+		if (c.getCount() <= 0)
+			return null;
+		c.moveToFirst();
+		c.close();
+		rdb.close();
+		return c.getString(c.getColumnIndex(COLUMN_DOMAIN));
+	}// GetDomainByUrl
+
 	public void Delete(Source zip_uri) {
 		SQLiteDatabase wdb = getWritableDatabase();
 		wdb.delete(TABLE_NAME, COLUMN_DOMAIN + " = ?", new String[] { zip_uri
@@ -159,8 +173,8 @@ public class SourceTable extends TableBase {
 	 */
 	public ArrayAdapter<String> GetArrayAdapter() {
 		SQLiteDatabase rdb = getReadableDatabase();
-		Cursor cursor = rdb.query(TABLE_NAME, new String[] { COLUMN_URL, COLUMN_DOMAIN },
-				null, null, null, null, null);
+		Cursor cursor = rdb.query(TABLE_NAME, new String[] { COLUMN_URL,
+				COLUMN_DOMAIN }, null, null, null, null, null);
 
 		ArrayAdapter<String> array_adapter = new ArrayAdapter<String>(
 				this.context, android.R.layout.simple_list_item_1);

@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.model;
+package jp.ac.ehime_u.cite.sasaki.easyguide.download;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.model;
+package jp.ac.ehime_u.cite.sasaki.easyguide.download;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 import android.content.Context;
 import android.content.res.AssetManager;

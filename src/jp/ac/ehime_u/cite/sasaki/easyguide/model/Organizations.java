@@ -2,6 +2,8 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.util.ArrayList;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
+
 import android.util.Log;
 
 /**

@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.model;
+package jp.ac.ehime_u.cite.sasaki.easyguide.download;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -13,6 +13,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
+
 
 import android.util.Log;
 

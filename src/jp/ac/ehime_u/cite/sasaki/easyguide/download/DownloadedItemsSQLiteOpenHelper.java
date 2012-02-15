@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.model;
+package jp.ac.ehime_u.cite.sasaki.easyguide.download;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -1,10 +1,12 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.StorageException;
 
 import android.os.Environment;
@@ -20,6 +22,8 @@ public class Root extends ArrayList<Domain> {
 	private static final String rootDirectoryName = "EASYGUIDE";
 	private static Root root;
 	private File rootDirectory;
+	private Pattern DOMAIN_PATTERN = Pattern
+			.compile("^[a-zA-Z0-9_\\-][a-zA-Z0-9_\\-.]+[a-zA-Z0-9_\\-]$");
 
 	// private File externalStorageDirectory;
 
@@ -58,14 +62,35 @@ public class Root extends ArrayList<Domain> {
 			return false;
 		if (!file.canRead())
 			return false;
-		Pattern pattern = Pattern
-				.compile("^.{1,254}$)(^(?:(?!\\d+\\.|-)[a-zA-Z0-9_\\-]{1,63}(?<!-)\\.?)+(?:[a-zA-Z]{2,})$");
-		Matcher matcher = pattern.matcher(file.getName());
+		// Pattern pattern = Pattern
+		// .compile("^.{1,254}$)(^(?:(?!\\d+\\.|-)[a-zA-Z0-9_\\-]{1,63}(?<!-)\\.?)+(?:[a-zA-Z]{2,})$");
+		Matcher matcher = DOMAIN_PATTERN.matcher(file.getName());
 		if (matcher.find())
 			return true;
 		else
 			return false;
 	}// IsValidDomainDirectory
+
+	public void EnumerateDomainDirectories() {
+		Log.d(this.getClass().getSimpleName(),
+				"Enumerating dommain directories in " + this.getRootDirectory());
+		File[] domain_directories = this.getRootDirectory().listFiles();
+		for (File domain_directory : domain_directories) {
+			Log.d(this.getClass().getSimpleName(), "Found domain directory "
+					+ domain_directory.getAbsolutePath());
+			Matcher m = DOMAIN_PATTERN.matcher(domain_directory.getName());
+			if (m.find()) {
+				Log.d(this.getClass().getSimpleName(), "Matched. "
+						+ domain_directory.getName()
+						+ " is a domain directory.");
+				try {
+					this.add(new Domain(domain_directory));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}// try
+			}// if
+		}// for
+	}// EnumerateDomainDirectories()
 
 	/**
 	 * @return singleton instance of class Root

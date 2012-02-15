@@ -2,13 +2,14 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
 import java.awt.Robot;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
-import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItemsSQLiteOpenHelper;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 
 public class DownloadedItemsActivity extends CommonMenuActivity implements
 		LoaderCallbacks<Cursor> {
-	DownloadedItemsSQLiteOpenHelper downloadedItemsSQLiteOpenHelper;
+	//DownloadedItemsSQLiteOpenHelper downloadedItemsSQLiteOpenHelper;
 	ListView listViewDownloadedItems;
 	LayoutInflater layoutInflator;
 	CursorAdapter cursorAdapter;
@@ -32,8 +33,8 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 		setContentView(R.layout.downloaded_items);
 		layoutInflator = (LayoutInflater) this
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
-		downloadedItemsSQLiteOpenHelper = new DownloadedItemsSQLiteOpenHelper(
-				this);
+		//downloadedItemsSQLiteOpenHelper = new DownloadedItemsSQLiteOpenHelper(
+		//		this);
 		Root.GetTheRoot().EnumerateDomainDirectories();
 		SetListViewDownloadedItems();
 	}// onCreate
@@ -55,7 +56,7 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 			public void bindView(View arg0, Context arg1, Cursor arg2) {
 				TextView tv = (TextView) arg0.findViewById(android.R.id.text1);
 				String s = arg2.getString(arg2
-						.getColumnIndex(DownloadedItem.COLUMN_DOWNLOADED_FILE));
+						.getColumnIndex(DownloadedItemTable.COLUMN_DOWNLOADED_FILE));
 				tv.setText(s);
 			}// bindView
 		};// CursorAdapter
@@ -72,9 +73,8 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 
 		@Override
 		public Cursor loadInBackground() {
-			DownloadedItemsSQLiteOpenHelper oh = new DownloadedItemsSQLiteOpenHelper(
-					this.context);
-			return oh.Select();
+			DownloadedItemTable dit = DownloadedItemTable.getInstance(context);
+			return dit.Select();
 		}// loadInBackground
 	}// DownloadedItemsCursorLoader
 

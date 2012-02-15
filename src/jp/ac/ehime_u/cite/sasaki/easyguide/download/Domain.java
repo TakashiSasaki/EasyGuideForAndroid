@@ -91,6 +91,7 @@ public class Domain extends ArrayList<Organization> {
 	 * directories are not performed automatically.
 	 */
 	public void EnumerateOrganizations() {
+		clear();
 		for (File file : this.domainDirectory.listFiles()) {
 			Log.v(this.getClass().getSimpleName(),
 					"unzipped directory " + file.getAbsolutePath()

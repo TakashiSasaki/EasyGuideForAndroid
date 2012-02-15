@@ -10,7 +10,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.db.SourceTable;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Source;
-import jp.ac.ehime_u.cite.sasaki.easyguide.download.ZipFilesInAssets;
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.Asset;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -42,7 +42,7 @@ public class SourcesActivity extends CommonMenuActivity {
 	private ImageButton imageButtonGlossary;
 	private ImageButton imageButtonWifi;
 	//ZipUrisSQLiteOpenHelper zipUrisSQLiteOpenHelper;
-	ZipFilesInAssets zipFilesInAssets;
+	Asset asset;
 	private SourceTable sourceTable;
 	private DownloadedItemTable downloadedItemTable;
 
@@ -64,7 +64,7 @@ public class SourcesActivity extends CommonMenuActivity {
 		this.sourceTable = SourceTable.GetTheInstance(this);
 		//this.zipUrisSQLiteOpenHelper = ZipUrisSQLiteOpenHelper
 			//	.GetTheInstance(this);
-		this.zipFilesInAssets = ZipFilesInAssets.GetTheInstance(this);
+		this.asset = Asset.GetTheInstance(this);
 
 		this.listViewUrls = (ListView) findViewById(R.id.listViewUrls);
 		this.editTextDomain = (EditText) findViewById(R.id.editTextDomain);
@@ -99,8 +99,8 @@ public class SourcesActivity extends CommonMenuActivity {
 		// ZipUrlsHelper zip_urls_helper = ZipUrlsHelper.GetTheZipUrls(this);
 		ClearZipFilesInAssets();
 		DownloadZipFilesInAssets(this);
-		this.zipFilesInAssets.ScanAssets();
-		this.sourceTable.Insert(this.zipFilesInAssets);
+		this.asset.ScanAssets();
+		this.sourceTable.Insert(this.asset);
 		this.SetListViewUrlsAdapter();
 		// zip_urls_helper.Insert(zipped_assets);
 		// try {
@@ -111,7 +111,7 @@ public class SourcesActivity extends CommonMenuActivity {
 	}// onCreate
 
 	private void ClearZipFilesInAssets() {
-		for (Source s : this.zipFilesInAssets) {
+		for (Source s : this.asset) {
 			s.GetDomain().RemoveAllOrganizations();
 			s.GetDomain().RemoveAllZipFiles();
 			this.sourceTable.Delete(s);
@@ -125,7 +125,7 @@ public class SourcesActivity extends CommonMenuActivity {
 	 */
 	private void DownloadZipFilesInAssets(Context context_) {
 		downloadedItemTable = new DownloadedItemTable(this);
-		for (Source source : this.zipFilesInAssets) {
+		for (Source source : this.asset) {
 			try {
 				DownloadedItem di = source.Download(context_);
 				downloadedItemTable.Insert(di);

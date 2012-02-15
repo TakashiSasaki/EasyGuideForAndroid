@@ -119,9 +119,9 @@ public class Floor extends ArrayList<Room> {
 				+ " not found in Floor " + this.getFloorName());
 	}// GetRoom
 
-	@Override
-	@Deprecated
-	public Room get(int index) {
-		throw new Error("Floor#get was deprecated");
-	}// get
+//	@Override
+//	@Deprecated
+//	public Room get(int index) {
+//		throw new Error("Floor#get was deprecated");
+//	}// get
 }// Floor

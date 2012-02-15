@@ -125,9 +125,9 @@ public class Building extends ArrayList<Floor> {
 				+ " not found in building " + this.toString());
 	}// GetFloor
 
-	@Override
-	@Deprecated
-	public Floor get(int index) {
-		throw new Error("Building#get is deprecated");
-	}
+//	@Override
+//	@Deprecated
+//	public Floor get(int index) {
+//		throw new Error("Building#get is deprecated");
+//	}
 }// Building

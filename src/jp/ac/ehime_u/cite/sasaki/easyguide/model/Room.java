@@ -3,8 +3,9 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 import java.io.File;
 import java.util.ArrayList;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
+
 import android.graphics.Bitmap;
-import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -24,8 +25,8 @@ public class Room extends ArrayList<Equipment> {
 		this.roomDirectory = room_directory;
 		this.roomDirectoryName = new DirectoryName(room_directory.getName());
 		this.roomImage = new DirectoryImage(room_directory, Room.roomImageName);
-		Log.v(this.getClass().getSimpleName(),
-				"Scanning equipment directories in " + this.roomDirectory);
+		Log.v(new Throwable(), "Scanning equipment directories in "
+				+ this.roomDirectory);
 		this.EnumerateEquipments();
 	}// a constructor
 
@@ -34,8 +35,10 @@ public class Room extends ArrayList<Equipment> {
 		for (File equipment_directory : this.roomDirectory.listFiles()) {
 			if (!equipment_directory.isDirectory())
 				continue;
-			Log.v(this.getClass().getSimpleName(), "Equipment directory "
-					+ equipment_directory.getAbsolutePath() + " was found.");
+			Log.v(new Throwable(),
+					"Equipment directory "
+							+ equipment_directory.getAbsolutePath()
+							+ " was found.");
 			this.add(new Equipment(equipment_directory));
 		}// for
 	}// EnumerateEquipments

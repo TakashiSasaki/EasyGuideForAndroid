@@ -4,8 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.content.res.Resources.NotFoundException;
 
 /**
@@ -27,7 +28,7 @@ public class Equipment extends ArrayList<Panel> {
 	 */
 	public Equipment(File equipment_directory) {
 		super();
-		Log.v(this.getClass().getSimpleName(), "Constructing equipment "
+		Log.v(new Throwable(), "Constructing equipment "
 				+ equipment_directory.getAbsolutePath());
 		this.equipmentDirectory = equipment_directory;
 		this.equipmentDirectoryName = new DirectoryName(
@@ -59,12 +60,12 @@ public class Equipment extends ArrayList<Panel> {
 
 	@SuppressWarnings("javadoc")
 	public File getEquipmentDirectory() {
-		return equipmentDirectory;
+		return this.equipmentDirectory;
 	}
 
 	@SuppressWarnings("javadoc")
 	public String getEquipmentName() {
-		return equipmentDirectoryName.getName();
+		return this.equipmentDirectoryName.getName();
 	}
 
 	@SuppressWarnings("javadoc")
@@ -74,27 +75,27 @@ public class Equipment extends ArrayList<Panel> {
 
 	@SuppressWarnings("javadoc")
 	public int getEquipmentNumber() {
-		return equipmentDirectoryName.getNumber();
+		return this.equipmentDirectoryName.getNumber();
 	}
 
 	@SuppressWarnings("javadoc")
 	public int getEquipmentX() {
-		return equipmentDirectoryName.getX();
+		return this.equipmentDirectoryName.getX();
 	}
 
 	@SuppressWarnings("javadoc")
 	public int getEquipmentY() {
-		return equipmentDirectoryName.getY();
+		return this.equipmentDirectoryName.getY();
 	}
 
 	@SuppressWarnings("javadoc")
 	public Bitmap getEquipmentImage() {
-		return equipmentDirectoryImage.getImage();
+		return this.equipmentDirectoryImage.getImage();
 	}
 
 	@SuppressWarnings("javadoc")
 	public Bitmap getEquipmentThumbnail() {
-		return equipmentDirectoryImage.getThumbnail();
+		return this.equipmentDirectoryImage.getThumbnail();
 	}
 
 	/**
@@ -125,9 +126,9 @@ public class Equipment extends ArrayList<Panel> {
 				+ this.getEquipmentName());
 	}// GetPanel
 
-	@Override
-	@Deprecated
-	public Panel get(int index) {
-		throw new Error("Equipment#get is deprecated.");
-	}// get
+//	@Override
+//	@Deprecated
+//	public Panel get(int index) {
+//		throw new Error("Equipment#get is deprecated.");
+//	}// get
 }// Equipment

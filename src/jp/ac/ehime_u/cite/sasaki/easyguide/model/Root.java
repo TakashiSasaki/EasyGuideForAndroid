@@ -45,6 +45,7 @@ public class Root extends ArrayList<Domain> {
 		 * Log.v(this.getClass().getSimpleName(), "creating directory " +
 		 * rootDirectory.getAbsolutePath()); }
 		 */
+		EnumerateDomainDirectories();
 		assert (rootDirectory.exists());
 	}// an constructor
 

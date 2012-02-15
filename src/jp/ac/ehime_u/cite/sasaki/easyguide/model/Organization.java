@@ -49,7 +49,7 @@ public class Organization extends ArrayList<Facility> {
 			this.add(new Facility(facility_directory));
 		}// for
 	}
-
+	
 	@SuppressWarnings("javadoc")
 	public String getMacAddress() {
 		return macAddress;
@@ -78,6 +78,10 @@ public class Organization extends ArrayList<Facility> {
 	@SuppressWarnings("javadoc")
 	public DirectoryName getOrganizationDirectoryName() {
 		return this.organizationDirectoryName;
+	}
+	
+	public String toString(){
+		return getOrganizationDirectoryName().getName();
 	}
 
 	@SuppressWarnings("javadoc")

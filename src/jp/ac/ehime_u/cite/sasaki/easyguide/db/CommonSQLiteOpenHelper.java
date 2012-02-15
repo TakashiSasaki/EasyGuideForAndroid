@@ -29,4 +29,4 @@ public class CommonSQLiteOpenHelper extends SQLiteOpenHelper {
 		SourceTable.UpgradeTable(db, oldVersion, newVersion);
 		DownloadedItemTable.UpgradeTable(db, oldVersion, newVersion);
 	}// onUpgrade
-}
+}//CommonSQLiteOpenHelper

@@ -1,6 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.db;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DownloadedItem;
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -62,7 +62,7 @@ public class DownloadedItemTable extends TableBase {
 		Log.d(this.getClass().getSimpleName(), "Delete "
 				+ downloaded_item.getDownloadedFile().getPath());
 		SQLiteDatabase wdb = getWritableDatabase();
-		wdb.delete(TABLE_NAME, COLUMN_DOWNLOADED_FILE+" = ?",
+		wdb.delete(TABLE_NAME, COLUMN_DOWNLOADED_FILE + " = ?",
 				new String[] { downloaded_item.getDownloadedFile().getPath() });
 		wdb.close();
 	}
@@ -75,5 +75,24 @@ public class DownloadedItemTable extends TableBase {
 		return rdb.query(TABLE_NAME, new String[] { COLUMN_DOWNLOADED_DATE,
 				COLUMN_DOWNLOADED_FILE }, null, null, null, null, null);
 	}// Select
+
+	static DownloadedItemTable theInstance;
+
+	/**
+	 * singleton factories
+	 * 
+	 * @return singleton instance of class Source.
+	 * 
+	 */
+	static public DownloadedItemTable getInstance() {
+		return theInstance;
+	}// singleton factory
+
+	static public DownloadedItemTable getInstance(Context context) {
+		if (theInstance == null) {
+			theInstance = new DownloadedItemTable(context);
+		}
+		return theInstance;
+	}// singleton factory
 
 }// DownloadedItemsSQLiteOpenHelper

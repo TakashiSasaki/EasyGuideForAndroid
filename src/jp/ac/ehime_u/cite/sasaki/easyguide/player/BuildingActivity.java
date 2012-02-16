@@ -2,6 +2,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import android.app.Activity;
@@ -17,7 +18,11 @@ import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -29,107 +34,111 @@ public class BuildingActivity extends Activity {
 	protected static final float SWIPE_THRESHOLD_VELOCITY = 10;
 	private GestureDetector mGestureDetector;
 	private Building building;
+	int organizationIndex;
+	int facilityIndex;
+	int buildingIndex;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.building);
-		this.mGestureDetector = new GestureDetector(this, this.mOnGestureListener);
+		this.mGestureDetector = new GestureDetector(this,
+				this.mOnGestureListener);
+
+		Intent intent = this.getIntent();
+		this.organizationIndex = intent.getIntExtra("organizationIndex", 0);
+		this.facilityIndex = intent.getIntExtra("facilityIndex", 0);
+		this.buildingIndex = intent.getIntExtra("buildingIndex", 0);
 
 		Organizations organizations = Organizations.GetTheOrganizations();
-		Organization organization = organizations.GetOrganization("assets");
-		Facility facility = organization.GetFacility("facility_a");
-		Building building = facility.GetBuilding("building_a");
+		Organization organization = organizations
+				.GetOrganizationByIndex(this.organizationIndex);
+		Facility facility = organization.getFacilityByIndex(this.facilityIndex);
+		this.building = facility.getBuildingByIndex(this.buildingIndex);
 
 		ImageView image_view_building = (ImageView) findViewById(R.id.imageViewBuilding);
-		image_view_building.setImageBitmap(building.getBuildingImage());
-		image_view_building.setOnTouchListener(new OnTouchListener() {
+		image_view_building.setImageBitmap(this.building.getBuildingImage());
 
-			public boolean onTouch(View v, MotionEvent event) {
-				AlertDialog.Builder alert_dialog_builder = new AlertDialog.Builder(
-						BuildingActivity.this);
-				alert_dialog_builder.setTitle("ダイアログボックスのタイトル");
-				alert_dialog_builder.setPositiveButton("YES デバッグ用",
-						new OnClickListener() {
+		// image_view_building.setOnTouchListener(new OnTouchListener() {
+		//
+		// public boolean onTouch(View v, MotionEvent event) {
+		// AlertDialog.Builder alert_dialog_builder = new AlertDialog.Builder(
+		// BuildingActivity.this);
+		// alert_dialog_builder.setTitle("ダイアログボックスのタイトル");
+		// alert_dialog_builder.setPositiveButton("YES デバッグ用",
+		// new OnClickListener() {
+		//
+		// public void onClick(DialogInterface dialog,
+		// int which) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// });
+		// alert_dialog_builder.setNegativeButton("NO デバッグ用",
+		// new OnClickListener() {
+		//
+		// public void onClick(DialogInterface dialog,
+		// int which) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// });
+		// alert_dialog_builder.setNeutralButton("CANCEL デバッグ用",
+		// new OnClickListener() {
+		//
+		// public void onClick(DialogInterface dialog,
+		// int which) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// });
+		// alert_dialog_builder.setCancelable(true);
+		// alert_dialog_builder.show();
+		// return true;
+		// }
+		// });
 
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// TODO Auto-generated method stub
+		SetSpinnerFloors();
+	}//
 
-							}
-						});
-				alert_dialog_builder.setNegativeButton("NO デバッグ用",
-						new OnClickListener() {
-
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// TODO Auto-generated method stub
-
-							}
-						});
-				alert_dialog_builder.setNeutralButton("CANCEL デバッグ用",
-						new OnClickListener() {
-
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// TODO Auto-generated method stub
-
-							}
-						});
-				alert_dialog_builder.setCancelable(true);
-				alert_dialog_builder.show();
-				return true;
-			}
-		});
-
-		ImageView image_view_floor = (ImageView) findViewById(R.id.imageViewFloor);
-		// TODO: クリッカブルマップを実装
-		image_view_floor.setImageBitmap(building.get(1).getFloorImage());
-		image_view_floor.setOnTouchListener(new OnTouchListener() {
-
-			public boolean onTouch(View v, MotionEvent event) {
-				/*
-				 * List<FloorContent> dataList = new ArrayList<FloorContent>();
-				 * dataList.add(new FloorContent(MapActivity.this));
-				 * dataList.add(new FloorContent(MapActivity.this));
-				 * dataList.add(new FloorContent(MapActivity.this));
-				 * 
-				 * FloorArrayAdapter floor_list_adapter = new FloorArrayAdapter(
-				 * MapActivity.this, R.layout.floor_list_item, dataList);
-				 * ListView list_view = (ListView) MapActivity.this
-				 * .findViewById(R.id.listViewFloor); assert (list_view !=
-				 * null); list_view.setAdapter(floor_list_adapter);
-				 * 
-				 * // コンテキストからインフレータを取得 LayoutInflater layout_infrater =
-				 * LayoutInflater .from(MapActivity.this); //
-				 * レイアウトをインフレとしてビューを取得 View view = layout_infrater.inflate(
-				 * R.layout.floor_list, null);
-				 * 
-				 * new AlertDialog.Builder(MapActivity.this).setView(view)
-				 * .show();
-				 */
-				return false;
-			}
-		});
-
-		ImageView image_view_room = (ImageView) findViewById(R.id.imageViewRoom);
-		image_view_room.setImageBitmap(building.get(1).get(1).getRoomImage());
-		image_view_room.setOnTouchListener(new OnTouchListener() {
+	void SetSpinnerFloors() {
+		Spinner s = (Spinner) findViewById(R.id.spinnerFloors);
+		ArrayAdapter<Floor> floor_array_adapter = new ArrayAdapter<Floor>(this,
+				android.R.layout.simple_spinner_dropdown_item);
+		floor_array_adapter.add(Floor.getEmptyFloor());
+		for (Floor f : this.building) {
+			floor_array_adapter.add(f);
+		}
+		s.setAdapter(floor_array_adapter);
+		OnItemSelectedListener l = new OnItemSelectedListener() {
 
 			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				new Handler().post(new Runnable() {
-					@Override
-					public void run() {
-						InvokeMediaActivity();
-					}
-				});
-				return false;
-			}// onTouch
-		}// OnTouchListener
-				);// setOnTouchListener
-	}// onCreate
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				Floor selected_floor = (Floor) arg0.getItemAtPosition(arg2);
+				if (selected_floor.isEmpty()) {
+					return;
+				}
+				InvokeFloorActivity(selected_floor.getFloorIndex());
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		};// OnItemSelectedListener
+		s.setOnItemSelectedListener(l);
+	}// SetSpinnerFloors
+
+	void InvokeFloorActivity(int fi) {
+		Intent intent = new Intent();
+		intent.setClass(this, FloorActivity.class);
+		intent.putExtra("organizationIndex", this.organizationIndex);
+		intent.putExtra("facilityIndex", this.facilityIndex);
+		intent.putExtra("buildingIndex", this.buildingIndex);
+		intent.putExtra("floorIndex", fi);
+		startActivity(intent);
+	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

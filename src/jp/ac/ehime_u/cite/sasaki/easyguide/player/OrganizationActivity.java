@@ -4,6 +4,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,11 +12,16 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -24,17 +30,24 @@ import android.widget.ImageView;
 public class OrganizationActivity extends Activity {
 
 	Organization organization;
+	int organizationIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.organization);
 		Intent intent = getIntent();
-		int position = intent.getIntExtra("position", 0);
+		this.organizationIndex = intent.getIntExtra("organizationIndex", 0);
+		Log.v(new Throwable(),
+				"OrganizationActivity was invoked with number = "
+						+ this.organizationIndex);
 
 		// organization = Organizations.GetTheOrganizations().GetOrganization(
 		// "assets");
-		this.organization = Organizations.GetTheOrganizations().get(position);
+		this.organization = Organizations.GetTheOrganizations()
+				.GetOrganizationByIndex(this.organizationIndex);
+
+		SetSpinnerFacilities();
 
 		ImageView image_view = (ImageView) findViewById(R.id.imageViewOrganization);
 		image_view.setImageBitmap(this.organization.getOrganizationImage());
@@ -46,12 +59,60 @@ public class OrganizationActivity extends Activity {
 						image_view);
 				float x = distance_calculator.GetXOnDrawable(motion_event);
 				float y = distance_calculator.GetYOnDrawable(motion_event);
-				Log.v(this.getClass().getSimpleName(), "x=" + x + " y=" + y);
+				Log.v(new Throwable(), "x=" + x + " y=" + y);
 				InvokeNearestFacilityActivity(image_view, motion_event);
 				return true; // stops event propagation
 			}// onTouch
 		});// setOnTouchListener
 	}// onCreate
+
+	void SetSpinnerFacilities() {
+		ArrayAdapter<Facility> facilities_array_adapter = new ArrayAdapter<Facility>(
+				this, android.R.layout.simple_spinner_dropdown_item);
+		facilities_array_adapter.add(Facility.GetEmptyFacility());
+		for (Facility f : this.organization) {
+			facilities_array_adapter.add(f);
+		}
+		Spinner s = (Spinner) findViewById(R.id.spinnerFacilities);
+		s.setAdapter(facilities_array_adapter);
+		OnItemSelectedListener l = new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View arg1,
+					int position, long arg3) {
+				Facility selected_faciliity = (Facility) parent
+						.getItemAtPosition(position);
+				if (selected_faciliity.isEmpty())
+					return;
+				Log.v(new Throwable(), "Facility "
+						+ selected_faciliity.getFacilityDirectoryName()
+								.getName()
+						+ ", "
+						+ selected_faciliity.getFacilityDirectoryName()
+								.getNumber() + " was selected");
+				InvokeFacilityActivity(selected_faciliity);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		};// OnItemSelectedListener
+		s.setSelection(0);
+		s.setSelected(false);
+		s.setOnItemSelectedListener(l);
+	}// SetSpinnerFacilities
+
+	void InvokeFacilityActivity(Facility facility) {
+		Intent intent = new Intent();
+		intent.setClass(this, FacilityActivity.class);
+		Log.v(new Throwable(), "Invoking FacilityActivity with number "
+				+ facility.getFacilityDirectoryName().getNumber());
+		intent.putExtra("organizationIndex", this.organizationIndex);
+		intent.putExtra("facilityIndex", facility.getFacilityDirectoryName()
+				.getNumber());
+		startActivity(intent);
+	}// InvokeFacilityActivity
 
 	@SuppressWarnings("unused")
 	private static void ShowDialog(Context context, ImageView image_view) {
@@ -106,8 +167,8 @@ public class OrganizationActivity extends Activity {
 			MotionEvent motion_event) {
 		Facility facility = this.organization.GetNearestFacility(image_view,
 				motion_event);
-		Log.v(this.getClass().getSimpleName(), "The nearest facility is "
-				+ facility.getFacilityName());
+		Log.v(new Throwable(),
+				"The nearest facility is " + facility.getFacilityName());
 		Intent intent = new Intent();
 		intent.setClass(this, FacilityActivity.class);
 		startActivity(intent);

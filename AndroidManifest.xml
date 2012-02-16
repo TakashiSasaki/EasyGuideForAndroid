@@ -20,5 +20,8 @@
         <activity android:name=".EquipmentActivity"></activity>
         <activity android:name="OrganizationActivity"></activity>
         <activity android:name="FacilityActivity"></activity>
+        <activity android:name="FloorActivity">
+        </activity>
+        <activity android:name="RoomActivity"></activity>
     </application>
 </manifest>

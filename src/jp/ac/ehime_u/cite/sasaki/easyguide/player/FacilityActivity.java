@@ -16,7 +16,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -34,13 +38,14 @@ public class FacilityActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.facility);
 		this.intent = this.getIntent();
-		this.organizationIndex = intent.getIntExtra("organizationIndex", 1);
-		this.facilityIndex = intent.getIntExtra("facilityIndex", 0);
+		this.organizationIndex = this.intent
+				.getIntExtra("organizationIndex", 0);
+		this.facilityIndex = this.intent.getIntExtra("facilityIndex", 0);
 
-		// this.facility = organization.GetFacility("facility_a");
 		Organizations organizations = Organizations.GetTheOrganizations();
-		Organization organization = organizations.get(organizationIndex);
-		this.facility = organization.get(facilityIndex);
+		Organization organization = organizations
+				.GetOrganizationByIndex(this.organizationIndex);
+		this.facility = organization.getFacilityByIndex(this.facilityIndex);
 		if (this.facility == null) {
 			Log.v(this.getClass().getSimpleName(),
 					"Can't find organizationIndex " + this.organizationIndex
@@ -61,7 +66,46 @@ public class FacilityActivity extends Activity {
 				return true; // stops event propagation
 			}// onTouch
 		});// setOnTouchListener
+
+		SetSpinnerFacilities();
 	}// onCreate
+
+	void SetSpinnerFacilities() {
+		ArrayAdapter<Building> building_array_adapter = new ArrayAdapter<Building>(
+				this, android.R.layout.simple_spinner_dropdown_item);
+		building_array_adapter.add(Building.getEmptyBuilding());
+		for (Building b : this.facility) {
+			building_array_adapter.add(b);
+		}
+		Spinner s = (Spinner) findViewById(R.id.spinnerBuildings);
+		s.setAdapter(building_array_adapter);
+		OnItemSelectedListener l = new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				Building selected_building = (Building) arg0
+						.getItemAtPosition(arg2);
+				if (selected_building.isEmpty())
+					return;
+				InvokeBuildingActivity(selected_building);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		};
+		s.setOnItemSelectedListener(l);
+	}
+
+	protected void InvokeBuildingActivity(Building selected_building) {
+		Intent intent = new Intent();
+		intent.setClass(this, BuildingActivity.class);
+		intent.putExtra("organizationIndex", this.organizationIndex);
+		intent.putExtra("facilityIndex", this.facilityIndex);
+		intent.putExtra("buildingIndex", selected_building.getBuildingIndex());
+		startActivity(intent);
+	}
 
 	@SuppressWarnings("unused")
 	private static void ShowDialog(Context context, ImageView image_view) {

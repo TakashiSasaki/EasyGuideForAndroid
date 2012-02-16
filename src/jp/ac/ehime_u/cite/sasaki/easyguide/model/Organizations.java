@@ -33,6 +33,15 @@ public class Organizations extends ArrayList<Organization> {
 		}// for
 	}// EnumerateOrganizations
 
+	public Organization GetOrganizationByIndex(int organization_index) {
+		for (Organization o : this) {
+			if (o.getOrganizationDirectoryName().getNumber() == organization_index)
+				return o;
+		}
+		throw new IndexOutOfBoundsException("Organization number "
+				+ organization_index + " not found.");
+	}// GetOrganizationByNumber
+
 	/**
 	 * @return singleton object of Organizations
 	 */

@@ -28,8 +28,9 @@ public class Equipment extends ArrayList<Panel> {
 	 */
 	public Equipment(File equipment_directory) {
 		super();
-		Log.v(new Throwable(), "Constructing equipment "
-				+ equipment_directory.getAbsolutePath());
+		Log.v(new Throwable(),
+				"Constructing equipment "
+						+ equipment_directory.getAbsolutePath());
 		this.equipmentDirectory = equipment_directory;
 		this.equipmentDirectoryName = new DirectoryName(
 				equipment_directory.getName());
@@ -37,6 +38,16 @@ public class Equipment extends ArrayList<Panel> {
 				equipmentImageName);
 		this.EnumeratePanels();
 	}// a constructor
+
+	private Equipment() {
+		super();
+	}
+
+	public String toString() {
+		if (this.isEmpty())
+			return "";
+		return this.equipmentDirectoryName.getName();
+	}// toString
 
 	@SuppressWarnings("javadoc")
 	public void EnumeratePanels() {
@@ -74,7 +85,7 @@ public class Equipment extends ArrayList<Panel> {
 	}
 
 	@SuppressWarnings("javadoc")
-	public int getEquipmentNumber() {
+	public int getEquipmentIndex() {
 		return this.equipmentDirectoryName.getNumber();
 	}
 
@@ -126,9 +137,13 @@ public class Equipment extends ArrayList<Panel> {
 				+ this.getEquipmentName());
 	}// GetPanel
 
-//	@Override
-//	@Deprecated
-//	public Panel get(int index) {
-//		throw new Error("Equipment#get is deprecated.");
-//	}// get
+	public static Equipment getEmptyEquipment() {
+		return new Equipment();
+	}
+
+	// @Override
+	// @Deprecated
+	// public Panel get(int index) {
+	// throw new Error("Equipment#get is deprecated.");
+	// }// get
 }// Equipment

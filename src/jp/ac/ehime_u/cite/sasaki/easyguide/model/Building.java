@@ -22,8 +22,9 @@ public class Building extends ArrayList<Floor> {
 
 	@Override
 	public String toString() {
-		return "Building " + this.getBuildingName() + ", index="
-				+ this.getBuildingNumber();
+		if (this.isEmpty())
+			return "";
+		return this.buildingDirectoryName.getName();
 	}// toString
 
 	/**
@@ -39,6 +40,14 @@ public class Building extends ArrayList<Floor> {
 		this.EnumerateFloors();
 	}// a constructor
 
+	Building() {
+		super();
+	}
+
+	public boolean isEmpty() {
+		return this.buildingDirectory == null || this.buildingDirectoryName == null;
+	}
+
 	@SuppressWarnings("javadoc")
 	public void EnumerateFloors() {
 		for (File floor_directory : this.buildingDirectory.listFiles()) {
@@ -52,13 +61,13 @@ public class Building extends ArrayList<Floor> {
 		Collections.sort(this, new Comparator<Floor>() {
 			@Override
 			public int compare(Floor arg0, Floor arg1) {
-				return arg0.getFloorNumber() - arg1.getFloorNumber();
+				return arg0.getFloorIndex() - arg1.getFloorIndex();
 			}// compare
 		});// sort
 	}// Sort
 
 	@SuppressWarnings("javadoc")
-	public int getBuildingNumber() {
+	public int getBuildingIndex() {
 		return this.buildingDirectoryName.getNumber();
 	}
 
@@ -103,7 +112,7 @@ public class Building extends ArrayList<Floor> {
 	 */
 	public Floor GetFloor(String floor_name) {
 		for (Floor floor : this) {
-			if (floor.getFloorName().equals(floor_name)) {
+			if (floor.toString().equals(floor_name)) {
 				return floor;
 			}
 		}// for
@@ -117,7 +126,7 @@ public class Building extends ArrayList<Floor> {
 	 */
 	public Floor GetFloor(int number) {
 		for (Floor floor : this) {
-			if (floor.getFloorNumber() == number) {
+			if (floor.getFloorIndex() == number) {
 				return floor;
 			}// if
 		}// for
@@ -125,9 +134,22 @@ public class Building extends ArrayList<Floor> {
 				+ " not found in building " + this.toString());
 	}// GetFloor
 
-//	@Override
-//	@Deprecated
-//	public Floor get(int index) {
-//		throw new Error("Building#get is deprecated");
-//	}
+	public static Building getEmptyBuilding() {
+		return new Building();
+	}
+
+	public Floor getFloorByIndex(int fi) {
+		for (Floor f : this) {
+			if (f.getFloorIndex() == fi) {
+				return f;
+			}
+		}
+		return null;
+	}
+
+	// @Override
+	// @Deprecated
+	// public Floor get(int index) {
+	// throw new Error("Building#get is deprecated");
+	// }
 }// Building

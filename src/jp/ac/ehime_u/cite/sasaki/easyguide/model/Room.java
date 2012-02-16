@@ -30,6 +30,10 @@ public class Room extends ArrayList<Equipment> {
 		this.EnumerateEquipments();
 	}// a constructor
 
+	private Room() {
+		super();
+	}
+
 	@SuppressWarnings("javadoc")
 	public void EnumerateEquipments() {
 		for (File equipment_directory : this.roomDirectory.listFiles()) {
@@ -43,42 +47,43 @@ public class Room extends ArrayList<Equipment> {
 		}// for
 	}// EnumerateEquipments
 
-	@SuppressWarnings("javadoc")
-	public String getRoomName() {
-		return this.roomDirectoryName.getName();
-	}
+//	@SuppressWarnings("javadoc")
+//	public String getRoomName() {
+//		return this.roomDirectoryName.getName();
+//	}
 
 	@SuppressWarnings("javadoc")
 	public DirectoryName getRoomDirectoryName() {
 		return this.roomDirectoryName;
 	}
 
-	@SuppressWarnings("javadoc")
-	public int getRoomNumber() {
+	@Override
+	public String toString() {
+		if (this.isEmpty())
+			return "";
+		return this.roomDirectoryName.getName();
+	}
+
+	public int getRoomIndex() {
 		return this.roomDirectoryName.getNumber();
 	}
 
-	@SuppressWarnings("javadoc")
 	public Bitmap getRoomImage() {
 		return this.roomImage.getImage();
 	}
 
-	@SuppressWarnings("javadoc")
 	public Bitmap getRoomThumbnail() {
 		return this.roomImage.getThumbnail();
 	}
 
-	@SuppressWarnings("javadoc")
 	public int getRoomX() {
 		return this.roomDirectoryName.getX();
 	}
 
-	@SuppressWarnings("javadoc")
 	public int getRoomY() {
 		return this.roomDirectoryName.getY();
 	}
 
-	@SuppressWarnings("javadoc")
 	public File getRoomDirectory() {
 		return this.roomDirectory;
 	}
@@ -91,4 +96,8 @@ public class Room extends ArrayList<Equipment> {
 		}// for
 		return null;
 	}// GetEquipment
+
+	public static Room getEmptyRoom() {
+		return new Room();
+	}
 }// Equipment

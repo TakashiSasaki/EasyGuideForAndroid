@@ -39,8 +39,8 @@ public class Organization extends ArrayList<Facility> {
 						+ this.organizationDirectory);
 		this.EnumerateFacilities();
 	}// a constructor
-	
-	public void EnumerateFacilities(){
+
+	public void EnumerateFacilities() {
 		for (File facility_directory : this.organizationDirectory.listFiles()) {
 			if (!facility_directory.isDirectory())
 				continue;
@@ -49,7 +49,16 @@ public class Organization extends ArrayList<Facility> {
 			this.add(new Facility(facility_directory));
 		}// for
 	}
-	
+
+	public Facility getFacilityByIndex(int facility_index) {
+		for (Facility f : this) {
+			if (f.getFacilityIndex() == facility_index) {
+				return f;
+			}
+		}
+		return null;
+	}// getFacilityByIndex
+
 	@SuppressWarnings("javadoc")
 	public String getMacAddress() {
 		return macAddress;
@@ -74,13 +83,13 @@ public class Organization extends ArrayList<Facility> {
 	public String getOrganizationDomain() {
 		return this.organizationDirectoryName.getName();
 	}
-	
+
 	@SuppressWarnings("javadoc")
 	public DirectoryName getOrganizationDirectoryName() {
 		return this.organizationDirectoryName;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return getOrganizationDirectoryName().getName();
 	}
 
@@ -132,5 +141,9 @@ public class Organization extends ArrayList<Facility> {
 	public Facility get(int index) {
 		throw new Error("Organization#get is deprecated.");
 	}// get
+
+	public int geOrganizationtIndex() {
+		return this.getOrganizationDirectoryName().getNumber();
+	}
 }// Organization
 

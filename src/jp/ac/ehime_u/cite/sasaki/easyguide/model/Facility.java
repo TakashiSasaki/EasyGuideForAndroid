@@ -40,12 +40,31 @@ public class Facility extends ArrayList<Building> {
 		this.EnumerateBuildings();
 	}// a constructor
 
+	private Facility() {
+		super();
+	}
+
+	public static Facility GetEmptyFacility() {
+		return new Facility();
+	}
+
+	public boolean isEmpty() {
+		return facilityDirectory == null || facilityDirectoryName == null;
+	}
+
 	public void EnumerateBuildings() {
 		for (File building_directory : this.facilityDirectory.listFiles()) {
 			if (building_directory.isDirectory())
 				this.add(new Building(building_directory));
 		}// for
 	}// EnumerateBuildings
+
+	@Override
+	public String toString() {
+		if (this.isEmpty())
+			return "";
+		return this.getFacilityDirectoryName().getName();
+	}// toString
 
 	/**
 	 * Sort buildings by building number.
@@ -54,13 +73,13 @@ public class Facility extends ArrayList<Building> {
 		Collections.sort(this, new Comparator<Building>() {
 			@Override
 			public int compare(Building arg0, Building arg1) {
-				return arg0.getBuildingNumber() - arg1.getBuildingNumber();
+				return arg0.getBuildingIndex() - arg1.getBuildingIndex();
 			}// compare
 		});// sort
 	}// SortByBuildingNumber
 
 	@SuppressWarnings("javadoc")
-	public int getFacilityNumber() {
+	public int getFacilityIndex() {
 		return this.facilityDirectoryName.getNumber();
 	}
 
@@ -131,7 +150,7 @@ public class Facility extends ArrayList<Building> {
 	@SuppressWarnings("javadoc")
 	public Building GetBuilding(int building_number) {
 		for (Building building : this) {
-			if (building.getBuildingNumber() == building_number) {
+			if (building.getBuildingIndex() == building_number) {
 				return building;
 			}
 		}
@@ -145,4 +164,12 @@ public class Facility extends ArrayList<Building> {
 		throw new Error("Facility#get is deprecated.");
 	}// get
 
+	public Building getBuildingByIndex(int bi) {
+		for (Building b : this) {
+			if (b.getBuildingIndex() == bi) {
+				return b;
+			}
+		}
+		return null;
+	}
 }// Facility

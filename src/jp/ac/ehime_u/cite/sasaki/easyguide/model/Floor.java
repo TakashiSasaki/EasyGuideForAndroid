@@ -27,7 +27,8 @@ public class Floor extends ArrayList<Room> {
 		super();
 		this.floorDirectory = floor_directory;
 		this.floorDirectoryName = new DirectoryName(floor_directory.getName());
-		this.floorImage = new DirectoryImage(floorDirectory, floorImageName);
+		this.floorImage = new DirectoryImage(this.floorDirectory,
+				floorImageName);
 		Log.v(this.getClass().getSimpleName(), "Scanning room directories in "
 				+ this.floorDirectory);
 		this.EnumerateRooms();
@@ -50,7 +51,7 @@ public class Floor extends ArrayList<Room> {
 		Collections.sort(this, new Comparator<Room>() {
 			@Override
 			public int compare(Room arg0, Room arg1) {
-				return arg0.getRoomNumber() - arg1.getRoomNumber();
+				return arg0.getRoomIndex() - arg1.getRoomIndex();
 			}// compare
 		});// sort
 	}// SortByRoomNumber
@@ -66,12 +67,14 @@ public class Floor extends ArrayList<Room> {
 	}
 
 	@SuppressWarnings("javadoc")
-	public int getFloorNumber() {
+	public int getFloorIndex() {
 		return this.floorDirectoryName.getNumber();
 	}
 
 	@SuppressWarnings("javadoc")
-	public String getFloorName() {
+	public String toString() {
+		if (this.isEmpty())
+			return "";
 		return this.floorDirectoryName.getName();
 	}
 
@@ -99,29 +102,46 @@ public class Floor extends ArrayList<Room> {
 	@Deprecated
 	public Room GetRoom(String room_name) {
 		for (Room room : this) {
-			if (room.getRoomName().equals(room_name)) {
+			if (room.toString().equals(room_name)) {
 				return room;
 			}
 		}// for
 		throw new NotFoundException("Room " + room_name
-				+ " not found in Floor " + this.getFloorName());
+				+ " not found in Floor " + this.toString());
 	}// GetRoom
 
 	@SuppressWarnings("javadoc")
 	@Deprecated
 	public Room GetRoom(int room_number) {
 		for (Room room : this) {
-			if (room.getRoomName().equals(room_number)) {
+			if (room.getRoomIndex() == room_number) {
 				return room;
 			}
 		}// for
 		throw new NotFoundException("Room " + room_number
-				+ " not found in Floor " + this.getFloorName());
+				+ " not found in Floor " + this.toString());
 	}// GetRoom
 
-//	@Override
-//	@Deprecated
-//	public Room get(int index) {
-//		throw new Error("Floor#get was deprecated");
-//	}// get
+	public static Floor getEmptyFloor() {
+		return new Floor();
+	}
+
+	private Floor() {
+		super();
+	}// a constructor for empty instance
+
+	public Room getRoomByIndex(int roomIndex) {
+		for (Room r : this) {
+			if (r.getRoomIndex() == roomIndex) {
+				return r;
+			}
+		}// for
+		return null;
+	}// getRoomByIndex
+
+	// @Override
+	// @Deprecated
+	// public Room get(int index) {
+	// throw new Error("Floor#get was deprecated");
+	// }// get
 }// Floor

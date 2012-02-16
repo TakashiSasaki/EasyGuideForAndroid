@@ -12,11 +12,26 @@
         android:layout_weight="2" >
     </ListView>
 
-    <Button
-        android:id="@+id/buttonDeleteZips"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Delete All Zips" />
+        android:layout_weight="2" >
+
+        <Button
+            android:id="@+id/buttonDeleteZips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete All Zips" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Refresh" />
+
+    </LinearLayout>
 
 </LinearLayout>

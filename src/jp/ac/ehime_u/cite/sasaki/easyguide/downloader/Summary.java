@@ -43,7 +43,7 @@ public class Summary {
 	 */
 	public Summary(Facility facility) {
 		this.title = facility.getFacilityName();
-		this.order = facility.getFacilityNumber();
+		this.order = facility.getFacilityIndex();
 		this.x = facility.getFacilityX();
 		this.y = facility.getFacilityY();
 		this.image = facility.getFacilityThumbnail();
@@ -57,7 +57,7 @@ public class Summary {
 	 */
 	public Summary(Building building) {
 		this.title = building.getBuildingName();
-		this.order = building.getBuildingNumber();
+		this.order = building.getBuildingIndex();
 		this.x = building.getBuildingX();
 		this.y = building.getBuildingY();
 		this.image = building.getBuildingThumbnail();

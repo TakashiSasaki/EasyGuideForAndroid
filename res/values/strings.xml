@@ -25,5 +25,6 @@
     <string name="itemSources">List Sources</string>
     <string name="itemDownloadedItems">List Downloaded Items</string>
     <string name="itemToc">Table of Contents</string>
+    <string name="Refresh">Refresh</string>
 
 </resources>

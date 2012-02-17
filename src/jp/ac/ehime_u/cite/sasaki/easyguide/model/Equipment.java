@@ -63,7 +63,7 @@ public class Equipment extends ArrayList<Panel> {
 
 			@Override
 			public int compare(Panel arg0, Panel arg1) {
-				return arg0.getPanelNumber() - arg1.getPanelNumber();
+				return arg0.getPanelIndex() - arg1.getPanelIndex();
 			}// compare
 		});// sort
 	}// SortByPanelNumber
@@ -74,14 +74,14 @@ public class Equipment extends ArrayList<Panel> {
 	}
 
 	@SuppressWarnings("javadoc")
-	public String getEquipmentName() {
+	public String getEquipmentTitle() {
 		return this.equipmentDirectoryName.getName();
 	}
 
-	@SuppressWarnings("javadoc")
-	public DirectoryName getEquipmentDirectoryName() {
-		return this.equipmentDirectoryName;
-	}
+	// @SuppressWarnings("javadoc")
+	// public DirectoryName getEquipmentDirectoryName() {
+	// return this.equipmentDirectoryName;
+	// }
 
 	@SuppressWarnings("javadoc")
 	public int getEquipmentIndex() {
@@ -112,28 +112,28 @@ public class Equipment extends ArrayList<Panel> {
 	 * @param panel_name
 	 * @return Panel object
 	 */
-	public Panel GetPanel(String panel_name) {
+	public Panel getPanelByTitle(String panel_name) {
 		for (Panel panel : this) {
-			if (panel.getPanelName().equals(panel_name)) {
+			if (panel.getPanelTitle().equals(panel_name)) {
 				return panel;
 			}
 		}// for
 		throw new NotFoundException("Can't find " + panel_name + " in "
-				+ this.getEquipmentName());
+				+ this.getEquipmentTitle());
 	}// GetPanel
 
 	/**
 	 * @param panel_number
 	 * @return Panel object
 	 */
-	public Panel GetPanel(int panel_number) {
+	public Panel getPanelByIndex(int panel_number) {
 		for (Panel panel : this) {
-			if (panel.getPanelNumber() == panel_number) {
+			if (panel.getPanelIndex() == panel_number) {
 				return panel;
 			}
 		}
 		throw new NotFoundException("Can't find " + panel_number + " in "
-				+ this.getEquipmentName());
+				+ this.getEquipmentTitle());
 	}// GetPanel
 
 	public static Equipment getEmptyEquipment() {

@@ -13,7 +13,6 @@ import android.graphics.Bitmap;
  */
 @SuppressWarnings("serial")
 public class Room extends ArrayList<Equipment> {
-	private static final String roomImageName = "room.png";
 	private File roomDirectory;
 	private DirectoryName roomDirectoryName;
 	private DirectoryImage roomImage;
@@ -52,9 +51,13 @@ public class Room extends ArrayList<Equipment> {
 	// return this.roomDirectoryName.getName();
 	// }
 
-	@SuppressWarnings("javadoc")
-	public DirectoryName getRoomDirectoryName() {
-		return this.roomDirectoryName;
+	// @SuppressWarnings("javadoc")
+	// public DirectoryName getRoomDirectoryName() {
+	// return this.roomDirectoryName;
+	// }
+
+	public String getIndex() {
+		return this.roomDirectoryName.getName();
 	}
 
 	@Override
@@ -99,7 +102,7 @@ public class Room extends ArrayList<Equipment> {
 
 	public Equipment GetEquipment(String equipment_name) {
 		for (Equipment equipment : this) {
-			if (equipment.getEquipmentName().equals(equipment_name)) {
+			if (equipment.getEquipmentTitle().equals(equipment_name)) {
 				return equipment;
 			}
 		}// for

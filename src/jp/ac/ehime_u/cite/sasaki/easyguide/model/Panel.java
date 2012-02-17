@@ -37,12 +37,12 @@ public class Panel {
 	}
 
 	@SuppressWarnings("javadoc")
-	public String getPanelName() {
+	public String getPanelTitle() {
 		return this.panelDirectoryName.getName();
 	}
 
 	@SuppressWarnings("javadoc")
-	public int getPanelNumber() {
+	public int getPanelIndex() {
 		return this.panelDirectoryName.getNumber();
 	}
 

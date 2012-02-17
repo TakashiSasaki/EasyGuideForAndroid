@@ -98,7 +98,7 @@ public class Summary {
 	 * @param equipment
 	 */
 	public Summary(Equipment equipment) {
-		this.title = equipment.getEquipmentName();
+		this.title = equipment.getEquipmentTitle();
 		this.order = equipment.getEquipmentIndex();
 		this.x = equipment.getEquipmentX();
 		this.y = equipment.getEquipmentY();
@@ -112,8 +112,8 @@ public class Summary {
 	 * @param panel
 	 */
 	public Summary(Panel panel) {
-		this.title = panel.getPanelName();
-		this.order = panel.getPanelNumber();
+		this.title = panel.getPanelTitle();
+		this.order = panel.getPanelIndex();
 		this.x = -1;
 		this.y = -1;
 		this.image = panel.getPanelThumbnail();

@@ -70,8 +70,8 @@ public class Summary {
 	 * @param floor
 	 */
 	public Summary(Floor floor) {
-		this.title = floor.getFloorName();
-		this.order = floor.getFloorNumber();
+		this.title = floor.toString();
+		this.order = floor.getFloorIndex();
 		this.x = floor.getFloorX();
 		this.y = floor.getFloorY();
 		this.image = floor.getFloorThumbnail();
@@ -84,8 +84,8 @@ public class Summary {
 	 * @param room
 	 */
 	public Summary(Room room) {
-		this.title = room.getRoomName();
-		this.order = room.getRoomNumber();
+		this.title = room.toString();
+		this.order = room.getRoomIndex();
 		this.x = room.getRoomX();
 		this.y = room.getRoomY();
 		this.image = room.getRoomThumbnail();
@@ -99,7 +99,7 @@ public class Summary {
 	 */
 	public Summary(Equipment equipment) {
 		this.title = equipment.getEquipmentName();
-		this.order = equipment.getEquipmentNumber();
+		this.order = equipment.getEquipmentIndex();
 		this.x = equipment.getEquipmentX();
 		this.y = equipment.getEquipmentY();
 		this.image = equipment.getEquipmentThumbnail();

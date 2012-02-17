@@ -6,18 +6,13 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
-import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -106,7 +101,7 @@ public class BuildingActivity extends Activity {
 		Spinner s = (Spinner) findViewById(R.id.spinnerFloors);
 		ArrayAdapter<Floor> floor_array_adapter = new ArrayAdapter<Floor>(this,
 				android.R.layout.simple_spinner_dropdown_item);
-		floor_array_adapter.add(Floor.getEmptyFloor());
+		//floor_array_adapter.add(Floor.getEmptyFloor());
 		for (Floor f : this.building) {
 			floor_array_adapter.add(f);
 		}
@@ -128,6 +123,8 @@ public class BuildingActivity extends Activity {
 			}
 		};// OnItemSelectedListener
 		s.setOnItemSelectedListener(l);
+		
+		s.setPrompt(this.getString(R.string.spinner_prompt_floors));
 	}// SetSpinnerFloors
 
 	void InvokeFloorActivity(int fi) {

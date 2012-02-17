@@ -6,11 +6,13 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -22,14 +24,23 @@ public class FloorActivity extends Activity {
 	int facilityIndex;
 	int buildingIndex;
 	int floorIndex;
+	Spinner spinner;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.floor);
+		this.spinner = (Spinner) findViewById(R.id.spinnerRooms);
 
 		SelectFloor();
 		SetImageView();
 		SetSpinnerRooms();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Log.v(new Throwable(), "onStart called");
+		this.spinner.setSelection(0);
 	}
 
 	private void SetSpinnerRooms() {
@@ -39,9 +50,8 @@ public class FloorActivity extends Activity {
 		for (Room r : this.floor) {
 			room_array_adapter.add(r);
 		}
-		Spinner s = (Spinner) findViewById(R.id.spinnerRooms);
-		s.setAdapter(room_array_adapter);
-		OnItemSelectedListener l = new OnItemSelectedListener() {
+		this.spinner.setAdapter(room_array_adapter);
+		OnItemSelectedListener oisl = new OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -58,7 +68,7 @@ public class FloorActivity extends Activity {
 
 			}
 		};
-		s.setOnItemSelectedListener(l);
+		this.spinner.setOnItemSelectedListener(oisl);
 	}// SetSpinnerFloors
 
 	private void InvokeRoomActivity(int roomIndex) {

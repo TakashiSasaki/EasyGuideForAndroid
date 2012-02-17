@@ -45,6 +45,7 @@ public class FacilityActivity extends Activity {
 		Organizations organizations = Organizations.GetTheOrganizations();
 		Organization organization = organizations
 				.GetOrganizationByIndex(this.organizationIndex);
+		assert(organization != null);
 		this.facility = organization.getFacilityByIndex(this.facilityIndex);
 		if (this.facility == null) {
 			Log.v(this.getClass().getSimpleName(),

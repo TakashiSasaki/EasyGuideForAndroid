@@ -3,12 +3,14 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 import java.io.File;
 import java.io.FileFilter;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -16,12 +18,12 @@ import android.util.Log;
  */
 public class DirectoryImage {
 
-	private Bitmap image;
-	private Bitmap thumbnail;
+	// private Bitmap image;
+	// private Bitmap thumbnail;
 	private static int thumbnailWidth = 100;
 	private static int thumbnailHeight = 100;
 	private static Bitmap defaultImage;
-	private static Bitmap defaultThumbnail;
+	private File imageFile;
 
 	/**
 	 * loads default image and create default thumbnail. They are used when no
@@ -40,58 +42,19 @@ public class DirectoryImage {
 		if (defaultImage == null) {
 			throw new DirectoryImageException("Can't load defaut image.");
 		}// if
-		defaultThumbnail = ResizeBitmap(defaultImage, thumbnailWidth,
-				thumbnailHeight);
-		if (defaultThumbnail == null) {
-			throw new DirectoryImageException(
-					"Can't resize default image for thumbnail.");
-		}// if
 	}// SetDefaultImage
 
 	/**
 	 * @param directory
-	 * @param file_name
-	 * @throws DirectoryImageException
 	 */
-	public DirectoryImage(File directory, String file_name) {
-		File image_file = new File(directory, file_name);
-		if (!image_file.exists()) {
-			image_file = new File(directory, "index.png");
-		} else if (!image_file.exists()) {
-			image_file = new File(directory, "index.jpg");
-		} else if (!image_file.exists()) {
-			image_file = new File(directory, "index.gif");
-		} else if (!image_file.exists()) {
-			for (File file : directory.listFiles(new FileFilter() {
-				@Override
-				public boolean accept(File arg0) {
-					return arg0.getName().matches(
-							"(\\.png^|\\.gif^|\\.jpg^|\\.jpeg^)");
-				}// accept
-			})) {
-				image_file = file;
-			}// for
-		} else {
-			Log.v(this.getClass().getSimpleName(), "No image on " + directory);
-			this.image = DirectoryImage.defaultImage;
-			this.thumbnail = DirectoryImage.defaultThumbnail;
-			return;
-		}// if
+	public DirectoryImage(File directory) {
+		Classifier classifier = new Classifier(directory);
 
-		Log.v(this.getClass().getSimpleName(),
-				"Loading image " + image_file.getPath());
-		this.image = BitmapFactory.decodeFile(image_file.getPath());
-		if (this.image == null) {
-			// if (defaultImage == null || defaultThumbnail == null) {
-			// throw new DirectoryImageException("Can't load image "
-			// + image_file.getPath()
-			// + " and default image is not provided.");
-			// }
-			this.image = defaultImage;
-			this.thumbnail = defaultThumbnail;
-		} else {
-			this.thumbnail = ResizeBitmap(this.image, thumbnailWidth,
-					thumbnailHeight);
+		if (classifier.getImageFiles().size() > 0) {
+			File f = classifier.getImageFiles().get(0);
+			Log.v(new Throwable(),
+					"Image file was found, " + f.getAbsolutePath());
+			imageFile = f;
 		}// if
 	}// a constructor
 
@@ -118,15 +81,32 @@ public class DirectoryImage {
 	 * @return the image
 	 */
 	public Bitmap getImage() {
-		return this.image;
-	}
+
+		if (imageFile != null) {
+			Bitmap b = BitmapFactory.decodeFile(imageFile.getPath());
+			if (b != null) {
+				return b;
+			}
+			// if (defaultImage == null || defaultThumbnail == null) {
+			// throw new DirectoryImageException("Can't load image "
+			// + image_file.getPath()
+			// + " and default image is not provided.");
+			// }
+
+		}
+		Log.v(new Throwable(),
+				"Default image is used because image file was not found.");
+		return this.defaultImage;
+	}// getImage
 
 	/**
 	 * @return the thumbnail
 	 */
 	public Bitmap getThumbnail() {
-		return this.thumbnail;
-	}
+		Bitmap b = getImage();
+		Bitmap t = ResizeBitmap(b, thumbnailWidth, thumbnailHeight);
+		return t;
+	}// getThumbnail
 
 	/**
 	 * @param thumbnailWidth
@@ -143,4 +123,4 @@ public class DirectoryImage {
 	public static void setThumbnailHeight(int thumbnailHeight) {
 		DirectoryImage.thumbnailHeight = thumbnailHeight;
 	}
-}
+}// DirectoryImage

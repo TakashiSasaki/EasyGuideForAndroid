@@ -35,8 +35,7 @@ public class Building extends ArrayList<Floor> {
 		this.buildingDirectory = building_directory;
 		this.buildingDirectoryName = new DirectoryName(
 				building_directory.getName());
-		this.buildingDirectoryImage = new DirectoryImage(
-				this.buildingDirectory, buildingImageName);
+		this.buildingDirectoryImage = new DirectoryImage(this.buildingDirectory);
 		this.EnumerateFloors();
 	}// a constructor
 
@@ -45,7 +44,8 @@ public class Building extends ArrayList<Floor> {
 	}
 
 	public boolean isEmpty() {
-		return this.buildingDirectory == null || this.buildingDirectoryName == null;
+		return this.buildingDirectory == null
+				|| this.buildingDirectoryName == null;
 	}
 
 	@SuppressWarnings("javadoc")

@@ -1,8 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-
 import android.graphics.Bitmap;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -13,10 +13,7 @@ public class Panel {
 	private File panelDirectory;
 	private DirectoryName panelDirectoryName;
 	private DirectoryImage panelDirectoryImage;
-	private PanelText panelText;
-	private PanelImage panelImage;
-	private PanelMovie panelMovie;
-	private PanelHtml panelHtml;
+	private Classifier classifier;
 
 	/**
 	 * @param panel_directory
@@ -24,33 +21,18 @@ public class Panel {
 	public Panel(File panel_directory) {
 		this.panelDirectory = panel_directory;
 		this.panelDirectoryName = new DirectoryName(panel_directory.getName());
-		this.panelDirectoryImage = new DirectoryImage(panel_directory,
-				panelImageName);
-		try {
-			this.panelText = new PanelText(panel_directory);
-		} catch (PanelException e) {
-		}
-		try {
-			this.panelImage = new PanelImage(panel_directory);
-		} catch (PanelException e) {
-		}
-		try {
-			this.panelMovie = new PanelMovie(panel_directory);
-		} catch (PanelException e) {
-		}
-		try {
-			this.panelHtml = new PanelHtml(panel_directory);
-		} catch (PanelException e) {
-		}
+		this.panelDirectoryImage = new DirectoryImage(panel_directory);
+
+		this.classifier = new Classifier(panel_directory);
 	}// a constructor
 
 	@SuppressWarnings("javadoc")
 	public File getPanelDirectory() {
 		return panelDirectory;
 	}
-	
+
 	@SuppressWarnings("javadoc")
-	public DirectoryName getPanelDirectoryName(){
+	public DirectoryName getPanelDirectoryName() {
 		return this.panelDirectoryName;
 	}
 
@@ -67,6 +49,20 @@ public class Panel {
 	@SuppressWarnings("javadoc")
 	public Bitmap getPanelThumbnail() {
 		return this.panelDirectoryImage.getThumbnail();
+	}
+
+	public boolean hasVideo() {
+		if (this.classifier.getMovieFiles().size() > 0) {
+			return true;
+		} else
+			return false;
+	}
+
+	public String getVideoPath() {
+		if (this.classifier.getMovieFiles().size() > 0) {
+			return this.classifier.getMovieFiles().get(0).getAbsolutePath();
+		} else
+			return null;
 	}
 
 }// Panel

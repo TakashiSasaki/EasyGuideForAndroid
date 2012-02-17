@@ -3,6 +3,8 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 import java.io.File;
 import java.util.ArrayList;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
+
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -33,7 +35,7 @@ public class Organization extends ArrayList<Facility> {
 		this.organizationDirectoryName = new DirectoryName(
 				this.organizationDirectory.getName());
 		this.organizationDirectoryImage = new DirectoryImage(
-				this.organizationDirectory, Organization.organizationImageName);
+				this.organizationDirectory);
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning facility directories in "
 						+ this.organizationDirectory);

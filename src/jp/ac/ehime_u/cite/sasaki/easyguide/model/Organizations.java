@@ -38,8 +38,7 @@ public class Organizations extends ArrayList<Organization> {
 			if (o.getOrganizationDirectoryName().getNumber() == organization_index)
 				return o;
 		}
-		throw new IndexOutOfBoundsException("Organization number "
-				+ organization_index + " not found.");
+		return null;
 	}// GetOrganizationByNumber
 
 	/**

@@ -27,8 +27,7 @@ public class Floor extends ArrayList<Room> {
 		super();
 		this.floorDirectory = floor_directory;
 		this.floorDirectoryName = new DirectoryName(floor_directory.getName());
-		this.floorImage = new DirectoryImage(this.floorDirectory,
-				floorImageName);
+		this.floorImage = new DirectoryImage(this.floorDirectory);
 		Log.v(this.getClass().getSimpleName(), "Scanning room directories in "
 				+ this.floorDirectory);
 		this.EnumerateRooms();

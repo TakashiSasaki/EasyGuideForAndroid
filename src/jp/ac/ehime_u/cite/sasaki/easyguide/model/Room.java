@@ -24,7 +24,7 @@ public class Room extends ArrayList<Equipment> {
 	public Room(File room_directory) {
 		this.roomDirectory = room_directory;
 		this.roomDirectoryName = new DirectoryName(room_directory.getName());
-		this.roomImage = new DirectoryImage(room_directory, Room.roomImageName);
+		this.roomImage = new DirectoryImage(room_directory);
 		Log.v(new Throwable(), "Scanning equipment directories in "
 				+ this.roomDirectory);
 		this.EnumerateEquipments();
@@ -47,10 +47,10 @@ public class Room extends ArrayList<Equipment> {
 		}// for
 	}// EnumerateEquipments
 
-//	@SuppressWarnings("javadoc")
-//	public String getRoomName() {
-//		return this.roomDirectoryName.getName();
-//	}
+	// @SuppressWarnings("javadoc")
+	// public String getRoomName() {
+	// return this.roomDirectoryName.getName();
+	// }
 
 	@SuppressWarnings("javadoc")
 	public DirectoryName getRoomDirectoryName() {
@@ -87,6 +87,15 @@ public class Room extends ArrayList<Equipment> {
 	public File getRoomDirectory() {
 		return this.roomDirectory;
 	}
+
+	public Equipment getEquipmentByIndex(int equipment_index) {
+		for (Equipment e : this) {
+			if (e.getEquipmentIndex() == equipment_index) {
+				return e;
+			}
+		}
+		return null;
+	}// getEquipmentByIndex
 
 	public Equipment GetEquipment(String equipment_name) {
 		for (Equipment equipment : this) {

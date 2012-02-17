@@ -32,8 +32,7 @@ public class Facility extends ArrayList<Building> {
 		// String building_directory_path = building_directory.getPath();
 		this.facilityDirectoryName = new DirectoryName(
 				facility_directory.getName());
-		this.facilityDirectoryImage = new DirectoryImage(facilityDirectory,
-				facilityImageName);
+		this.facilityDirectoryImage = new DirectoryImage(facilityDirectory);
 		Log.v(this.getClass().getSimpleName(),
 				"Scanning building directories in "
 						+ this.facilityDirectory.getAbsolutePath());

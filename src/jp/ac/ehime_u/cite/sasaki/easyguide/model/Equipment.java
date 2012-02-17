@@ -34,8 +34,7 @@ public class Equipment extends ArrayList<Panel> {
 		this.equipmentDirectory = equipment_directory;
 		this.equipmentDirectoryName = new DirectoryName(
 				equipment_directory.getName());
-		this.equipmentDirectoryImage = new DirectoryImage(equipment_directory,
-				equipmentImageName);
+		this.equipmentDirectoryImage = new DirectoryImage(equipment_directory);
 		this.EnumeratePanels();
 	}// a constructor
 

@@ -28,11 +28,12 @@ public class RoomActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.room);
 
 		SelectRoom();
 		SetImageView();
 		SetSpinnerEquipments();
-	}
+	}// onCreate
 
 	private void SetSpinnerEquipments() {
 		ArrayAdapter<Equipment> equipment_array_adapter = new ArrayAdapter<Equipment>(
@@ -41,7 +42,7 @@ public class RoomActivity extends Activity {
 		for (Equipment e : this.room) {
 			equipment_array_adapter.add(e);
 		}
-		Spinner s = (Spinner) findViewById(R.id.spinnerRooms);
+		Spinner s = (Spinner) findViewById(R.id.spinnerEquipments);
 		s.setAdapter(equipment_array_adapter);
 		OnItemSelectedListener l = new OnItemSelectedListener() {
 

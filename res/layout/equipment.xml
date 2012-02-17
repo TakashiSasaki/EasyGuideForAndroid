@@ -33,68 +33,64 @@
             <ImageButton style="@style/image_button" />
         </LinearLayout>
     </ScrollView>
-
-    <ViewFlipper
-        android:id="@+id/viewFlipper2"
+
+    <LinearLayout
+        android:id="@+id/linearLayoutMovie"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" >
-
-        <LinearLayout
-            android:id="@+id/linearLayoutHtml"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <WebView
-                android:id="@+id/webView1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-            </WebView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutImage"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <VideoView
+            android:id="@+id/videoView1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <MediaController
+            android:id="@+id/mediaController1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:scaleType="fitXY" >
-            </ImageView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutMovie"
+        </MediaController>
+
+        <TextView
+            android:id="@+id/textViewMovieCaption"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <LinearLayout
-            android:id="@+id/linearLayoutText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </LinearLayout>
-    </ViewFlipper>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" >
+        android:layout_height="wrap_content" >
 
-        <Button style="@style/panel_button" />
+        <Button
+            android:id="@+id/buttonPanel1"
+            style="@style/panel_button" />
 
-        <Button style="@style/panel_button" />
+        <Button
+            android:id="@+id/buttonPanel2"
+            style="@style/panel_button" />
 
-        <Button style="@style/panel_button" />
+        <Button
+            android:id="@+id/buttonPanel3"
+            style="@style/panel_button" />
 
-        <Button style="@style/panel_button" />
+        <Button
+            android:id="@+id/buttonPanel4"
+            style="@style/panel_button" />
 
-        <Button style="@style/panel_button" />
+        <Button
+            android:id="@+id/buttonPanel5"
+            style="@style/panel_button" />
 
-        <Button style="@style/panel_button" />
+        <Button
+            android:id="@+id/buttonPanel6"
+            style="@style/panel_button" />
     </LinearLayout>
 
 </LinearLayout>

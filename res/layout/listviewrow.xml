@@ -10,9 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@android:drawable/btn_star_big_on" 
-        android:contentDescription="@string/anContent"/>
-
+        android:contentDescription="@string/anContent"
+        android:src="@android:drawable/btn_star_big_on" />
+
     <TableLayout
         android:id="@+id/tableLayout1"
         android:layout_width="0dp"
@@ -126,21 +126,20 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
     </TableLayout>
-
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="right"
-         >
+        android:layout_gravity="right" >
 
         <ImageButton
             android:id="@+id/imageButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@android:drawable/stat_sys_download"
-            android:contentDescription="@string/downloadZip" />
+            android:contentDescription="@string/downloadZip"
+            android:src="@android:drawable/stat_sys_download" />
 
         <ImageButton
             android:id="@+id/imageButton3"

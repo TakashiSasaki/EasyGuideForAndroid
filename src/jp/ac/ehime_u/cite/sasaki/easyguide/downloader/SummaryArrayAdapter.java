@@ -35,7 +35,7 @@ public class SummaryArrayAdapter extends ArrayAdapter<Summary> {
 			throws DirectoryImageException {
 		super(context, resource_id);
 		DirectoryImage.SetDefaultImage(context, R.drawable.unknown);
-		for (Organization organization : Organizations.GetTheOrganizations()) {
+		for (Organization organization : Organizations.getInstance()) {
 			this.add(new Summary(organization));
 			for (Facility facility : organization) {
 				this.add(new Summary(facility));

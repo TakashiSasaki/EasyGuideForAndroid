@@ -56,7 +56,7 @@ public class Summary {
 	 * @param building
 	 */
 	public Summary(Building building) {
-		this.title = building.getBuildingName();
+		this.title = building.getTitle();
 		this.order = building.getBuildingIndex();
 		this.x = building.getBuildingX();
 		this.y = building.getBuildingY();

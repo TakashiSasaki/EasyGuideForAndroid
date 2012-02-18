@@ -30,16 +30,16 @@ public class OpeningActivity extends Activity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1);
 		buildingList = new ArrayList<Building>();
-		for (Organization organization : Organizations.GetTheOrganizations()) {
+		for (Organization organization : Organizations.getInstance()) {
 			Log.v(this.getClass().getSimpleName(), "Enumerating organizations");
 			for (Facility facility : organization) {
 				Log.v(this.getClass().getSimpleName(), "Enumerating facilities");
 				for (Building building : facility) {
 					Log.v(this.getClass().getSimpleName(),
 							"Enumerating buildings. Building "
-									+ building.getBuildingName() + " found.");
-					assert (building.getBuildingName() != null);
-					adapter.add(building.getBuildingName());
+									+ building.getTitle() + " found.");
+					assert (building.getTitle() != null);
+					adapter.add(building.getTitle());
 					buildingList.add(building);
 				}
 			}
@@ -63,7 +63,7 @@ public class OpeningActivity extends Activity {
 												.getItemAtPosition(position)
 										+ ", building name in buildingList is "
 										+ buildingList.get(position)
-												.getBuildingName());
+												.getTitle());
 						InvokeMapActivity(buildingList.get(position));
 					}// onItemClick
 				}// OnItemClickListener
@@ -74,7 +74,7 @@ public class OpeningActivity extends Activity {
 		OpeningActivity.chosenBuilding = building_;
 		Intent intent = new Intent(getApplicationContext(), BuildingActivity.class);
 		intent.putExtra("jp.ac.ehime_u.cite.sasaki.easyguide.model.Building",
-				building_.getBuildingName());
+				building_.getTitle());
 		startActivity(intent);
 	}// InvokeMapActivity
 

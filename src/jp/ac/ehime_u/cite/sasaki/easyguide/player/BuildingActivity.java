@@ -46,14 +46,14 @@ public class BuildingActivity extends Activity {
 		this.facilityIndex = intent.getIntExtra("facilityIndex", 0);
 		this.buildingIndex = intent.getIntExtra("buildingIndex", 0);
 
-		Organizations organizations = Organizations.GetTheOrganizations();
+		Organizations organizations = Organizations.getInstance();
 		Organization organization = organizations
-				.GetOrganizationByIndex(this.organizationIndex);
-		Facility facility = organization.getFacilityByIndex(this.facilityIndex);
-		this.building = facility.getBuildingByIndex(this.buildingIndex);
+				.getOrganization(this.organizationIndex);
+		Facility facility = organization.getFacility(this.facilityIndex);
+		this.building = facility.getBuilding(this.buildingIndex);
 
 		ImageView image_view_building = (ImageView) findViewById(R.id.imageViewBuilding);
-		image_view_building.setImageBitmap(this.building.getBuildingImage());
+		image_view_building.setImageBitmap(this.building.getImage());
 
 		// image_view_building.setOnTouchListener(new OnTouchListener() {
 		//
@@ -115,7 +115,7 @@ public class BuildingActivity extends Activity {
 				if (selected_floor.isEmpty()) {
 					return;
 				}
-				InvokeFloorActivity(selected_floor.getFloorIndex());
+				InvokeFloorActivity(selected_floor.getIndex());
 			}
 
 			@Override

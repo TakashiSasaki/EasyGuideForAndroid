@@ -42,18 +42,18 @@ public class FacilityActivity extends Activity {
 				.getIntExtra("organizationIndex", 0);
 		this.facilityIndex = this.intent.getIntExtra("facilityIndex", 0);
 
-		Organizations organizations = Organizations.GetTheOrganizations();
+		Organizations organizations = Organizations.getInstance();
 		Organization organization = organizations
-				.GetOrganizationByIndex(this.organizationIndex);
+				.getOrganization(this.organizationIndex);
 		assert(organization != null);
-		this.facility = organization.getFacilityByIndex(this.facilityIndex);
+		this.facility = organization.getFacility(this.facilityIndex);
 		if (this.facility == null) {
 			Log.v(this.getClass().getSimpleName(),
 					"Can't find organizationIndex " + this.organizationIndex
 							+ " facilityIndex " + this.facilityIndex);
 		}// if
 		ImageView image_view = (ImageView) findViewById(R.id.imageViewFacility);
-		image_view.setImageBitmap(this.facility.getFacilityImage());
+		image_view.setImageBitmap(this.facility.getImage());
 		image_view.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent motion_event) {
@@ -74,7 +74,7 @@ public class FacilityActivity extends Activity {
 	void SetSpinnerFacilities() {
 		ArrayAdapter<Building> building_array_adapter = new ArrayAdapter<Building>(
 				this, android.R.layout.simple_spinner_dropdown_item);
-		building_array_adapter.add(Building.getEmptyBuilding());
+		building_array_adapter.add(new Building());
 		for (Building b : this.facility) {
 			building_array_adapter.add(b);
 		}
@@ -104,7 +104,7 @@ public class FacilityActivity extends Activity {
 		intent.setClass(this, BuildingActivity.class);
 		intent.putExtra("organizationIndex", this.organizationIndex);
 		intent.putExtra("facilityIndex", this.facilityIndex);
-		intent.putExtra("buildingIndex", selected_building.getBuildingIndex());
+		intent.putExtra("buildingIndex", selected_building.getIndex());
 		startActivity(intent);
 	}
 

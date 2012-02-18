@@ -66,7 +66,7 @@ public class RoomActivity extends Activity {
 
 	private void SetImageView() {
 		ImageView i = (ImageView) findViewById(R.id.imageViewRoom);
-		i.setImageBitmap(this.room.getRoomImage());
+		i.setImageBitmap(this.room.getImage());
 	}
 
 	private void SelectRoom() {
@@ -77,13 +77,13 @@ public class RoomActivity extends Activity {
 		this.floorIndex = intent.getIntExtra("floorIndex", 0);
 		this.roomIndex = intent.getIntExtra("roomIndex", 0);
 
-		Organizations organizations = Organizations.GetTheOrganizations();
+		Organizations organizations = Organizations.getInstance();
 		Organization organization = organizations
-				.GetOrganizationByIndex(this.organizationIndex);
-		Facility facility = organization.getFacilityByIndex(this.facilityIndex);
-		Building building = facility.getBuildingByIndex(this.buildingIndex);
-		Floor floor = building.getFloorByIndex(this.floorIndex);
-		this.room = floor.getRoomByIndex(this.roomIndex);
+				.getOrganization(this.organizationIndex);
+		Facility facility = organization.getFacility(this.facilityIndex);
+		Building building = facility.getBuilding(this.buildingIndex);
+		Floor floor = building.getFloor(this.floorIndex);
+		this.room = floor.getRoom(this.roomIndex);
 	}
 
 	private void InvokeEquipmentActivity(int equipmentIndex) {

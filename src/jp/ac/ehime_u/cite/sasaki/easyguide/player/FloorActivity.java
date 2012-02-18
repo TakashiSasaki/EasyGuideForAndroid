@@ -46,7 +46,7 @@ public class FloorActivity extends Activity {
 	private void SetSpinnerRooms() {
 		ArrayAdapter<Room> room_array_adapter = new ArrayAdapter<Room>(this,
 				android.R.layout.simple_spinner_dropdown_item);
-		room_array_adapter.add(Room.getEmptyRoom());
+		room_array_adapter.add(new Room());
 		for (Room r : this.floor) {
 			room_array_adapter.add(r);
 		}
@@ -59,7 +59,7 @@ public class FloorActivity extends Activity {
 				Room r = (Room) arg0.getItemAtPosition(arg2);
 				if (r.isEmpty())
 					return;
-				InvokeRoomActivity(r.getRoomIndex());
+				InvokeRoomActivity(r.getIndex());
 			}
 
 			@Override
@@ -84,7 +84,7 @@ public class FloorActivity extends Activity {
 
 	private void SetImageView() {
 		ImageView i = (ImageView) findViewById(R.id.imageViewFloor);
-		i.setImageBitmap(this.floor.getFloorImage());
+		i.setImageBitmap(this.floor.getImage());
 	}
 
 	private void SelectFloor() {
@@ -94,12 +94,12 @@ public class FloorActivity extends Activity {
 		this.buildingIndex = intent.getIntExtra("buildingIndex", 0);
 		this.floorIndex = intent.getIntExtra("floorIndex", 0);
 
-		Organizations organizations = Organizations.GetTheOrganizations();
+		Organizations organizations = Organizations.getInstance();
 		Organization organization = organizations
-				.GetOrganizationByIndex(this.organizationIndex);
-		Facility facility = organization.getFacilityByIndex(this.facilityIndex);
-		Building building = facility.getBuildingByIndex(this.buildingIndex);
-		this.floor = building.getFloorByIndex(this.floorIndex);
+				.getOrganization(this.organizationIndex);
+		Facility facility = organization.getFacility(this.facilityIndex);
+		Building building = facility.getBuilding(this.buildingIndex);
+		this.floor = building.getFloor(this.floorIndex);
 	}
 
 }

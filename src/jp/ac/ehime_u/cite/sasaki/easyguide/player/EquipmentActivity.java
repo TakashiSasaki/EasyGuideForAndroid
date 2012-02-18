@@ -54,7 +54,7 @@ public class EquipmentActivity extends Activity {
 		// SetSpinnerEquipments();
 		MakeButtons();
 
-		mGestureDetector = new GestureDetector(this, mOnGestureListener);
+		this.mGestureDetector = new GestureDetector(this, this.mOnGestureListener);
 
 		// Organizations organizations = Organizations.GetTheOrganizations();
 		//
@@ -82,9 +82,10 @@ public class EquipmentActivity extends Activity {
 		TextView text_view_movie_caption = (TextView) findViewById(R.id.textViewMovieCaption);
 		text_view_movie_caption.setText("Now plyaing ...");
 		video_view.setMediaController(media_controller);
-		Iterator<Panel> i = equipment.iterator();
-		if(i.next().hasVideo()){
-			video_view.setVideoPath(i.next().getVideoPath());
+		Iterator<Panel> i = this.equipment.iterator();
+		Panel p = i.next();
+		if(p.hasVideo()){
+			video_view.setVideoPath(p.getVideoPath());
 		}
 	}// onCreate
 
@@ -100,21 +101,21 @@ public class EquipmentActivity extends Activity {
 		this.roomIndex = intent.getIntExtra("roomIndex", 0);
 		this.equipmentIndex = intent.getIntExtra("equipmentIndex", 0);
 
-		Organizations organizations = Organizations.GetTheOrganizations();
+		Organizations organizations = Organizations.getInstance();
 		Organization organization = organizations
-				.GetOrganizationByIndex(this.organizationIndex);
-		Facility facility = organization.getFacilityByIndex(this.facilityIndex);
-		Building building = facility.getBuildingByIndex(this.buildingIndex);
-		Floor floor = building.getFloorByIndex(this.floorIndex);
-		Room room = floor.getRoomByIndex(this.roomIndex);
-		this.equipment = room.getEquipmentByIndex(this.equipmentIndex);
+				.getOrganization(this.organizationIndex);
+		Facility facility = organization.getFacility(this.facilityIndex);
+		Building building = facility.getBuilding(this.buildingIndex);
+		Floor floor = building.getFloor(this.floorIndex);
+		Room room = floor.getRoom(this.roomIndex);
+		this.equipment = room.getEquipment(this.equipmentIndex);
 	}// SelectEquipment
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// return super.onTouchEvent(event);
 		Log.d("onTouchEvent", "");
-		return mGestureDetector.onTouchEvent(event);
+		return this.mGestureDetector.onTouchEvent(event);
 	}// onTouchEvent
 
 	private final SimpleOnGestureListener mOnGestureListener = new SimpleOnGestureListener() {

@@ -44,13 +44,13 @@ public class OrganizationActivity extends Activity {
 
 		// organization = Organizations.GetTheOrganizations().GetOrganization(
 		// "assets");
-		this.organization = Organizations.GetTheOrganizations()
-				.GetOrganizationByIndex(this.organizationIndex);
+		this.organization = Organizations.getInstance()
+				.getOrganization(this.organizationIndex);
 
 		SetSpinnerFacilities();
 
 		ImageView image_view = (ImageView) findViewById(R.id.imageViewOrganization);
-		image_view.setImageBitmap(this.organization.getOrganizationImage());
+		image_view.setImageBitmap(this.organization.getImage());
 		image_view.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent motion_event) {
@@ -69,7 +69,7 @@ public class OrganizationActivity extends Activity {
 	void SetSpinnerFacilities() {
 		ArrayAdapter<Facility> facilities_array_adapter = new ArrayAdapter<Facility>(
 				this, android.R.layout.simple_spinner_dropdown_item);
-		facilities_array_adapter.add(Facility.GetEmptyFacility());
+		facilities_array_adapter.add(new Facility());
 		for (Facility f : this.organization) {
 			facilities_array_adapter.add(f);
 		}
@@ -83,12 +83,10 @@ public class OrganizationActivity extends Activity {
 						.getItemAtPosition(position);
 				if (selected_faciliity.isEmpty())
 					return;
-				Log.v(new Throwable(), "Facility "
-						+ selected_faciliity.getFacilityDirectoryName()
-								.getName()
-						+ ", "
-						+ selected_faciliity.getFacilityDirectoryName()
-								.getNumber() + " was selected");
+				Log.v(new Throwable(),
+						"Facility " + selected_faciliity.getTitle() + ", "
+								+ selected_faciliity.getIndex()
+								+ " was selected");
 				InvokeFacilityActivity(selected_faciliity);
 			}
 
@@ -107,10 +105,9 @@ public class OrganizationActivity extends Activity {
 		Intent intent = new Intent();
 		intent.setClass(this, FacilityActivity.class);
 		Log.v(new Throwable(), "Invoking FacilityActivity with number "
-				+ facility.getFacilityDirectoryName().getNumber());
+				+ facility.getIndex());
 		intent.putExtra("organizationIndex", this.organizationIndex);
-		intent.putExtra("facilityIndex", facility.getFacilityDirectoryName()
-				.getNumber());
+		intent.putExtra("facilityIndex", facility.getIndex());
 		startActivity(intent);
 	}// InvokeFacilityActivity
 
@@ -168,7 +165,7 @@ public class OrganizationActivity extends Activity {
 		Facility facility = this.organization.GetNearestFacility(image_view,
 				motion_event);
 		Log.v(new Throwable(),
-				"The nearest facility is " + facility.getFacilityName());
+				"The nearest facility is " + facility.getTitle());
 		Intent intent = new Intent();
 		intent.setClass(this, FacilityActivity.class);
 		startActivity(intent);

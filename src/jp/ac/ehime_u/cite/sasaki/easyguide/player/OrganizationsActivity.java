@@ -35,7 +35,7 @@ public class OrganizationsActivity extends Activity {
 
 		ArrayAdapter<Organization> array_adapter = new ArrayAdapter<Organization>(
 				this, android.R.layout.simple_list_item_1);
-		for (Organization organization : Organizations.GetTheOrganizations()) {
+		for (Organization organization : Organizations.getInstance()) {
 			array_adapter.add(organization);
 		}// for
 		ListView list_view = (ListView) findViewById(R.id.listViewOrganizations);
@@ -47,13 +47,11 @@ public class OrganizationsActivity extends Activity {
 					int position, long id) {
 				Organization selected_organization = (Organization) parent
 						.getItemAtPosition(position);
-				Log.v(new Throwable(), "Organization "
-						+ selected_organization.geOrganizationtIndex()
-						+ ", "
-						+ selected_organization.getOrganizationDirectoryName()
-								.getNumber() + " was clicked.");
-				InvokeOrganizationActivity(selected_organization
-						.getOrganizationDirectoryName().getNumber());
+				Log.v(new Throwable(),
+						"Organization " + selected_organization.getIndex()
+								+ ", " + selected_organization.getTitle()
+								+ " was clicked.");
+				InvokeOrganizationActivity(selected_organization.getIndex());
 			}// onItemClick
 		});// setOnItemClickListener
 	}// onCreate

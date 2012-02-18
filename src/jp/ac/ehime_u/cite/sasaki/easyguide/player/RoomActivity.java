@@ -38,7 +38,7 @@ public class RoomActivity extends Activity {
 	private void SetSpinnerEquipments() {
 		ArrayAdapter<Equipment> equipment_array_adapter = new ArrayAdapter<Equipment>(
 				this, android.R.layout.simple_spinner_dropdown_item);
-		equipment_array_adapter.add(Equipment.getEmptyEquipment());
+		equipment_array_adapter.add(new Equipment());
 		for (Equipment e : this.room) {
 			equipment_array_adapter.add(e);
 		}
@@ -52,7 +52,7 @@ public class RoomActivity extends Activity {
 				Equipment e = (Equipment) arg0.getItemAtPosition(arg2);
 				if (e.isEmpty())
 					return;
-				InvokeEquipmentActivity(e.getEquipmentIndex());
+				InvokeEquipmentActivity(e.getIndex());
 			}
 
 			@Override

@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.util.Iterator;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
@@ -80,8 +82,9 @@ public class EquipmentActivity extends Activity {
 		TextView text_view_movie_caption = (TextView) findViewById(R.id.textViewMovieCaption);
 		text_view_movie_caption.setText("Now plyaing ...");
 		video_view.setMediaController(media_controller);
-		if(((Panel)equipment.get(0)).hasVideo()){
-			video_view.setVideoPath(equipment.get(0).getVideoPath());
+		Iterator<Panel> i = equipment.iterator();
+		if(i.next().hasVideo()){
+			video_view.setVideoPath(i.next().getVideoPath());
 		}
 	}// onCreate
 

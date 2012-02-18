@@ -12,30 +12,31 @@ import android.graphics.Bitmap;
  * 
  */
 @SuppressWarnings("serial")
-public class Room extends ArrayList<Equipment> {
-	private File roomDirectory;
-	private DirectoryName roomDirectoryName;
-	private DirectoryImage roomImage;
-
+public class Room extends ItemBase<Equipment> {
+	// private File roomDirectory;
+	// private DirectoryName roomDirectoryName;
+	// private DirectoryImage roomImage;
+	//
 	/**
 	 * @param room_directory
 	 */
 	public Room(File room_directory) {
-		this.roomDirectory = room_directory;
-		this.roomDirectoryName = new DirectoryName(room_directory.getName());
-		this.roomImage = new DirectoryImage(room_directory);
-		Log.v(new Throwable(), "Scanning equipment directories in "
-				+ this.roomDirectory);
+		super(room_directory);
+		// this.roomDirectory = room_directory;
+		// this.roomDirectoryName = new DirectoryName(room_directory.getName());
+		// this.roomImage = new DirectoryImage(room_directory);
+		Log.v(new Throwable(),
+				"Scanning equipment directories in " + this.getDirectory());
 		this.EnumerateEquipments();
 	}// a constructor
 
-	private Room() {
+	public Room() {
 		super();
 	}
 
 	@SuppressWarnings("javadoc")
 	public void EnumerateEquipments() {
-		for (File equipment_directory : this.roomDirectory.listFiles()) {
+		for (File equipment_directory : this.listFiles()) {
 			if (!equipment_directory.isDirectory())
 				continue;
 			Log.v(new Throwable(),
@@ -46,6 +47,13 @@ public class Room extends ArrayList<Equipment> {
 		}// for
 	}// EnumerateEquipments
 
+	public Equipment getEquipment(int index) {
+		return this.getByIndex(index, null);
+	}
+
+	public Equipment getEquipment(String title) {
+		return this.getByTitle(title, null);
+	}
 	// @SuppressWarnings("javadoc")
 	// public String getRoomName() {
 	// return this.roomDirectoryName.getName();
@@ -56,60 +64,60 @@ public class Room extends ArrayList<Equipment> {
 	// return this.roomDirectoryName;
 	// }
 
-	public String getIndex() {
-		return this.roomDirectoryName.getName();
-	}
+	// public String getIndex() {
+	// return this.roomDirectoryName.getName();
+	// }
 
-	@Override
-	public String toString() {
-		if (this.isEmpty())
-			return "";
-		return this.roomDirectoryName.getName();
-	}
+	// @Override
+	// public String toString() {
+	// if (this.isEmpty())
+	// return "";
+	// return this.roomDirectoryName.getName();
+	// }
 
-	public int getRoomIndex() {
-		return this.roomDirectoryName.getNumber();
-	}
+	// public int getRoomIndex() {
+	// return this.roomDirectoryName.getNumber();
+	// }
 
-	public Bitmap getRoomImage() {
-		return this.roomImage.getImage();
-	}
+	// public Bitmap getRoomImage() {
+	// return this.roomImage.getImage();
+	// }
 
-	public Bitmap getRoomThumbnail() {
-		return this.roomImage.getThumbnail();
-	}
+	// public Bitmap getRoomThumbnail() {
+	// return this.roomImage.getThumbnail();
+	// }
 
-	public int getRoomX() {
-		return this.roomDirectoryName.getX();
-	}
+	// public int getRoomX() {
+	// return this.roomDirectoryName.getX();
+	// }
 
-	public int getRoomY() {
-		return this.roomDirectoryName.getY();
-	}
+	// public int getRoomY() {
+	// return this.roomDirectoryName.getY();
+	// }
 
-	public File getRoomDirectory() {
-		return this.roomDirectory;
-	}
+	// public File getRoomDirectory() {
+	// return this.roomDirectory;
+	// }
 
-	public Equipment getEquipmentByIndex(int equipment_index) {
-		for (Equipment e : this) {
-			if (e.getIndex() == equipment_index) {
-				return e;
-			}
-		}
-		return null;
-	}// getEquipmentByIndex
+	// public Equipment getEquipmentByIndex(int equipment_index) {
+	// for (Equipment e : this) {
+	// if (e.getIndex() == equipment_index) {
+	// return e;
+	// }
+	// }
+	// return null;
+	// }// getEquipmentByIndex
 
-	public Equipment GetEquipment(String equipment_name) {
-		for (Equipment equipment : this) {
-			if (equipment.getTitle().equals(equipment_name)) {
-				return equipment;
-			}
-		}// for
-		return null;
-	}// GetEquipment
+	// public Equipment GetEquipment(String equipment_name) {
+	// for (Equipment equipment : this) {
+	// if (equipment.getTitle().equals(equipment_name)) {
+	// return equipment;
+	// }
+	// }// for
+	// return null;
+	// }// GetEquipment
 
-	public static Room getEmptyRoom() {
-		return new Room();
-	}
+	// public static Room getEmptyRoom() {
+	// return new Room();
+	// }
 }// Equipment

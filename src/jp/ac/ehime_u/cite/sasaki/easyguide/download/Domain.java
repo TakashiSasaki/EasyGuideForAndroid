@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
-
-import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 
@@ -76,7 +73,7 @@ public class Domain extends ArrayList<Organization> {
 	public ArrayList<DownloadedItem> ScanDownloadedItems() {
 		ArrayList<DownloadedItem> r = new ArrayList<DownloadedItem>();
 		for (File zip_file_candidate : this.domainDirectory.listFiles()) {
-			Matcher m = ZIP_FILE_PATTERN.matcher(zip_file_candidate.getName());
+			Matcher m = this.ZIP_FILE_PATTERN.matcher(zip_file_candidate.getName());
 			if (m.find()) {
 				DownloadedItem di = new DownloadedItem(zip_file_candidate);
 				r.add(di);
@@ -157,16 +154,16 @@ public class Domain extends ArrayList<Organization> {
 				InetAddress inet_address;
 				try {
 					inet_address = InetAddress.getByName(host_);
-					hostAddress = inet_address.getHostAddress();
+					Domain.this.hostAddress = inet_address.getHostAddress();
 				} catch (UnknownHostException e) {
-					hostAddress = null;
+					Domain.this.hostAddress = null;
 				}
 			}// run
 		});
 		thread.start();
 		try {
 			thread.join(10000);
-			if (hostAddress == null) {
+			if (this.hostAddress == null) {
 				return false;
 			} else {
 				return true;
@@ -196,7 +193,7 @@ public class Domain extends ArrayList<Organization> {
 	 * @return the domainDirectory
 	 */
 	public File getDomainDirectory() {
-		return domainDirectory;
+		return this.domainDirectory;
 	}// getDomainDirectory
 
 }// Domain

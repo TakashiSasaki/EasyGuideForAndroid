@@ -9,38 +9,36 @@ import java.util.Iterator;
 
 import android.graphics.Bitmap;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
+import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocItem;
 
 public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 	private File directory;
 	protected DirectoryName directoryName;
 	protected DirectoryImage directoryImage;
 	protected ArrayList<T> items;
-	protected ItemType itemType;
 
-	public ItemType getItemType() {
-		return this.itemType;
-	}
+	// protected ItemType itemType;
 
-	protected ItemBase(ItemType item_type, File directory) {
-		this.itemType = item_type;
+	// public ItemType getItemType() {
+	// return this.itemType;
+	// }
+
+	protected ItemBase(File directory) {
+		super();
 		this.items = new ArrayList<T>();
 		this.directory = directory;
 		this.directoryName = new DirectoryName(directory.getName());
 		this.directoryImage = new DirectoryImage(directory);
 	}
 
-	public ItemBase(ItemType item_type) {
-		this.itemType = item_type;
+	protected ItemBase() {
+		super();
 	}
 
 	@Override
 	public String toString() {
 		if (this.items == null)
 			return "";
-		return this.directoryName.getName();
-	}
-
-	public String getTitle() {
 		return this.directoryName.getName();
 	}
 
@@ -105,42 +103,6 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 		Collections.sort(this.items, item_base_comparator);
 	}// SortByPanelNumber
 
-	public ItemBase<?> getByIndex(int index, ItemBase<?> default_item) {
-		try {
-			return getByIndex(index);
-		} catch (ItemNotFoundException e) {
-			return default_item;
-		}
-	}// getByIndex
-
-	public ItemBase<?> getByIndex(int index) throws ItemNotFoundException {
-		for (ItemBase<?> i : this.items) {
-			if (i.getIndex() == index) {
-				return i;
-			}
-		}
-		throw new ItemNotFoundException("Can't find index " + index + " in "
-				+ this.getTitle());
-	}// getByIndex
-
-	public ItemBase<?> getByTitle(String title, ItemBase<?> default_item) {
-		try {
-			return getByTitle(title);
-		} catch (ItemNotFoundException e) {
-			return default_item;
-		}
-	}// getByTitle
-
-	public ItemBase<?> getByTitle(String title) throws ItemNotFoundException {
-		for (ItemBase<?> i : this.items) {
-			if (i.getTitle().equals(title)) {
-				return i;
-			}
-		}// for
-		throw new ItemNotFoundException("Can't find " + title + " in "
-				+ this.getTitle());
-	}// getByTitle
-
 	@Override
 	public boolean add(T e) {
 		return this.items.add(e);
@@ -160,33 +122,91 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 		return this.directory.listFiles();
 	}
 
+	public String getTitle() {
+		return this.directoryName.getName();
+	}
+
+	protected T getByIndex(int index, ItemBase<?> default_item) {
+		try {
+			return (T) getByIndex(index);
+		} catch (ItemNotFoundException e) {
+			return (T) default_item;
+		}
+	}// getByIndex
+
+	protected T getByIndex(int index) throws ItemNotFoundException {
+		for (ItemBase<?> i : this.items) {
+			if (i.getIndex() == index) {
+				return (T) i;
+			}
+		}
+		throw new ItemNotFoundException("Can't find index " + index + " in "
+				+ this.getTitle());
+	}// getByIndex
+
+	protected T getByTitle(String title, ItemBase<?> default_item) {
+		try {
+			return (T) getByTitle(title);
+		} catch (ItemNotFoundException e) {
+			return (T) default_item;
+		}
+	}// getByTitle
+
+	protected T getByTitle(String title) throws ItemNotFoundException {
+		for (ItemBase<?> i : this.items) {
+			if (i.getTitle().equals(title)) {
+				return (T) i;
+			}
+		}// for
+		throw new ItemNotFoundException("Can't find " + title + " in "
+				+ this.getTitle());
+	}// getByTitle
+
 	public File getDirectory() {
 		return this.directory;
 	}
 
-	@SuppressWarnings("javadoc")
 	public int getIndex() {
 		return this.directoryName.getNumber();
 	}
 
-	@SuppressWarnings("javadoc")
 	public int getX() {
 		return this.directoryName.getX();
 	}
 
-	@SuppressWarnings("javadoc")
 	public int getY() {
 		return this.directoryName.getY();
 	}
 
-	@SuppressWarnings("javadoc")
 	public Bitmap getImage() {
 		return this.directoryImage.getImage();
 	}
 
-	@SuppressWarnings("javadoc")
 	public Bitmap getThumbnail() {
 		return this.directoryImage.getThumbnail();
 	}
 
+	public TocItem getTocItem() {
+		ItemType item_type;
+		if (this.getClass().isInstance(Organization.class)) {
+			item_type = ItemType.ORGANIZATION_TYPE;
+		} else if (this.getClass().isInstance(Building.class)) {
+			item_type = ItemType.BUILDING_TYPE;
+		} else if (this.getClass().isInstance(Equipment.class)) {
+			item_type = ItemType.EQUIPMENT_TYPE;
+		} else if (this.getClass().isInstance(Facility.class)) {
+			item_type = ItemType.EQUIPMENT_TYPE;
+		} else if (this.getClass().isInstance(Floor.class)) {
+			item_type = ItemType.FLOOR_TYPE;
+		} else if (this.getClass().isInstance(Room.class)) {
+			item_type = ItemType.ROOM_TYPE;
+		} else {
+			item_type = ItemType.UNKNOWN_TYPE;
+		}
+		// this.layerType = item_base.getItemType();
+		TocItem toc_item = new TocItem(item_type, this.getIndex(),
+				this.getTitle(), this.getX(), this.getY(), this.getDirectory(),
+				this.getThumbnail());
+		return toc_item;
+	}// getTocItem
 }// ItemBase

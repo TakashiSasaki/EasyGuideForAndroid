@@ -9,17 +9,17 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
  * 
  */
 public class Panel extends ItemBase {
-	private static final String panelImageName = "panel.png";
-	private File panelDirectory;
-	private DirectoryName panelDirectoryName;
-	private DirectoryImage panelDirectoryImage;
+//	private static final String panelImageName = "panel.png";
+//	private File panelDirectory;
+//	private DirectoryName panelDirectoryName;
+//	private DirectoryImage panelDirectoryImage;
 	private Classifier classifier;
 
 	/**
 	 * @param panel_directory
 	 */
 	public Panel(File panel_directory) {
-		super(ItemType.PANEL_TYPE, panel_directory);
+		super(panel_directory);
 		// this.panelDirectory = panel_directory;
 		// this.panelDirectoryName = new
 		// DirectoryName(panel_directory.getName());
@@ -28,30 +28,30 @@ public class Panel extends ItemBase {
 		this.classifier = new Classifier(panel_directory);
 	}// a constructor
 
-	@SuppressWarnings("javadoc")
-	public File getPanelDirectory() {
-		return panelDirectory;
-	}
+//	@SuppressWarnings("javadoc")
+//	public File getPanelDirectory() {
+//		return panelDirectory;
+//	}
 
-	@SuppressWarnings("javadoc")
-	public DirectoryName getPanelDirectoryName() {
-		return this.panelDirectoryName;
-	}
+//	@SuppressWarnings("javadoc")
+//	public DirectoryName getPanelDirectoryName() {
+//		return this.panelDirectoryName;
+//	}
 
-	@SuppressWarnings("javadoc")
-	public String getPanelTitle() {
-		return this.panelDirectoryName.getName();
-	}
+//	@SuppressWarnings("javadoc")
+//	public String getPanelTitle() {
+//		return this.panelDirectoryName.getName();
+//	}
 
-	@SuppressWarnings("javadoc")
-	public int getPanelIndex() {
-		return this.panelDirectoryName.getNumber();
-	}
+//	@SuppressWarnings("javadoc")
+//	public int getPanelIndex() {
+//		return this.panelDirectoryName.getNumber();
+//	}
 
-	@SuppressWarnings("javadoc")
-	public Bitmap getPanelThumbnail() {
-		return this.panelDirectoryImage.getThumbnail();
-	}
+//	@SuppressWarnings("javadoc")
+//	public Bitmap getPanelThumbnail() {
+//		return this.panelDirectoryImage.getThumbnail();
+//	}
 
 	public boolean hasVideo() {
 		if (this.classifier.getMovieFiles().size() > 0) {

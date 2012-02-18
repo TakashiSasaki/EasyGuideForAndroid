@@ -21,7 +21,7 @@ public class Equipment extends ItemBase<Panel> {
 	 * @param equipment_directory
 	 */
 	public Equipment(File equipment_directory) {
-		super(ItemType.EQUIPMENT_TYPE, equipment_directory);
+		super(equipment_directory);
 		Log.v(new Throwable(),
 				"Constructing equipment "
 						+ equipment_directory.getAbsolutePath());
@@ -32,7 +32,7 @@ public class Equipment extends ItemBase<Panel> {
 	}// a constructor
 
 	public Equipment() {
-		super(ItemType.EQUIPMENT_TYPE);
+		super();
 	}
 
 	// public String toString() {

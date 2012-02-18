@@ -1,111 +1,26 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.ui;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-
-import com.sun.xml.internal.bind.v2.runtime.reflect.Accessor.SetterOnlyReflection;
-
 import jp.ac.ehime_u.cite.sasaki.easyguide.R;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DirectoryName;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemType;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Panel;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
-import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocAdapter.TocItem;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class TocAdapter extends BaseAdapter {
 
-	Organizations organizations = Organizations.GetTheOrganizations();
-
-	class TocItem {
-		public TocItem(ItemType layer_type, int index, String title, int x,
-				int y, File path, Bitmap thumbnail) {
-			this.layerType = layer_type;
-			this.title = title;
-			this.index = index;
-			this.path = path;
-			this.x = x;
-			this.y = y;
-			this.thumbnail = thumbnail;
-		}
-
-		public TocItem(ItemBase<ItemBase<?>> item_base) {
-			this.layerType = item_base.getItemType();
-			this.title = item_base.getTitle();
-			this.index = item_base.getIndex();
-			this.path = item_base.getDirectory();
-			this.x = item_base.getX();
-			this.y = item_base.getY();
-			this.thumbnail = item_base.getThumbnail();
-		}
-
-		ItemType layerType;
-		String title;
-		int index, x, y;
-		File path;
-		Bitmap thumbnail;
-
-		public String getLayerTypeName() {
-			switch (this.layerType) {
-			case ORGANIZATION_TYPE:
-				return "organization";
-			case BUILDING_TYPE:
-				return "building";
-			case EQUIPMENT_TYPE:
-				return "equipment";
-			case FACILITY_TYPE:
-				return "facility";
-			case FLOOR_TYPE:
-				return "floor";
-			case PANEL_TYPE:
-				return "panel";
-			case ROOM_TYPE:
-				return "room";
-			default:
-				return "unknown";
-			}// switch
-		}
-
-		public String getTitle() {
-			return this.title;
-		}
-
-		public String getPath() {
-			return this.path.getPath();
-		}
-
-		public String getX() {
-			return "" + this.x;
-		}
-
-		public String getY() {
-			return "" + this.y;
-		}
-
-		public String getIndex() {
-			return "" + this.index;
-		}
-
-		public Bitmap getThumbnail() {
-			return this.thumbnail;
-		}
-	}// TocItem
+	Organizations organizations = Organizations.getInstance();
 
 	ArrayList<TocItem> tocArrayList = new ArrayList<TocItem>();
 
@@ -131,65 +46,25 @@ public class TocAdapter extends BaseAdapter {
 		this.tocArrayList = null;
 		this.tocArrayList = new ArrayList<TocItem>();
 		for (Organization organization : this.organizations) {
-			this.tocArrayList.add(new TocItem(ItemType.ORGANIZATION_TYPE,
-					organization.getOrganizationDirectoryName().getNumber(),
-					organization.getOrganizationDirectoryName().getName(),
-					organization.getOrganizationDirectoryName().getX(),
-					organization.getOrganizationDirectoryName().getY(),
-					organization.getOrganizationDirectory(), organization
-							.getOrganizationThumbnail()));
+			this.tocArrayList.add(organization.getTocItem());
 			organization.EnumerateFacilities();
 			for (Facility facility : organization) {
-				this.tocArrayList.add(new TocItem(ItemType.FACILITY_TYPE,
-						facility.getFacilityDirectoryName().getNumber(),
-						facility.getFacilityDirectoryName().getName(), facility
-								.getFacilityDirectoryName().getX(), facility
-								.getFacilityDirectoryName().getY(), facility
-								.getFacilityDirectory(), facility
-								.getFacilityThumbnail()));
+				this.tocArrayList.add(facility.getTocItem());
 				facility.EnumerateBuildings();
 				for (Building building : facility) {
-					this.tocArrayList.add(new TocItem(ItemType.BUILDING_TYPE,
-							building.getBuildingDirectoryName().getNumber(),
-							building.getBuildingDirectoryName().getName(),
-							building.getBuildingDirectoryName().getX(),
-							building.getBuildingDirectoryName().getY(),
-							building.getBuildingDirectory(), building
-									.getBuildingThumbnail()));
+					this.tocArrayList.add(building.getTocItem());
 					building.EnumerateFloors();
 					for (Floor floor : building) {
-						this.tocArrayList.add(new TocItem(ItemType.FLOOR_TYPE,
-								floor.getFloorDirectoryName().getNumber(),
-								floor.getFloorDirectoryName().getName(), floor
-										.getFloorDirectoryName().getX(), floor
-										.getFloorDirectoryName().getY(), floor
-										.getFloorDirectory(), floor
-										.getFloorThumbnail()));
+						this.tocArrayList.add(floor.getTocItem());
 						floor.EnumerateRooms();
 						for (Room room : floor) {
-							this.tocArrayList.add(new TocItem(
-									ItemType.ROOM_TYPE, room.getRoomIndex(),
-									room.toString(), room.getRoomX(), room
-											.getRoomY(), room
-											.getRoomDirectory(), room
-											.getRoomThumbnail()));
+							this.tocArrayList.add(room.getTocItem());
 							room.EnumerateEquipments();
 							for (Equipment equipment : room) {
-								this.tocArrayList.add(new TocItem(
-										ItemType.EQUIPMENT_TYPE, equipment
-												.getIndex(), equipment
-												.getTitle(), equipment.getX(),
-										equipment.getY(), equipment
-												.getDirectory(), equipment
-												.getThumbnail()));
+								this.tocArrayList.add(equipment.getTocItem());
 								equipment.EnumeratePanels();
 								for (Panel panel : equipment) {
-									this.tocArrayList.add(new TocItem(
-											ItemType.PANEL_TYPE, panel
-													.getPanelIndex(), panel
-													.getPanelTitle(), -1, -1,
-											panel.getPanelDirectory(), panel
-													.getPanelThumbnail()));
+									this.tocArrayList.add(panel.getTocItem());
 								}// for
 							}// for
 						}// for

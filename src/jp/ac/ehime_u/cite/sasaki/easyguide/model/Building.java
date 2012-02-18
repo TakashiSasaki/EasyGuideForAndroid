@@ -1,10 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Bitmap;
 
@@ -12,145 +8,152 @@ import android.graphics.Bitmap;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-@SuppressWarnings("serial")
-public class Building extends ArrayList<Floor> {
+public class Building extends ItemBase<Floor> {
 
-	private static final String buildingImageName = "building.png";
-	private File buildingDirectory;
-	private DirectoryName buildingDirectoryName;
-	private DirectoryImage buildingDirectoryImage;
+	// private static final String buildingImageName = "building.png";
+	// private File buildingDirectory;
+	// private DirectoryName buildingDirectoryName;
+	// private DirectoryImage buildingDirectoryImage;
 
-	@Override
-	public String toString() {
-		if (this.isEmpty())
-			return "";
-		return this.buildingDirectoryName.getName();
-	}// toString
+	// @Override
+	// public String toString() {
+	// if (this.isEmpty())
+	// return "";
+	// return this.buildingDirectoryName.getName();
+	// }// toString
 
 	/**
 	 * @param building_directory
 	 */
 	public Building(File building_directory) {
-		super();
-		this.buildingDirectory = building_directory;
-		this.buildingDirectoryName = new DirectoryName(
-				building_directory.getName());
-		this.buildingDirectoryImage = new DirectoryImage(this.buildingDirectory);
+		super(building_directory);
+		// this.buildingDirectory = building_directory;
+		// this.buildingDirectoryName = new DirectoryName(
+		// building_directory.getName());
+		// this.buildingDirectoryImage = new
+		// DirectoryImage(this.buildingDirectory);
 		this.EnumerateFloors();
 	}// a constructor
 
-	Building() {
+	public Building() {
 		super();
 	}
 
-	public boolean isEmpty() {
-		return this.buildingDirectory == null
-				|| this.buildingDirectoryName == null;
-	}
+	// public boolean isEmpty() {
+	// return this.buildingDirectory == null
+	// || this.buildingDirectoryName == null;
+	// }
 
 	@SuppressWarnings("javadoc")
 	public void EnumerateFloors() {
-		for (File floor_directory : this.buildingDirectory.listFiles()) {
+		for (File floor_directory : this.listFiles()) {
 			if (floor_directory.isDirectory())
 				this.add(new Floor(floor_directory));
 		}// for
-		this.SortByFloorNumber();
+		this.sortByIndex();
 	}// EnumerateFloors
 
-	public void SortByFloorNumber() {
-		Collections.sort(this, new Comparator<Floor>() {
-			@Override
-			public int compare(Floor arg0, Floor arg1) {
-				return arg0.getFloorIndex() - arg1.getFloorIndex();
-			}// compare
-		});// sort
-	}// Sort
-
-	@SuppressWarnings("javadoc")
-	public int getBuildingIndex() {
-		return this.buildingDirectoryName.getNumber();
+	public Floor getFloor(int index) {
+		return (Floor) this.getByIndex(index, null);
 	}
 
-	@SuppressWarnings("javadoc")
-	public String getBuildingName() {
-		return this.buildingDirectoryName.getName();
+	public Floor getFloor(String title) {
+		return (Floor) this.getByTitle(title, null);
 	}
+	// public void SortByFloorNumber() {
+	// Collections.sort(this, new Comparator<Floor>() {
+	// @Override
+	// public int compare(Floor arg0, Floor arg1) {
+	// return arg0.getFloorIndex() - arg1.getFloorIndex();
+	// }// compare
+	// });// sort
+	// }// Sort
 
-	@SuppressWarnings("javadoc")
-	public DirectoryName getBuildingDirectoryName() {
-		return this.buildingDirectoryName;
-	}
+	// @SuppressWarnings("javadoc")
+	// public int getBuildingIndex() {
+	// return this.buildingDirectoryName.getNumber();
+	// }
 
-	@SuppressWarnings("javadoc")
-	public Bitmap getBuildingImage() {
-		return this.buildingDirectoryImage.getImage();
-	}
+	// @SuppressWarnings("javadoc")
+	// public String getBuildingName() {
+	// return this.buildingDirectoryName.getName();
+	// }
 
-	@SuppressWarnings("javadoc")
-	public Bitmap getBuildingThumbnail() {
-		return this.buildingDirectoryImage.getThumbnail();
-	}
+	// @SuppressWarnings("javadoc")
+	// public DirectoryName getBuildingDirectoryName() {
+	// return this.buildingDirectoryName;
+	// }
 
-	@SuppressWarnings("javadoc")
-	public int getBuildingX() {
-		return this.buildingDirectoryName.getX();
-	}
+	// @SuppressWarnings("javadoc")
+	// public Bitmap getBuildingImage() {
+	// return this.buildingDirectoryImage.getImage();
+	// }
 
-	@SuppressWarnings("javadoc")
-	public int getBuildingY() {
-		return this.buildingDirectoryName.getY();
-	}
+	// @SuppressWarnings("javadoc")
+	// public Bitmap getBuildingThumbnail() {
+	// return this.buildingDirectoryImage.getThumbnail();
+	// }
 
-	@SuppressWarnings("javadoc")
-	public File getBuildingDirectory() {
-		return this.buildingDirectory;
-	}
+	// @SuppressWarnings("javadoc")
+	// public int getBuildingX() {
+	// return this.buildingDirectoryName.getX();
+	// }
 
-	/**
-	 * @param floor_name
-	 * @return Floor object
-	 */
-	public Floor GetFloor(String floor_name) {
-		for (Floor floor : this) {
-			if (floor.toString().equals(floor_name)) {
-				return floor;
-			}
-		}// for
-		throw new NotFoundException("Floor " + floor_name
-				+ " not found in building " + this.toString());
-	}// GetFloor
+	// @SuppressWarnings("javadoc")
+	// public int getBuildingY() {
+	// return this.buildingDirectoryName.getY();
+	// }
 
-	/**
-	 * @param number
-	 * @return Floor object
-	 */
-	public Floor GetFloor(int number) {
-		for (Floor floor : this) {
-			if (floor.getFloorIndex() == number) {
-				return floor;
-			}// if
-		}// for
-		throw new NotFoundException("Floor " + number
-				+ " not found in building " + this.toString());
-	}// GetFloor
+	// @SuppressWarnings("javadoc")
+	// public File getBuildingDirectory() {
+	// return this.buildingDirectory;
+	// }
 
-	public static Building getEmptyBuilding() {
-		return new Building();
-	}
+	// /**
+	// * @param floor_name
+	// * @return Floor object
+	// */
+	// public Floor GetFloor(String floor_name) {
+	// for (Floor floor : this) {
+	// if (floor.toString().equals(floor_name)) {
+	// return floor;
+	// }
+	// }// for
+	// throw new NotFoundException("Floor " + floor_name
+	// + " not found in building " + this.toString());
+	// }// GetFloor
 
-	public Floor getFloorByIndex(int fi, Floor default_floor) {
-		return getFloorByIndex(fi);
-	}
+	// /**
+	// * @param number
+	// * @return Floor object
+	// */
+	// public Floor GetFloor(int number) {
+	// for (Floor floor : this) {
+	// if (floor.getFloorIndex() == number) {
+	// return floor;
+	// }// if
+	// }// for
+	// throw new NotFoundException("Floor " + number
+	// + " not found in building " + this.toString());
+	// }// GetFloor
 
-	public Floor getFloorByIndex(int fi) throws IndexOutOfBoundsException {
-		for (Floor f : this) {
-			if (f.getFloorIndex() == fi) {
-				return f;
-			}
-		}
-		throw new IndexOutOfBoundsException("Floor " + fi + " not found in "
-				+ this.getBuildingName());
-	}
+	// public static Building getEmptyBuilding() {
+	// return new Building();
+	// }
+
+	// public Floor getFloorByIndex(int fi, Floor default_floor) {
+	// return getFloorByIndex(fi);
+	// }
+
+	// public Floor getFloorByIndex(int fi) throws IndexOutOfBoundsException {
+	// for (Floor f : this) {
+	// if (f.getFloorIndex() == fi) {
+	// return f;
+	// }
+	// }
+	// throw new IndexOutOfBoundsException("Floor " + fi + " not found in "
+	// + this.getBuildingName());
+	// }
 
 	// @Override
 	// @Deprecated

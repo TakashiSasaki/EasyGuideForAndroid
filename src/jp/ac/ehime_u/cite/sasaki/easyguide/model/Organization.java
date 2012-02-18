@@ -1,11 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import java.util.ArrayList;
-
-import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
-
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
@@ -14,13 +9,12 @@ import android.widget.ImageView;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-@SuppressWarnings("serial")
-public class Organization extends ArrayList<Facility> {
-	private static final String organizationImageName = "organization.png";
+public class Organization extends ItemBase<Facility> {
+	// private static final String organizationImageName = "organization.png";
 	private static final double maxDistance = 3000.0 * 3000.0;
-	private File organizationDirectory;
-	private DirectoryImage organizationDirectoryImage;
-	private DirectoryName organizationDirectoryName;
+	// private File organizationDirectory;
+	// private DirectoryImage organizationDirectoryImage;
+	// private DirectoryName organizationDirectoryName;
 	private String macAddress;
 	private float longitude;
 	private float latitude;
@@ -30,20 +24,25 @@ public class Organization extends ArrayList<Facility> {
 	 * @param organization_directory
 	 */
 	public Organization(File organization_directory) {
-		super();
-		this.organizationDirectory = organization_directory;
-		this.organizationDirectoryName = new DirectoryName(
-				this.organizationDirectory.getName());
-		this.organizationDirectoryImage = new DirectoryImage(
-				this.organizationDirectory);
-		Log.v(this.getClass().getSimpleName(),
-				"Scanning facility directories in "
-						+ this.organizationDirectory);
+		super(organization_directory);
+		// this.organizationDirectory = organization_directory;
+		// this.organizationDirectoryName = new DirectoryName(
+		// this.organizationDirectory.getName());
+		// this.organizationDirectoryImage = new DirectoryImage(
+		// this.organizationDirectory);
+		// Log.v(this.getClass().getSimpleName(),
+		// "Scanning facility directories in "
+		// + this.organizationDirectory);
 		this.EnumerateFacilities();
+		this.sortByIndex();
 	}// a constructor
 
+	public Organization() {
+		super();
+	}
+
 	public void EnumerateFacilities() {
-		for (File facility_directory : this.organizationDirectory.listFiles()) {
+		for (File facility_directory : this.listFiles()) {
 			if (!facility_directory.isDirectory())
 				continue;
 			Log.v(this.getClass().getSimpleName(), "Facility directory "
@@ -52,63 +51,71 @@ public class Organization extends ArrayList<Facility> {
 		}// for
 	}
 
-	public Facility getFacilityByIndex(int facility_index) {
-		for (Facility f : this) {
-			if (f.getFacilityIndex() == facility_index) {
-				return f;
-			}
-		}
-		return null;
-	}// getFacilityByIndex
+	// public Facility getFacilityByIndex(int facility_index) {
+	// for (Facility f : this) {
+	// if (f.getFacilityIndex() == facility_index) {
+	// return f;
+	// }
+	// }
+	// return null;
+	// }// getFacilityByIndex
 
 	@SuppressWarnings("javadoc")
 	public String getMacAddress() {
-		return macAddress;
+		return this.macAddress;
 	}
 
 	@SuppressWarnings("javadoc")
 	public float getLongitude() {
-		return longitude;
+		return this.longitude;
 	}
 
 	@SuppressWarnings("javadoc")
 	public float getLatitude() {
-		return latitude;
+		return this.latitude;
 	}
 
 	@SuppressWarnings("javadoc")
 	public float getAltitude() {
-		return altitude;
+		return this.altitude;
 	}
 
-	@SuppressWarnings("javadoc")
-	public String getOrganizationDomain() {
-		return this.organizationDirectoryName.getName();
+	public Facility getFacility(int index) {
+		return this.getByIndex(index, new Organization());
 	}
 
-	@SuppressWarnings("javadoc")
-	public DirectoryName getOrganizationDirectoryName() {
-		return this.organizationDirectoryName;
+	public Facility getFacility(String title) {
+		return this.getByTitle(title, new Organization());
 	}
 
-	public String toString() {
-		return getOrganizationDirectoryName().getName();
-	}
+	// @SuppressWarnings("javadoc")
+	// public String getOrganizationDomain() {
+	// return this.organizationDirectoryName.getName();
+	// }
 
-	@SuppressWarnings("javadoc")
-	public Bitmap getOrganizationImage() {
-		return this.organizationDirectoryImage.getImage();
-	}
+	// @SuppressWarnings("javadoc")
+	// public DirectoryName getOrganizationDirectoryName() {
+	// return this.organizationDirectoryName;
+	// }
 
-	@SuppressWarnings("javadoc")
-	public Bitmap getOrganizationThumbnail() {
-		return this.organizationDirectoryImage.getThumbnail();
-	}
+	// public String toString() {
+	// return getOrganizationDirectoryName().getName();
+	// }
 
-	@SuppressWarnings("javadoc")
-	public File getOrganizationDirectory() {
-		return this.organizationDirectory;
-	}
+	// @SuppressWarnings("javadoc")
+	// public Bitmap getOrganizationImage() {
+	// return this.organizationDirectoryImage.getImage();
+	// }
+
+	// @SuppressWarnings("javadoc")
+	// public Bitmap getOrganizationThumbnail() {
+	// return this.organizationDirectoryImage.getThumbnail();
+	// }
+
+	// @SuppressWarnings("javadoc")
+	// public File getOrganizationDirectory() {
+	// return this.organizationDirectory;
+	// }
 
 	public Facility GetNearestFacility(ImageView image_view,
 			MotionEvent motion_event) {
@@ -118,8 +125,7 @@ public class Organization extends ArrayList<Facility> {
 				image_view);
 		for (Facility facility : this) {
 			double distance = distance_calculator.GetDistanceBetween(
-					motion_event, facility.getFacilityX(),
-					facility.getFacilityY());
+					motion_event, facility.getX(), facility.getY());
 			if (distance < candidate_distance) {
 				candidate_distance = distance;
 				candidate_facility = facility;
@@ -128,24 +134,24 @@ public class Organization extends ArrayList<Facility> {
 		return candidate_facility;
 	}// GetNearestFacility
 
-	@SuppressWarnings("javadoc")
-	public Facility GetFacility(String facility_name) {
-		for (Facility facility : this) {
-			if (facility.getFacilityName().equals(facility_name)) {
-				return facility;
-			}
-		}// for
-		return null;
-	}// GetFacility
+	// @SuppressWarnings("javadoc")
+	// public Facility GetFacility(String facility_name) {
+	// for (Facility facility : this) {
+	// if (facility.getFacilityName().equals(facility_name)) {
+	// return facility;
+	// }
+	// }// for
+	// return null;
+	// }// GetFacility
 
-	@Override
-	@Deprecated
-	public Facility get(int index) {
-		throw new Error("Organization#get is deprecated.");
-	}// get
+	// @Override
+	// @Deprecated
+	// public Facility get(int index) {
+	// throw new Error("Organization#get is deprecated.");
+	// }// get
 
-	public int geOrganizationtIndex() {
-		return this.getOrganizationDirectoryName().getNumber();
-	}
+	// public int geOrganizationtIndex() {
+	// return this.getOrganizationDirectoryName().getNumber();
+	// }
 }// Organization
 

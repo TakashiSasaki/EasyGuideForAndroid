@@ -1,25 +1,19 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
-import android.graphics.Bitmap;
-import android.content.res.Resources.NotFoundException;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-@SuppressWarnings("serial")
-public class Equipment extends ArrayList<Panel> {
+public class Equipment extends ItemBase<Panel> {
 
-	private static final String equipmentImageName = "equipment.png";
-	private File equipmentDirectory;
-	private DirectoryName equipmentDirectoryName;
-	private DirectoryImage equipmentDirectoryImage;
+	// private static final String equipmentImageName = "equipment.png";
+	// private File equipmentDirectory;
+	// private DirectoryName equipmentDirectoryName;
+	// private DirectoryImage equipmentDirectoryImage;
+	// private Collection<Panel> panels;
 
 	/**
 	 * a constructor
@@ -27,122 +21,92 @@ public class Equipment extends ArrayList<Panel> {
 	 * @param equipment_directory
 	 */
 	public Equipment(File equipment_directory) {
-		super();
+		super(ItemType.EQUIPMENT_TYPE, equipment_directory);
 		Log.v(new Throwable(),
 				"Constructing equipment "
 						+ equipment_directory.getAbsolutePath());
-		this.equipmentDirectory = equipment_directory;
-		this.equipmentDirectoryName = new DirectoryName(
-				equipment_directory.getName());
-		this.equipmentDirectoryImage = new DirectoryImage(equipment_directory);
+		//this.directory = equipment_directory;
+//		this.directoryName = new DirectoryName(equipment_directory.getName());
+//		this.directoryImage = new DirectoryImage(equipment_directory);
 		this.EnumeratePanels();
 	}// a constructor
 
-	private Equipment() {
-		super();
+	public Equipment() {
+		super(ItemType.EQUIPMENT_TYPE);
 	}
 
-	public String toString() {
-		if (this.isEmpty())
-			return "";
-		return this.equipmentDirectoryName.getName();
-	}// toString
+	// public String toString() {
+	// if (this.isEmpty())
+	// return "";
+	// return this.equipmentDirectoryName.getName();
+	// }// toString
 
 	@SuppressWarnings("javadoc")
 	public void EnumeratePanels() {
-		for (File panel_directory : this.equipmentDirectory.listFiles()) {
+		for (File panel_directory : this.listFiles()) {
 			if (panel_directory.isDirectory())
 				this.add(new Panel(panel_directory));
 		}// for
-		this.SortByPanelNumber();
+		this.sortByIndex();
 	}// EnumeratePanels
 
-	@SuppressWarnings("javadoc")
-	public void SortByPanelNumber() {
-		Collections.sort(this, new Comparator<Panel>() {
+	// @SuppressWarnings("javadoc")
+	// public void SortByPanelNumber() {
+	// Collections.sort(this.items, new Comparator<Panel>() {
+	//
+	// @Override
+	// public int compare(Panel arg0, Panel arg1) {
+	// return arg0.getPanelIndex() - arg1.getPanelIndex();
+	// }// compare
+	// });// sort
+	// }// SortByPanelNumber
 
-			@Override
-			public int compare(Panel arg0, Panel arg1) {
-				return arg0.getPanelIndex() - arg1.getPanelIndex();
-			}// compare
-		});// sort
-	}// SortByPanelNumber
+//	@SuppressWarnings("javadoc")
+//	public File getEquipmentDirectory() {
+//		return this.directory;
+//	}
 
-	@SuppressWarnings("javadoc")
-	public File getEquipmentDirectory() {
-		return this.equipmentDirectory;
-	}
-
-	@SuppressWarnings("javadoc")
-	public String getEquipmentTitle() {
-		return this.equipmentDirectoryName.getName();
-	}
+//	@SuppressWarnings("javadoc")
+//	public String getEquipmentTitle() {
+//		return this.getTitle();
+//	}
 
 	// @SuppressWarnings("javadoc")
 	// public DirectoryName getEquipmentDirectoryName() {
 	// return this.equipmentDirectoryName;
 	// }
 
-	@SuppressWarnings("javadoc")
-	public int getEquipmentIndex() {
-		return this.equipmentDirectoryName.getNumber();
-	}
 
-	@SuppressWarnings("javadoc")
-	public int getEquipmentX() {
-		return this.equipmentDirectoryName.getX();
-	}
+	// /**
+	// * @param panel_name
+	// * @return Panel object
+	// */
+	// public Panel getPanelByTitle(String panel_name) {
+	// for (Panel panel : this) {
+	// if (panel.getPanelTitle().equals(panel_name)) {
+	// return panel;
+	// }
+	// }// for
+	// throw new NotFoundException("Can't find " + panel_name + " in "
+	// + this.getEquipmentTitle());
+	// }// GetPanel
 
-	@SuppressWarnings("javadoc")
-	public int getEquipmentY() {
-		return this.equipmentDirectoryName.getY();
-	}
+	// /**
+	// * @param panel_number
+	// * @return Panel object
+	// */
+	// public Panel getPanelByIndex(int panel_number) {
+	// for (Panel panel : this) {
+	// if (panel.getPanelIndex() == panel_number) {
+	// return panel;
+	// }
+	// }
+	// throw new NotFoundException("Can't find " + panel_number + " in "
+	// + this.getEquipmentTitle());
+	// }// GetPanel
 
-	@SuppressWarnings("javadoc")
-	public Bitmap getEquipmentImage() {
-		return this.equipmentDirectoryImage.getImage();
-	}
+//	public static Equipment getEmptyEquipment() {
+//		return new Equipment();
+//	}
 
-	@SuppressWarnings("javadoc")
-	public Bitmap getEquipmentThumbnail() {
-		return this.equipmentDirectoryImage.getThumbnail();
-	}
-
-	/**
-	 * @param panel_name
-	 * @return Panel object
-	 */
-	public Panel getPanelByTitle(String panel_name) {
-		for (Panel panel : this) {
-			if (panel.getPanelTitle().equals(panel_name)) {
-				return panel;
-			}
-		}// for
-		throw new NotFoundException("Can't find " + panel_name + " in "
-				+ this.getEquipmentTitle());
-	}// GetPanel
-
-	/**
-	 * @param panel_number
-	 * @return Panel object
-	 */
-	public Panel getPanelByIndex(int panel_number) {
-		for (Panel panel : this) {
-			if (panel.getPanelIndex() == panel_number) {
-				return panel;
-			}
-		}
-		throw new NotFoundException("Can't find " + panel_number + " in "
-				+ this.getEquipmentTitle());
-	}// GetPanel
-
-	public static Equipment getEmptyEquipment() {
-		return new Equipment();
-	}
-
-	// @Override
-	// @Deprecated
-	// public Panel get(int index) {
-	// throw new Error("Equipment#get is deprecated.");
-	// }// get
 }// Equipment

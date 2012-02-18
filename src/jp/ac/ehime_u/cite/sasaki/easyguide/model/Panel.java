@@ -8,7 +8,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class Panel {
+public class Panel extends ItemBase {
 	private static final String panelImageName = "panel.png";
 	private File panelDirectory;
 	private DirectoryName panelDirectoryName;
@@ -19,9 +19,11 @@ public class Panel {
 	 * @param panel_directory
 	 */
 	public Panel(File panel_directory) {
-		this.panelDirectory = panel_directory;
-		this.panelDirectoryName = new DirectoryName(panel_directory.getName());
-		this.panelDirectoryImage = new DirectoryImage(panel_directory);
+		super(ItemType.PANEL_TYPE, panel_directory);
+		// this.panelDirectory = panel_directory;
+		// this.panelDirectoryName = new
+		// DirectoryName(panel_directory.getName());
+		// this.panelDirectoryImage = new DirectoryImage(panel_directory);
 
 		this.classifier = new Classifier(panel_directory);
 	}// a constructor

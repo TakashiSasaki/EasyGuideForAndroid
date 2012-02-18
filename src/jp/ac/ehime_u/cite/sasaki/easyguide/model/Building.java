@@ -138,13 +138,18 @@ public class Building extends ArrayList<Floor> {
 		return new Building();
 	}
 
-	public Floor getFloorByIndex(int fi) {
+	public Floor getFloorByIndex(int fi, Floor default_floor) {
+		return getFloorByIndex(fi);
+	}
+
+	public Floor getFloorByIndex(int fi) throws IndexOutOfBoundsException {
 		for (Floor f : this) {
 			if (f.getFloorIndex() == fi) {
 				return f;
 			}
 		}
-		return null;
+		throw new IndexOutOfBoundsException("Floor " + fi + " not found in "
+				+ this.getBuildingName());
 	}
 
 	// @Override

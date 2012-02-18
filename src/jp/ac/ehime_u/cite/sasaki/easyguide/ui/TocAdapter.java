@@ -11,7 +11,8 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DirectoryName;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.LayerType;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemType;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
@@ -33,7 +34,7 @@ public class TocAdapter extends BaseAdapter {
 	Organizations organizations = Organizations.GetTheOrganizations();
 
 	class TocItem {
-		public TocItem(LayerType layer_type, int index, String title, int x,
+		public TocItem(ItemType layer_type, int index, String title, int x,
 				int y, File path, Bitmap thumbnail) {
 			this.layerType = layer_type;
 			this.title = title;
@@ -44,7 +45,17 @@ public class TocAdapter extends BaseAdapter {
 			this.thumbnail = thumbnail;
 		}
 
-		LayerType layerType;
+		public TocItem(ItemBase<ItemBase<?>> item_base) {
+			this.layerType = item_base.getItemType();
+			this.title = item_base.getTitle();
+			this.index = item_base.getIndex();
+			this.path = item_base.getDirectory();
+			this.x = item_base.getX();
+			this.y = item_base.getY();
+			this.thumbnail = item_base.getThumbnail();
+		}
+
+		ItemType layerType;
 		String title;
 		int index, x, y;
 		File path;
@@ -120,7 +131,7 @@ public class TocAdapter extends BaseAdapter {
 		this.tocArrayList = null;
 		this.tocArrayList = new ArrayList<TocItem>();
 		for (Organization organization : this.organizations) {
-			this.tocArrayList.add(new TocItem(LayerType.ORGANIZATION_TYPE,
+			this.tocArrayList.add(new TocItem(ItemType.ORGANIZATION_TYPE,
 					organization.getOrganizationDirectoryName().getNumber(),
 					organization.getOrganizationDirectoryName().getName(),
 					organization.getOrganizationDirectoryName().getX(),
@@ -129,7 +140,7 @@ public class TocAdapter extends BaseAdapter {
 							.getOrganizationThumbnail()));
 			organization.EnumerateFacilities();
 			for (Facility facility : organization) {
-				this.tocArrayList.add(new TocItem(LayerType.FACILITY_TYPE,
+				this.tocArrayList.add(new TocItem(ItemType.FACILITY_TYPE,
 						facility.getFacilityDirectoryName().getNumber(),
 						facility.getFacilityDirectoryName().getName(), facility
 								.getFacilityDirectoryName().getX(), facility
@@ -138,7 +149,7 @@ public class TocAdapter extends BaseAdapter {
 								.getFacilityThumbnail()));
 				facility.EnumerateBuildings();
 				for (Building building : facility) {
-					this.tocArrayList.add(new TocItem(LayerType.BUILDING_TYPE,
+					this.tocArrayList.add(new TocItem(ItemType.BUILDING_TYPE,
 							building.getBuildingDirectoryName().getNumber(),
 							building.getBuildingDirectoryName().getName(),
 							building.getBuildingDirectoryName().getX(),
@@ -147,7 +158,7 @@ public class TocAdapter extends BaseAdapter {
 									.getBuildingThumbnail()));
 					building.EnumerateFloors();
 					for (Floor floor : building) {
-						this.tocArrayList.add(new TocItem(LayerType.FLOOR_TYPE,
+						this.tocArrayList.add(new TocItem(ItemType.FLOOR_TYPE,
 								floor.getFloorDirectoryName().getNumber(),
 								floor.getFloorDirectoryName().getName(), floor
 										.getFloorDirectoryName().getX(), floor
@@ -157,7 +168,7 @@ public class TocAdapter extends BaseAdapter {
 						floor.EnumerateRooms();
 						for (Room room : floor) {
 							this.tocArrayList.add(new TocItem(
-									LayerType.ROOM_TYPE, room.getRoomIndex(),
+									ItemType.ROOM_TYPE, room.getRoomIndex(),
 									room.toString(), room.getRoomX(), room
 											.getRoomY(), room
 											.getRoomDirectory(), room
@@ -165,17 +176,16 @@ public class TocAdapter extends BaseAdapter {
 							room.EnumerateEquipments();
 							for (Equipment equipment : room) {
 								this.tocArrayList.add(new TocItem(
-										LayerType.EQUIPMENT_TYPE, equipment
-												.getEquipmentIndex(), equipment
-												.getEquipmentTitle(), equipment
-												.getEquipmentX(), equipment
-												.getEquipmentY(), equipment
-												.getEquipmentDirectory(),
-										equipment.getEquipmentThumbnail()));
+										ItemType.EQUIPMENT_TYPE, equipment
+												.getIndex(), equipment
+												.getTitle(), equipment.getX(),
+										equipment.getY(), equipment
+												.getDirectory(), equipment
+												.getThumbnail()));
 								equipment.EnumeratePanels();
 								for (Panel panel : equipment) {
 									this.tocArrayList.add(new TocItem(
-											LayerType.PANEL_TYPE, panel
+											ItemType.PANEL_TYPE, panel
 													.getPanelIndex(), panel
 													.getPanelTitle(), -1, -1,
 											panel.getPanelDirectory(), panel
@@ -199,7 +209,7 @@ public class TocAdapter extends BaseAdapter {
 		}
 		try {
 			TocItem toc_item = this.tocArrayList.get(position);
-		((TextView) (view.findViewById(R.id.textViewLevelName)))
+			((TextView) (view.findViewById(R.id.textViewLevelName)))
 					.setText(toc_item.getLayerTypeName());
 			((TextView) (view.findViewById(R.id.textViewTitle)))
 					.setText(toc_item.getTitle());

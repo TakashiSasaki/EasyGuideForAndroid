@@ -93,7 +93,7 @@ public class Room extends ArrayList<Equipment> {
 
 	public Equipment getEquipmentByIndex(int equipment_index) {
 		for (Equipment e : this) {
-			if (e.getEquipmentIndex() == equipment_index) {
+			if (e.getIndex() == equipment_index) {
 				return e;
 			}
 		}
@@ -102,7 +102,7 @@ public class Room extends ArrayList<Equipment> {
 
 	public Equipment GetEquipment(String equipment_name) {
 		for (Equipment equipment : this) {
-			if (equipment.getEquipmentTitle().equals(equipment_name)) {
+			if (equipment.getTitle().equals(equipment_name)) {
 				return equipment;
 			}
 		}// for

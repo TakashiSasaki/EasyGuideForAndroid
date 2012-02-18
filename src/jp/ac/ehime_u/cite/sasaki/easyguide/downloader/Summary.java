@@ -98,12 +98,12 @@ public class Summary {
 	 * @param equipment
 	 */
 	public Summary(Equipment equipment) {
-		this.title = equipment.getEquipmentTitle();
-		this.order = equipment.getEquipmentIndex();
-		this.x = equipment.getEquipmentX();
-		this.y = equipment.getEquipmentY();
-		this.image = equipment.getEquipmentThumbnail();
-		this.path = equipment.getEquipmentDirectory().getAbsolutePath();
+		this.title = equipment.getTitle();
+		this.order = equipment.getIndex();
+		this.x = equipment.getX();
+		this.y = equipment.getY();
+		this.image = equipment.getThumbnail();
+		this.path = equipment.getDirectory().getAbsolutePath();
 	}// a constructor
 
 	/**

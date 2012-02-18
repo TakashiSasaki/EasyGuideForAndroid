@@ -18,79 +18,80 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 	protected ItemType itemType;
 
 	public ItemType getItemType() {
-		return itemType;
+		return this.itemType;
 	}
 
 	protected ItemBase(ItemType item_type, File directory) {
-		itemType = item_type;
+		this.itemType = item_type;
+		this.items = new ArrayList<T>();
 		this.directory = directory;
 		this.directoryName = new DirectoryName(directory.getName());
 		this.directoryImage = new DirectoryImage(directory);
 	}
 
 	public ItemBase(ItemType item_type) {
-		itemType = item_type;
+		this.itemType = item_type;
 	}
-	
+
 	@Override
 	public String toString() {
-		if (directoryName == null)
+		if (this.items == null)
 			return "";
-		return directoryName.getName();
+		return this.directoryName.getName();
 	}
 
 	public String getTitle() {
-		return directoryName.getName();
+		return this.directoryName.getName();
 	}
 
 	@Override
 	public void clear() {
-		items.clear();
+		this.items.clear();
 	}
 
 	@Override
 	public boolean contains(Object o) {
-		return items.contains(o);
+		return this.items.contains(o);
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		return items.containsAll(c);
+		return this.items.containsAll(c);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return items.isEmpty();
+		return this.items == null;
 	}
 
 	@Override
 	public boolean remove(Object o) {
-		return items.remove(o);
+		return this.items.remove(o);
 	}// remove
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		return items.removeAll(c);
+		return this.items.removeAll(c);
 	}// removeAll
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		return items.retainAll(c);
+		return this.items.retainAll(c);
 	}// retainAll
 
 	@Override
 	public int size() {
-		return items.size();
+		return this.items.size();
 	}// size
 
 	@Override
 	public Object[] toArray() {
-		return items.toArray();
+		return this.items.toArray();
 	}// toArray
 
 	@Override
 	public <T> T[] toArray(T[] a) {
-		return items.toArray(a);
+		return this.items.toArray(a);
 	}// toArray
 
 	public void sortByIndex() {
@@ -156,7 +157,7 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 	}
 
 	protected File[] listFiles() {
-		return directory.listFiles();
+		return this.directory.listFiles();
 	}
 
 	public File getDirectory() {

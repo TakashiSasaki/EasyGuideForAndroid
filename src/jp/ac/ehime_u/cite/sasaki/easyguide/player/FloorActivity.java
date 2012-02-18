@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
@@ -46,7 +47,7 @@ public class FloorActivity extends Activity {
 	private void SetSpinnerRooms() {
 		ArrayAdapter<Room> room_array_adapter = new ArrayAdapter<Room>(this,
 				android.R.layout.simple_spinner_dropdown_item);
-		room_array_adapter.add(new Room());
+		room_array_adapter.add(Room.getDummy());
 		for (Room r : this.floor) {
 			room_array_adapter.add(r);
 		}
@@ -94,12 +95,17 @@ public class FloorActivity extends Activity {
 		this.buildingIndex = intent.getIntExtra("buildingIndex", 0);
 		this.floorIndex = intent.getIntExtra("floorIndex", 0);
 
-		Organizations organizations = Organizations.getInstance();
-		Organization organization = organizations
-				.getOrganization(this.organizationIndex);
-		Facility facility = organization.getFacility(this.facilityIndex);
-		Building building = facility.getBuilding(this.buildingIndex);
-		this.floor = building.getFloor(this.floorIndex);
-	}
+		try {
+			Organizations organizations = Organizations.getInstance();
+			Organization organization;
+			organization = organizations
+					.getOrganization(this.organizationIndex);
+			Facility facility = organization.getFacility(this.facilityIndex);
+			Building building = facility.getBuilding(this.buildingIndex);
+			this.floor = building.getFloor(this.floorIndex);
+		} catch (ItemNotFoundException e) {
+			this.floor = Floor.getDummy();
+		}// try
+	}// SelectFloor
 
 }

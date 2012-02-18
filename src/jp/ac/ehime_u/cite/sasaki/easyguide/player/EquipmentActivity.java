@@ -10,8 +10,6 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Panel;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
-import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,8 +17,6 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -102,13 +98,19 @@ public class EquipmentActivity extends Activity {
 		this.equipmentIndex = intent.getIntExtra("equipmentIndex", 0);
 
 		Organizations organizations = Organizations.getInstance();
-		Organization organization = organizations
-				.getOrganization(this.organizationIndex);
-		Facility facility = organization.getFacility(this.facilityIndex);
-		Building building = facility.getBuilding(this.buildingIndex);
-		Floor floor = building.getFloor(this.floorIndex);
-		Room room = floor.getRoom(this.roomIndex);
-		this.equipment = room.getEquipment(this.equipmentIndex);
+		Organization organization;
+		try {
+			organization = organizations
+					.getOrganization(this.organizationIndex);
+			Facility facility = organization.getFacility(this.facilityIndex);
+			Building building = facility.getBuilding(this.buildingIndex);
+			Floor floor = building.getFloor(this.floorIndex);
+			Room room = floor.getRoom(this.roomIndex);
+			this.equipment = room.getEquipment(this.equipmentIndex);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}// SelectEquipment
 
 	@Override

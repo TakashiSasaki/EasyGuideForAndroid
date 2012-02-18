@@ -29,7 +29,7 @@ public class OpeningActivity extends Activity {
 		this.setContentView(R.layout.opening);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1);
-		buildingList = new ArrayList<Building>();
+		this.buildingList = new ArrayList<Building>();
 		for (Organization organization : Organizations.getInstance()) {
 			Log.v(this.getClass().getSimpleName(), "Enumerating organizations");
 			for (Facility facility : organization) {
@@ -40,7 +40,7 @@ public class OpeningActivity extends Activity {
 									+ building.getTitle() + " found.");
 					assert (building.getTitle() != null);
 					adapter.add(building.getTitle());
-					buildingList.add(building);
+					this.buildingList.add(building);
 				}
 			}
 		}
@@ -62,9 +62,9 @@ public class OpeningActivity extends Activity {
 										+ (String) list_view
 												.getItemAtPosition(position)
 										+ ", building name in buildingList is "
-										+ buildingList.get(position)
+										+ OpeningActivity.this.buildingList.get(position)
 												.getTitle());
-						InvokeMapActivity(buildingList.get(position));
+						InvokeMapActivity(OpeningActivity.this.buildingList.get(position));
 					}// onItemClick
 				}// OnItemClickListener
 				);

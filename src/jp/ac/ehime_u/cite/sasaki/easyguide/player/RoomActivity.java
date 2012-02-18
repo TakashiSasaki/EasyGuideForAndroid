@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
@@ -77,13 +78,18 @@ public class RoomActivity extends Activity {
 		this.floorIndex = intent.getIntExtra("floorIndex", 0);
 		this.roomIndex = intent.getIntExtra("roomIndex", 0);
 
-		Organizations organizations = Organizations.getInstance();
-		Organization organization = organizations
-				.getOrganization(this.organizationIndex);
-		Facility facility = organization.getFacility(this.facilityIndex);
-		Building building = facility.getBuilding(this.buildingIndex);
-		Floor floor = building.getFloor(this.floorIndex);
-		this.room = floor.getRoom(this.roomIndex);
+		try {
+			Organizations organizations = Organizations.getInstance();
+			Organization organization;
+			organization = organizations
+					.getOrganization(this.organizationIndex);
+			Facility facility = organization.getFacility(this.facilityIndex);
+			Building building = facility.getBuilding(this.buildingIndex);
+			Floor floor = building.getFloor(this.floorIndex);
+			this.room = floor.getRoom(this.roomIndex);
+		} catch (ItemNotFoundException e) {
+			this.room = Room.getDummy();
+		}
 	}
 
 	private void InvokeEquipmentActivity(int equipmentIndex) {

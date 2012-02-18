@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
@@ -43,15 +44,14 @@ public class FacilityActivity extends Activity {
 		this.facilityIndex = this.intent.getIntExtra("facilityIndex", 0);
 
 		Organizations organizations = Organizations.getInstance();
-		Organization organization = organizations
-				.getOrganization(this.organizationIndex);
-		assert(organization != null);
-		this.facility = organization.getFacility(this.facilityIndex);
-		if (this.facility == null) {
-			Log.v(this.getClass().getSimpleName(),
-					"Can't find organizationIndex " + this.organizationIndex
-							+ " facilityIndex " + this.facilityIndex);
-		}// if
+		try {
+			Organization organization = organizations
+					.getOrganization(this.organizationIndex);
+			this.facility = organization.getFacility(this.facilityIndex);
+		} catch (ItemNotFoundException e) {
+			this.facility = Facility.getDummy();
+		}//try
+
 		ImageView image_view = (ImageView) findViewById(R.id.imageViewFacility);
 		image_view.setImageBitmap(this.facility.getImage());
 		image_view.setOnTouchListener(new OnTouchListener() {
@@ -74,7 +74,7 @@ public class FacilityActivity extends Activity {
 	void SetSpinnerFacilities() {
 		ArrayAdapter<Building> building_array_adapter = new ArrayAdapter<Building>(
 				this, android.R.layout.simple_spinner_dropdown_item);
-		building_array_adapter.add(new Building());
+		building_array_adapter.add(Building.getDummy());
 		for (Building b : this.facility) {
 			building_array_adapter.add(b);
 		}

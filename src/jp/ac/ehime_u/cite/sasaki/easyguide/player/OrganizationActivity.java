@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
@@ -44,8 +45,12 @@ public class OrganizationActivity extends Activity {
 
 		// organization = Organizations.GetTheOrganizations().GetOrganization(
 		// "assets");
-		this.organization = Organizations.getInstance()
-				.getOrganization(this.organizationIndex);
+		try {
+			this.organization = Organizations.getInstance().getOrganization(
+					this.organizationIndex);
+		} catch (ItemNotFoundException e) {
+			this.organization = Organization.getDummy();
+		}// try
 
 		SetSpinnerFacilities();
 
@@ -69,7 +74,7 @@ public class OrganizationActivity extends Activity {
 	void SetSpinnerFacilities() {
 		ArrayAdapter<Facility> facilities_array_adapter = new ArrayAdapter<Facility>(
 				this, android.R.layout.simple_spinner_dropdown_item);
-		facilities_array_adapter.add(new Facility());
+		facilities_array_adapter.add(Facility.getDummy());
 		for (Facility f : this.organization) {
 			facilities_array_adapter.add(f);
 		}
@@ -164,8 +169,7 @@ public class OrganizationActivity extends Activity {
 			MotionEvent motion_event) {
 		Facility facility = this.organization.GetNearestFacility(image_view,
 				motion_event);
-		Log.v(new Throwable(),
-				"The nearest facility is " + facility.getTitle());
+		Log.v(new Throwable(), "The nearest facility is " + facility.getTitle());
 		Intent intent = new Intent();
 		intent.setClass(this, FacilityActivity.class);
 		startActivity(intent);

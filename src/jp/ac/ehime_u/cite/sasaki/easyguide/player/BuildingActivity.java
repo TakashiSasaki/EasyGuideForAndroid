@@ -47,10 +47,14 @@ public class BuildingActivity extends Activity {
 		this.buildingIndex = intent.getIntExtra("buildingIndex", 0);
 
 		Organizations organizations = Organizations.getInstance();
-		Organization organization = organizations
-				.getOrganization(this.organizationIndex);
-		Facility facility = organization.getFacility(this.facilityIndex);
-		this.building = facility.getBuilding(this.buildingIndex);
+		Organization organization;
+		try {
+			organization = organizations.getOrganization(this.organizationIndex);
+			Facility facility = organization.getFacility(this.facilityIndex);
+			this.building = facility.getBuilding(this.buildingIndex);
+		} catch (Exception e) {
+			this.building = Building.getDummy();
+		}
 
 		ImageView image_view_building = (ImageView) findViewById(R.id.imageViewBuilding);
 		image_view_building.setImageBitmap(this.building.getImage());
@@ -101,7 +105,7 @@ public class BuildingActivity extends Activity {
 		Spinner s = (Spinner) findViewById(R.id.spinnerFloors);
 		ArrayAdapter<Floor> floor_array_adapter = new ArrayAdapter<Floor>(this,
 				android.R.layout.simple_spinner_dropdown_item);
-		//floor_array_adapter.add(Floor.getEmptyFloor());
+		// floor_array_adapter.add(Floor.getEmptyFloor());
 		for (Floor f : this.building) {
 			floor_array_adapter.add(f);
 		}
@@ -123,7 +127,7 @@ public class BuildingActivity extends Activity {
 			}
 		};// OnItemSelectedListener
 		s.setOnItemSelectedListener(l);
-		
+
 		s.setPrompt(this.getString(R.string.spinner_prompt_floors));
 	}// SetSpinnerFloors
 

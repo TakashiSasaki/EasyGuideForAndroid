@@ -1,22 +1,21 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import java.util.ArrayList;
-
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
-
-import android.graphics.Bitmap;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-@SuppressWarnings("serial")
 public class Room extends ItemBase<Equipment> {
 	// private File roomDirectory;
 	// private DirectoryName roomDirectoryName;
 	// private DirectoryImage roomImage;
 	//
+
+	private static Room theDummy = new Room();
+
 	/**
 	 * @param room_directory
 	 */
@@ -30,8 +29,12 @@ public class Room extends ItemBase<Equipment> {
 		this.EnumerateEquipments();
 	}// a constructor
 
-	public Room() {
+	private Room() {
 		super();
+	}
+
+	static public Room getDummy() {
+		return theDummy;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -47,12 +50,12 @@ public class Room extends ItemBase<Equipment> {
 		}// for
 	}// EnumerateEquipments
 
-	public Equipment getEquipment(int index) {
-		return this.getByIndex(index, null);
+	public Equipment getEquipment(int index) throws ItemNotFoundException {
+		return this.getByIndex(index);
 	}
 
-	public Equipment getEquipment(String title) {
-		return this.getByTitle(title, null);
+	public Equipment getEquipment(String title) throws ItemNotFoundException {
+		return this.getByTitle(title);
 	}
 	// @SuppressWarnings("javadoc")
 	// public String getRoomName() {

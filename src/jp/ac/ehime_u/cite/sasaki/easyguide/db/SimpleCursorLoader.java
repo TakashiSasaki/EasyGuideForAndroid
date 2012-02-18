@@ -39,8 +39,8 @@ public abstract class SimpleCursorLoader extends AsyncTaskLoader<Cursor> {
 			}
 			return;
 		}
-		Cursor oldCursor = mCursor;
-		mCursor = cursor;
+		Cursor oldCursor = this.mCursor;
+		this.mCursor = cursor;
 
 		if (isStarted()) {
 			super.deliverResult(cursor);
@@ -61,10 +61,10 @@ public abstract class SimpleCursorLoader extends AsyncTaskLoader<Cursor> {
 	 */
 	@Override
 	protected void onStartLoading() {
-		if (mCursor != null) {
-			deliverResult(mCursor);
+		if (this.mCursor != null) {
+			deliverResult(this.mCursor);
 		}
-		if (takeContentChanged() || mCursor == null) {
+		if (takeContentChanged() || this.mCursor == null) {
 			forceLoad();
 		}
 	}// onStartLoading
@@ -92,9 +92,9 @@ public abstract class SimpleCursorLoader extends AsyncTaskLoader<Cursor> {
 		// Ensure the loader is stopped
 		onStopLoading();
 
-		if (mCursor != null && !mCursor.isClosed()) {
-			mCursor.close();
+		if (this.mCursor != null && !this.mCursor.isClosed()) {
+			this.mCursor.close();
 		}
-		mCursor = null;
+		this.mCursor = null;
 	}// onReset
 }

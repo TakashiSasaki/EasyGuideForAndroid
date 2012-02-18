@@ -1,6 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ public class Organization extends ItemBase<Facility> {
 	private float longitude;
 	private float latitude;
 	private float altitude;
+	private static Organization theDummy = new Organization();
 
 	/**
 	 * @param organization_directory
@@ -37,8 +40,12 @@ public class Organization extends ItemBase<Facility> {
 		this.sortByIndex();
 	}// a constructor
 
-	public Organization() {
+	private Organization() {
 		super();
+	}
+
+	public static Organization getDummy() {
+		return theDummy;
 	}
 
 	public void EnumerateFacilities() {
@@ -80,12 +87,12 @@ public class Organization extends ItemBase<Facility> {
 		return this.altitude;
 	}
 
-	public Facility getFacility(int index) {
-		return this.getByIndex(index, new Organization());
+	public Facility getFacility(int index) throws ItemNotFoundException {
+		return this.getByIndex(index);
 	}
 
-	public Facility getFacility(String title) {
-		return this.getByTitle(title, new Organization());
+	public Facility getFacility(String title) throws ItemNotFoundException {
+		return this.getByTitle(title);
 	}
 
 	// @SuppressWarnings("javadoc")

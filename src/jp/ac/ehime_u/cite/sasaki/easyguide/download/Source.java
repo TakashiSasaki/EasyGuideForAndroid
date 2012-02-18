@@ -4,13 +4,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-
-import android.content.ContentValues;
 import android.content.Context;
 
 public class Source {

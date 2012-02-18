@@ -13,7 +13,7 @@ public class PanelImage {
 	Bitmap image;
 
 	@SuppressWarnings("javadoc")
-	public PanelImage(File panel_directory) throws PanelException {
+	public PanelImage(File panel_directory)  {
 
 	} // a constructor
 }// PanelImage

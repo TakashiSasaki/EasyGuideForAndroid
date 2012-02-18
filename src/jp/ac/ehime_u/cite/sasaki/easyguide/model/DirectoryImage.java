@@ -1,8 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import java.io.FileFilter;
-
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -54,7 +52,7 @@ public class DirectoryImage {
 			File f = classifier.getImageFiles().get(0);
 			Log.v(new Throwable(),
 					"Image file was found, " + f.getAbsolutePath());
-			imageFile = f;
+			this.imageFile = f;
 		}// if
 	}// a constructor
 
@@ -82,8 +80,8 @@ public class DirectoryImage {
 	 */
 	public Bitmap getImage() {
 
-		if (imageFile != null) {
-			Bitmap b = BitmapFactory.decodeFile(imageFile.getPath());
+		if (this.imageFile != null) {
+			Bitmap b = BitmapFactory.decodeFile(this.imageFile.getPath());
 			if (b != null) {
 				return b;
 			}

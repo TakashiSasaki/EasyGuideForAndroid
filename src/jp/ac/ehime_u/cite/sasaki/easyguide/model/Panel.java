@@ -1,7 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import android.graphics.Bitmap;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
 
 /**

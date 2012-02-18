@@ -1,8 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import android.content.res.Resources.NotFoundException;
-import android.graphics.Bitmap;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -35,8 +35,12 @@ public class Building extends ItemBase<Floor> {
 		this.EnumerateFloors();
 	}// a constructor
 
-	public Building() {
+	private Building() {
 		super();
+	}
+	
+	static public Building getDummy() {
+		return new Building();
 	}
 
 	// public boolean isEmpty() {
@@ -53,12 +57,12 @@ public class Building extends ItemBase<Floor> {
 		this.sortByIndex();
 	}// EnumerateFloors
 
-	public Floor getFloor(int index) {
-		return (Floor) this.getByIndex(index, null);
+	public Floor getFloor(int index) throws ItemNotFoundException {
+		return (Floor) this.getByIndex(index);
 	}
 
-	public Floor getFloor(String title) {
-		return (Floor) this.getByTitle(title, null);
+	public Floor getFloor(String title) throws ItemNotFoundException {
+		return (Floor) this.getByTitle(title);
 	}
 	// public void SortByFloorNumber() {
 	// Collections.sort(this, new Comparator<Floor>() {

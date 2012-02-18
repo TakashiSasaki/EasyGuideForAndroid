@@ -1,13 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 
-import android.content.res.Resources.NotFoundException;
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -40,8 +35,14 @@ public class Facility extends ItemBase<Building> {
 		this.sortByIndex();
 	}// a constructor
 
-	public Facility() {
+	private Facility() {
 		super();
+	}
+
+	static Facility theDummy = new Facility();
+
+	public static Facility getDummy() {
+		return theDummy;
 	}
 
 	// public static Facility GetEmptyFacility() {
@@ -135,13 +136,14 @@ public class Facility extends ItemBase<Building> {
 		return candidate_building;
 	}// GetNearestBuilding
 
-	public Building getBuilding(String title) {
-		return (Building) getByTitle(title, null);
+	public Building getBuilding(String title) throws ItemNotFoundException {
+		return (Building) getByTitle(title);
 	}
 
-	public Building getBuilding(int index) {
-		return (Building) getByIndex(index, null);
+	public Building getBuilding(int index) throws ItemNotFoundException {
+		return (Building) getByIndex(index);
 	}
+
 	// @SuppressWarnings("javadoc")
 	// public Building GetBuilding(String building_name) {
 	// for (Building building : this) {

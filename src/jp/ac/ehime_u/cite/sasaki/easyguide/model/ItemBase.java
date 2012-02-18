@@ -10,6 +10,7 @@ import java.util.Iterator;
 import android.graphics.Bitmap;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocItem;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 	private File directory;
@@ -105,6 +106,14 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 
 	@Override
 	public boolean add(T e) {
+		Log.v(new Throwable(), "adding (1) " + e.getClass().getSimpleName()
+				+ " to " + this.getClass().getSimpleName());
+		if (e.getClass().isInstance(Organization.class)) {
+			Log.v(new Throwable(), "adding (3) " + e.getClass());
+		}
+		if (this.items == null) {
+			Log.v(new Throwable(), "this.item is null");
+		}
 		return this.items.add(e);
 	}
 

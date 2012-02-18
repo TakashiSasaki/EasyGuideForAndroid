@@ -1,12 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
-import android.content.res.Resources.NotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
 /**
@@ -18,6 +14,8 @@ public class Floor extends ItemBase<Room> {
 	// private DirectoryName floorDirectoryName;
 	// private DirectoryImage floorImage;
 	// private File floorDirectory;
+
+	static private Floor theDummy = new Floor();
 
 	/**
 	 * @param floor_directory
@@ -34,6 +32,10 @@ public class Floor extends ItemBase<Room> {
 		this.EnumerateRooms();
 	}// a constructor
 
+	private Floor() {
+		super();
+	}
+
 	@SuppressWarnings("javadoc")
 	public void EnumerateRooms() {
 		for (File room_directory : this.listFiles()) {
@@ -46,12 +48,12 @@ public class Floor extends ItemBase<Room> {
 		this.sortByIndex();
 	}// EnumerateRooms
 
-	public Room getRoom(int index) {
-		return this.getByIndex(index, null);
+	public Room getRoom(int index) throws ItemNotFoundException {
+		return this.getByIndex(index);
 	}
 
-	public Room getRoom(String title) {
-		return this.getByTitle(title, null);
+	public Room getRoom(String title) throws ItemNotFoundException {
+		return this.getByTitle(title);
 	}
 
 	// @SuppressWarnings("javadoc")
@@ -130,13 +132,9 @@ public class Floor extends ItemBase<Room> {
 	// + " not found in Floor " + this.toString());
 	// }// GetRoom
 
-	public static Floor getEmptyFloor() {
-		return new Floor();
+	public static Floor getDummy() {
+		return theDummy;
 	}
-
-	private Floor() {
-		super();
-	}// a constructor for empty instance
 
 	// public Room getRoomByIndex(int roomIndex) {
 	// for (Room r : this) {

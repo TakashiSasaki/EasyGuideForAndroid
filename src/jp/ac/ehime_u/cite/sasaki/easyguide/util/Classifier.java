@@ -24,28 +24,28 @@ public class Classifier {
 
 		for (File f : directory.listFiles()) {
 			Log.v(new Throwable(), "classyfing " + f.getName());
-			Matcher match_movie = movieFilePattern.matcher(f.getName());
+			Matcher match_movie = this.movieFilePattern.matcher(f.getName());
 			if (match_movie.find()) {
 				Log.v(new Throwable(), "movie file " + f.getName());
-				movieFiles.add(f);
+				this.movieFiles.add(f);
 				continue;
 			}
-			Matcher match_html = htmlFilePattern.matcher(f.getName());
+			Matcher match_html = this.htmlFilePattern.matcher(f.getName());
 			if (match_html.find()) {
 				Log.v(new Throwable(), "html file" + f.getName());
-				htmlFiles.add(f);
+				this.htmlFiles.add(f);
 				continue;
 			}
-			Matcher match_text = textFilePattern.matcher(f.getName());
+			Matcher match_text = this.textFilePattern.matcher(f.getName());
 			if (match_text.find()) {
 				Log.v(new Throwable(), "text file " + f.getName());
-				textFiles.add(f);
+				this.textFiles.add(f);
 				continue;
 			}
-			Matcher match_image = imageFilePattern.matcher(f.getName());
+			Matcher match_image = this.imageFilePattern.matcher(f.getName());
 			if (match_image.find()) {
 				Log.v(new Throwable(), "image file " + f.getName());
-				imageFiles.add(f);
+				this.imageFiles.add(f);
 				continue;
 			}
 			Log.v(new Throwable(), "not classified, " + f.getName());

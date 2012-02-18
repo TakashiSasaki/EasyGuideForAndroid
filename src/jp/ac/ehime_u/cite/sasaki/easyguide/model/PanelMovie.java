@@ -10,7 +10,7 @@ import java.io.File;
 public class PanelMovie {
 
 	@SuppressWarnings("javadoc")
-	public PanelMovie(File panel_directory) throws PanelException{
+	public PanelMovie(File panel_directory) {
 
 	}// a constructor
 }// PanelMovie

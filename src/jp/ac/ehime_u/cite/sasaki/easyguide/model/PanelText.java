@@ -17,23 +17,16 @@ public class PanelText {
 	ArrayList<String> lines;
 
 	@SuppressWarnings("javadoc")
-	public PanelText(File panel_directory) throws PanelException {
+	public PanelText(File panel_directory) throws IOException {
 		this.lines = new ArrayList<String>();
 		File file = new File(panel_directory, fileName);
-		try {
-			FileReader file_reader = new FileReader(file);
-			BufferedReader buffered_reader = new BufferedReader(file_reader);
-			while (true) {
-				String line = buffered_reader.readLine();
-				if (line == null)
-					break;
-				this.lines.add(line);
-			}// while
-		} catch (FileNotFoundException e) {
-			throw new PanelException("Can't open " + file.getName());
-		} catch (IOException e) {
-			throw new PanelException("Can't read liens from " + file.getName()
-					+ ", " + e.getMessage());
-		}// try
+		FileReader file_reader = new FileReader(file);
+		BufferedReader buffered_reader = new BufferedReader(file_reader);
+		while (true) {
+			String line = buffered_reader.readLine();
+			if (line == null)
+				break;
+			this.lines.add(line);
+		}// while
 	}
-}// PanelText
+}

@@ -2,9 +2,6 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.download;
 
 import java.io.BufferedInputStream;
 
-import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;

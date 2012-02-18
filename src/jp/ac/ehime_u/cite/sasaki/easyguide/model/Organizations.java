@@ -1,12 +1,16 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
+import java.util.ArrayList;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
-public class Organizations extends ItemBase<Organization> {
+@SuppressWarnings("serial")
+public class Organizations extends ArrayList<Organization> {
 
 	private static Organizations theOrganizations;
 
@@ -25,9 +29,16 @@ public class Organizations extends ItemBase<Organization> {
 			for (Organization organization : domain) {
 				Log.v(new Throwable(),
 						"Found organization " + organization.getTitle());
+				Log.v(new Throwable(), organization.getTitle());
 				this.add(organization);
+				Log.v(new Throwable(),
+						"Added organization " + organization.getTitle());
 			}// for
+			Log.v(new Throwable(), "scanned for organizations in domain "
+					+ domain.getDomainDirectory().getName());
 		}// for
+		Log.v(new Throwable(), "scanned for domains in "
+				+ Root.GetTheRoot().getRootDirectory().getPath());
 	}// EnumerateOrganizations
 
 	// public Organization GetOrganizationByIndex(int organization_index) {
@@ -48,9 +59,15 @@ public class Organizations extends ItemBase<Organization> {
 		return theOrganizations;
 	}// GetTheOrganizations
 
-	public Organization getOrganization(int index) {
-		return this.getByIndex(index, null);
-	}
+	public Organization getOrganization(int index) throws ItemNotFoundException {
+		for (Organization o : this) {
+			if (o.getIndex() == index) {
+				return o;
+			}
+		}
+		throw new ItemNotFoundException("Can't find index " + index
+				+ " in Organizations.");
+	}// getOrganization
 
 	// public Organization GetOrganization(String organization_name) {
 	// for (Organization organization : this) {

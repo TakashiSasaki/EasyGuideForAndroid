@@ -32,12 +32,12 @@ public class Root extends ArrayList<Domain> {
 				.getExternalStorageDirectory();
 		Log.v(this.getClass().getSimpleName(),
 				external_storage_directory.getAbsolutePath());
-		rootDirectory = new File(external_storage_directory, rootDirectoryName);
-		if (!rootDirectory.exists()) {
-			rootDirectory.mkdir();
+		this.rootDirectory = new File(external_storage_directory, rootDirectoryName);
+		if (!this.rootDirectory.exists()) {
+			this.rootDirectory.mkdir();
 		}
-		if (!rootDirectory.exists()) {
-			throw new StorageException(rootDirectory.getPath()
+		if (!this.rootDirectory.exists()) {
+			throw new StorageException(this.rootDirectory.getPath()
 					+ " can not be created.");
 		}
 		/*
@@ -46,12 +46,12 @@ public class Root extends ArrayList<Domain> {
 		 * rootDirectory.getAbsolutePath()); }
 		 */
 		EnumerateDomainDirectories();
-		assert (rootDirectory.exists());
+		assert (this.rootDirectory.exists());
 	}// an constructor
 
 	@SuppressWarnings("javadoc")
 	public File getRootDirectory() {
-		return rootDirectory;
+		return this.rootDirectory;
 	}// getRootDirectory
 
 	/**
@@ -65,7 +65,7 @@ public class Root extends ArrayList<Domain> {
 			return false;
 		// Pattern pattern = Pattern
 		// .compile("^.{1,254}$)(^(?:(?!\\d+\\.|-)[a-zA-Z0-9_\\-]{1,63}(?<!-)\\.?)+(?:[a-zA-Z]{2,})$");
-		Matcher matcher = DOMAIN_PATTERN.matcher(file.getName());
+		Matcher matcher = this.DOMAIN_PATTERN.matcher(file.getName());
 		if (matcher.find())
 			return true;
 		else
@@ -79,7 +79,7 @@ public class Root extends ArrayList<Domain> {
 		for (File domain_directory : domain_directories) {
 			Log.d(this.getClass().getSimpleName(), "Found domain directory "
 					+ domain_directory.getAbsolutePath());
-			Matcher m = DOMAIN_PATTERN.matcher(domain_directory.getName());
+			Matcher m = this.DOMAIN_PATTERN.matcher(domain_directory.getName());
 			if (m.find()) {
 				Log.d(this.getClass().getSimpleName(), "Matched. "
 						+ domain_directory.getName()

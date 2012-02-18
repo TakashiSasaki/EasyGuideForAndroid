@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class OrganizationActivity extends Activity {
 
 	Organization organization;
 	int organizationIndex;
+	ImageView imageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +56,9 @@ public class OrganizationActivity extends Activity {
 
 		SetSpinnerFacilities();
 
-		ImageView image_view = (ImageView) findViewById(R.id.imageViewOrganization);
-		image_view.setImageBitmap(this.organization.getImage());
-		image_view.setOnTouchListener(new OnTouchListener() {
+		this.imageView = (ImageView) findViewById(R.id.imageViewOrganization);
+		this.imageView.setImageBitmap(this.organization.getImage());
+		this.imageView.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent motion_event) {
 				ImageView image_view = (ImageView) arg0;
@@ -66,9 +68,18 @@ public class OrganizationActivity extends Activity {
 				float y = distance_calculator.GetYOnDrawable(motion_event);
 				Log.v(new Throwable(), "x=" + x + " y=" + y);
 				InvokeNearestFacilityActivity(image_view, motion_event);
+
+				// test code
+				Matrix m = OrganizationActivity.this.imageView.getMatrix();
+				Log.v(new Throwable(), "getMatrix returns " + m.toString());
+				Matrix im = OrganizationActivity.this.imageView
+						.getImageMatrix();
+				Log.v(new Throwable(), "getImageMatrix returns " + m.toString());
+
 				return true; // stops event propagation
 			}// onTouch
 		});// setOnTouchListener
+
 	}// onCreate
 
 	void SetSpinnerFacilities() {

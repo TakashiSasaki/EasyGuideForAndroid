@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
@@ -38,9 +39,9 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 
 	@Override
 	public String toString() {
-		if (this.items == null)
-			return "";
-		return this.directoryName.getName();
+		if (this.isDummy())
+			return "Please choose an item.";
+		return this.getTitle();
 	}
 
 	@Override
@@ -58,8 +59,7 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 		return this.items.containsAll(c);
 	}
 
-	@Override
-	public boolean isEmpty() {
+	public boolean isDummy() {
 		return this.items == null;
 	}
 
@@ -218,4 +218,28 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 				this.getThumbnail());
 		return toc_item;
 	}// getTocItem
+
+	public T getNearest(Point point) throws ItemNotFoundException {
+		if (this.items.size() == 0)
+			throw new ItemNotFoundException(this.getTitle()
+					+ "has no item as children");
+		T nearest = this.items.get(0);
+		for (T item : this.items) {
+			float old_distance_squared = (nearest.getX() - point.x) ^ 2
+					+ (nearest.getY() - point.y) ^ 2;
+			float new_distance_squared = (item.getX() - point.x) ^ 2
+					+ (item.getY() - point.y) ^ 2;
+			if (old_distance_squared > new_distance_squared) {
+				nearest = item;
+			}
+		}// for
+		return nearest;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		if (items == null)
+			return true;
+		return this.items.isEmpty();
+	}
 }// ItemBase

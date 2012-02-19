@@ -1,32 +1,24 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
-import java.util.ArrayList;
-
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 /**
@@ -42,7 +34,7 @@ public class OrganizationActivity extends ClickableActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.organization);
+		// setContentView(R.layout.organization);
 		Intent intent = getIntent();
 		this.organizationIndex = intent.getIntExtra("organizationIndex", 0);
 		Log.v(new Throwable(),
@@ -63,9 +55,8 @@ public class OrganizationActivity extends ClickableActivity {
 		this.imageView = (ImageView) findViewById(R.id.imageViewOrganization);
 		// this.imageView.setImageBitmap(this.organization.getImage());
 		this.setImageView(this.organization);
-		starPoints.clear();
-		for (ItemBase i : this.organization) {
-			starPoints.add(new Point(i.getX(), i.getY()));
+		for (Facility f : this.organization) {
+			addStarPoint(new Point(f.getX(), f.getY()));
 		}
 		// this.imageView.setOnTouchListener(new OnTouchListener() {
 		// @Override
@@ -90,14 +81,14 @@ public class OrganizationActivity extends ClickableActivity {
 		// });// setOnTouchListener
 
 	}// onCreate
-	
+
 	@Override
-	protected void onStart(){
+	protected void onStart() {
 		super.onStart();
-		//this.drawSurface();
+		// this.drawSurface();
 	}
-	
-	protected void onResume(){
+
+	protected void onResume() {
 		super.onResume();
 		this.drawSurface();
 	}
@@ -205,6 +196,17 @@ public class OrganizationActivity extends ClickableActivity {
 		intent.setClass(this, FacilityActivity.class);
 		startActivity(intent);
 	}// InvokeNearestFacilityActivity
+
+	@Override
+	protected void onStarTouched(Point point) {
+		try {
+			Facility f = this.organization.getNearest(point);
+			InvokeFacilityActivity(f);
+		} catch (ItemNotFoundException e) {
+			Log.v(new Throwable(), "No facility in this organization "
+					+ this.organization.getTitle());
+		}// try
+	}// onStarTouched
 
 }// OrganizationActivity
 

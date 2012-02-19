@@ -22,18 +22,16 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
-public class ClickableActivity extends Activity implements
+public abstract class ClickableActivity extends Activity implements
 		SurfaceHolder.Callback {
-	ImageView imageView;
-	SurfaceView surfaceView;
-	static Bitmap star;
-	SurfaceHolder surfaceHolder;
-	Point lastTouched;
+	private ImageView imageView;
+	private SurfaceView surfaceView;
+	private static Bitmap star;
+	private SurfaceHolder surfaceHolder;
 
-	// ItemBase itemBase;
-	float scaleX, scaleY;
-	float offsetX, offsetY;
-	ArrayList<Point> starPoints = new ArrayList<Point>();
+	private float scaleX, scaleY;
+	private float offsetX, offsetY;
+	private ArrayList<Point> starPoints = new ArrayList<Point>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,20 +44,6 @@ public class ClickableActivity extends Activity implements
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 		this.surfaceView.getHolder().addCallback(this);
 
-	}// onCreate
-
-	protected void setImageView(ItemBase item_base) {
-		this.imageView.setImageBitmap(item_base.getImage());
-		LayoutParams image_view_layout_params = this.imageView
-				.getLayoutParams();
-		this.surfaceView.setLayoutParams(image_view_layout_params);
-	}
-
-	protected void setStarPoints(ArrayList<Point> points) {
-		this.starPoints = points;
-	}
-
-	protected void setOnTouchListener() {
 		this.imageView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -69,15 +53,24 @@ public class ClickableActivity extends Activity implements
 				Point point_on_image_view = new Point((int) x_on_image_view,
 						(int) y_on_image_view);
 				Point point_on_bitmap = getPointOnBitmap(point_on_image_view);
-				lastTouched = point_on_bitmap;
+				onStarTouched(point_on_bitmap);
 				return false;
 			}// onTouch
 		});
-	}// setOnTouchListener
-	
-	protected Point getLastTouched(){
-		return lastTouched;
+	}// onCreate
+
+	protected void setImageView(ItemBase item_base) {
+		this.imageView.setImageBitmap(item_base.getImage());
+		LayoutParams image_view_layout_params = this.imageView
+				.getLayoutParams();
+		this.surfaceView.setLayoutParams(image_view_layout_params);
 	}
+
+	protected void addStarPoint(Point point) {
+		this.starPoints.add(point);
+	}
+
+	protected abstract void onStarTouched(Point point);
 
 	private Point getPointOnBitmap(Point point_on_image_view) {
 		initScaleAndOffset();
@@ -152,6 +145,6 @@ public class ClickableActivity extends Activity implements
 					on_image_view.y, null);
 			surfaceHolder.unlockCanvasAndPost(c);
 		}// for
-	}
+	}// drawSurface
 
 }// ClickableActivity

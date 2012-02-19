@@ -148,8 +148,8 @@ public class BuildingActivity extends ClickableActivity<Floor> {
 			Floor f = this.building.getNearest(point);
 			InvokeActivity(f);
 		} catch (ItemNotFoundException e) {
-			Log.v(new Throwable(), "No building near " + point.toString()
-					+ " in facility " + this.building.getTitle());
+			Log.v(new Throwable(), "No floor near " + point.toString()
+					+ " in building " + this.building.getTitle());
 		}
 	}// onStarTouched
 

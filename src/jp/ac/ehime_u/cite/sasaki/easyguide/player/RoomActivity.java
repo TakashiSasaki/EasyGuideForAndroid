@@ -8,17 +8,13 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
-import android.app.Activity;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
 
-public class RoomActivity extends Activity {
+public class RoomActivity extends ClickableActivity<Equipment> {
 	Room room;
 	int organizationIndex;
 	int facilityIndex;
@@ -29,46 +25,58 @@ public class RoomActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.room);
+		// setContentView(R.layout.room);
 
 		SelectRoom();
-		SetImageView();
-		SetSpinnerEquipments();
-	}// onCreate
-
-	private void SetSpinnerEquipments() {
+		setImageView(this.room);
+		for (Equipment e : this.room) {
+			addStarPoint(new Point(e.getX(), e.getY()));
+		}
+		// SetImageView();
+		// SetSpinnerEquipments();
 		ArrayAdapter<Equipment> equipment_array_adapter = new ArrayAdapter<Equipment>(
 				this, android.R.layout.simple_spinner_dropdown_item);
 		equipment_array_adapter.add(Equipment.getDummy());
 		for (Equipment e : this.room) {
 			equipment_array_adapter.add(e);
 		}
-		Spinner s = (Spinner) findViewById(R.id.spinnerEquipments);
-		s.setAdapter(equipment_array_adapter);
-		OnItemSelectedListener l = new OnItemSelectedListener() {
+		setSpinnerArrayAdapter(equipment_array_adapter);
+	}// onCreate
 
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				Equipment e = (Equipment) arg0.getItemAtPosition(arg2);
-				if (e.isEmpty())
-					return;
-				InvokeEquipmentActivity(e.getIndex());
-			}
+	// private void SetSpinnerEquipments() {
+	// ArrayAdapter<Equipment> equipment_array_adapter = new
+	// ArrayAdapter<Equipment>(
+	// this, android.R.layout.simple_spinner_dropdown_item);
+	// equipment_array_adapter.add(Equipment.getDummy());
+	// for (Equipment e : this.room) {
+	// equipment_array_adapter.add(e);
+	// }
+	// Spinner s = (Spinner) findViewById(R.id.spinnerEquipments);
+	// s.setAdapter(equipment_array_adapter);
+	// OnItemSelectedListener l = new OnItemSelectedListener() {
+	//
+	// @Override
+	// public void onItemSelected(AdapterView<?> arg0, View arg1,
+	// int arg2, long arg3) {
+	// Equipment e = (Equipment) arg0.getItemAtPosition(arg2);
+	// if (e.isEmpty())
+	// return;
+	// InvokeActivity(e.getIndex());
+	// }
+	//
+	// @Override
+	// public void onNothingSelected(AdapterView<?> arg0) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	// };
+	// s.setOnItemSelectedListener(l);
+	// }// SetSpinnerFloors
 
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-		s.setOnItemSelectedListener(l);
-	}// SetSpinnerFloors
-
-	private void SetImageView() {
-		ImageView i = (ImageView) findViewById(R.id.imageViewRoom);
-		i.setImageBitmap(this.room.getImage());
-	}
+	// private void SetImageView() {
+	// ImageView i = (ImageView) findViewById(R.id.imageViewRoom);
+	// i.setImageBitmap(this.room.getImage());
+	// }
 
 	private void SelectRoom() {
 		Intent intent = this.getIntent();
@@ -92,7 +100,8 @@ public class RoomActivity extends Activity {
 		}
 	}
 
-	private void InvokeEquipmentActivity(int equipmentIndex) {
+	@Override
+	protected void InvokeActivity(Equipment selected_item) {
 		Intent intent = new Intent();
 		intent.setClass(this, EquipmentActivity.class);
 		intent.putExtra("organizationIndex", this.organizationIndex);
@@ -100,8 +109,19 @@ public class RoomActivity extends Activity {
 		intent.putExtra("buildingIndex", this.buildingIndex);
 		intent.putExtra("floorIndex", this.floorIndex);
 		intent.putExtra("roomIndex", this.roomIndex);
-		intent.putExtra("equipmentIndex", equipmentIndex);
+		intent.putExtra("equipmentIndex", selected_item.getIndex());
 		startActivity(intent);
 	}
 
-}
+	@Override
+	protected void onStarTouched(Point point) {
+		try {
+			Equipment eq = this.room.getNearest(point);
+			InvokeActivity(eq);
+		} catch (ItemNotFoundException e) {
+			Log.v(new Throwable(), "No equipment near " + point.toString()
+					+ " in room " + this.room.getTitle());
+		}// try
+	}// onStarTouched
+
+}// RoomActivity

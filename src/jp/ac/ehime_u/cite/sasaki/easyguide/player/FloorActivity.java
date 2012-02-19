@@ -125,8 +125,8 @@ public class FloorActivity extends ClickableActivity<Room> {
 			Room r = this.floor.getNearest(point);
 			InvokeActivity(r);
 		} catch (ItemNotFoundException e) {
-			Log.v(new Throwable(), "No facility in this organization "
-					+ this.floor.getTitle());
+			Log.v(new Throwable(), "No room near " + point.toString()
+					+ " in floor " + this.floor.getTitle());
 		}// try
 	}
 

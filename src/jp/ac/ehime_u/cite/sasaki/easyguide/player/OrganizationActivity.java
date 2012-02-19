@@ -57,8 +57,8 @@ public class OrganizationActivity extends ClickableActivity<Facility> {
 			Facility f = this.organization.getNearest(point);
 			InvokeActivity(f);
 		} catch (ItemNotFoundException e) {
-			Log.v(new Throwable(), "No facility in this organization "
-					+ this.organization.getTitle());
+			Log.v(new Throwable(), "No facility near " + point.toString()
+					+ " in organization " + this.organization.getTitle());
 		}// try
 	}// onStarTouched
 

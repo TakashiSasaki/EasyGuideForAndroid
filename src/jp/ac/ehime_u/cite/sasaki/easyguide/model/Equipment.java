@@ -15,6 +15,12 @@ public class Equipment extends ItemBase<Panel> {
 	// private DirectoryImage equipmentDirectoryImage;
 	// private Collection<Panel> panels;
 
+	static private Equipment dummyEquipment = new Equipment();
+
+	static public Equipment getDummy() {
+		return dummyEquipment;
+	}
+
 	/**
 	 * a constructor
 	 * 
@@ -25,13 +31,14 @@ public class Equipment extends ItemBase<Panel> {
 		Log.v(new Throwable(),
 				"Constructing equipment "
 						+ equipment_directory.getAbsolutePath());
-		//this.directory = equipment_directory;
-//		this.directoryName = new DirectoryName(equipment_directory.getName());
-//		this.directoryImage = new DirectoryImage(equipment_directory);
+		// this.directory = equipment_directory;
+		// this.directoryName = new
+		// DirectoryName(equipment_directory.getName());
+		// this.directoryImage = new DirectoryImage(equipment_directory);
 		this.EnumeratePanels();
 	}// a constructor
 
-	public Equipment() {
+	private Equipment() {
 		super();
 	}
 
@@ -61,21 +68,20 @@ public class Equipment extends ItemBase<Panel> {
 	// });// sort
 	// }// SortByPanelNumber
 
-//	@SuppressWarnings("javadoc")
-//	public File getEquipmentDirectory() {
-//		return this.directory;
-//	}
+	// @SuppressWarnings("javadoc")
+	// public File getEquipmentDirectory() {
+	// return this.directory;
+	// }
 
-//	@SuppressWarnings("javadoc")
-//	public String getEquipmentTitle() {
-//		return this.getTitle();
-//	}
+	// @SuppressWarnings("javadoc")
+	// public String getEquipmentTitle() {
+	// return this.getTitle();
+	// }
 
 	// @SuppressWarnings("javadoc")
 	// public DirectoryName getEquipmentDirectoryName() {
 	// return this.equipmentDirectoryName;
 	// }
-
 
 	// /**
 	// * @param panel_name
@@ -105,8 +111,8 @@ public class Equipment extends ItemBase<Panel> {
 	// + this.getEquipmentTitle());
 	// }// GetPanel
 
-//	public static Equipment getEmptyEquipment() {
-//		return new Equipment();
-//	}
+	// public static Equipment getEmptyEquipment() {
+	// return new Equipment();
+	// }
 
 }// Equipment

@@ -16,6 +16,14 @@ public class Room extends ItemBase<Equipment> {
 
 	private static Room theDummy = new Room();
 
+	static public Room getDummy() {
+		return theDummy;
+	}
+
+	private Room() {
+		super();
+	}
+
 	/**
 	 * @param room_directory
 	 */
@@ -28,14 +36,6 @@ public class Room extends ItemBase<Equipment> {
 				"Scanning equipment directories in " + this.getDirectory());
 		this.EnumerateEquipments();
 	}// a constructor
-
-	private Room() {
-		super();
-	}
-
-	static public Room getDummy() {
-		return theDummy;
-	}
 
 	@SuppressWarnings("javadoc")
 	public void EnumerateEquipments() {

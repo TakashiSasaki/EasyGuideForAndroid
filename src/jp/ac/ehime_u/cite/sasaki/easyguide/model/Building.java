@@ -2,6 +2,8 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 
 /**
@@ -22,6 +24,12 @@ public class Building extends ItemBase<Floor> {
 	// return this.buildingDirectoryName.getName();
 	// }// toString
 
+	static private Building dummyBuilding = new Building();
+
+	static public Building getDummy() {
+		return dummyBuilding;
+	}
+
 	/**
 	 * @param building_directory
 	 */
@@ -38,10 +46,8 @@ public class Building extends ItemBase<Floor> {
 	private Building() {
 		super();
 	}
+
 	
-	static public Building getDummy() {
-		return new Building();
-	}
 
 	// public boolean isEmpty() {
 	// return this.buildingDirectory == null

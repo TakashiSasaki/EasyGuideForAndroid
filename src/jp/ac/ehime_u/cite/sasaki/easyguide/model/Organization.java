@@ -23,6 +23,14 @@ public class Organization extends ItemBase<Facility> {
 	private float altitude;
 	private static Organization theDummy = new Organization();
 
+	public static Organization getDummy() {
+		return theDummy;
+	}
+
+	private Organization() {
+		super();
+	}
+
 	/**
 	 * @param organization_directory
 	 */
@@ -39,14 +47,6 @@ public class Organization extends ItemBase<Facility> {
 		this.EnumerateFacilities();
 		this.sortByIndex();
 	}// a constructor
-
-	private Organization() {
-		super();
-	}
-
-	public static Organization getDummy() {
-		return theDummy;
-	}
 
 	public void EnumerateFacilities() {
 		for (File facility_directory : this.listFiles()) {
@@ -124,6 +124,7 @@ public class Organization extends ItemBase<Facility> {
 	// return this.organizationDirectory;
 	// }
 
+	@Deprecated
 	public Facility GetNearestFacility(ImageView image_view,
 			MotionEvent motion_event) {
 		Facility candidate_facility = null;

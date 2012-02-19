@@ -39,7 +39,7 @@ public class Facility extends ItemBase<Building> {
 		super();
 	}
 
-	static Facility theDummy = new Facility();
+	private static Facility theDummy = new Facility();
 
 	public static Facility getDummy() {
 		return theDummy;

@@ -16,12 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BuildingActivity"></activity>
-        <activity android:name=".EquipmentActivity"></activity>
-        <activity android:name="OrganizationActivity"></activity>
-        <activity android:name="FacilityActivity"></activity>
-        <activity android:name="FloorActivity">
+        <activity android:name=".BuildingActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".EquipmentActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="OrganizationActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="FacilityActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="FloorActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="RoomActivity"></activity>
+        <activity android:name="RoomActivity" android:screenOrientation="portrait"></activity>
     </application>
 </manifest>

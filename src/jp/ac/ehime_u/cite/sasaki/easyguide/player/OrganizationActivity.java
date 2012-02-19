@@ -2,18 +2,12 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -128,7 +122,7 @@ public class OrganizationActivity extends ClickableActivity {
 		s.setOnItemSelectedListener(l);
 	}// SetSpinnerFacilities
 
-	void InvokeFacilityActivity(Facility facility) {
+	private void InvokeFacilityActivity(Facility facility) {
 		Intent intent = new Intent();
 		intent.setClass(this, FacilityActivity.class);
 		Log.v(new Throwable(), "Invoking FacilityActivity with number "
@@ -138,64 +132,54 @@ public class OrganizationActivity extends ClickableActivity {
 		startActivity(intent);
 	}// InvokeFacilityActivity
 
-	@SuppressWarnings("unused")
-	private static void ShowDialog(Context context, ImageView image_view) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage("Bottom=" + image_view.getBottom() + " Top="
-				+ image_view.getTop() + " Left=" + image_view.getLeft()
-				+ " Right=" + image_view.getRight() + "\nHeight="
-				+ image_view.getHeight() + " Width=" + image_view.getWidth());
-		builder.setCancelable(false);
-		builder.setPositiveButton("OK", null);
-		builder.show();
-	}// ShowDialog for ImageView
-
-	@SuppressWarnings("unused")
-	private static void ShowDialog(Context context, MotionEvent motion_event) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage("RawX=" + motion_event.getRawX() + " RawY="
-				+ motion_event.getRawY() + " X=" + motion_event.getX() + " Y="
-				+ motion_event.getY());
-		builder.setCancelable(false);
-		builder.setPositiveButton("OK", null);
-		builder.show();
-	}// ShowDialog for MotionEvent
-
-	@SuppressWarnings("unused")
-	private static void ShowDialog(Context context, Rect rect) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage("bottom=" + rect.bottom + " left=" + rect.left
-				+ " right=" + rect.right + " top=" + rect.top);
-		builder.setCancelable(false);
-		builder.setPositiveButton("OK", null);
-		builder.show();
-	}// ShowDialog for Rect
-
-	@SuppressWarnings("unused")
-	private static void ShowDialog(Context context, Drawable drawable) {
-		Rect bounds = drawable.getBounds();
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage("IntrinsicHeight=" + drawable.getIntrinsicHeight()
-				+ " IntrinsicWidth=" + drawable.getIntrinsicWidth()
-				+ "\nMinimumHeight=" + drawable.getMinimumHeight()
-				+ " MinimumWidth=" + drawable.getMinimumWidth()
-				+ "\nbounds.top=" + bounds.top + " bounds.bottom="
-				+ bounds.bottom + " bounds.left=" + bounds.left
-				+ " bounds.right=" + bounds.right);
-		builder.setCancelable(false);
-		builder.setPositiveButton("OK", null);
-		builder.show();
-	}// ShowDialog for Drawable
-
-	private void InvokeNearestFacilityActivity(ImageView image_view,
-			MotionEvent motion_event) {
-		Facility facility = this.organization.GetNearestFacility(image_view,
-				motion_event);
-		Log.v(new Throwable(), "The nearest facility is " + facility.getTitle());
-		Intent intent = new Intent();
-		intent.setClass(this, FacilityActivity.class);
-		startActivity(intent);
-	}// InvokeNearestFacilityActivity
+//	@SuppressWarnings("unused")
+//	private static void ShowDialog(Context context, ImageView image_view) {
+//		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//		builder.setMessage("Bottom=" + image_view.getBottom() + " Top="
+//				+ image_view.getTop() + " Left=" + image_view.getLeft()
+//				+ " Right=" + image_view.getRight() + "\nHeight="
+//				+ image_view.getHeight() + " Width=" + image_view.getWidth());
+//		builder.setCancelable(false);
+//		builder.setPositiveButton("OK", null);
+//		builder.show();
+//	}// ShowDialog for ImageView
+//
+//	@SuppressWarnings("unused")
+//	private static void ShowDialog(Context context, MotionEvent motion_event) {
+//		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//		builder.setMessage("RawX=" + motion_event.getRawX() + " RawY="
+//				+ motion_event.getRawY() + " X=" + motion_event.getX() + " Y="
+//				+ motion_event.getY());
+//		builder.setCancelable(false);
+//		builder.setPositiveButton("OK", null);
+//		builder.show();
+//	}// ShowDialog for MotionEvent
+//
+//	@SuppressWarnings("unused")
+//	private static void ShowDialog(Context context, Rect rect) {
+//		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//		builder.setMessage("bottom=" + rect.bottom + " left=" + rect.left
+//				+ " right=" + rect.right + " top=" + rect.top);
+//		builder.setCancelable(false);
+//		builder.setPositiveButton("OK", null);
+//		builder.show();
+//	}// ShowDialog for Rect
+//
+//	@SuppressWarnings("unused")
+//	private static void ShowDialog(Context context, Drawable drawable) {
+//		Rect bounds = drawable.getBounds();
+//		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//		builder.setMessage("IntrinsicHeight=" + drawable.getIntrinsicHeight()
+//				+ " IntrinsicWidth=" + drawable.getIntrinsicWidth()
+//				+ "\nMinimumHeight=" + drawable.getMinimumHeight()
+//				+ " MinimumWidth=" + drawable.getMinimumWidth()
+//				+ "\nbounds.top=" + bounds.top + " bounds.bottom="
+//				+ bounds.bottom + " bounds.left=" + bounds.left
+//				+ " bounds.right=" + bounds.right);
+//		builder.setCancelable(false);
+//		builder.setPositiveButton("OK", null);
+//		builder.show();
+//	}// ShowDialog for Drawable
 
 	@Override
 	protected void onStarTouched(Point point) {

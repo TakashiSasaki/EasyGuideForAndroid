@@ -23,7 +23,7 @@ public class OrganizationActivity extends ClickableActivity {
 
 	Organization organization;
 	int organizationIndex;
-	ImageView imageView;
+	//ImageView imageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class OrganizationActivity extends ClickableActivity {
 
 		SetSpinnerFacilities();
 
-		this.imageView = (ImageView) findViewById(R.id.imageViewOrganization);
+		//this.imageView = (ImageView) findViewById(R.id.imageViewOrganization);
 		// this.imageView.setImageBitmap(this.organization.getImage());
 		this.setImageView(this.organization);
 		for (Facility f : this.organization) {

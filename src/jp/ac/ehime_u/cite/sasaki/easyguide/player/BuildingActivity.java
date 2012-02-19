@@ -1,21 +1,21 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
-import android.app.Activity;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -23,7 +23,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class BuildingActivity extends Activity {
+public class BuildingActivity extends ClickableActivity<Floor> {
 	protected static final float SWIPE_MAX_OFF_PATH = 200;
 	protected static final float SWIPE_MIN_DISTANCE = 100;
 	protected static final float SWIPE_THRESHOLD_VELOCITY = 10;
@@ -37,7 +37,7 @@ public class BuildingActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.building);
+		// setContentView(R.layout.building);
 		this.mGestureDetector = new GestureDetector(this,
 				this.mOnGestureListener);
 
@@ -49,56 +49,26 @@ public class BuildingActivity extends Activity {
 		Organizations organizations = Organizations.getInstance();
 		Organization organization;
 		try {
-			organization = organizations.getOrganization(this.organizationIndex);
+			organization = organizations
+					.getOrganization(this.organizationIndex);
 			Facility facility = organization.getFacility(this.facilityIndex);
 			this.building = facility.getBuilding(this.buildingIndex);
-		} catch (Exception e) {
+		} catch (ItemNotFoundException e) {
 			this.building = Building.getDummy();
 		}
 
-		ImageView image_view_building = (ImageView) findViewById(R.id.imageViewBuilding);
-		image_view_building.setImageBitmap(this.building.getImage());
+		ArrayAdapter<Floor> floor_array_adapter = new ArrayAdapter<Floor>(this,
+				android.R.layout.simple_spinner_dropdown_item);
+		floor_array_adapter.add(Floor.getDummy());
+		for (Floor f : this.building) {
+			floor_array_adapter.add(f);
+		}
+		setSpinnerArrayAdapter(floor_array_adapter);
 
-		// image_view_building.setOnTouchListener(new OnTouchListener() {
-		//
-		// public boolean onTouch(View v, MotionEvent event) {
-		// AlertDialog.Builder alert_dialog_builder = new AlertDialog.Builder(
-		// BuildingActivity.this);
-		// alert_dialog_builder.setTitle("ダイアログボックスのタイトル");
-		// alert_dialog_builder.setPositiveButton("YES デバッグ用",
-		// new OnClickListener() {
-		//
-		// public void onClick(DialogInterface dialog,
-		// int which) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// });
-		// alert_dialog_builder.setNegativeButton("NO デバッグ用",
-		// new OnClickListener() {
-		//
-		// public void onClick(DialogInterface dialog,
-		// int which) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// });
-		// alert_dialog_builder.setNeutralButton("CANCEL デバッグ用",
-		// new OnClickListener() {
-		//
-		// public void onClick(DialogInterface dialog,
-		// int which) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// });
-		// alert_dialog_builder.setCancelable(true);
-		// alert_dialog_builder.show();
-		// return true;
-		// }
-		// });
-
-		SetSpinnerFloors();
+		setImageView(this.building);
+		for (Floor f : this.building) {
+			addStarPoint(new Point(f.getX(), f.getY()));
+		}
 	}//
 
 	void SetSpinnerFloors() {
@@ -119,7 +89,7 @@ public class BuildingActivity extends Activity {
 				if (selected_floor.isEmpty()) {
 					return;
 				}
-				InvokeFloorActivity(selected_floor.getIndex());
+				InvokeActivity(selected_floor);
 			}
 
 			@Override
@@ -131,20 +101,10 @@ public class BuildingActivity extends Activity {
 		s.setPrompt(this.getString(R.string.spinner_prompt_floors));
 	}// SetSpinnerFloors
 
-	void InvokeFloorActivity(int fi) {
-		Intent intent = new Intent();
-		intent.setClass(this, FloorActivity.class);
-		intent.putExtra("organizationIndex", this.organizationIndex);
-		intent.putExtra("facilityIndex", this.facilityIndex);
-		intent.putExtra("buildingIndex", this.buildingIndex);
-		intent.putExtra("floorIndex", fi);
-		startActivity(intent);
-	}
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// return super.onTouchEvent(event);
-		Log.d("onTouchEvent", "");
+		Log.v(new Throwable(), "");
 		return this.mGestureDetector.onTouchEvent(event);
 	}
 
@@ -153,8 +113,9 @@ public class BuildingActivity extends Activity {
 		public boolean onFling(MotionEvent event1, MotionEvent event2,
 				float velocityX, float velocityY) {
 
-			Log.d("onFling", "X1=" + event1.getX() + ",Y1=" + event1.getY()
-					+ ",X2=" + event2.getX() + ",Y2=" + event2.getY());
+			Log.v(new Throwable(),
+					"X1=" + event1.getX() + ",Y1=" + event1.getY() + ",X2="
+							+ event2.getX() + ",Y2=" + event2.getY());
 			try {
 				if (event1.getX() - event2.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
@@ -179,5 +140,27 @@ public class BuildingActivity extends Activity {
 		Intent intent = new Intent(getApplicationContext(),
 				EquipmentActivity.class);
 		startActivity(intent);
-	}
+	}// InvokeMediaActivity
+
+	@Override
+	protected void onStarTouched(Point point) {
+		try {
+			Floor f = this.building.getNearest(point);
+			InvokeActivity(f);
+		} catch (ItemNotFoundException e) {
+			Log.v(new Throwable(), "No building near " + point.toString()
+					+ " in facility " + this.building.getTitle());
+		}
+	}// onStarTouched
+
+	@Override
+	protected void InvokeActivity(Floor selected_item) {
+		Intent intent = new Intent();
+		intent.setClass(this, FloorActivity.class);
+		intent.putExtra("organizationIndex", this.organizationIndex);
+		intent.putExtra("facilityIndex", this.facilityIndex);
+		intent.putExtra("buildingIndex", this.buildingIndex);
+		intent.putExtra("floorIndex", selected_item.getIndex());
+		startActivity(intent);
+	}// InvokeActivity
 }

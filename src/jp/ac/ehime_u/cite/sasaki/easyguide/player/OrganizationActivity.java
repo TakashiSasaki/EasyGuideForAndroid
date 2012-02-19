@@ -1,8 +1,11 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.util.ArrayList;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
@@ -11,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -29,7 +33,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class OrganizationActivity extends Activity {
+public class OrganizationActivity extends ClickableActivity {
 
 	Organization organization;
 	int organizationIndex;
@@ -38,7 +42,7 @@ public class OrganizationActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.organization);
+		//setContentView(R.layout.organization);
 		Intent intent = getIntent();
 		this.organizationIndex = intent.getIntExtra("organizationIndex", 0);
 		Log.v(new Throwable(),
@@ -57,30 +61,46 @@ public class OrganizationActivity extends Activity {
 		SetSpinnerFacilities();
 
 		this.imageView = (ImageView) findViewById(R.id.imageViewOrganization);
-		this.imageView.setImageBitmap(this.organization.getImage());
-		this.imageView.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View arg0, MotionEvent motion_event) {
-				ImageView image_view = (ImageView) arg0;
-				DistanceCalculator distance_calculator = new DistanceCalculator(
-						image_view);
-				float x = distance_calculator.GetXOnDrawable(motion_event);
-				float y = distance_calculator.GetYOnDrawable(motion_event);
-				Log.v(new Throwable(), "x=" + x + " y=" + y);
-				InvokeNearestFacilityActivity(image_view, motion_event);
-
-				// test code
-				Matrix m = OrganizationActivity.this.imageView.getMatrix();
-				Log.v(new Throwable(), "getMatrix returns " + m.toString());
-				Matrix im = OrganizationActivity.this.imageView
-						.getImageMatrix();
-				Log.v(new Throwable(), "getImageMatrix returns " + m.toString());
-
-				return true; // stops event propagation
-			}// onTouch
-		});// setOnTouchListener
+		// this.imageView.setImageBitmap(this.organization.getImage());
+		this.setImageView(this.organization);
+		starPoints.clear();
+		for (ItemBase i : this.organization) {
+			starPoints.add(new Point(i.getX(), i.getY()));
+		}
+		// this.imageView.setOnTouchListener(new OnTouchListener() {
+		// @Override
+		// public boolean onTouch(View arg0, MotionEvent motion_event) {
+		// ImageView image_view = (ImageView) arg0;
+		// DistanceCalculator distance_calculator = new DistanceCalculator(
+		// image_view);
+		// float x = distance_calculator.GetXOnDrawable(motion_event);
+		// float y = distance_calculator.GetYOnDrawable(motion_event);
+		// Log.v(new Throwable(), "x=" + x + " y=" + y);
+		// InvokeNearestFacilityActivity(image_view, motion_event);
+		//
+		// // test code
+		// Matrix m = OrganizationActivity.this.imageView.getMatrix();
+		// Log.v(new Throwable(), "getMatrix returns " + m.toString());
+		// Matrix im = OrganizationActivity.this.imageView
+		// .getImageMatrix();
+		// Log.v(new Throwable(), "getImageMatrix returns " + m.toString());
+		//
+		// return true; // stops event propagation
+		// }// onTouch
+		// });// setOnTouchListener
 
 	}// onCreate
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+		//this.drawSurface();
+	}
+	
+	protected void onResume(){
+		super.onResume();
+		this.drawSurface();
+	}
 
 	void SetSpinnerFacilities() {
 		ArrayAdapter<Facility> facilities_array_adapter = new ArrayAdapter<Facility>(

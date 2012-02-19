@@ -2,6 +2,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import java.util.ArrayList;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -20,10 +21,14 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.AdapterView.OnItemSelectedListener;
 
-public abstract class ClickableActivity extends Activity implements
-		SurfaceHolder.Callback {
+public abstract class ClickableActivity<T extends ItemBase> extends Activity
+		implements SurfaceHolder.Callback {
 	private ImageView imageView;
 	private SurfaceView surfaceView;
 	private static Bitmap star;
@@ -59,6 +64,34 @@ public abstract class ClickableActivity extends Activity implements
 		});
 	}// onCreate
 
+	protected void setSpinnerArrayAdapter(ArrayAdapter<T> array_adapter) {
+		Spinner s = (Spinner) findViewById(R.id.spinner);
+		s.setAdapter(array_adapter);
+		OnItemSelectedListener l = new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View arg1,
+					int position, long arg3) {
+				T selected_item = (T) parent.getItemAtPosition(position);
+				if (selected_item.isEmpty())
+					return;
+				Log.v(new Throwable(), "Facility " + selected_item.getTitle()
+						+ ", " + selected_item.getIndex() + " was selected");
+				InvokeActivity(selected_item);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		};// OnItemSelectedListener
+		s.setSelection(0);
+		s.setSelected(false);
+		s.setOnItemSelectedListener(l);
+	}//setSpinnerArrayAdapter
+
+	protected abstract void InvokeActivity(T selected_item);
+
 	protected void setImageView(ItemBase item_base) {
 		this.imageView.setImageBitmap(item_base.getImage());
 		LayoutParams image_view_layout_params = this.imageView
@@ -90,9 +123,6 @@ public abstract class ClickableActivity extends Activity implements
 		Matrix matrix = this.imageView.getImageMatrix();
 		float f[] = new float[9];
 		matrix.getValues(f);
-		for (int i = 0; i < 9; ++i) {
-			Log.v(new Throwable(), "float[" + i + "]=" + f[i]);
-		}// for
 		this.scaleX = f[0];
 		this.scaleY = f[4];
 		this.offsetX = f[2];

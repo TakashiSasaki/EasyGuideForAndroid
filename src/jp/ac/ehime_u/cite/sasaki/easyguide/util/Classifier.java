@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 
 public class Classifier {
 	private Pattern movieFilePattern = Pattern.compile("^.+\\.m4v$");
-	private Pattern htmlFilePattern = Pattern.compile("^.+\\.html?$");
+	private Pattern htmlFilePattern = Pattern.compile("^(.+\\.html)|(.+\\.htm)$");
 	private Pattern textFilePattern = Pattern.compile("^.+\\.txt$");
-	private Pattern imageFilePattern = Pattern.compile("^(.+\\.jpe?g)|(.+\\.png)$");
+	private Pattern imageFilePattern = Pattern.compile("^(.+\\.jpg)|(.+\\.jpeg)|(.+\\.png)$");
 
 	private ArrayList<File> movieFiles = new ArrayList<File>();
 	private ArrayList<File> htmlFiles = new ArrayList<File>();

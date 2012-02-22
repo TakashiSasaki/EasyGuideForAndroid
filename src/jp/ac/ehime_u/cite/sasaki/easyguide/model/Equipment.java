@@ -1,6 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 /**
@@ -40,6 +42,10 @@ public class Equipment extends ItemBase<Panel> {
 
 	private Equipment() {
 		super();
+	}
+
+	public Panel getPanel(String title) throws ItemNotFoundException {
+		return this.getByTitle(title);
 	}
 
 	// public String toString() {

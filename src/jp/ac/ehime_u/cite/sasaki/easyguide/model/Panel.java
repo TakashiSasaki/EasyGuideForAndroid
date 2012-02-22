@@ -1,6 +1,9 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+
+import sun.security.action.OpenFileInputStreamAction;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
 
 /**
@@ -69,13 +72,13 @@ public class Panel extends ItemBase {
 	public boolean hasImage() {
 		if (this.classifier.getImageFiles().size() > 0) {
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}
 
 	public boolean hasHtml() {
-		if(this.classifier.getHtmlFiles().size() > 0){
+		if (this.classifier.getHtmlFiles().size() > 0) {
 			return true;
 		} else {
 			return false;
@@ -83,12 +86,18 @@ public class Panel extends ItemBase {
 	}
 
 	public boolean hasText() {
-		if(this.classifier.getTextFiles().size() > 0){
+		if (this.classifier.getTextFiles().size() > 0) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	public File getTextFile() throws FileNotFoundException {
+		if (this.classifier.getTextFiles().size() == 0)
+			throw new FileNotFoundException("No text file in "
+					+ this.getTitle());
+		return this.classifier.getTextFiles().get(0);
+	}// getTextFile
 }// Panel
 

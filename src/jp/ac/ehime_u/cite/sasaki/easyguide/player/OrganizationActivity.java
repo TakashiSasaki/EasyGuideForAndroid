@@ -44,7 +44,12 @@ public class OrganizationActivity extends ClickableActivity<Facility> {
 
 		setSpinnerArrayAdapter(facilities_array_adapter);
 
-		this.setImageView(this.organization);
+		try {
+			this.setImageView(this.organization);
+		} catch (Exception e) {
+			Log.v(new Throwable(),
+					"Can't set image of " + this.organization.getTitle());
+		}
 		for (Facility f : this.organization) {
 			addStarPoint(new Point(f.getX(), f.getY()));
 		}

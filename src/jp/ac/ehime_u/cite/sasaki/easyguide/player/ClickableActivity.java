@@ -2,7 +2,6 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import java.util.ArrayList;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -32,7 +31,9 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 	private ImageView imageView;
 	private SurfaceView surfaceView;
 	private static Bitmap star;
+	private Bitmap bitmap;
 	private SurfaceHolder surfaceHolder;
+	private ItemBase itemBase;
 
 	private float scaleX, scaleY;
 	private float offsetX, offsetY;
@@ -88,15 +89,45 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 		s.setSelection(0);
 		s.setSelected(false);
 		s.setOnItemSelectedListener(l);
-	}//setSpinnerArrayAdapter
+	}// setSpinnerArrayAdapter
 
 	protected abstract void InvokeActivity(T selected_item);
 
-	protected void setImageView(ItemBase item_base) {
-		this.imageView.setImageBitmap(item_base.getImage());
+	protected void setImageView(ItemBase item_base) throws Exception {
+		this.imageView.setImageBitmap(null);
+		if (this.bitmap != null) {
+			this.bitmap.recycle();
+			this.bitmap = null;
+		}
+		this.itemBase = item_base;
+		this.bitmap = item_base.getImage(this);
+		this.imageView.setImageBitmap(this.bitmap);
 		LayoutParams image_view_layout_params = this.imageView
 				.getLayoutParams();
 		this.surfaceView.setLayoutParams(image_view_layout_params);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		this.imageView.setImageBitmap(null);
+		if (this.bitmap != null) {
+			this.bitmap.recycle();
+			this.bitmap = null;
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (this.itemBase == null)
+			return;
+		try {
+			setImageView(this.itemBase);
+		} catch (Exception e) {
+			Log.v(new Throwable(), "Can't set image of " + this.itemBase.getTitle());
+			e.printStackTrace();
+		}
 	}
 
 	protected void addStarPoint(Point point) {
@@ -151,9 +182,9 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 	}
 
 	protected void drawSurface() {
-		if (surfaceHolder == null)
+		if (this.surfaceHolder == null)
 			return;
-		if (starPoints == null)
+		if (this.starPoints == null)
 			return;
 		for (Point p : this.starPoints) {
 			Point on_image_view = getPointOnImageView(p);
@@ -170,10 +201,10 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 				ClickableActivity.star = BitmapFactory.decodeResource(
 						getResources(), R.drawable.btn_rating_star_on_selected);
 			}
-			Canvas c = surfaceHolder.lockCanvas();
+			Canvas c = this.surfaceHolder.lockCanvas();
 			c.drawBitmap(ClickableActivity.star, on_image_view.x,
 					on_image_view.y, null);
-			surfaceHolder.unlockCanvasAndPost(c);
+			this.surfaceHolder.unlockCanvasAndPost(c);
 		}// for
 	}// drawSurface
 

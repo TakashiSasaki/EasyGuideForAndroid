@@ -28,11 +28,15 @@ public class FloorActivity extends ClickableActivity<Room> {
 		// this.spinner = (Spinner) findViewById(R.id.spinnerRooms);
 
 		SelectFloor();
-		setImageView(this.floor);
+		try {
+			setImageView(this.floor);
+		} catch (Exception e) {
+			Log.v(new Throwable(), "Can't set image of " + floor.getTitle());
+		}
 		for (Room r : this.floor) {
 			addStarPoint(new Point(r.getX(), r.getY()));
 		}
-		
+
 		ArrayAdapter<Room> room_array_adapter = new ArrayAdapter<Room>(this,
 				android.R.layout.simple_spinner_dropdown_item);
 		room_array_adapter.add(Room.getDummy());
@@ -40,8 +44,8 @@ public class FloorActivity extends ClickableActivity<Room> {
 			room_array_adapter.add(r);
 		}
 		setSpinnerArrayAdapter(room_array_adapter);
-		
-		//SetSpinnerRooms();
+
+		// SetSpinnerRooms();
 	}
 
 	// @Override
@@ -51,41 +55,41 @@ public class FloorActivity extends ClickableActivity<Room> {
 	// this.spinner.setSelection(0);
 	// }
 
-//	private void SetSpinnerRooms() {
-//		ArrayAdapter<Room> room_array_adapter = new ArrayAdapter<Room>(this,
-//				android.R.layout.simple_spinner_dropdown_item);
-//		room_array_adapter.add(Room.getDummy());
-//		for (Room r : this.floor) {
-//			room_array_adapter.add(r);
-//		}
-//		this.spinner.setAdapter(room_array_adapter);
-//		OnItemSelectedListener oisl = new OnItemSelectedListener() {
-//
-//			@Override
-//			public void onItemSelected(AdapterView<?> arg0, View arg1,
-//					int arg2, long arg3) {
-//				Room r = (Room) arg0.getItemAtPosition(arg2);
-//				if (r.isEmpty())
-//					return;
-//				InvokeRoomActivity(r.getIndex());
-//			}
-//
-//			@Override
-//			public void onNothingSelected(AdapterView<?> arg0) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		};
-//		this.spinner.setOnItemSelectedListener(oisl);
-//	}// SetSpinnerFloors
+	// private void SetSpinnerRooms() {
+	// ArrayAdapter<Room> room_array_adapter = new ArrayAdapter<Room>(this,
+	// android.R.layout.simple_spinner_dropdown_item);
+	// room_array_adapter.add(Room.getDummy());
+	// for (Room r : this.floor) {
+	// room_array_adapter.add(r);
+	// }
+	// this.spinner.setAdapter(room_array_adapter);
+	// OnItemSelectedListener oisl = new OnItemSelectedListener() {
+	//
+	// @Override
+	// public void onItemSelected(AdapterView<?> arg0, View arg1,
+	// int arg2, long arg3) {
+	// Room r = (Room) arg0.getItemAtPosition(arg2);
+	// if (r.isEmpty())
+	// return;
+	// InvokeRoomActivity(r.getIndex());
+	// }
+	//
+	// @Override
+	// public void onNothingSelected(AdapterView<?> arg0) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	// };
+	// this.spinner.setOnItemSelectedListener(oisl);
+	// }// SetSpinnerFloors
 
-//	private void InvokeRoomActivity(int roomIndex) {
-//	}
-//
-//	private void SetImageView() {
-//		ImageView i = (ImageView) findViewById(R.id.imageViewFloor);
-//		i.setImageBitmap(this.floor.getImage());
-//	}
+	// private void InvokeRoomActivity(int roomIndex) {
+	// }
+	//
+	// private void SetImageView() {
+	// ImageView i = (ImageView) findViewById(R.id.imageViewFloor);
+	// i.setImageBitmap(this.floor.getImage());
+	// }
 
 	private void SelectFloor() {
 		Intent intent = this.getIntent();

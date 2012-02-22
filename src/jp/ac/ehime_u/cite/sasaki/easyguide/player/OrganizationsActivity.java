@@ -1,12 +1,9 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DirectoryImage;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DirectoryImageException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,12 +23,12 @@ public class OrganizationsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.organizations);
 
-		try {
-			DirectoryImage.SetDefaultImage(this, R.drawable.unknown);
-		} catch (DirectoryImageException e) {
-			e.printStackTrace();
-			throw new java.lang.Error("Can't set default image and thumbnail");
-		}// try
+//		try {
+//			DirectoryImage.SetDefaultImage(this, R.drawable.unknown);
+//		} catch (DirectoryImageException e) {
+//			e.printStackTrace();
+//			throw new java.lang.Error("Can't set default image and thumbnail");
+//		}// try
 
 		ArrayAdapter<Organization> array_adapter = new ArrayAdapter<Organization>(
 				this, android.R.layout.simple_list_item_1);

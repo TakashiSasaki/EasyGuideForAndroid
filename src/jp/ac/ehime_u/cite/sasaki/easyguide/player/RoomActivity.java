@@ -28,7 +28,11 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 		// setContentView(R.layout.room);
 
 		SelectRoom();
-		setImageView(this.room);
+		try {
+			setImageView(this.room);
+		} catch (Exception e1) {
+			Log.v(new Throwable(), "Can't set image of " + room.getTitle());
+		}
 		for (Equipment e : this.room) {
 			addStarPoint(new Point(e.getX(), e.getY()));
 		}

@@ -15,7 +15,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.app.Activity;
 import android.content.Intent;
-import android.opengl.Visibility;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -57,7 +57,10 @@ public class EquipmentActivity extends Activity {
 	private LinearLayout videoPanel;
 	private LinearLayout imagePanel;
 	private LinearLayout htmlPanel;
+	private LinearLayout textPanel;
 	private ArrayList<Button> buttons = new ArrayList<Button>();
+
+	private Bitmap bitmap;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -96,6 +99,7 @@ public class EquipmentActivity extends Activity {
 
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.mediaController = (MediaController) findViewById(R.id.mediaController1);
+		this.imageView = (ImageView)findViewById(R.id.imageViewImagePanel);
 		this.textViewVideo = (TextView) findViewById(R.id.textViewVideo);
 		this.textViewImage = (TextView) findViewById(R.id.textViewImage);
 		this.buttons.add((Button) findViewById(R.id.buttonPanel1));
@@ -107,7 +111,7 @@ public class EquipmentActivity extends Activity {
 		this.videoPanel = (LinearLayout) findViewById(R.id.panel_video);
 		this.htmlPanel = (LinearLayout) findViewById(R.id.panel_html);
 		this.imagePanel = (LinearLayout) findViewById(R.id.panel_image);
-		this.imagePanel = (LinearLayout) findViewById(R.id.panel_text);
+		this.textPanel = (LinearLayout) findViewById(R.id.panel_text);
 
 		for (Button b : this.buttons) {
 			b.setOnClickListener(new OnClickListener() {
@@ -124,12 +128,21 @@ public class EquipmentActivity extends Activity {
 					}// try
 					if (p.hasVideo()) {
 						Log.v(new Throwable(), p.getTitle() + " has a video.");
+						ChooseVideo(p);
 					} else if (p.hasImage()) {
 						Log.v(new Throwable(), p.getTitle() + " has an image.");
+						try {
+							ChooseImage(p);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					} else if (p.hasHtml()) {
 						Log.v(new Throwable(), p.getTitle() + " has an html.");
+						ChooseHtml(p);
 					} else if (p.hasText()) {
 						Log.v(new Throwable(), p.getTitle() + " has an text.");
+						ChooseText(p);
 					} else {
 						Log.v(new Throwable(), p.getTitle() + " has no content");
 					}
@@ -144,6 +157,42 @@ public class EquipmentActivity extends Activity {
 		}
 
 	}// onCreate
+
+	private void ChooseHtml(Panel p) {
+		EquipmentActivity.this.htmlPanel.bringToFront();
+
+	}
+
+	private void ChooseVideo(Panel p) {
+		this.imageView.setImageBitmap(null);
+		if (this.bitmap != null) {
+			this.bitmap.recycle();
+		}
+		this.bitmap = null;
+		this.htmlPanel.setVisibility(View.GONE);
+		this.textPanel.setVisibility(View.GONE);
+		this.videoPanel.setVisibility(View.VISIBLE);
+		this.imagePanel.setVisibility(View.GONE);
+		this.videoPanel.bringToFront();
+	}
+
+	private void ChooseText(Panel p) {
+		EquipmentActivity.this.textPanel.bringToFront();
+
+	}
+
+	private void ChooseImage(Panel p) throws Exception {
+		if (this.bitmap != null) {
+			this.bitmap.recycle();
+		}
+		this.bitmap = p.getImage(this);
+		this.imageView.setImageBitmap(this.bitmap);
+		this.htmlPanel.setVisibility(View.GONE);
+		this.textPanel.setVisibility(View.GONE);
+		this.videoPanel.setVisibility(View.GONE);
+		this.imagePanel.setVisibility(View.VISIBLE);
+		this.imagePanel.bringToFront();
+	}
 
 	@Override
 	public void onStart() {

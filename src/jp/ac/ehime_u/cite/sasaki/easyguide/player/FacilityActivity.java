@@ -48,7 +48,11 @@ public class FacilityActivity extends ClickableActivity<Building> {
 
 		setSpinnerArrayAdapter(array_adapter);
 
-		setImageView(this.facility);
+		try {
+			setImageView(this.facility);
+		} catch (Exception e) {
+			Log.v(new Throwable(), "Can't set image of " + facility.getTitle());
+		}
 		for (Building b : this.facility) {
 			addStarPoint(new Point(b.getX(), b.getY()));
 		}// for

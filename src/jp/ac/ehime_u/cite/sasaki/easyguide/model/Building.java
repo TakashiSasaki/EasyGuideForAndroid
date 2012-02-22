@@ -2,8 +2,6 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 
 /**

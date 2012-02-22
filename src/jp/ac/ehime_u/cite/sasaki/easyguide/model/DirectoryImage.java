@@ -1,6 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.R;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -9,6 +11,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.BitmapFactory.Options;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -20,7 +23,7 @@ public class DirectoryImage {
 	// private Bitmap thumbnail;
 	private static int thumbnailWidth = 100;
 	private static int thumbnailHeight = 100;
-	private static Bitmap defaultImage;
+	// private static Bitmap defaultImage;
 	private File imageFile;
 
 	/**
@@ -32,14 +35,16 @@ public class DirectoryImage {
 	 *            R.drawable.something
 	 * @throws DirectoryImageException
 	 */
-	public static void SetDefaultImage(Context context, int drawable_resource_id)
-			throws DirectoryImageException {
+	public static Bitmap getDefaultImage(Context context) throws Exception {
 		Resources resources = context.getResources();
-		defaultImage = BitmapFactory.decodeResource(resources,
-				drawable_resource_id);
-		if (defaultImage == null) {
-			throw new DirectoryImageException("Can't load defaut image.");
-		}// if
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inPurgeable = true;
+		options.inPreferredConfig = Bitmap.Config.RGB_565;
+		Bitmap default_image = BitmapFactory.decodeResource(resources,
+				R.drawable.unknown, options);
+		if (default_image == null)
+			throw new Exception("Can't load defaut image.");
+		return default_image;
 	}// SetDefaultImage
 
 	/**
@@ -77,11 +82,15 @@ public class DirectoryImage {
 
 	/**
 	 * @return the image
+	 * @throws Exception
 	 */
-	public Bitmap getImage() {
+	public Bitmap getImage(Context context) throws Exception {
 
 		if (this.imageFile != null) {
-			Bitmap b = BitmapFactory.decodeFile(this.imageFile.getPath());
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inPurgeable = true;
+			options.inPreferredConfig = Bitmap.Config.RGB_565;
+			Bitmap b = BitmapFactory.decodeFile(this.imageFile.getPath(),options);
 			if (b != null) {
 				return b;
 			}
@@ -90,18 +99,18 @@ public class DirectoryImage {
 			// + image_file.getPath()
 			// + " and default image is not provided.");
 			// }
-
 		}
 		Log.v(new Throwable(),
-				"Default image is used because image file was not found.");
-		return this.defaultImage;
+				"Failed to decode " + this.imageFile.getPath());
+		return getDefaultImage(context);
 	}// getImage
 
 	/**
 	 * @return the thumbnail
+	 * @throws Exception 
 	 */
-	public Bitmap getThumbnail() {
-		Bitmap b = getImage();
+	public Bitmap getThumbnail(Context context) throws Exception {
+		Bitmap b = getImage(context);
 		Bitmap t = ResizeBitmap(b, thumbnailWidth, thumbnailHeight);
 		return t;
 	}// getThumbnail

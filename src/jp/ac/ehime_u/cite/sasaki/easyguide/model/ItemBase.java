@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
@@ -187,15 +188,15 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 		return this.directoryName.getY();
 	}
 
-	public Bitmap getImage() {
-		return this.directoryImage.getImage();
+	public Bitmap getImage(Context context) throws Exception {
+		return this.directoryImage.getImage(context);
 	}
 
-	public Bitmap getThumbnail() {
-		return this.directoryImage.getThumbnail();
+	public Bitmap getThumbnail(Context context) throws Exception {
+		return this.directoryImage.getThumbnail(context);
 	}
 
-	public TocItem getTocItem() {
+	public TocItem getTocItem(Context context) throws Exception {
 		ItemType item_type;
 		if (this.getClass().isInstance(Organization.class)) {
 			item_type = ItemType.ORGANIZATION_TYPE;
@@ -215,7 +216,7 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 		// this.layerType = item_base.getItemType();
 		TocItem toc_item = new TocItem(item_type, this.getIndex(),
 				this.getTitle(), this.getX(), this.getY(), this.getDirectory(),
-				this.getThumbnail());
+				this.getThumbnail(context));
 		return toc_item;
 	}// getTocItem
 
@@ -238,7 +239,7 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 
 	@Override
 	public boolean isEmpty() {
-		if (items == null)
+		if (this.items == null)
 			return true;
 		return this.items.isEmpty();
 	}

@@ -30,41 +30,42 @@ public class TocAdapter extends BaseAdapter {
 	 * the constructor of TocAdapter
 	 * 
 	 * @param context
+	 * @throws Exception 
 	 */
-	public TocAdapter(Context context) {
+	public TocAdapter(Context context) throws Exception {
 		super();
 
 		this.layoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		rebuildArray();
+		rebuildArray(context);
 
 	}// the constructor
 
-	void rebuildArray() {
+	void rebuildArray(Context context) throws Exception {
 		this.tocArrayList.clear();
 		this.tocArrayList = null;
 		this.tocArrayList = new ArrayList<TocItem>();
 		for (Organization organization : this.organizations) {
-			this.tocArrayList.add(organization.getTocItem());
+			this.tocArrayList.add(organization.getTocItem(context));
 			organization.EnumerateFacilities();
 			for (Facility facility : organization) {
-				this.tocArrayList.add(facility.getTocItem());
+				this.tocArrayList.add(facility.getTocItem(context));
 				facility.EnumerateBuildings();
 				for (Building building : facility) {
-					this.tocArrayList.add(building.getTocItem());
+					this.tocArrayList.add(building.getTocItem(context));
 					building.EnumerateFloors();
 					for (Floor floor : building) {
-						this.tocArrayList.add(floor.getTocItem());
+						this.tocArrayList.add(floor.getTocItem(context));
 						floor.EnumerateRooms();
 						for (Room room : floor) {
-							this.tocArrayList.add(room.getTocItem());
+							this.tocArrayList.add(room.getTocItem(context));
 							room.EnumerateEquipments();
 							for (Equipment equipment : room) {
-								this.tocArrayList.add(equipment.getTocItem());
+								this.tocArrayList.add(equipment.getTocItem(context));
 								equipment.EnumeratePanels();
 								for (Panel panel : equipment) {
-									this.tocArrayList.add(panel.getTocItem());
+									this.tocArrayList.add(panel.getTocItem(context));
 								}// for
 							}// for
 						}// for

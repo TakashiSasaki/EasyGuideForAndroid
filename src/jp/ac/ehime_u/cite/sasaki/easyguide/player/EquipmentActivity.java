@@ -1,5 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -52,6 +55,7 @@ public class EquipmentActivity extends Activity {
 	private MediaController mediaController;
 	private TextView textViewVideo;
 	private TextView textViewImage;
+	private TextView textViewTextPanel;
 	private ImageView imageView;
 	private WebView webView;
 	private LinearLayout videoPanel;
@@ -102,6 +106,7 @@ public class EquipmentActivity extends Activity {
 		this.imageView = (ImageView)findViewById(R.id.imageViewImagePanel);
 		this.textViewVideo = (TextView) findViewById(R.id.textViewVideo);
 		this.textViewImage = (TextView) findViewById(R.id.textViewImage);
+		this.textViewTextPanel = (TextView) findViewById(R.id.textViewTextPanel);
 		this.buttons.add((Button) findViewById(R.id.buttonPanel1));
 		this.buttons.add((Button) findViewById(R.id.buttonPanel2));
 		this.buttons.add((Button) findViewById(R.id.buttonPanel3));
@@ -177,6 +182,35 @@ public class EquipmentActivity extends Activity {
 	}
 
 	private void ChooseText(Panel p) {
+		FileInputStream fis;
+		try {
+			//fis = openFileInput(p.getTextFile().getPath());
+			fis = new FileInputStream(p.getTextFile());
+		} catch (FileNotFoundException e) {
+			Log.v(new Throwable(), "Can't switch to  panel " + p.getTitle());
+			return;
+		}
+		byte[] buffer  =  new  byte[100000];
+		try {
+			fis.read(buffer);
+		} catch (IOException e) {
+			Log.v(new Throwable(), "Can't read text file of " + p.getTitle());
+			return;
+		}
+		String s = new String(buffer);
+		this.textViewTextPanel.setText(s);
+		
+		this.imageView.setImageBitmap(null);
+		if (this.bitmap != null) {
+			this.bitmap.recycle();
+		}
+		this.bitmap = null;
+		this.htmlPanel.setVisibility(View.GONE);
+		this.textPanel.setVisibility(View.VISIBLE);
+		this.videoPanel.setVisibility(View.GONE);
+		this.imagePanel.setVisibility(View.GONE);
+		this.videoPanel.bringToFront();
+
 		EquipmentActivity.this.textPanel.bringToFront();
 
 	}

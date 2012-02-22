@@ -8,7 +8,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class Room extends ItemBase<Equipment> {
+public class Room extends ItemBase<Room, Equipment> {
 	// private File roomDirectory;
 	// private DirectoryName roomDirectoryName;
 	// private DirectoryImage roomImage;

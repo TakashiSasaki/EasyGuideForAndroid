@@ -8,7 +8,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class Building extends ItemBase<Floor> {
+public class Building extends ItemBase<Building, Floor> {
 
 	// private static final String buildingImageName = "building.png";
 	// private File buildingDirectory;

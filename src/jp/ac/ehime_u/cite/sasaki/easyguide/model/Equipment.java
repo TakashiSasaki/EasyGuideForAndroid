@@ -9,7 +9,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class Equipment extends ItemBase<Panel> {
+public class Equipment extends ItemBase<Equipment, Panel> {
 
 	// private static final String equipmentImageName = "equipment.png";
 	// private File equipmentDirectory;

@@ -9,7 +9,7 @@ import android.util.Log;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class Floor extends ItemBase<Room> {
+public class Floor extends ItemBase<Floor,Room> {
 	// private static final String floorImageName = "floor.png";
 	// private DirectoryName floorDirectoryName;
 	// private DirectoryImage floorImage;

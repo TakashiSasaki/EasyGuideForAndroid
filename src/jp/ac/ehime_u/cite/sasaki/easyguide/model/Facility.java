@@ -10,7 +10,7 @@ import android.widget.ImageView;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class Facility extends ItemBase<Building> {
+public class Facility extends ItemBase<Facility, Building> {
 	private static final double maxDistance = 3000.0 * 3000.0;
 
 	// private static final String facilityImageName = "facility.png";

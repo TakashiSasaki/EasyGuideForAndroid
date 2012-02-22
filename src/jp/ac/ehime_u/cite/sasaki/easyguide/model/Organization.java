@@ -11,7 +11,7 @@ import android.widget.ImageView;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-public class Organization extends ItemBase<Facility> {
+public class Organization extends ItemBase<Organization, Facility> {
 	// private static final String organizationImageName = "organization.png";
 	private static final double maxDistance = 3000.0 * 3000.0;
 	// private File organizationDirectory;

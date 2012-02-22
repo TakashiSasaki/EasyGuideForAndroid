@@ -14,11 +14,12 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
-public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
+public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
+		implements Collection<S> {
 	private File directory;
 	protected DirectoryName directoryName;
 	protected DirectoryImage directoryImage;
-	protected ArrayList<T> items;
+	protected ArrayList<S> items;
 
 	// protected ItemType itemType;
 
@@ -28,7 +29,7 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 
 	protected ItemBase(File directory) {
 		super();
-		this.items = new ArrayList<T>();
+		this.items = new ArrayList<S>();
 		this.directory = directory;
 		this.directoryName = new DirectoryName(directory.getName());
 		this.directoryImage = new DirectoryImage(directory);
@@ -106,25 +107,7 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 	}// SortByPanelNumber
 
 	@Override
-	public boolean add(T e) {
-		Log.v(new Throwable(), "adding (1) " + e.getClass().getSimpleName()
-				+ " to " + this.getClass().getSimpleName());
-		if (e.getClass().isInstance(Organization.class)) {
-			Log.v(new Throwable(), "adding (3) " + e.getClass());
-		}
-		if (this.items == null) {
-			Log.v(new Throwable(), "this.item is null");
-		}
-		return this.items.add(e);
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends T> c) {
-		return this.items.addAll(c);
-	}
-
-	@Override
-	public Iterator<T> iterator() {
+	public Iterator<S> iterator() {
 		return this.items.iterator();
 	}
 
@@ -136,36 +119,36 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 		return this.directoryName.getName();
 	}
 
-	protected T getByIndex(int index, ItemBase<?> default_item) {
+	protected S getByIndex(int index, S default_item) {
 		try {
-			return (T) getByIndex(index);
+			return getByIndex(index);
 		} catch (ItemNotFoundException e) {
-			return (T) default_item;
+			return default_item;
 		}
 	}// getByIndex
 
-	protected T getByIndex(int index) throws ItemNotFoundException {
-		for (ItemBase<?> i : this.items) {
+	protected S getByIndex(int index) throws ItemNotFoundException {
+		for (S i : this.items) {
 			if (i.getIndex() == index) {
-				return (T) i;
+				return i;
 			}
 		}
 		throw new ItemNotFoundException("Can't find index " + index + " in "
 				+ this.getTitle());
 	}// getByIndex
 
-	protected T getByTitle(String title, ItemBase<?> default_item) {
+	protected S getByTitle(String title, S default_item) {
 		try {
-			return (T) getByTitle(title);
+			return getByTitle(title);
 		} catch (ItemNotFoundException e) {
-			return (T) default_item;
+			return default_item;
 		}
 	}// getByTitle
 
-	protected T getByTitle(String title) throws ItemNotFoundException {
-		for (ItemBase<?> i : this.items) {
-			if (i.getTitle().equals(title)) {
-				return (T) i;
+	protected S getByTitle(String title) throws ItemNotFoundException {
+		for (S s : this.items) {
+			if (s.getTitle().equals(title)) {
+				return s;
 			}
 		}// for
 		throw new ItemNotFoundException("Can't find " + title + " in "
@@ -220,12 +203,12 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 		return toc_item;
 	}// getTocItem
 
-	public T getNearest(Point point) throws ItemNotFoundException {
+	public S getNearest(Point point) throws ItemNotFoundException {
 		if (this.items.size() == 0)
 			throw new ItemNotFoundException(this.getTitle()
 					+ "has no item as children");
-		T nearest = this.items.get(0);
-		for (T item : this.items) {
+		S nearest = this.items.get(0);
+		for (S item : this.items) {
 			float old_distance_squared = (nearest.getX() - point.x) ^ 2
 					+ (nearest.getY() - point.y) ^ 2;
 			float new_distance_squared = (item.getX() - point.x) ^ 2
@@ -243,4 +226,23 @@ public class ItemBase<T extends ItemBase<?>> implements Collection<T> {
 			return true;
 		return this.items.isEmpty();
 	}
+
+	@Override
+	public boolean add(S e) {
+		Log.v(new Throwable(), "adding (1) " + e.getClass().getSimpleName()
+				+ " to " + this.getClass().getSimpleName());
+		if (e.getClass().isInstance(Organization.class)) {
+			Log.v(new Throwable(), "adding (3) " + e.getClass());
+		}
+		if (this.items == null) {
+			Log.v(new Throwable(), "this.item is null");
+		}
+		return this.items.add(e);
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends S> c) {
+		return this.items.addAll(c);
+	}
+
 }// ItemBase

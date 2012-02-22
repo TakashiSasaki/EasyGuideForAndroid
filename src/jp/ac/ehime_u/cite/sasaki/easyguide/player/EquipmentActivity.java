@@ -1,7 +1,9 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
@@ -10,13 +12,19 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Panel;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnClickListener;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -39,6 +47,17 @@ public class EquipmentActivity extends Activity {
 	private int roomIndex;
 	private int equipmentIndex;
 
+	private VideoView videoView;
+	private MediaController mediaController;
+	private TextView textViewVideo;
+	private TextView textViewImage;
+	private ImageView imageView;
+	private WebView webView;
+	private LinearLayout videoPanel;
+	private LinearLayout imagePanel;
+	private LinearLayout htmlPanel;
+	private ArrayList<Button> buttons = new ArrayList<Button>();
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +69,8 @@ public class EquipmentActivity extends Activity {
 		// SetSpinnerEquipments();
 		MakeButtons();
 
-		this.mGestureDetector = new GestureDetector(this, this.mOnGestureListener);
+		this.mGestureDetector = new GestureDetector(this,
+				this.mOnGestureListener);
 
 		// Organizations organizations = Organizations.GetTheOrganizations();
 		//
@@ -73,17 +93,71 @@ public class EquipmentActivity extends Activity {
 		// web_view.loadUrl("file://" + panel_a.getPanelDirectory()
 		// + "/index.html");
 
-		VideoView video_view = (VideoView) findViewById(R.id.videoView1);
-		MediaController media_controller = (MediaController) findViewById(R.id.mediaController1);
-		TextView text_view_movie_caption = (TextView) findViewById(R.id.textViewMovieCaption);
-		text_view_movie_caption.setText("Now plyaing ...");
-		video_view.setMediaController(media_controller);
+		this.videoView = (VideoView) findViewById(R.id.videoView1);
+		this.mediaController = (MediaController) findViewById(R.id.mediaController1);
+		this.textViewVideo = (TextView) findViewById(R.id.textViewVideo);
+		this.textViewImage = (TextView) findViewById(R.id.textViewImage);
+		this.buttons.add((Button) findViewById(R.id.buttonPanel1));
+		this.buttons.add((Button) findViewById(R.id.buttonPanel2));
+		this.buttons.add((Button) findViewById(R.id.buttonPanel3));
+		this.buttons.add((Button) findViewById(R.id.buttonPanel4));
+		this.buttons.add((Button) findViewById(R.id.buttonPanel5));
+		this.buttons.add((Button) findViewById(R.id.buttonPanel6));
+		for (Button b : this.buttons) {
+			b.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					String title = ((Button) v).getText().toString();
+					Panel p;
+					try {
+						p = EquipmentActivity.this.equipment.getPanel(title);
+					} catch (ItemNotFoundException e) {
+						Log.v(new Throwable(), "Button text '" + title
+								+ "' does not have corresponding panel.");
+						return;
+					}// try
+					if (p.hasVideo()) {
+						Log.v(new Throwable(), p.getTitle() + " has a video.");
+					} else if (p.hasImage()) {
+						Log.v(new Throwable(), p.getTitle() + " has an image.");
+					} else if (p.hasHtml()) {
+						Log.v(new Throwable(), p.getTitle() + " has an html.");
+					} else if (p.hasText()) {
+						Log.v(new Throwable(), p.getTitle() + " has an text.");
+					} else {
+						Log.v(new Throwable(), p.getTitle() + " has no content");
+					}
+				}// onClick
+			});// OnClickListener
+		}// for
+
 		Iterator<Panel> i = this.equipment.iterator();
 		Panel p = i.next();
-		if(p.hasVideo()){
-			video_view.setVideoPath(p.getVideoPath());
+		if (p.hasVideo()) {
+			this.videoView.setVideoPath(p.getVideoPath());
 		}
+
 	}// onCreate
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Iterator<Button> i = this.buttons.iterator();
+		for (Panel p : this.equipment) {
+			if (i.hasNext()) {
+				Button b = i.next();
+				b.setText(p.getTitle());
+			}// if
+		}// for
+	}// onStart
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		// this.videoView.setMediaController(this.mediaController);
+		this.videoView.start();
+		this.textViewVideo.setText("Now plyaing ...");
+	}
 
 	private void MakeButtons() {
 	}
@@ -116,17 +190,26 @@ public class EquipmentActivity extends Activity {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// return super.onTouchEvent(event);
-		Log.d("onTouchEvent", "");
+		Log.v(new Throwable(), "");
 		return this.mGestureDetector.onTouchEvent(event);
 	}// onTouchEvent
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// this.mediaController.hide();
+		// this.videoView.setMediaController(null);
+		this.videoView.stopPlayback();
+	}
 
 	private final SimpleOnGestureListener mOnGestureListener = new SimpleOnGestureListener() {
 		@Override
 		public boolean onFling(MotionEvent event1, MotionEvent event2,
 				float velocityX, float velocityY) {
 
-			Log.d("onFling", "X1=" + event1.getX() + ",Y1=" + event1.getY()
-					+ ",X2=" + event2.getX() + ",Y2=" + event2.getY());
+			Log.v(new Throwable(),
+					"X1=" + event1.getX() + ",Y1=" + event1.getY() + ",X2="
+							+ event2.getX() + ",Y2=" + event2.getY());
 			try {
 				if (event1.getX() - event2.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {

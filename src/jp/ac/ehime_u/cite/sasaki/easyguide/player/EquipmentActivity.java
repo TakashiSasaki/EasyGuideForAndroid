@@ -57,6 +57,7 @@ public class EquipmentActivity extends Activity {
 	private LinearLayout imagePanel;
 	private LinearLayout htmlPanel;
 	private ArrayList<Button> buttons = new ArrayList<Button>();
+	
 
 	/** Called when the activity is first created. */
 	@Override
@@ -103,6 +104,11 @@ public class EquipmentActivity extends Activity {
 		this.buttons.add((Button) findViewById(R.id.buttonPanel4));
 		this.buttons.add((Button) findViewById(R.id.buttonPanel5));
 		this.buttons.add((Button) findViewById(R.id.buttonPanel6));
+		this.videoPanel = (LinearLayout) findViewById(R.id.panel_video);
+		this.htmlPanel = (LinearLayout)findViewById(R.id.panel_html);
+		this.imagePanel = (LinearLayout)findViewById(R.id.panel_image);
+		this.imagePanel = (LinearLayout)findViewById(R.id.panel_text);
+		
 		for (Button b : this.buttons) {
 			b.setOnClickListener(new OnClickListener() {
 				@Override

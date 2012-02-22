@@ -15,6 +15,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.app.Activity;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -57,7 +58,6 @@ public class EquipmentActivity extends Activity {
 	private LinearLayout imagePanel;
 	private LinearLayout htmlPanel;
 	private ArrayList<Button> buttons = new ArrayList<Button>();
-	
 
 	/** Called when the activity is first created. */
 	@Override
@@ -105,10 +105,10 @@ public class EquipmentActivity extends Activity {
 		this.buttons.add((Button) findViewById(R.id.buttonPanel5));
 		this.buttons.add((Button) findViewById(R.id.buttonPanel6));
 		this.videoPanel = (LinearLayout) findViewById(R.id.panel_video);
-		this.htmlPanel = (LinearLayout)findViewById(R.id.panel_html);
-		this.imagePanel = (LinearLayout)findViewById(R.id.panel_image);
-		this.imagePanel = (LinearLayout)findViewById(R.id.panel_text);
-		
+		this.htmlPanel = (LinearLayout) findViewById(R.id.panel_html);
+		this.imagePanel = (LinearLayout) findViewById(R.id.panel_image);
+		this.imagePanel = (LinearLayout) findViewById(R.id.panel_text);
+
 		for (Button b : this.buttons) {
 			b.setOnClickListener(new OnClickListener() {
 				@Override
@@ -153,8 +153,13 @@ public class EquipmentActivity extends Activity {
 			if (i.hasNext()) {
 				Button b = i.next();
 				b.setText(p.getTitle());
-			}// if
+				b.setVisibility(View.VISIBLE);
+			}
 		}// for
+		while (i.hasNext()) {
+			Button b = i.next();
+			b.setVisibility(View.GONE);
+		}
 	}// onStart
 
 	@Override

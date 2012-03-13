@@ -9,10 +9,14 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 
 public class RoomActivity extends ClickableActivity<Equipment> {
 	Room room;
@@ -21,6 +25,7 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 	int buildingIndex;
 	int floorIndex;
 	int roomIndex;
+	Button buttonShowCurrentContentIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +36,7 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 		try {
 			setImageView(this.room);
 		} catch (Exception e1) {
-			Log.v(new Throwable(), "Can't set image of " + room.getTitle());
+			Log.v(new Throwable(), "Can't set image of " + this.room.getTitle());
 		}
 		for (Equipment e : this.room) {
 			addStarPoint(new Point(e.getX(), e.getY()));
@@ -45,6 +50,18 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 			equipment_array_adapter.add(e);
 		}
 		setSpinnerArrayAdapter(equipment_array_adapter);
+
+//		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+//		alertDialogBuilder.setTitle("content index");
+//		alertDialogBuilder.setMessage("organizationIndex="
+//				+ RoomActivity.this.organizationIndex + ", facilityIndex="
+//				+ RoomActivity.this.facilityIndex + ", buildingIndex="
+//				+ RoomActivity.this.buildingIndex + ", floorIndex="
+//				+ RoomActivity.this.floorIndex + ", roomIndex="
+//				+ RoomActivity.this.roomIndex);
+//		AlertDialog alertDialog = alertDialogBuilder.create();
+//		alertDialog.show();
+
 	}// onCreate
 
 	// private void SetSpinnerEquipments() {

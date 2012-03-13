@@ -20,8 +20,15 @@
     <ImageView
         android:id="@+id/imageViewRoom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/h512w512" />
+        android:src="@drawable/h512w512"
+        android:layout_weight="1" />
 
+    <Button
+        android:id="@+id/buttonShowCurrentContentIndex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="show current content index (for developer)" />
+    
 </LinearLayout>

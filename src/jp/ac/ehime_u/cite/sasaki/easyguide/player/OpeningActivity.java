@@ -62,9 +62,10 @@ public class OpeningActivity extends Activity {
 										+ (String) list_view
 												.getItemAtPosition(position)
 										+ ", building name in buildingList is "
-										+ OpeningActivity.this.buildingList.get(position)
-												.getTitle());
-						InvokeMapActivity(OpeningActivity.this.buildingList.get(position));
+										+ OpeningActivity.this.buildingList
+												.get(position).getTitle());
+						InvokeMapActivity(OpeningActivity.this.buildingList
+								.get(position));
 					}// onItemClick
 				}// OnItemClickListener
 				);
@@ -72,7 +73,8 @@ public class OpeningActivity extends Activity {
 
 	private void InvokeMapActivity(Building building_) {
 		OpeningActivity.chosenBuilding = building_;
-		Intent intent = new Intent(getApplicationContext(), BuildingActivity.class);
+		Intent intent = new Intent(getApplicationContext(),
+				BuildingActivity.class);
 		intent.putExtra("jp.ac.ehime_u.cite.sasaki.easyguide.model.Building",
 				building_.getTitle());
 		startActivity(intent);

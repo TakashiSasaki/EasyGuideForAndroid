@@ -23,12 +23,12 @@ public class OrganizationsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.organizations);
 
-//		try {
-//			DirectoryImage.SetDefaultImage(this, R.drawable.unknown);
-//		} catch (DirectoryImageException e) {
-//			e.printStackTrace();
-//			throw new java.lang.Error("Can't set default image and thumbnail");
-//		}// try
+		// try {
+		// DirectoryImage.SetDefaultImage(this, R.drawable.unknown);
+		// } catch (DirectoryImageException e) {
+		// e.printStackTrace();
+		// throw new java.lang.Error("Can't set default image and thumbnail");
+		// }// try
 
 		ArrayAdapter<Organization> array_adapter = new ArrayAdapter<Organization>(
 				this, android.R.layout.simple_list_item_1);
@@ -51,6 +51,9 @@ public class OrganizationsActivity extends Activity {
 				InvokeOrganizationActivity(selected_organization.getIndex());
 			}// onItemClick
 		});// setOnItemClickListener
+
+		WifiDetectorThread.getInstance(this).start();
+
 	}// onCreate
 
 	private void InvokeOrganizationActivity(int number) {

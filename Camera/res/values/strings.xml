@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, CameraActivity!</string>
+    <string name="app_name">EasyGuideCamera</string>
+    <string name="about">これはEasyGuideの対象物認識部分を担うアプリEasyGuide Cameraです。
+通常はEasyGuide Playerから呼び出され、その場合はこの画面をユーザが見ることはありません。
+直接起動された場合に限りデバッグのためにこの画面が表示されます。
+起動するとすぐに撮影を開始し、 画像を連続的に認識処理部に渡し続けます。
+このアプリは呼び出し元のアプリに対し、推定された対象物の候補を整数で返します。</string>
+
+</resources>

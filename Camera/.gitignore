@@ -1,0 +1,12 @@
+*.BASE
+*.OTHER
+*.THIS
+*.class
+*.pyc
+*.pyo
+.bzr
+.deployables
+.~*~
+bin
+gen
+gen/jp/ac/ehime_u/cite/sasaki/easyguide/R.java

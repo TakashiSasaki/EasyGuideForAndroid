@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/instruction" >
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="発行者のドメイン"
+                    android:textAppearance="?android:attr/textAppearanceLarge" >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/editTextDomain"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="textPhonetic" >
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ZIPファイルのURL"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <EditText
+                    android:id="@+id/editTextUrl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="textUri" >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ダウンロード" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ProgressBar>
+
+    <ListView
+        android:id="@+id/listViewUrls"
+        android:layout_width="wrap_content"
+        android:layout_height="732dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:smoothScrollbar="true" >
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/buttonRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="更新" >
+        </Button>
+
+    </LinearLayout>
+
+</LinearLayout>

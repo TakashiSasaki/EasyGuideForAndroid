@@ -107,7 +107,7 @@ public class SourceTable extends TableBase {
 
 	public static ContentValues GetContentValues(Source s) {
 		ContentValues cv = new ContentValues();
-		cv.put(COLUMN_DOMAIN, s.GetDomain().getDomainDirectory().getName());
+		cv.put(COLUMN_DOMAIN, s.getDomain().getDomainDirectory().getName());
 		try {
 			cv.put(COLUMN_LAST_MODIFIED, s.getLastModified().getTime());
 		} catch (NullPointerException nurupo) {
@@ -145,7 +145,7 @@ public class SourceTable extends TableBase {
 	public void Delete(Source zip_uri) {
 		SQLiteDatabase wdb = getWritableDatabase();
 		wdb.delete(TABLE_NAME, COLUMN_DOMAIN + " = ?", new String[] { zip_uri
-				.GetDomain().getDomainDirectory().getName() });
+				.getDomain().getDomainDirectory().getName() });
 		wdb.close();
 	}// Delete
 
@@ -168,7 +168,7 @@ public class SourceTable extends TableBase {
 		SQLiteDatabase wdb = getWritableDatabase();
 		for (Source zip_url : zip_url_array_list) {
 			wdb.delete(TABLE_NAME, COLUMN_DOMAIN + " = ?",
-					new String[] { zip_url.GetDomainByString() });
+					new String[] { zip_url.getDomainByString() });
 		}// for
 		wdb.close();
 	}// Delete

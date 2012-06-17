@@ -33,7 +33,6 @@ public class DirectoryImage {
 	 * @param context
 	 * @param drawable_resource_id
 	 *            R.drawable.something
-	 * @throws DirectoryImageException
 	 */
 	public static Bitmap getDefaultImage(Context context) throws Exception {
 		Resources resources = context.getResources();
@@ -43,7 +42,7 @@ public class DirectoryImage {
 		Bitmap default_image = BitmapFactory.decodeResource(resources,
 				R.drawable.unknown, options);
 		if (default_image == null)
-			throw new Exception("Can't load defaut image.");
+			throw new RuntimeException("Can't load defaut image.");
 		return default_image;
 	}// SetDefaultImage
 

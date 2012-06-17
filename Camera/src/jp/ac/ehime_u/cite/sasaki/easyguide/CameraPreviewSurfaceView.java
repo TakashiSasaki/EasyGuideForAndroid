@@ -1,6 +1,5 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide;
 
-import java.util.Date;
 import java.util.concurrent.Semaphore;
 
 import android.content.Context;
@@ -10,13 +9,11 @@ import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PreviewCallback;
 import android.os.Handler;
 import android.graphics.Bitmap;
-import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 @SuppressWarnings("javadoc")
 public class CameraPreviewSurfaceView extends SurfaceView implements
@@ -24,29 +21,29 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 
 	// private SurfaceHolder surfaceHolder;
 	protected Camera camera;
-	private byte[] yuvByteArray;
-	private int[] rgbIntArray;
-	private Bitmap ongoingBitmap;
-	private Bitmap processedBitmap;
-	private int previewWidth;
-	private int previewHeight;
+	byte[] yuvByteArray;
+	int[] rgbIntArray;
+	Bitmap ongoingBitmap;
+	Bitmap processedBitmap;
+	int previewWidth;
+	int previewHeight;
 	private Handler handler;
 	private ImageView ongoingImageView;
 	private Semaphore ongoingImageSemaphore = new Semaphore(1);
 	private ImageView processedImageView;
 	private Semaphore processedImageSemaphore = new Semaphore(1);
-	private EditText editTextProcessingTime;
-	private EditText editTextCount;
-	private EditText editTextRecognitionResult;
-	private int count;
-	private long processingTime;
-	private int recognitionResult;
+	EditText editTextProcessingTime;
+	EditText editTextCount;
+	EditText editTextRecognitionResult;
+	int count;
+	long processingTime;
+	int recognitionResult;
 
 	public Camera getCamera() throws Exception {
-		if (camera == null) {
+		if (this.camera == null) {
 			throw new Exception("the camera is not initialized.");
 		}
-		return camera;
+		return this.camera;
 	}
 
 	public CameraPreviewSurfaceView(Context context, Handler handler_,
@@ -71,7 +68,7 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 		Camera.Parameters params = this.camera.getParameters();
 		params.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 		params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-		//this.camera.setParameters(params);
+		// this.camera.setParameters(params);
 		this.camera.startPreview();
 	}
 
@@ -100,7 +97,7 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 			this.camera.setDisplayOrientation(90);
 			this.camera.setPreviewDisplay(surface_holder);
 			this.camera.setPreviewCallback(this);
-			rgbIntArray = new int[(previewWidth * previewHeight)];
+			this.rgbIntArray = new int[(this.previewWidth * this.previewHeight)];
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,29 +127,40 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 			@Override
 			public void run() {
 				// rgbIntArray = new int[(previewWidth * previewHeight)];
-				DecodeYuvToRgb(rgbIntArray, yuvByteArray, previewWidth,
-						previewHeight);
-				ongoingBitmap = Bitmap.createBitmap(previewWidth,
-						previewHeight, Bitmap.Config.ARGB_4444);
-				ongoingBitmap.setPixels(rgbIntArray, 0, previewWidth, 0, 0,
-						previewWidth, previewHeight);
+				DecodeYuvToRgb(CameraPreviewSurfaceView.this.rgbIntArray,
+						CameraPreviewSurfaceView.this.yuvByteArray,
+						CameraPreviewSurfaceView.this.previewWidth,
+						CameraPreviewSurfaceView.this.previewHeight);
+				CameraPreviewSurfaceView.this.ongoingBitmap = Bitmap
+						.createBitmap(
+								CameraPreviewSurfaceView.this.previewWidth,
+								CameraPreviewSurfaceView.this.previewHeight,
+								Bitmap.Config.ARGB_4444);
+				CameraPreviewSurfaceView.this.ongoingBitmap.setPixels(
+						CameraPreviewSurfaceView.this.rgbIntArray, 0,
+						CameraPreviewSurfaceView.this.previewWidth, 0, 0,
+						CameraPreviewSurfaceView.this.previewWidth,
+						CameraPreviewSurfaceView.this.previewHeight);
 				SetOngoingImageView();
 				RecognitionThread recognition_thread = new RecognitionThread(
-						yuvByteArray, rgbIntArray, ongoingBitmap, previewWidth,
-						previewHeight);
+						CameraPreviewSurfaceView.this.yuvByteArray,
+						CameraPreviewSurfaceView.this.rgbIntArray,
+						CameraPreviewSurfaceView.this.ongoingBitmap,
+						CameraPreviewSurfaceView.this.previewWidth,
+						CameraPreviewSurfaceView.this.previewHeight);
 				recognition_thread.start();
 				try {
 					recognition_thread.join();
-					processingTime = recognition_thread.endDateTime
+					CameraPreviewSurfaceView.this.processingTime = recognition_thread.endDateTime
 							- recognition_thread.startDateTime;
-					recognitionResult = recognition_thread.equipmentId;
+					CameraPreviewSurfaceView.this.recognitionResult = recognition_thread.equipmentId;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				Log.v(this.getClass().getSimpleName(), "equipmentId = "
 						+ recognition_thread.equipmentId);
 				recognition_thread = null;
-				processedBitmap = ongoingBitmap;
+				CameraPreviewSurfaceView.this.processedBitmap = CameraPreviewSurfaceView.this.ongoingBitmap;
 				SetProcessedImageView();
 				SetEditText();
 				camera.setPreviewCallback(preview_callback);
@@ -160,7 +168,7 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 			}
 		});
 		format_conversion_thread.start();
-		count += 1;
+		this.count += 1;
 		// invalidate();
 	}// onPreviewFrame
 
@@ -212,9 +220,9 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 
 	public void SetOngoingImageView() {
 		try {
-			ongoingImageSemaphore.acquire();
-			handler.post(new SetImageBitmapRunnable(ongoingBitmap,
-					ongoingImageView, ongoingImageSemaphore));
+			this.ongoingImageSemaphore.acquire();
+			this.handler.post(new SetImageBitmapRunnable(this.ongoingBitmap,
+					this.ongoingImageView, this.ongoingImageSemaphore));
 		} catch (InterruptedException e) {
 			Log.v(this.getClass().getSimpleName(),
 					"SetOngoingImageRunnable#run is in the UI thread queue.");
@@ -223,22 +231,26 @@ public class CameraPreviewSurfaceView extends SurfaceView implements
 
 	public void SetProcessedImageView() {
 		try {
-			processedImageSemaphore.acquire();
-			handler.post(new SetImageBitmapRunnable(processedBitmap,
-					processedImageView, processedImageSemaphore));
+			this.processedImageSemaphore.acquire();
+			this.handler.post(new SetImageBitmapRunnable(this.processedBitmap,
+					this.processedImageView, this.processedImageSemaphore));
 		} catch (InterruptedException e) {
 			Log.v(this.getClass().getSimpleName(),
 					"SetProcessedImageRunnable#run is in the UI thread queue.");
 		}
 	}
 
-	private void SetEditText() {
-		handler.post(new Runnable() {
+	void SetEditText() {
+		this.handler.post(new Runnable() {
 			@Override
 			public void run() {
-				editTextCount.setText("" + count);
-				editTextProcessingTime.setText("" + (int) processingTime);
-				editTextRecognitionResult.setText("" + recognitionResult);
+				CameraPreviewSurfaceView.this.editTextCount.setText(""
+						+ CameraPreviewSurfaceView.this.count);
+				CameraPreviewSurfaceView.this.editTextProcessingTime.setText(""
+						+ (int) CameraPreviewSurfaceView.this.processingTime);
+				CameraPreviewSurfaceView.this.editTextRecognitionResult
+						.setText(""
+								+ CameraPreviewSurfaceView.this.recognitionResult);
 			}
 		});
 	}

@@ -43,18 +43,19 @@ public class RecognitionThread extends Thread {
 	 */
 	public RecognitionThread(byte[] yuv_byte_array, int[] rgb_int_array,
 			Bitmap android_bitmap, int width_, int height_) {
-		equipmentId = 0;
-		yuvByteArray = yuv_byte_array;
-		rgbIntArray = rgb_int_array;
-		androidBitmap = android_bitmap;
-		width = width_;
-		height = height_;
+		this.equipmentId = 0;
+		this.yuvByteArray = yuv_byte_array;
+		this.rgbIntArray = rgb_int_array;
+		this.androidBitmap = android_bitmap;
+		this.width = width_;
+		this.height = height_;
 	}// constructor
 
+	@Override
 	public void run() {
 		Calendar startCalendar = Calendar.getInstance();
-		startDateTime = startCalendar.getTimeInMillis();
-		equipmentId = 9999;
+		this.startDateTime = startCalendar.getTimeInMillis();
+		this.equipmentId = 9999;
 
 		// TODO: recognition algorithm is to be implemented here.
 		// The image is given in three data formats,
@@ -66,11 +67,11 @@ public class RecognitionThread extends Thread {
 		}
 
 		// TODO: set the result to equipmentNumber.
-		equipmentId = 9999;
+		this.equipmentId = 9999;
 
 		// that'll be all
 		Calendar endCalendar = Calendar.getInstance();
-		endDateTime = endCalendar.getTimeInMillis();
+		this.endDateTime = endCalendar.getTimeInMillis();
 	}// run
 }// RecognitionThread
 

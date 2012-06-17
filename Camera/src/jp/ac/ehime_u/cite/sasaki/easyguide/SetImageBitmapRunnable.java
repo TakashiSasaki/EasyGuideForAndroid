@@ -12,9 +12,9 @@ public class SetImageBitmapRunnable implements Runnable {
 
 	public SetImageBitmapRunnable(Bitmap bitmap_to_set, ImageView image_view,
 			Semaphore semaphore_) {
-		bitmapToSet = bitmap_to_set;
-		imageView = image_view;
-		semaphore = semaphore_;
+		this.bitmapToSet = bitmap_to_set;
+		this.imageView = image_view;
+		this.semaphore = semaphore_;
 	}
 
 	@Override
@@ -23,9 +23,9 @@ public class SetImageBitmapRunnable implements Runnable {
 		// Resources r = getResources();
 		// Bitmap b2 = BitmapFactory.decodeResource(r,
 		// R.drawable.ic_launcher);
-		imageView.setImageBitmap(bitmapToSet);
-		//bitmapToSet.recycle();
-		semaphore.release();
+		this.imageView.setImageBitmap(this.bitmapToSet);
+		// bitmapToSet.recycle();
+		this.semaphore.release();
 	}
 }// SetImageBitmapRunnable
 

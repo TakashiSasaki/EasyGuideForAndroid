@@ -28,11 +28,11 @@ public class Source {
 		this.uri = uri_;
 		this.domain = domain_;
 		if (!this.uri.getHost().equals("assets")) {
-			CheckLastModified();
+			checkLastModified();
 		}// if
 	} // a constructor
 
-	public void CheckLastModified() {
+	public void checkLastModified() {
 		if (this.uri.getHost() != "assets") {
 			try {
 				this.lastModifiedThread = new LastModifiedHeaderThread(this.uri);
@@ -42,7 +42,7 @@ public class Source {
 			}
 			this.lastModifiedThread.start();
 		}// if
-	}// SetLastModified
+	}// checkLastModified
 
 	public DownloadedItem Download(Context context_)
 			throws InterruptedException, URISyntaxException {
@@ -56,23 +56,23 @@ public class Source {
 		return downloaded_item;
 	}// Download
 
-	public Domain GetDomain() {
+	public Domain getDomain() {
 		return this.domain;
-	}
+	}// getDomain
 
-	public String GetDomainByString() {
+	public String getDomainByString() {
 		return this.domain.getDomainDirectory().getName();
-	}// GetDomainByString
+	}// getDomainByString
 
-	public File GetDomainDirectory() {
+	public File getDomainDirectory() {
 		return this.domain.getDomainDirectory();
-	}
+	}// getDomainDirectory
 
 	public URI getUri() {
 		return this.uri;
-	}
+	}// getUri
 
-	public Date getLastModified() throws InterruptedException  {
+	public Date getLastModified() throws InterruptedException {
 		if (this.lastModified != null) {
 			return this.lastModified;
 		} else {
@@ -80,11 +80,11 @@ public class Source {
 			this.lastModified = this.lastModifiedThread.getLastModified();
 			this.lastModifiedThread = null; // release LastModifiedThread object
 			return this.lastModified;
-		}// getLastModified
+		}
 	}// getLastModified
 
 	public Date getLastModifiedNonBlocking() {
 		return this.lastModified;
 	}// getLastModifiedNonBlocking
 
-}// ZipUrl
+}// Source

@@ -62,5 +62,6 @@ public class OrganizationsActivity extends Activity {
 		intent.putExtra("organizationIndex", number);
 		startActivity(intent);
 	}// InvokeOrganizationActivity
-}// OrganizationActivity
+	
+}// OrganizationsActivity
 

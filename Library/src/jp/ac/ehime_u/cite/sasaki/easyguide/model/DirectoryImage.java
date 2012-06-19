@@ -89,7 +89,8 @@ public class DirectoryImage {
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inPurgeable = true;
 			options.inPreferredConfig = Bitmap.Config.RGB_565;
-			Bitmap b = BitmapFactory.decodeFile(this.imageFile.getPath(),options);
+			Bitmap b = BitmapFactory.decodeFile(this.imageFile.getPath(),
+					options);
 			if (b != null) {
 				return b;
 			}
@@ -99,14 +100,13 @@ public class DirectoryImage {
 			// + " and default image is not provided.");
 			// }
 		}
-		Log.v(new Throwable(),
-				"Failed to decode " + this.imageFile.getPath());
+		Log.v(new Throwable(), "Failed to decode " + this.imageFile.getPath());
 		return getDefaultImage(context);
 	}// getImage
 
 	/**
 	 * @return the thumbnail
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public Bitmap getThumbnail(Context context) throws Exception {
 		Bitmap b = getImage(context);

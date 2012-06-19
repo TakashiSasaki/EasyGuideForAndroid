@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import com.gmail.takashi316.lib.android.activity.SmartActivity;
+
 import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
@@ -26,8 +28,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public abstract class ClickableActivity<T extends ItemBase> extends Activity
-		implements SurfaceHolder.Callback {
+public abstract class ClickableActivity<T extends ItemBase> extends
+		SmartActivity implements SurfaceHolder.Callback {
 	private ImageView imageView;
 	private SurfaceView surfaceView;
 	private static Bitmap star;
@@ -125,7 +127,8 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 		try {
 			setImageView(this.itemBase);
 		} catch (Exception e) {
-			Log.v(new Throwable(), "Can't set image of " + this.itemBase.getTitle());
+			Log.v(new Throwable(),
+					"Can't set image of " + this.itemBase.getTitle());
 			e.printStackTrace();
 		}
 	}

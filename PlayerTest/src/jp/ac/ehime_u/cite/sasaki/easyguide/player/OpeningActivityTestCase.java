@@ -25,12 +25,11 @@ public class OpeningActivityTestCase extends
 
 			@Override
 			public void run() {
-				OpeningActivityTestCase.this.buttonResetUsers.requestFocus();
-				getInstrumentation().waitForIdle(null);
-			}
-		});
-
-	}
+				// OpeningActivityTestCase.this.buttonResetUsers.requestFocus();
+				// getInstrumentation().waitForIdle(null);
+			}// run
+		});// runOnThread
+	}// test1
 
 	Activity activity;
 	Button buttonResetUsers;
@@ -40,11 +39,12 @@ public class OpeningActivityTestCase extends
 		// TODO Auto-generated method stub
 		this.activity = getActivity();
 		super.setUp();
-	}
+	}// setUp
 
 	@Override
 	protected void tearDown() throws Exception {
 		// TODO Auto-generated method stub
 		super.tearDown();
 	}
-}
+}// OpeningActivityTestCase
+

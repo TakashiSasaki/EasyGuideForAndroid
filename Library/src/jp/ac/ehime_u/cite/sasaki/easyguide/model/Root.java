@@ -32,11 +32,13 @@ public class Root extends ArrayList<Domain> {
 				.getExternalStorageDirectory();
 		Log.v(this.getClass().getSimpleName(),
 				external_storage_directory.getAbsolutePath());
-		this.rootDirectory = new File(external_storage_directory, rootDirectoryName);
+		this.rootDirectory = new File(external_storage_directory,
+				rootDirectoryName);
 		if (!this.rootDirectory.exists()) {
 			this.rootDirectory.mkdir();
 		}
 		if (!this.rootDirectory.exists()) {
+			// TODO: more user-friendly error handling is preferred
 			throw new StorageException(this.rootDirectory.getPath()
 					+ " can not be created.");
 		}

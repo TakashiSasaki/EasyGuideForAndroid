@@ -1,10 +1,10 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.db;
 
-import android.content.AsyncTaskLoader;
+//import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 
-//import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.AsyncTaskLoader;
 
 /**
  * Used to write apps that run on platforms prior to Android 3.0. When running
@@ -16,7 +16,8 @@ import android.database.Cursor;
  * 
  * @author cristian
  * @see original code is found in {@link "https://gist.github.com/1217628"}
- * @see usage is written in Japanaese {@link "http://319ring.net/blog/archives/1897"} by @patorash . 
+ * @see usage is written in Japanaese
+ *      {@link "http://319ring.net/blog/archives/1897"} by @patorash .
  */
 public abstract class SimpleCursorLoader extends AsyncTaskLoader<Cursor> {
 	private Cursor mCursor;

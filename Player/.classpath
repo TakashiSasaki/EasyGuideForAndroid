@@ -6,5 +6,6 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/android-lib"/>
+	<classpathentry exported="true" kind="lib" path="C:/Android/android-sdk/extras/android/support/v13/android-support-v13.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

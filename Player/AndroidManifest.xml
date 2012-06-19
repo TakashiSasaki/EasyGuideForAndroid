@@ -5,7 +5,7 @@
     android:versionCode="051"
     android:versionName="0.5.1" >
 
-    <uses-sdk android:minSdkVersion="13" />
+    <uses-sdk android:minSdkVersion="10" />
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -49,8 +49,8 @@
             android:name="RoomActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity"></activity>
         <activity android:name="OpeningActivity"></activity>
+        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity"></activity>
     </application>
 
 </manifest>

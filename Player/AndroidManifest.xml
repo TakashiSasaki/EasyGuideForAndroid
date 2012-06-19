@@ -49,6 +49,7 @@
             android:name="RoomActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity"></activity>
     </application>
 
 </manifest>

@@ -3,7 +3,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import sun.security.action.OpenFileInputStreamAction;
+//import sun.security.action.OpenFileInputStreamAction;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
 
 /**

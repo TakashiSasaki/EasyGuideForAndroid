@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
@@ -9,16 +10,9 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.player.OpeningActivity;
 public class OpeningActivityTestCase extends
 		ActivityInstrumentationTestCase2<OpeningActivity> {
 
-	public OpeningActivityTestCase(String pkg,
-			Class<OpeningActivity> activityClass) {
-		super(pkg, activityClass);
-		// TODO Auto-generated constructor stub
-	}
-
 	public OpeningActivityTestCase() {
-		super("jp.ac.ehime_u.cite.sasaki.easyguide.player.OpeningActivit",
-				OpeningActivity.class);
-	}
+		super(OpeningActivity.class);
+	}// the constructor
 
 	public void test1() {
 		this.activity.runOnUiThread(new Runnable() {

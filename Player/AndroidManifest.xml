@@ -50,6 +50,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity"></activity>
+        <activity android:name="OpeningActivity"></activity>
     </application>
 
 </manifest>

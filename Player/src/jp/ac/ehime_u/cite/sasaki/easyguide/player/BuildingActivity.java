@@ -124,13 +124,13 @@ public class BuildingActivity extends ClickableActivity<Floor> {
 			try {
 				if (event1.getX() - event2.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					// 開始位置から終了位置の移動距離が指定値より大きい
-					// X軸の移動速度が指定値より大きい
+					// 髢句ｧ倶ｽ咲ｽｮ縺九ｉ邨ゆｺ�菴咲ｽｮ縺ｮ遘ｻ蜍戊ｷ晞屬縺梧欠螳壼､繧医ｊ螟ｧ縺阪＞
+					// X霆ｸ縺ｮ遘ｻ蜍暮溷ｺｦ縺梧欠螳壼､繧医ｊ螟ｧ縺阪＞
 					InvokeMediaActivity();
 				} else if (event2.getX() - event1.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					// 終了位置から開始位置の移動距離が指定値より大きい
-					// X軸の移動速度が指定値より大きい
+					// 邨ゆｺ�菴咲ｽｮ縺九ｉ髢句ｧ倶ｽ咲ｽｮ縺ｮ遘ｻ蜍戊ｷ晞屬縺梧欠螳壼､繧医ｊ螟ｧ縺阪＞
+					// X霆ｸ縺ｮ遘ｻ蜍暮溷ｺｦ縺梧欠螳壼､繧医ｊ螟ｧ縺阪＞
 					InvokeMediaActivity();
 				}
 

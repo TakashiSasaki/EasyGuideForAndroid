@@ -11,8 +11,6 @@ tmp/**/*
 *.bak
 *.swp
 *~.nib
-.settings/
-.loadpath
 
 # External tool builders
 .externalToolBuilders/

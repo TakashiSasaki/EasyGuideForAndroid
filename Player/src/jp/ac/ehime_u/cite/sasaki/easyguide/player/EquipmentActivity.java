@@ -87,7 +87,7 @@ public class EquipmentActivity extends Activity {
 		// .GetEquipment("equipment_a");
 
 		// Panel panel_a = equipment.GetPanel("panel_a");
-		// // �T���v���R���e���c�̃��[�h
+		// // サンプルコンテンツのロード
 		// WebView web_view = (WebView) findViewById(R.id.webView1);
 		// File storage_directory = Environment.getExternalStorageDirectory();
 		// File root_directory = new File(storage_directory, "EASYGUIDE");
@@ -307,15 +307,15 @@ public class EquipmentActivity extends Activity {
 			try {
 				if (event1.getX() - event2.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					// �J�n�ʒu����I���ʒu�̈ړ��������w��l���傫��
-					// X���̈ړ����x���w��l���傫��
+					// 開始位置から終了位置の移動距離が指定値より大きい
+					// X軸の移動速度が指定値より大きい
 					Intent intent = new Intent(getApplicationContext(),
 							BuildingActivity.class);
 					startActivity(intent);
 				} else if (event2.getX() - event1.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					// �I���ʒu����J�n�ʒu�̈ړ��������w��l���傫��
-					// X���̈ړ����x���w��l���傫��
+					// 終了位置から開始位置の移動距離が指定値より大きい
+					// X軸の移動速度が指定値より大きい
 					Intent intent = new Intent(getApplicationContext(),
 							BuildingActivity.class);
 					startActivity(intent);

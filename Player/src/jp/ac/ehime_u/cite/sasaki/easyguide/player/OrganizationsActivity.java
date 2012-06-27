@@ -13,8 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
- * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
+ * Application begins with this activity.
  * 
+ * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
 public class OrganizationsActivity extends Activity {
 
@@ -52,7 +53,9 @@ public class OrganizationsActivity extends Activity {
 			}// onItemClick
 		});// setOnItemClickListener
 
-		WifiDetectorThread.getInstance(this).start();
+		// TODO: it should be implemented by the demo day.
+		// WifiDetectorThread.getInstance(this).start();
+		this.InvokeOrganizationActivity(1);
 
 	}// onCreate
 
@@ -62,6 +65,6 @@ public class OrganizationsActivity extends Activity {
 		intent.putExtra("organizationIndex", number);
 		startActivity(intent);
 	}// InvokeOrganizationActivity
-	
+
 }// OrganizationsActivity
 

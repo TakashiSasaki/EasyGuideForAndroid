@@ -42,9 +42,9 @@ public class OpeningActivity extends Activity {
 					assert (building.getTitle() != null);
 					adapter.add(building.getTitle());
 					this.buildingList.add(building);
-				}
-			}
-		}
+				}//for
+			}//for
+		}//for
 		ListView building_list_view = (ListView) findViewById(R.id.listViewBuilding);
 		Log.v(this.getClass().getSimpleName(), "Totally " + adapter.getCount()
 				+ " buildings found.");

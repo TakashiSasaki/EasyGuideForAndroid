@@ -27,6 +27,7 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 	// return this.itemType;
 	// }
 
+	@Deprecated
 	protected ItemBase(File directory) {
 		super();
 		this.items = new ArrayList<S>();
@@ -35,6 +36,7 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 		this.directoryImage = new DirectoryImage(directory);
 	}
 
+	@Deprecated
 	protected ItemBase() {
 		super();
 	}

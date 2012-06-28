@@ -58,6 +58,7 @@ public class DirectoryImage {
 	 * @return the image
 	 * @throws Exception
 	 */
+	@Deprecated
 	public Bitmap getImage(Context context) throws Exception {
 
 		BitmapFactory bitmap_factory = new BitmapFactory();
@@ -72,9 +73,11 @@ public class DirectoryImage {
 	}// getImage
 
 	/**
+	 * @param context 
 	 * @return the thumbnail
 	 * @throws Exception
 	 */
+	@Deprecated
 	public Bitmap getThumbnail(Context context) throws Exception {
 		Bitmap b = getImage(context);
 		BitmapFactory bitmap_factory = new BitmapFactory();

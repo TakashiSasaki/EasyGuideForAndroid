@@ -57,6 +57,7 @@ public class DownloadedItem {
 				+ this.downloadedDate.getTime() + ".zip");
 	}// a constructor
 
+	@Deprecated
 	public int SaveStream(BufferedInputStream buffered_input_stream) {
 		int count = 0;
 		Log.v(this.getClass().getSimpleName(), "Writing downloaded file to "

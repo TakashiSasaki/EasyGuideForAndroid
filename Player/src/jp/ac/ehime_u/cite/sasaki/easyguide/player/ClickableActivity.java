@@ -57,6 +57,8 @@ public abstract class ClickableActivity<T extends ItemBase> extends
 			public boolean onTouch(View v, MotionEvent event) {
 				float x_on_image_view = event.getX();
 				float y_on_image_view = event.getY();
+				Log.v(new Throwable(), "on ImageView x=" + x_on_image_view
+						+ " y=" + y_on_image_view);
 				Point point_on_image_view = new Point((int) x_on_image_view,
 						(int) y_on_image_view);
 				Point point_on_bitmap = getPointOnBitmap(point_on_image_view);
@@ -193,6 +195,7 @@ public abstract class ClickableActivity<T extends ItemBase> extends
 		if (this.starPoints == null)
 			return;
 		Log.v(new Throwable(), "Points = " + this.starPoints.size());
+		Canvas c = this.surfaceHolder.lockCanvas();
 		for (Point p : this.starPoints) {
 			Point on_image_view = getPointOnImageView(p);
 			Log.v(new Throwable(), "starX=" + on_image_view.x + " starY="
@@ -210,11 +213,10 @@ public abstract class ClickableActivity<T extends ItemBase> extends
 				ClickableActivity.star = BitmapFactory.decodeResource(
 						getResources(), R.drawable.btn_rating_star_on_selected);
 			}
-			Canvas c = this.surfaceHolder.lockCanvas();
 			//c.drawBitmap(ClickableActivity.star, on_image_view.x,
 			//		on_image_view.y, null);
-			this.surfaceHolder.unlockCanvasAndPost(c);
 		}// for
+		this.surfaceHolder.unlockCanvasAndPost(c);
 	}// drawSurface
 
 }// ClickableActivity

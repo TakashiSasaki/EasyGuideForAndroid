@@ -209,10 +209,10 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 					+ "has no item as children");
 		S nearest = this.items.get(0);
 		for (S item : this.items) {
-			float old_distance_squared = (nearest.getX() - point.x) ^ 2
-					+ (nearest.getY() - point.y) ^ 2;
-			float new_distance_squared = (item.getX() - point.x) ^ 2
-					+ (item.getY() - point.y) ^ 2;
+			float old_distance_squared = (float) (Math.pow(nearest.getX()
+					- point.x, 2) + Math.pow(nearest.getY() - point.y, 2));
+			float new_distance_squared = (float) (Math.pow(item.getX()
+					- point.x, 2) + Math.pow(item.getY() - point.y, 2));
 			if (old_distance_squared > new_distance_squared) {
 				nearest = item;
 			}

@@ -120,6 +120,24 @@ public class WifiDetectorThread extends Thread {
 						e.printStackTrace();
 					}
 				}
+				if (sr.BSSID.equals("1c:b1:7f:1e:9f:a6") && sr.level > -80) {
+					Intent intent = new Intent();
+					intent.setClassName(context,
+							RoomActivity.class.getName());
+					intent.putExtra("organizationIndex", 1);
+					intent.putExtra("facilityIndex", 1);
+					intent.putExtra("buildingIndex", -1);
+					intent.putExtra("floorIndex", 2);
+					intent.putExtra("roomIndex", 2);
+					intent.putExtra("equipmentIndex", 1);
+					context.startActivity(intent);
+					try {
+						Thread.sleep(30000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}// for
 			try {
 				Thread.sleep(1000);

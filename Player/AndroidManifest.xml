@@ -18,7 +18,7 @@
         <activity
             android:name="OrganizationsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,30 +27,30 @@
         </activity>
         <activity
             android:name=".BuildingActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" android:launchMode="singleInstance">
         </activity>
         <activity
             android:name=".EquipmentActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" android:launchMode="singleInstance">
         </activity>
         <activity
             android:name="OrganizationActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" android:launchMode="singleInstance">
         </activity>
         <activity
             android:name="FacilityActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" android:launchMode="singleInstance">
         </activity>
         <activity
             android:name="FloorActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" android:launchMode="singleInstance">
         </activity>
         <activity
             android:name="RoomActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" android:launchMode="singleInstance">
         </activity>
-        <activity android:name="OpeningActivity"></activity>
-        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity"></activity>
+        <activity android:name="OpeningActivity" android:launchMode="singleInstance"></activity>
+        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity" android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

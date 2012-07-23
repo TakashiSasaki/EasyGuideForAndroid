@@ -69,7 +69,46 @@ public class WifiDetectorThread extends Thread {
 					intent.putExtra("floorIndex", 2);
 					intent.putExtra("roomIndex", 1);
 					context.startActivity(intent);
-					enabled = false;
+					try {
+						Thread.sleep(30000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (sr.BSSID.equals("00:3a:9d:dd:37:a6") && sr.level > -60) {
+					Intent intent = new Intent();
+					intent.setClassName(context, EquipmentActivity.class.getName());
+					intent.putExtra("organizationIndex", 1);
+					intent.putExtra("facilityIndex", 1);
+					intent.putExtra("buildingIndex", -1);
+					intent.putExtra("floorIndex", 1);
+					intent.putExtra("roomIndex", 1);
+					intent.putExtra("equipmentIndex", 1);
+					context.startActivity(intent);
+					try {
+						Thread.sleep(30000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (sr.BSSID.equals("1c:b1:7f:1e:9f:9e") && sr.level > -70) {
+					Intent intent = new Intent();
+					intent.setClassName(context, EquipmentActivity.class.getName());
+					intent.putExtra("organizationIndex", 1);
+					intent.putExtra("facilityIndex", 1);
+					intent.putExtra("buildingIndex", -1);
+					intent.putExtra("floorIndex", 1);
+					intent.putExtra("roomIndex", 1);
+					intent.putExtra("equipmentIndex", 3);
+					context.startActivity(intent);
+					try {
+						Thread.sleep(30000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}// for
 			try {

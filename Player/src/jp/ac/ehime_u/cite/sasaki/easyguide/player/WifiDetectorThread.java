@@ -30,11 +30,12 @@ public class WifiDetectorThread extends Thread {
 	static private WifiDetectorThread theInstance;
 
 	static public WifiDetectorThread getInstance(Context context) {
-		if (theInstance == null) {
-			theInstance = new WifiDetectorThread(null, context);
+		if (theInstance != null && theInstance.isAlive()) {
+			return theInstance;
 		}
+		theInstance = new WifiDetectorThread(null, context);
 		return theInstance;
-	}
+	}// getInstance
 
 	public void addDetectionMap(String mac_address, Runnable callback) {
 		DetectionMap detection_map = new DetectionMap();
@@ -49,6 +50,13 @@ public class WifiDetectorThread extends Thread {
 		this.wifiManager = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
 	}
+
+	@Override
+	public void start() {
+		if (this.isAlive())
+			return;
+		super.start();
+	}// start
 
 	@Override
 	public void run() {
@@ -78,7 +86,8 @@ public class WifiDetectorThread extends Thread {
 				}
 				if (sr.BSSID.equals("00:3a:9d:dd:37:a6") && sr.level > -60) {
 					Intent intent = new Intent();
-					intent.setClassName(context, EquipmentActivity.class.getName());
+					intent.setClassName(context,
+							EquipmentActivity.class.getName());
 					intent.putExtra("organizationIndex", 1);
 					intent.putExtra("facilityIndex", 1);
 					intent.putExtra("buildingIndex", -1);
@@ -95,7 +104,8 @@ public class WifiDetectorThread extends Thread {
 				}
 				if (sr.BSSID.equals("1c:b1:7f:1e:9f:9e") && sr.level > -70) {
 					Intent intent = new Intent();
-					intent.setClassName(context, EquipmentActivity.class.getName());
+					intent.setClassName(context,
+							EquipmentActivity.class.getName());
 					intent.putExtra("organizationIndex", 1);
 					intent.putExtra("facilityIndex", 1);
 					intent.putExtra("buildingIndex", -1);

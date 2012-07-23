@@ -53,11 +53,16 @@ public class OrganizationsActivity extends Activity {
 			}// onItemClick
 		});// setOnItemClickListener
 
-		// TODO: it should be implemented by the demo day.
-		WifiDetectorThread.getInstance(this).start();
 		this.InvokeOrganizationActivity(1);
 
 	}// onCreate
+
+	@Override
+	protected void onResume() {
+		// TODO: it should be implemented by the demo day.
+		WifiDetectorThread.getInstance(this).start();
+		super.onResume();
+	}// onResume
 
 	private void InvokeOrganizationActivity(int number) {
 		Intent intent = new Intent();

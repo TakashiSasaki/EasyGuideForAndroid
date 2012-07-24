@@ -51,16 +51,17 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 		}
 		setSpinnerArrayAdapter(equipment_array_adapter);
 
-//		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//		alertDialogBuilder.setTitle("content index");
-//		alertDialogBuilder.setMessage("organizationIndex="
-//				+ RoomActivity.this.organizationIndex + ", facilityIndex="
-//				+ RoomActivity.this.facilityIndex + ", buildingIndex="
-//				+ RoomActivity.this.buildingIndex + ", floorIndex="
-//				+ RoomActivity.this.floorIndex + ", roomIndex="
-//				+ RoomActivity.this.roomIndex);
-//		AlertDialog alertDialog = alertDialogBuilder.create();
-//		alertDialog.show();
+		// AlertDialog.Builder alertDialogBuilder = new
+		// AlertDialog.Builder(this);
+		// alertDialogBuilder.setTitle("content index");
+		// alertDialogBuilder.setMessage("organizationIndex="
+		// + RoomActivity.this.organizationIndex + ", facilityIndex="
+		// + RoomActivity.this.facilityIndex + ", buildingIndex="
+		// + RoomActivity.this.buildingIndex + ", floorIndex="
+		// + RoomActivity.this.floorIndex + ", roomIndex="
+		// + RoomActivity.this.roomIndex);
+		// AlertDialog alertDialog = alertDialogBuilder.create();
+		// alertDialog.show();
 
 	}// onCreate
 
@@ -133,6 +134,13 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 		intent.putExtra("equipmentIndex", selected_item.getIndex());
 		startActivity(intent);
 	}
+
+	@Override
+	protected void onResume() {
+		// TODO: it should be implemented by the demo day.
+		WifiDetectorThread.getInstance(this).start();
+		super.onResume();
+	}// onResume
 
 	@Override
 	protected void onStarTouched(Point point) {

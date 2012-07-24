@@ -103,7 +103,7 @@ public class EquipmentActivity extends Activity {
 
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.mediaController = (MediaController) findViewById(R.id.mediaController1);
-		this.imageView = (ImageView)findViewById(R.id.imageViewImagePanel);
+		this.imageView = (ImageView) findViewById(R.id.imageViewImagePanel);
 		this.textViewVideo = (TextView) findViewById(R.id.textViewVideo);
 		this.textViewImage = (TextView) findViewById(R.id.textViewImage);
 		this.textViewTextPanel = (TextView) findViewById(R.id.textViewTextPanel);
@@ -184,13 +184,13 @@ public class EquipmentActivity extends Activity {
 	private void ChooseText(Panel p) {
 		FileInputStream fis;
 		try {
-			//fis = openFileInput(p.getTextFile().getPath());
+			// fis = openFileInput(p.getTextFile().getPath());
 			fis = new FileInputStream(p.getTextFile());
 		} catch (FileNotFoundException e) {
 			Log.v(new Throwable(), "Can't switch to  panel " + p.getTitle());
 			return;
 		}
-		byte[] buffer  =  new  byte[100000];
+		byte[] buffer = new byte[100000];
 		try {
 			fis.read(buffer);
 		} catch (IOException e) {
@@ -199,7 +199,7 @@ public class EquipmentActivity extends Activity {
 		}
 		String s = new String(buffer);
 		this.textViewTextPanel.setText(s);
-		
+
 		this.imageView.setImageBitmap(null);
 		if (this.bitmap != null) {
 			this.bitmap.recycle();
@@ -328,5 +328,12 @@ public class EquipmentActivity extends Activity {
 			return false;
 		}// onFling
 	};// SimpleOnGestureListener
+
+	@Override
+	protected void onResume() {
+		// TODO: it should be implemented by the demo day.
+		WifiDetectorThread.getInstance(this).start();
+		super.onResume();
+	}// onResume
 
 }// EquipmentActivity

@@ -24,13 +24,13 @@ public class WifiListDialog extends AlertDialog.Builder {
 			if (items.length > 0) {
 				setItems(items, null);
 			} else {
-				setItems(new String[] { "‚È‚µ" }, null);
+				setItems(new String[] { "ãªã—" }, null);
 			}// if
 				// final ArrayAdapter<String> adapter = new
 				// ArrayAdapter<String>(this,
 				// android.R.layout.simple_list_item_1, items);
 				// setListAdapter(adapter);
 		}
-		setTitle("Wi-FiƒAƒNƒZƒXƒ|ƒCƒ“ƒgˆê——");
+		setTitle("Wi-Fiã‚¢ã‚¯ã‚»ã‚¹ãƒã‚¤ãƒ³ãƒˆä¸€è¦§");
 	}// a constructor
 }// WifiListDialog

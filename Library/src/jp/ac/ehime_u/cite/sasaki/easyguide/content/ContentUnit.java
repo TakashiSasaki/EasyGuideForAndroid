@@ -118,6 +118,22 @@ public class ContentUnit {
 		return this._children[index - 1];
 	}
 
+	public boolean hasMovie() {
+		return this._classifier.getMovieFiles().size() > 0;
+	}
+
+	public boolean hasText() {
+		return this._classifier.getTextFiles().size() > 0;
+	}
+
+	public boolean hasHtml() {
+		return this._classifier.getHtmlFiles().size() > 0;
+	}
+
+	public boolean hasImage() {
+		return this._classifier.getImageFiles().size() > 0;
+	}
+
 	static public void main(String[] args) {
 		Logger.getGlobal().setLevel(Level.INFO);
 		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力/01 四国電力保安研修所";

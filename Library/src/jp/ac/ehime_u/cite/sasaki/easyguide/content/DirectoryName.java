@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.model;
+package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 
 import android.util.Log;
 

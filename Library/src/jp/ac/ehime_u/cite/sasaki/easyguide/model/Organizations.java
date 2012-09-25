@@ -2,6 +2,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.util.ArrayList;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;

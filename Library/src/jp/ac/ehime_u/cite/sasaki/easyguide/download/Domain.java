@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 
 import android.util.Log;
 

@@ -38,8 +38,6 @@ public class Organizations extends ArrayList<Organization> {
 			Log.v(new Throwable(), "scanned for organizations in domain "
 					+ domain.getDomainDirectory().getName());
 		}// for
-		Log.v(new Throwable(), "scanned for domains in "
-				+ Root.getTheRoot().getRootDirectory().getPath());
 	}// EnumerateOrganizations
 
 	// public Organization GetOrganizationByIndex(int organization_index) {

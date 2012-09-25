@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import sun.security.action.OpenFileInputStreamAction;
-import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Classifier;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.StorageException;
 
 import android.os.Environment;

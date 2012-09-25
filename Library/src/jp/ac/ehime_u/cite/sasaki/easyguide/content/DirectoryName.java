@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.InvalidDirectoryNameException;
-import android.util.Log;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
@@ -14,7 +13,7 @@ import android.util.Log;
 public class DirectoryName {
 	private String rawName = "unknown";
 	private String name = "unknown";
-	private int number = -1;
+	public int number = -1;
 	private int x = -1, y = -1;
 
 	/**

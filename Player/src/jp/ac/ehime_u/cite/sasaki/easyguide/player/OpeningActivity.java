@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
- * 施設一覧を表示して選択させるアクティビティ
+ * 譁ｽ險ｭ荳隕ｧ繧定｡ｨ遉ｺ縺励※驕ｸ謚槭＆縺帙ｋ繧｢繧ｯ繝�繧｣繝薙ユ繧｣
  * 
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */

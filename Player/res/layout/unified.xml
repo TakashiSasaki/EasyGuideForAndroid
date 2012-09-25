@@ -23,13 +23,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="50dp" >
+
+        <VideoView
+            android:id="@+id/videoView1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <MediaController
+            android:id="@+id/mediaController1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </MediaController>
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/frameLayoutImage"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:minHeight="50dp" android:layout_weight="1" >
+        android:layout_weight="1"
+        android:minHeight="50dp" >
 
         <ImageView
             android:id="@+id/imageViewClickable"

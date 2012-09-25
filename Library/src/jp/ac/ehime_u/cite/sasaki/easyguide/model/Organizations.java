@@ -23,7 +23,7 @@ public class Organizations extends ArrayList<Organization> {
 
 	public void EnumerateOrganizations() {
 		Log.v(new Throwable(), "Enumerating domains.");
-		for (Domain domain : Root.GetTheRoot()) {
+		for (Domain domain : Root.getTheRoot()) {
 			Log.v(new Throwable(),
 					"Enumerating organizations " + domain.getDomainDirectory());
 			domain.EnumerateOrganizations();
@@ -39,7 +39,7 @@ public class Organizations extends ArrayList<Organization> {
 					+ domain.getDomainDirectory().getName());
 		}// for
 		Log.v(new Throwable(), "scanned for domains in "
-				+ Root.GetTheRoot().getRootDirectory().getPath());
+				+ Root.getTheRoot().getRootDirectory().getPath());
 	}// EnumerateOrganizations
 
 	// public Organization GetOrganizationByIndex(int organization_index) {

@@ -3,13 +3,12 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.exception.StorageException;
-
 import android.os.Environment;
-import android.util.Log;
 
 /**
  * represents the root directory of EasyGuide contents.
@@ -18,46 +17,35 @@ import android.util.Log;
  */
 @SuppressWarnings("serial")
 public class Root extends ArrayList<Domain> {
-	private static final String rootDirectoryName = "EASYGUIDE";
-	private static Root root;
-	private File rootDirectory;
+	// private static final String rootDirectoryName = "EASYGUIDE";
+	private File _rootDirectory;
 	private Pattern DOMAIN_PATTERN = Pattern
 			.compile("^[a-zA-Z0-9_\\-][a-zA-Z0-9_\\-.]+[a-zA-Z0-9_\\-]$");
 
-	// private File externalStorageDirectory;
-
-	private Root() throws StorageException {
-		File external_storage_directory = Environment
-				.getExternalStorageDirectory();
-		Log.v(this.getClass().getSimpleName(),
-				external_storage_directory.getAbsolutePath());
-		this.rootDirectory = new File(external_storage_directory, rootDirectoryName);
-		if (!this.rootDirectory.exists()) {
-			this.rootDirectory.mkdir();
-		}
-		if (!this.rootDirectory.exists()) {
-			throw new StorageException(this.rootDirectory.getPath()
-					+ " can not be created.");
-		}
-		/*
-		 * if (!rootDirectory.exists()) { rootDirectory.mkdir();
-		 * Log.v(this.getClass().getSimpleName(), "creating directory " +
-		 * rootDirectory.getAbsolutePath()); }
-		 */
-		EnumerateDomainDirectories();
-		assert (this.rootDirectory.exists());
+	// the constructor
+	private Root(File root_directory) throws FileNotFoundException {
+		if (root_directory.isAbsolute()) {
+			if (!root_directory.exists()) throw new FileNotFoundException();
+			this._rootDirectory = root_directory;
+		} else {
+			File external_storage_directory = Environment
+					.getExternalStorageDirectory();
+			this._rootDirectory = new File(external_storage_directory,
+					root_directory.getName()); // note taht only the last part
+												// is used
+		}// if
+		_enumerateDomainDirectories();
 	}// an constructor
-
-	@SuppressWarnings("javadoc")
-	public File getRootDirectory() {
-		return this.rootDirectory;
-	}// getRootDirectory
+	
+	public File rootDirectory(){
+		return this._rootDirectory;
+	}
 
 	/**
 	 * @param file
 	 * @return true if given directory name is valid for FQDN.
 	 */
-	public boolean IsValidDomainDirectory(File file) {
+	private boolean isValidDomainDirectory(File file) {
 		if (!file.isDirectory())
 			return false;
 		if (!file.canRead())
@@ -71,34 +59,43 @@ public class Root extends ArrayList<Domain> {
 			return false;
 	}// IsValidDomainDirectory
 
-	public void EnumerateDomainDirectories() {
-		Log.d(this.getClass().getSimpleName(),
-				"Enumerating dommain directories in " + this.getRootDirectory());
-		File[] domain_directories = this.getRootDirectory().listFiles();
+	public void _enumerateDomainDirectories() {
+		File[] domain_directories = this._rootDirectory.listFiles();
 		for (File domain_directory : domain_directories) {
-			Log.d(this.getClass().getSimpleName(), "Found domain directory "
-					+ domain_directory.getAbsolutePath());
 			Matcher m = this.DOMAIN_PATTERN.matcher(domain_directory.getName());
 			if (m.find()) {
-				Log.d(this.getClass().getSimpleName(), "Matched. "
-						+ domain_directory.getName()
-						+ " is a domain directory.");
 				try {
-					this.add(new Domain(domain_directory));
+					Domain domain = new Domain(domain_directory);
+					Logger.getGlobal().setLevel(Level.INFO);
+					Logger.getGlobal().info(domain.getDomainDirectory().getAbsolutePath());
+					this.add(domain);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}// try
 			}// if
 		}// for
-	}// EnumerateDomainDirectories()
+	}// enumerateDomainDirectories()
 
 	/**
-	 * @return singleton instance of class Root
+	 * Singleton pattern
 	 */
-	public static Root GetTheRoot() {
-		if (root == null) {
-			root = new Root();
-		}
-		return root;
-	}// GetTheRoot
+	private static Root theRoot;
+
+	public static Root getTheRoot(File contents_directory) throws FileNotFoundException {
+		assert Root.theRoot == null;
+		Root.theRoot = new Root(contents_directory);
+		return Root.theRoot;
+	}// getTheRoot
+
+	public static Root getTheRoot() {
+		assert Root.theRoot != null;
+		return Root.theRoot;
+	}// getTheRoot
+
+	static public void main(String[] args) throws FileNotFoundException {
+		String sample_contents_directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE";
+		File sample_contents_directory = new File(
+				sample_contents_directory_path);
+		Root root = Root.getTheRoot(sample_contents_directory);
+	}
 }// Root

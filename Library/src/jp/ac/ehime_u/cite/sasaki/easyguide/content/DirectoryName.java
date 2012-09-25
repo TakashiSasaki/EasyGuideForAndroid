@@ -12,9 +12,9 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.exception.InvalidDirectoryNameExcepti
  */
 public class DirectoryName {
 	private String rawName = "unknown";
-	private String name = "unknown";
+	public String name = "unknown";
 	public int number = -1;
-	private int x = -1, y = -1;
+	public int x = -1, y = -1;
 
 	/**
 	 * a constructor takes directory name.
@@ -53,38 +53,6 @@ public class DirectoryName {
 		throw new InvalidDirectoryNameException("Invalid directory name "
 				+ directory_name);
 	}// a constructor
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
-	 * @return the number
-	 */
-	public int getNumber() {
-		return this.number;
-	}
-
-	/**
-	 * @return the x
-	 */
-	public int getX() {
-		return this.x;
-	}
-
-	/**
-	 * @return the y
-	 */
-	public int getY() {
-		return this.y;
-	}
-
-	public String getRawName() {
-		return this.rawName;
-	}
 
 	static public void main(String[] args) {
 		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力";

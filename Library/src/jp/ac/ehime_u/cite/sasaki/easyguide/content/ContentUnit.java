@@ -64,13 +64,77 @@ public class ContentUnit {
 		for (ContentUnit child : children) {
 			this._children[child.siblingIndex() - 1] = child;
 		}
-		this._children = null;
+		children = null;
 	}// a constructor
+
+	public String getName() {
+		return this._directoryName.name;
+	}
+
+	public int getIndString() {
+		return this._directoryName.number;
+	}
+
+	public int getX() {
+		return this._directoryName.x;
+	}
+
+	public int getY() {
+		return this._directoryName.y;
+	}
+
+	public ContentUnit[] getSiblings() {
+		if (this._parent == null) {
+			return new ContentUnit[] {};
+		}
+		return this._parent._children;
+	}
+
+	public ContentUnit[] getChildren() {
+		return this._children;
+	}
+
+	public ArrayList<ContentUnit> getAncestors() {
+		ArrayList<ContentUnit> ancestors = new ArrayList<ContentUnit>();
+		for (ContentUnit p = this._parent; p != null; p = p._parent) {
+			ancestors.add(p);
+		}
+		return ancestors;
+	}
+
+	public ArrayList<ContentUnit> getSiblingsAndAncestors() {
+		ArrayList<ContentUnit> sa = new ArrayList<ContentUnit>();
+		for (ContentUnit s : this.getSiblings()) {
+			sa.add(s);
+		}
+		for (ContentUnit a : this.getAncestors()) {
+			sa.add(a);
+		}
+		return sa;
+	}
+
+	public ContentUnit getChild(int index) {
+		assert (index > 0);
+		return this._children[index - 1];
+	}
 
 	static public void main(String[] args) {
 		Logger.getGlobal().setLevel(Level.INFO);
-		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力";
+		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力/01 四国電力保安研修所";
 		final File directory = new File(directory_path);
 		ContentUnit content_unit = new ContentUnit(directory, null);
+		ContentUnit content_unit_2 = content_unit.getChild(1).getChild(2);
+		Logger.getGlobal().info(
+				"children " + content_unit_2.getChildren().length);
+		Logger.getGlobal().info(
+				"siblings " + content_unit_2.getSiblings().length);
+		Logger.getGlobal().info(
+				"ancestors " + content_unit_2.getAncestors().size());
+		for (ContentUnit cu : content_unit_2.getAncestors()) {
+			Logger.getGlobal().info(cu.getName());
+		}
+		Logger.getGlobal().info(
+				"siblings and ancestors "
+						+ content_unit_2.getSiblingsAndAncestors().size());
 	}
 }// class ContentUnit

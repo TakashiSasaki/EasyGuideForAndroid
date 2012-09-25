@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.model;
+package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 
 import java.io.File;
 
@@ -29,11 +29,6 @@ public class DirectoryImage {
 	/**
 	 * loads default image and create default thumbnail. They are used when no
 	 * image file is provided.
-	 * 
-	 * @param context
-	 * @param drawable_resource_id
-	 *            R.drawable.something
-	 * @throws DirectoryImageException
 	 */
 	public static Bitmap getDefaultImage(Context context) throws Exception {
 		Resources resources = context.getResources();
@@ -45,11 +40,8 @@ public class DirectoryImage {
 		if (default_image == null)
 			throw new Exception("Can't load defaut image.");
 		return default_image;
-	}// SetDefaultImage
+	}// getDefaultImage
 
-	/**
-	 * @param directory
-	 */
 	public DirectoryImage(File directory) {
 		Classifier classifier = new Classifier(directory);
 

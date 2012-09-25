@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryName;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;

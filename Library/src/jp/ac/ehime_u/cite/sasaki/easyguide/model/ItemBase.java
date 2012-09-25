@@ -10,6 +10,8 @@ import java.util.Iterator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryName;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;

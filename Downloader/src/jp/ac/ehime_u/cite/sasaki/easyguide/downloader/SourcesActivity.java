@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.gmail.takashi316.lib.android.wifi.WifiListDialog;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
 import jp.ac.ehime_u.cite.sasaki.easyguide.db.SourceTable;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;

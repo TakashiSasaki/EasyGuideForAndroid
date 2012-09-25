@@ -125,7 +125,8 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 		try {
 			setImageView(this.itemBase);
 		} catch (Exception e) {
-			Log.v(new Throwable(), "Can't set image of " + this.itemBase.getTitle());
+			Log.v(new Throwable(),
+					"Can't set image of " + this.itemBase.getTitle());
 			e.printStackTrace();
 		}
 	}

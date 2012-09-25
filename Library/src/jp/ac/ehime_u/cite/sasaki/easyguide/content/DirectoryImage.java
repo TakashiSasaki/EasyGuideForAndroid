@@ -3,7 +3,6 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 import java.io.File;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.R;
-import jp.ac.ehime_u.cite.sasaki.easyguide.util.Classifier;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 import android.content.Context;

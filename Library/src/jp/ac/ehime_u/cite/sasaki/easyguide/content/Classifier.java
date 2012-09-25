@@ -1,10 +1,12 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.util;
+package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 public class Classifier {
 	private Pattern movieFilePattern = Pattern.compile("^.+\\.m4v$");

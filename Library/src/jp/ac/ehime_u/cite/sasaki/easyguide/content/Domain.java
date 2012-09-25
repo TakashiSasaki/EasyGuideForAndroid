@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.download;
+package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.Root;
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 
 import android.util.Log;

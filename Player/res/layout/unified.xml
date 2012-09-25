@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="10" >
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollViewSiblingsAndParents"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:minHeight="50px" >
+        android:minHeight="50dp" >
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal" >
         </LinearLayout>
@@ -21,24 +22,33 @@
         android:id="@+id/layoutVideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:minHeight="50px" >
+        android:minHeight="50dp" >
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:minHeight="50px" >
-    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/frameLayoutImage"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:minHeight="50dp" android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/imageViewClickable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/h512w512" />
+
+        <SurfaceView
+            android:id="@+id/surfaceViewClickable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/layoutHtml"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:minHeight="50px" >
+        android:minHeight="50dp" >
     </LinearLayout>
 
     <LinearLayout
@@ -46,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:minHeight="50px" >
+        android:minHeight="50dp" >
     </LinearLayout>
 
     <TextView
@@ -54,6 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:minHeight="20dp"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 

@@ -118,7 +118,7 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 	}
 
 	public String getTitle() {
-		return this.directoryName.getName();
+		return this.directoryName.name;
 	}
 
 	protected S getByIndex(int index, S default_item) {
@@ -162,15 +162,15 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 	}
 
 	public int getIndex() {
-		return this.directoryName.getNumber();
+		return this.directoryName.number;
 	}
 
 	public int getX() {
-		return this.directoryName.getX();
+		return this.directoryName.x;
 	}
 
 	public int getY() {
-		return this.directoryName.getY();
+		return this.directoryName.y;
 	}
 
 	public Bitmap getImage(Context context) throws Exception {

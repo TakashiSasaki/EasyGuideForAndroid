@@ -83,6 +83,10 @@ public class ContentUnit {
 		return this._directoryName.y;
 	}
 
+	public File getDirectory() {
+		return this._directory;
+	}
+
 	public ContentUnit getParent() {
 		return this._parent;
 	}

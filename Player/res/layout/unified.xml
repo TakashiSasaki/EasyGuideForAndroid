@@ -96,6 +96,7 @@
             android:layout_gravity="bottom"
             android:minHeight="20dp"
             android:text="動作状態確認用表示部"
+            android:singleLine="false"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <Button

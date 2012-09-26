@@ -1,7 +1,11 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.Contents;
@@ -10,6 +14,8 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,6 +24,8 @@ import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
@@ -62,6 +70,8 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private LinearLayout layoutButtons2;
 
 	private DirectoryImage directoryImage = new DirectoryImage();
+	private WifiManager wifiManager;
+	private Button buttonWiFi;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +89,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.mediaController = (MediaController) findViewById(R.id.mediaController1);
 		this.layoutButtons2 = (LinearLayout) findViewById(R.id.layoutButtons2);
+		this.buttonWiFi = (Button) findViewById(R.id.buttonWiFi);
 
 		// this.videoView.setMediaController(this.mediaController);
 
@@ -106,6 +117,42 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		File content_root_directory = new File(external_storage_directory,
 				"EASYGUIDE/www.yonden.co.jp/01 四国電力");
 		this.contentUnit = new ContentUnit(content_root_directory, null);
+
+		this.wifiManager = (WifiManager) this
+				.getSystemService(Context.WIFI_SERVICE);
+		this.wifiManager.startScan();
+		final UnifiedActivity ua = this;
+		this.buttonWiFi.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				File file = new File(ua.contentUnit.getDirectory(), "wifi.log");
+				ua.contentUnit.getDirectory().setWritable(true);
+				FileWriter file_writer;
+				try {
+					if (file.exists()) {
+						file_writer = new FileWriter(file, true);
+					} else {
+						file_writer = new FileWriter(file);
+					}
+					List<ScanResult> sr_list = ua.wifiManager.getScanResults();
+					StringBuilder sb = new StringBuilder();
+					for (ScanResult sr : sr_list) {
+						String ssid = sr.SSID;
+						String bssid = sr.BSSID;
+						int level = sr.level;
+						String s = new Date().toString() + ", " + sr.SSID
+								+ ", " + sr.BSSID + ", " + sr.level + "\n";
+						sb.append(s);
+					}
+					file_writer.write(sb.toString());
+					file_writer.flush();
+					ua.textViewStatus.setText(sb.toString());
+					file_writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}// try
+			}
+		});
 
 	}// onCreate
 

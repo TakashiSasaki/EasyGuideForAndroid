@@ -34,7 +34,7 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 		this.items = new ArrayList<S>();
 		this.directory = directory;
 		this.directoryName = new DirectoryName(directory.getName());
-		this.directoryImage = new DirectoryImage(directory);
+		this.directoryImage = new DirectoryImage(); // it should not work
 	}
 
 	protected ItemBase() {
@@ -174,7 +174,7 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 	}
 
 	public Bitmap getImage(Context context) throws Exception {
-		return this.directoryImage.getImage(context);
+		return this.directoryImage.getBitmap(context);
 	}
 
 	public Bitmap getThumbnail(Context context) throws Exception {

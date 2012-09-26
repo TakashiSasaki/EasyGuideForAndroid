@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.Contents;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -12,24 +13,29 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 public class UnifiedActivity extends Activity implements SurfaceHolder.Callback {
 	private ImageView imageView;
@@ -50,6 +56,12 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private LinearLayout layoutHtml;
 	private LinearLayout layoutButtons;
 	private TextView textViewStatus;
+	private ImageView imageViewClickable;
+	private VideoView videoView;
+	private MediaController mediaController;
+	private LinearLayout layoutButtons2;
+
+	private DirectoryImage directoryImage = new DirectoryImage();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +75,12 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.layoutHtml = (LinearLayout) findViewById(R.id.layoutHtml);
 		this.layoutButtons = (LinearLayout) findViewById(R.id.layoutButtons);
 		this.textViewStatus = (TextView) findViewById(R.id.textViewStatus);
+		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
+		this.videoView = (VideoView) findViewById(R.id.videoView1);
+		this.mediaController = (MediaController) findViewById(R.id.mediaController1);
+		this.layoutButtons2 = (LinearLayout) findViewById(R.id.layoutButtons2);
+
+		// this.videoView.setMediaController(this.mediaController);
 
 		this.surfaceView.setZOrderOnTop(true);
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -146,22 +164,91 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(this.contentUnit.hasHtml() || this.contentUnit.hasText()){
+		if (this.contentUnit.hasHtml() || this.contentUnit.hasText()) {
 			this.layoutHtml.setVisibility(View.VISIBLE);
 		} else {
-			this.layoutHtml.setVisibility(View.INVISIBLE);
+			this.layoutHtml.setVisibility(View.GONE);
 		}
-		if(this.contentUnit.hasImage()){
-			this.frameLayoutImage.setVisibility(View.VISIBLE);
-		} else {
-			this.frameLayoutImage.setVisibility(View.INVISIBLE);
-		}
-		if(this.contentUnit.hasMovie()) {
+		if (this.contentUnit.hasMovie()) {
 			this.layoutVideo.setVisibility(View.VISIBLE);
+			// this.layoutVideo.bringToFront();
+			this.layoutVideo.setBackgroundColor(Color.WHITE);
+			this.videoView.setVideoPath(this.contentUnit.getMovieFile()
+					.getAbsolutePath());
+			this.videoView.setMediaController(new MediaController(this));
+			this.videoView.start();
 		} else {
-			this.layoutVideo.setVisibility(View.INVISIBLE);
+			this.layoutVideo.setVisibility(View.GONE);
+		}
+		if (this.contentUnit.hasImageFile()) {
+			this.frameLayoutImage.setVisibility(View.VISIBLE);
+			this.imageViewClickable.setImageBitmap(null);
+			this.directoryImage.setContentUnit(this.contentUnit);
+			this.imageViewClickable.setImageBitmap(this.directoryImage
+					.getBitmap(this));
+		} else {
+			this.frameLayoutImage.setVisibility(View.GONE);
+			this.imageView.setImageBitmap(null);
+		}
+		if (this.contentUnit.getChildren().length > 0) {
+			this._showButtons();
 		}
 	}// onResume
+
+	public void setContentUnit(ContentUnit cu) {
+		this.contentUnit = cu;
+	}
+
+	private void _showButtons() {
+		this.layoutButtons.removeAllViews();
+		final UnifiedActivity ua = this;
+
+		int count = 0;
+		for (final ContentUnit cu : this.contentUnit.getChildren()) {
+			Button b = new Button(this);
+			b.setText(cu.getName());
+			b.setTextSize(30);
+			// b.setBackgroundColor(Color.YELLOW);
+			b.setTextColor(Color.BLACK);
+			b.setMinWidth(30);
+			b.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					ua.setContentUnit(cu);
+					ua.onResume();
+				}
+			});
+			if (count < 5) {
+				this.layoutButtons.addView(b);
+				++count;
+			} else {
+				this.layoutButtons2.addView(b);
+				++count;
+			}
+
+		}// for
+		final ContentUnit parent_cu = this.contentUnit.getParent();
+		if (parent_cu != null) {
+			Button b = new Button(this);
+			b.setText("もどる");
+			b.setTextSize(30);
+			b.setBackgroundColor(Color.BLUE);
+			b.setTextColor(Color.WHITE);
+			b.setGravity(Gravity.RIGHT);
+			b.setMinWidth(30);
+			b.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					ua.setContentUnit(parent_cu);
+					ua.videoView.stopPlayback();
+					ua.onResume();
+				}// onClick
+			});
+			this.layoutButtons2.removeAllViews();
+			this.layoutButtons2.addView(b);
+		}// if
+	}// _showButtons
 
 	protected void addStarPoint(Point point) {
 		this.starPoints.add(point);

@@ -24,40 +24,62 @@ public class DirectoryImage {
 	private static int thumbnailHeight = 100;
 	// private static Bitmap defaultImage;
 	private File imageFile;
+	private static Bitmap defaultImage;
+	private Bitmap _bitmap;
+
+	protected void finalize() throws Throwable {
+		this._bitmap.recycle();
+	};
 
 	/**
 	 * loads default image and create default thumbnail. They are used when no
 	 * image file is provided.
 	 */
-	public static Bitmap getDefaultImage(Context context) throws Exception {
+	private static Bitmap _getDefaultImage(Context context) {
+		if (DirectoryImage.defaultImage != null)
+			return DirectoryImage.defaultImage;
 		Resources resources = context.getResources();
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inPurgeable = true;
 		options.inPreferredConfig = Bitmap.Config.RGB_565;
-		Bitmap default_image = BitmapFactory.decodeResource(resources,
+		DirectoryImage.defaultImage = BitmapFactory.decodeResource(resources,
 				R.drawable.unknown, options);
-		if (default_image == null)
-			throw new Exception("Can't load defaut image.");
-		return default_image;
+		// if (default_image == null)
+		// throw new Exception("Can't load defaut image.");
+		// DirectoryImage.defaultImage = default_image;
+		return DirectoryImage.defaultImage;
 	}// getDefaultImage
 
-	public DirectoryImage(File directory) {
-		Classifier classifier = new Classifier(directory);
+	// public DirectoryImage(File directory) {
+	// Classifier classifier = new Classifier(directory);
+	//
+	// if (classifier.getImageFiles().size() > 0) {
+	// File f = classifier.getImageFiles().get(0);
+	// Log.v(new Throwable(),
+	// "Image file was found, " + f.getAbsolutePath());
+	// this.imageFile = f;
+	// }// if
+	// }// a constructor
 
-		if (classifier.getImageFiles().size() > 0) {
-			File f = classifier.getImageFiles().get(0);
-			Log.v(new Throwable(),
-					"Image file was found, " + f.getAbsolutePath());
-			this.imageFile = f;
-		}// if
-	}// a constructor
+	public void setContentUnit(ContentUnit content_unit) {
+		if (this._bitmap != null) {
+			this._bitmap.recycle();
+			this._bitmap = null;
+		}
+		this.imageFile = content_unit.getImageFile();
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(this.imageFile.getAbsolutePath(), options);
+		int denominator = Math.min(options.outWidth / 1024,
+				options.outHeight / 1024) + 1;
+		options = new BitmapFactory.Options();
+		options.inPurgeable = true;
+		options.inPreferredConfig = Bitmap.Config.RGB_565;
+		options.inSampleSize = denominator;
+		this._bitmap = BitmapFactory.decodeFile(this.imageFile.getPath(),
+				options);
+	}
 
-	/**
-	 * @param original_bitmap
-	 * @param width
-	 * @param height
-	 * @return resized bitmap
-	 */
 	public static Bitmap ResizeBitmap(Bitmap original_bitmap, int width,
 			int height) {
 		int original_height = original_bitmap.getHeight();
@@ -71,37 +93,39 @@ public class DirectoryImage {
 		return resized_bitmap;
 	}// ResizeBitmap
 
-	/**
-	 * @return the image
-	 * @throws Exception
-	 */
-	public Bitmap getImage(Context context) throws Exception {
+	// public Bitmap getImage(Context context) throws Exception {
+	//
+	// if (this.imageFile != null) {
+	// BitmapFactory.Options options = new BitmapFactory.Options();
+	// options.inPurgeable = true;
+	// options.inPreferredConfig = Bitmap.Config.RGB_565;
+	// Bitmap b = BitmapFactory.decodeFile(this.imageFile.getPath(),
+	// options);
+	// if (b != null) {
+	// return b;
+	// }
+	// // if (defaultImage == null || defaultThumbnail == null) {
+	// // throw new DirectoryImageException("Can't load image "
+	// // + image_file.getPath()
+	// // + " and default image is not provided.");
+	// // }
+	// }
+	// Log.v(new Throwable(), "Failed to decode " + this.imageFile.getPath());
+	// return _getDefaultImage(context);
+	// }// getImage
 
-		if (this.imageFile != null) {
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inPurgeable = true;
-			options.inPreferredConfig = Bitmap.Config.RGB_565;
-			Bitmap b = BitmapFactory.decodeFile(this.imageFile.getPath(),options);
-			if (b != null) {
-				return b;
-			}
-			// if (defaultImage == null || defaultThumbnail == null) {
-			// throw new DirectoryImageException("Can't load image "
-			// + image_file.getPath()
-			// + " and default image is not provided.");
-			// }
-		}
-		Log.v(new Throwable(),
-				"Failed to decode " + this.imageFile.getPath());
-		return getDefaultImage(context);
-	}// getImage
+	public Bitmap getBitmap(Context context) {
+		if (this._bitmap == null)
+			return DirectoryImage._getDefaultImage(context);
+		return this._bitmap;
+	}
 
 	/**
 	 * @return the thumbnail
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public Bitmap getThumbnail(Context context) throws Exception {
-		Bitmap b = getImage(context);
+		Bitmap b = getBitmap(context);
 		Bitmap t = ResizeBitmap(b, thumbnailWidth, thumbnailHeight);
 		return t;
 	}// getThumbnail

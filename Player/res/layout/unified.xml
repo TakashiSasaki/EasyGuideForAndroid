@@ -2,16 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:weightSum="10" >
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollViewSiblingsAndParents"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:minHeight="50px" >
+        android:minHeight="50dp" >
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal" >
         </LinearLayout>
@@ -20,41 +22,92 @@
     <LinearLayout
         android:id="@+id/layoutVideo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="800dp"
         android:layout_weight="1"
-        android:minHeight="50px" >
+        android:minHeight="50dp"
+        android:gravity="center_horizontal" >
+
+        <VideoView
+            android:id="@+id/videoView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:id="@+id/frameLayoutImage"
+        android:layout_width="wrap_content"
+        android:layout_height="800dp"
         android:layout_weight="1"
-        android:minHeight="50px" >
-    </LinearLayout>
+        android:background="@android:color/white"
+        android:minHeight="50dp" >
+
+        <ImageView
+            android:id="@+id/imageViewClickable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/h512w512" />
+
+        <SurfaceView
+            android:id="@+id/surfaceViewClickable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/layoutHtml"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="800dp"
         android:layout_weight="1"
-        android:minHeight="50px" >
+        android:minHeight="50dp" >
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:minHeight="50px" >
+        android:layout_weight="2"
+        android:gravity="center"
+        android:minHeight="50dp" >
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewStatus"
+    <LinearLayout
+        android:id="@+id/layoutButtons2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_weight="2"
+        android:gravity="center"
+        android:minHeight="50dp" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="right"
+        android:minHeight="50dp" >
+
+        <TextView
+            android:id="@+id/textViewStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="20dp"
+            android:text="動作状態確認用表示部"
+            android:singleLine="false"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button
+            android:id="@+id/buttonWiFi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFff4500"
+            android:minHeight="60dp"
+            android:minWidth="60dp"
+            android:text="Wi-Fi電波強度測定" >
+        </Button>
+    </LinearLayout>
 
 </LinearLayout>

@@ -83,6 +83,14 @@ public class ContentUnit {
 		return this._directoryName.y;
 	}
 
+	public File getDirectory() {
+		return this._directory;
+	}
+
+	public ContentUnit getParent() {
+		return this._parent;
+	}
+
 	public ContentUnit[] getSiblings() {
 		if (this._parent == null) {
 			return new ContentUnit[] {};
@@ -118,9 +126,41 @@ public class ContentUnit {
 		return this._children[index - 1];
 	}
 
+	public boolean hasMovie() {
+		return this._classifier.getMovieFiles().size() > 0;
+	}
+
+	public boolean hasText() {
+		return this._classifier.getTextFiles().size() > 0;
+	}
+
+	public boolean hasHtml() {
+		return this._classifier.getHtmlFiles().size() > 0;
+	}
+
+	public boolean hasImageFile() {
+		return this._classifier.getImageFiles().size() > 0;
+	}
+
+	public File getImageFile() {
+		return this._classifier.getImageFiles().get(0);
+	}
+
+	public File getMovieFile() {
+		return this._classifier.getMovieFiles().get(0);
+	}
+
+	public File getTextFile() {
+		return this._classifier.getTextFiles().get(0);
+	}
+
+	public File getHtmlFile() {
+		return this._classifier.getHtmlFiles().get(0);
+	}
+
 	static public void main(String[] args) {
 		Logger.getGlobal().setLevel(Level.INFO);
-		final String directory_path = "/C:/Users/sasaki/Google ãƒ‰ãƒ©ã‚¤ãƒ–/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 å››å›½é›»åŠ›/01 å››å›½é›»åŠ›ä¿å®‰ç ”ä¿®æ‰€";
+		final String directory_path = "/C:/Users/sasaki/Google ƒhƒ‰ƒCƒu/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 l‘“d—Í/01 l‘“d—Í•ÛˆÀŒ¤CŠ";
 		final File directory = new File(directory_path);
 		ContentUnit content_unit = new ContentUnit(directory, null);
 		ContentUnit content_unit_2 = content_unit.getChild(1).getChild(2);

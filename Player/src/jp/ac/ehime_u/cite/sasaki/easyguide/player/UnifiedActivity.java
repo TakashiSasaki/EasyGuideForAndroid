@@ -26,6 +26,7 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
@@ -36,6 +37,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -72,6 +74,8 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private DirectoryImage directoryImage = new DirectoryImage();
 	private WifiManager wifiManager;
 	private Button buttonWiFi;
+	private WebView webView;
+	private LinearLayout layoutBreadcrumb;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,8 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.mediaController = (MediaController) findViewById(R.id.mediaController1);
 		this.layoutButtons2 = (LinearLayout) findViewById(R.id.layoutButtons2);
 		this.buttonWiFi = (Button) findViewById(R.id.buttonWiFi);
+		this.webView = (WebView) findViewById(R.id.webView);
+		this.layoutBreadcrumb = (LinearLayout)findViewById(R.id.layoutBreadcrumb);
 
 		// this.videoView.setMediaController(this.mediaController);
 
@@ -135,6 +141,10 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 						file_writer = new FileWriter(file);
 					}
 					List<ScanResult> sr_list = ua.wifiManager.getScanResults();
+					if (sr_list == null) {
+						ua.textViewStatus.setText("Wi-Fiアクセスポイントを検出できません");
+						return;
+					}
 					StringBuilder sb = new StringBuilder();
 					for (ScanResult sr : sr_list) {
 						String ssid = sr.SSID;
@@ -211,7 +221,16 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (this.contentUnit.hasHtml() || this.contentUnit.hasText()) {
+		if (this.contentUnit.hasHtml()) {
+			this.webView.loadUrl("file://" + this.contentUnit.getDirectory()
+					+ "/index.html");
+			this.layoutHtml.setVisibility(View.VISIBLE);
+		} else {
+			this.layoutHtml.setVisibility(View.GONE);
+		}
+		if (this.contentUnit.hasText()) {
+			this.webView.loadUrl("file://"
+					+ this.contentUnit.getTextFile().getAbsolutePath());
 			this.layoutHtml.setVisibility(View.VISIBLE);
 		} else {
 			this.layoutHtml.setVisibility(View.GONE);
@@ -278,7 +297,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		final ContentUnit parent_cu = this.contentUnit.getParent();
 		if (parent_cu != null) {
 			Button b = new Button(this);
-			b.setText("もどる");
+			b.setText(parent_cu.getName() + "にもどる");
 			b.setTextSize(30);
 			b.setBackgroundColor(Color.BLUE);
 			b.setTextColor(Color.WHITE);
@@ -289,6 +308,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 				public void onClick(View v) {
 					ua.setContentUnit(parent_cu);
 					ua.videoView.stopPlayback();
+					ua.layoutVideo.setVisibility(View.GONE);
 					ua.onResume();
 				}// onClick
 			});

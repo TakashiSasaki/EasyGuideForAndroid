@@ -2,15 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical"
-    android:weightSum="10" >
+    android:background="@android:color/black"
+    android:orientation="vertical" >
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollViewSiblingsAndParents"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:minHeight="50dp" >
+        android:layout_gravity="top"
+        android:layout_margin="1dp"
+        android:layout_weight="0"
+        android:background="@android:color/white" >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -20,27 +22,40 @@
     </HorizontalScrollView>
 
     <LinearLayout
+        android:id="@+id/layoutBreadcrumb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_weight="0"
+        android:gravity="left" >
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/layoutVideo"
         android:layout_width="match_parent"
-        android:layout_height="800dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:minHeight="50dp"
-        android:gravity="center_horizontal" >
+        android:gravity="center"
+        android:padding="1dp"
+        android:visibility="gone" >
 
         <VideoView
             android:id="@+id/videoView1"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/frameLayoutImage"
-        android:layout_width="wrap_content"
-        android:layout_height="800dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="1dp"
         android:layout_weight="1"
         android:background="@android:color/white"
-        android:minHeight="50dp" >
+        android:padding="1dp" >
 
         <ImageView
             android:id="@+id/imageViewClickable"
@@ -58,53 +73,56 @@
     <LinearLayout
         android:id="@+id/layoutHtml"
         android:layout_width="match_parent"
-        android:layout_height="800dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:minHeight="50dp" >
+        android:padding="1dp"
+        android:visibility="gone" >
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:minHeight="50dp" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutButtons2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:minHeight="50dp" >
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:gravity="center" >
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="right"
-        android:minHeight="50dp" >
+        android:layout_gravity="bottom"
+        android:layout_margin="1dp"
+        android:layout_weight="0"
+        android:gravity="left"
+        android:padding="1dp" >
+
+        <LinearLayout
+            android:id="@+id/layoutButtons2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left" >
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:minHeight="20dp"
-            android:text="動作状態確認用表示部"
+            android:layout_gravity="right"
             android:singleLine="false"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:text="messages for the purpose of debugging"
+            android:textAppearance="?android:attr/textAppearanceSmall" >
+        </TextView>
 
         <Button
             android:id="@+id/buttonWiFi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:background="#FFff4500"
-            android:minHeight="60dp"
             android:minWidth="60dp"
             android:text="Wi-Fi電波強度測定" >
         </Button>

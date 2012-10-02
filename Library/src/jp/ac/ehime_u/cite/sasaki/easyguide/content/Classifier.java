@@ -29,6 +29,7 @@ public class Classifier {
 		this.directory = directory;
 
 		for (File f : directory.listFiles()) {
+			
 			Logger.getGlobal().info("classyfing " + f.getName());
 			Matcher match_movie = this.movieFilePattern.matcher(f.getName());
 			if (match_movie.find()) {

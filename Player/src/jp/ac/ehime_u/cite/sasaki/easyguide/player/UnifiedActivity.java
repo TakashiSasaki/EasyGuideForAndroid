@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.Contents;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
@@ -54,7 +53,6 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private Bitmap bitmap;
 	private SurfaceHolder surfaceHolder;
 	private ItemBase itemBase;
-	private Contents contents;
 	private ContentUnit contentUnit;
 	private float scaleX, scaleY;
 	private float offsetX, offsetY;

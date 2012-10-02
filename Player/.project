@@ -3,7 +3,7 @@
 	<name>EasyGuide</name>
 	<comment></comment>
 	<projects>
-		<project>EasyGuideLib</project>
+		<project>Library</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

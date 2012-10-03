@@ -42,7 +42,7 @@ public class ContentUnit {
 
 		this.identifier[this._level] = this._directoryName.number;
 
-		Logger.getGlobal().info("directory = " + directory.getAbsolutePath());
+		MyLogger.info("directory = " + directory.getAbsolutePath());
 
 		// traversing children
 		ArrayList<ContentUnit> children = new ArrayList<ContentUnit>();
@@ -54,7 +54,7 @@ public class ContentUnit {
 						child_directory, this);
 				children.add(child_content_unit);
 			} catch (InvalidDirectoryNameException e) {
-				Logger.getGlobal().info(e.toString());
+				MyLogger.info(e.toString());
 				break;
 			}
 		}
@@ -159,22 +159,17 @@ public class ContentUnit {
 	}
 
 	static public void main(String[] args) {
-		Logger.getGlobal().setLevel(Level.INFO);
 		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力/01 四国電力保安研修所";
 		final File directory = new File(directory_path);
 		ContentUnit content_unit = new ContentUnit(directory, null);
 		ContentUnit content_unit_2 = content_unit.getChild(1).getChild(2);
-		Logger.getGlobal().info(
-				"children " + content_unit_2.getChildren().length);
-		Logger.getGlobal().info(
-				"siblings " + content_unit_2.getSiblings().length);
-		Logger.getGlobal().info(
-				"ancestors " + content_unit_2.getAncestors().size());
+		MyLogger.info("children " + content_unit_2.getChildren().length);
+		MyLogger.info("siblings " + content_unit_2.getSiblings().length);
+		MyLogger.info("ancestors " + content_unit_2.getAncestors().size());
 		for (ContentUnit cu : content_unit_2.getAncestors()) {
-			Logger.getGlobal().info(cu.getName());
+			MyLogger.info(cu.getName());
 		}
-		Logger.getGlobal().info(
-				"siblings and ancestors "
-						+ content_unit_2.getSiblingsAndAncestors().size());
+		MyLogger.info("siblings and ancestors "
+				+ content_unit_2.getSiblingsAndAncestors().size());
 	}
 }// class ContentUnit

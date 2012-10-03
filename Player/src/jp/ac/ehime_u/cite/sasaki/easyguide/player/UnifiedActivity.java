@@ -1,20 +1,17 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,12 +20,13 @@ import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -59,13 +57,15 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private ArrayList<Point> starPoints = new ArrayList<Point>();
 
 	private HorizontalScrollView horizontalScrollViewSiblingsAndParents;
+	private LinearLayout layoutBreadcrumb;
 	private LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
 	private LinearLayout layoutHtml;
 	private LinearLayout layoutButtons;
-	private TextView textViewStatus;
+	private LinearLayout layoutText;
 	private ImageView imageViewClickable;
 	private VideoView videoView;
+	private TextView textViewContent;
 	private MediaController mediaController;
 	private LinearLayout layoutButtons2;
 
@@ -73,7 +73,6 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private WifiManager wifiManager;
 	private Button buttonWiFi;
 	private WebView webView;
-	private LinearLayout layoutBreadcrumb;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,18 +81,19 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
 		this.surfaceView = (SurfaceView) findViewById(R.id.surfaceViewClickable);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
+		this.layoutBreadcrumb = (LinearLayout) findViewById(R.id.layoutBreadcrumb);
 		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
 		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
 		this.layoutHtml = (LinearLayout) findViewById(R.id.layoutHtml);
 		this.layoutButtons = (LinearLayout) findViewById(R.id.layoutButtons);
-		this.textViewStatus = (TextView) findViewById(R.id.textViewStatus);
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
+		this.textViewContent = (TextView) findViewById(R.id.textViewContent);
 		this.mediaController = (MediaController) findViewById(R.id.mediaController1);
 		this.layoutButtons2 = (LinearLayout) findViewById(R.id.layoutButtons2);
 		this.buttonWiFi = (Button) findViewById(R.id.buttonWiFi);
 		this.webView = (WebView) findViewById(R.id.webView);
-		this.layoutBreadcrumb = (LinearLayout)findViewById(R.id.layoutBreadcrumb);
+		this.layoutBreadcrumb = (LinearLayout) findViewById(R.id.layoutBreadcrumb);
 
 		// this.videoView.setMediaController(this.mediaController);
 
@@ -125,44 +125,35 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.wifiManager = (WifiManager) this
 				.getSystemService(Context.WIFI_SERVICE);
 		this.wifiManager.startScan();
-		final UnifiedActivity ua = this;
-		this.buttonWiFi.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				File file = new File(ua.contentUnit.getDirectory(), "wifi.log");
-				ua.contentUnit.getDirectory().setWritable(true);
-				FileWriter file_writer;
-				try {
-					if (file.exists()) {
-						file_writer = new FileWriter(file, true);
-					} else {
-						file_writer = new FileWriter(file);
-					}
-					List<ScanResult> sr_list = ua.wifiManager.getScanResults();
-					if (sr_list == null) {
-						ua.textViewStatus.setText("Wi-Fiアクセスポイントを検出できません");
-						return;
-					}
-					StringBuilder sb = new StringBuilder();
-					for (ScanResult sr : sr_list) {
-						String ssid = sr.SSID;
-						String bssid = sr.BSSID;
-						int level = sr.level;
-						String s = new Date().toString() + ", " + sr.SSID
-								+ ", " + sr.BSSID + ", " + sr.level + "\n";
-						sb.append(s);
-					}
-					file_writer.write(sb.toString());
-					file_writer.flush();
-					ua.textViewStatus.setText(sb.toString());
-					file_writer.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}// try
-			}
-		});
 
 	}// onCreate
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater menu_inflater = getMenuInflater();
+		menu_inflater.inflate(R.menu.menu, menu);
+		return true;
+	}// onCreateOptionsMenu
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.itemExit:
+			this.setResult(RESULT_OK);
+			this.finish();
+			return true;
+		case R.id.itemWifiSense:
+			new WifiSenseAndShowDialog(this, this.wifiManager,
+					this.contentUnit.getDirectory());
+			return true;
+		case R.id.itemWifiLocate:
+			AlertDialog.Builder alert_dialog = new AlertDialog.Builder(this);
+			alert_dialog.setPositiveButton("OK", null);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}// onOptionsItemSelected
 
 	// protected void setSpinnerArrayAdapter(ArrayAdapter<T> array_adapter) {
 	// Spinner s = (Spinner) findViewById(R.id.spinner);
@@ -225,38 +216,60 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.layoutHtml.setVisibility(View.VISIBLE);
 		} else {
 			this.layoutHtml.setVisibility(View.GONE);
-		}
+		}// if contentUnit.has HTML
+
 		if (this.contentUnit.hasText()) {
-			this.webView.loadUrl("file://"
-					+ this.contentUnit.getTextFile().getAbsolutePath());
-			this.layoutHtml.setVisibility(View.VISIBLE);
+			try {
+				FileReader file_reader = new FileReader(
+						this.contentUnit.getTextFile());
+				BufferedReader buffer_reader = new BufferedReader(file_reader);
+				StringBuilder sb = new StringBuilder();
+				String s;
+				while ((s = buffer_reader.readLine()) != null) {
+					sb.append(s);
+				}// while
+				this.textViewContent.setText(sb.toString());
+				this.layoutText.setVisibility(View.VISIBLE);
+			} catch (Exception e) {
+				this.layoutText.setVisibility(View.GONE);
+			}// try
 		} else {
-			this.layoutHtml.setVisibility(View.GONE);
-		}
+			this.layoutText.setVisibility(View.GONE);
+		}// if contentUnit has a text
+
 		if (this.contentUnit.hasMovie()) {
-			this.layoutVideo.setVisibility(View.VISIBLE);
 			// this.layoutVideo.bringToFront();
 			this.layoutVideo.setBackgroundColor(Color.WHITE);
-			this.videoView.setVideoPath(this.contentUnit.getMovieFile()
-					.getAbsolutePath());
-			this.videoView.setMediaController(new MediaController(this));
-			this.videoView.start();
+			if (!this.videoView.isPlaying()) {
+				this.videoView.setVideoPath(this.contentUnit.getMovieFile()
+						.getAbsolutePath());
+				this.videoView.setMediaController(new MediaController(this));
+				this.videoView.start();
+			}
+			this.layoutVideo.setVisibility(View.VISIBLE);
 		} else {
 			this.layoutVideo.setVisibility(View.GONE);
-		}
+			this.videoView.setVideoPath(null);
+		}// if contentunit has a movie
+
 		if (this.contentUnit.hasImageFile()) {
-			this.frameLayoutImage.setVisibility(View.VISIBLE);
 			this.imageViewClickable.setImageBitmap(null);
 			this.directoryImage.setContentUnit(this.contentUnit);
 			this.imageViewClickable.setImageBitmap(this.directoryImage
 					.getBitmap(this));
+			this.frameLayoutImage.setVisibility(View.VISIBLE);
 		} else {
 			this.frameLayoutImage.setVisibility(View.GONE);
 			this.imageView.setImageBitmap(null);
-		}
+		}// if content unit has an image
+
 		if (this.contentUnit.getChildren().length > 0) {
 			this._showButtons();
-		}
+		}// if content unit has children
+
+		if (this.contentUnit.getAncestors().size() > 0) {
+			this._showParents();
+		}// if content unit has parents
 	}// onResume
 
 	public void setContentUnit(ContentUnit cu) {
@@ -314,6 +327,30 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.layoutButtons2.addView(b);
 		}// if
 	}// _showButtons
+
+	private void _showParents() {
+		this.layoutBreadcrumb.removeAllViews();
+		final UnifiedActivity unified_activity = this;
+		for (int i = this.contentUnit.getAncestors().size() - 1; i >= 0; --i) {
+			Button b = new Button(this);
+			b.setText(this.contentUnit.getAncestors().get(i).getName());
+			b.setTextSize(30);
+			b.setTextColor(Color.BLACK);
+			b.setMinWidth(30);
+			final ContentUnit content_unit = this.contentUnit.getAncestors()
+					.get(i);
+			b.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					unified_activity.setContentUnit(content_unit);
+					unified_activity.videoView.stopPlayback();
+					unified_activity.layoutVideo.setVisibility(View.GONE);
+					unified_activity.onResume();
+				}// onClick
+			});// onClickListener
+		}// for
+	}// _showParents
 
 	protected void addStarPoint(Point point) {
 		this.starPoints.add(point);

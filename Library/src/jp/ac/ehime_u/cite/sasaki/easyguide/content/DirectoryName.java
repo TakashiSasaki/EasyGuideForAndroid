@@ -22,7 +22,7 @@ public class DirectoryName {
 	 * @throws Exception
 	 */
 	public DirectoryName(String directory_name) {
-		Logger.getGlobal().info("parsing " + directory_name);
+		MyLogger.info("parsing " + directory_name);
 		this.rawName = directory_name;
 		String[] parts = directory_name.split("[ ]+");
 		if (parts.length == 2 || parts.length == 4) {
@@ -57,11 +57,9 @@ public class DirectoryName {
 	static public void main(String[] args) {
 		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力";
 		final File directory = new File(directory_path);
-		Logger.getGlobal().setLevel(Level.INFO);
 		DirectoryName directory_name = new DirectoryName(directory.getName());
-		Logger.getGlobal().info("name = " + directory_name.name);
-		Logger.getGlobal().info("number = " + directory_name.number);
-		Logger.getGlobal().info(
-				"x = " + directory_name.x + ", y = " + directory_name.y);
+		MyLogger.info("name = " + directory_name.name);
+		MyLogger.info("number = " + directory_name.number);
+		MyLogger.info("x = " + directory_name.x + ", y = " + directory_name.y);
 	}
 }

@@ -7,7 +7,7 @@
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollViewSiblingsAndParents"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_margin="1dp"
@@ -22,7 +22,8 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:contentDescription="thumbnail" />
+                android:contentDescription="thumbnail"
+                android:src="@drawable/unknown" />
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -31,13 +32,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
+        android:layout_margin="1dp"
         android:layout_weight="0"
-        android:gravity="left" >
+        android:gravity="left"
+        android:minHeight="10dp" >
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="parent1" />
+            android:text="parent1" android:minHeight="10dp"/>
     </LinearLayout>
 
     <LinearLayout

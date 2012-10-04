@@ -360,6 +360,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 					unified_activity.onResume();
 				}// onClick
 			});// onClickListener
+			this.layoutBreadcrumb.addView(b);
 		}// for
 	}// _showParents
 

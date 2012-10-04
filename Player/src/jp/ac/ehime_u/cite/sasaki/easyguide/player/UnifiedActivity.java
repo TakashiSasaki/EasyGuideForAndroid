@@ -65,8 +65,8 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
 	private LinearLayout layoutHtml;
+	private HorizontalScrollView horizontalScrollViewButtons;
 	private LinearLayout layoutButtons;
-	private LinearLayout layoutButtons2;
 	private LinearLayout layoutText;
 	private ImageView imageViewClickable;
 	private VideoView videoView;
@@ -92,8 +92,8 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
 		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
 		this.layoutHtml = (LinearLayout) findViewById(R.id.layoutHtml);
+		this.horizontalScrollViewButtons = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewButtons);
 		this.layoutButtons = (LinearLayout) findViewById(R.id.layoutButtons);
-		this.layoutButtons2 = (LinearLayout) findViewById(R.id.layoutButtons2);
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.textViewContent = (TextView) findViewById(R.id.textViewContent);
@@ -296,7 +296,6 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.layoutButtons.removeAllViews();
 		final UnifiedActivity ua = this;
 
-		int count = 0;
 		for (final ContentUnit cu : this.contentUnit.getChildren()) {
 			Button b = new Button(this);
 			b.setText(cu.getName());
@@ -312,13 +311,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 					ua.onResume();
 				}
 			});
-			if (count < 5) {
-				this.layoutButtons.addView(b);
-				++count;
-			} else {
-				this.layoutButtons2.addView(b);
-				++count;
-			}
+			this.layoutButtons.addView(b);
 
 		}// for
 		final ContentUnit parent_cu = this.contentUnit.getParent();
@@ -326,8 +319,8 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			Button b = new Button(this);
 			b.setText(parent_cu.getName() + "にもどる");
 			b.setTextSize(30);
-			b.setBackgroundColor(Color.BLUE);
-			b.setTextColor(Color.WHITE);
+			b.setBackgroundColor(Color.CYAN);
+			// b.setTextColor(Color.WHITE);
 			b.setGravity(Gravity.RIGHT);
 			b.setMinWidth(30);
 			b.setOnClickListener(new OnClickListener() {
@@ -339,9 +332,10 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 					ua.onResume();
 				}// onClick
 			});
-			this.layoutButtons2.removeAllViews();
-			this.layoutButtons2.addView(b);
+			// this.layoutButtons.addView(b);
 		}// if
+		this.layoutButtons.setMinimumWidth(this.horizontalScrollViewButtons
+				.getWidth());
 	}// _showButtons
 
 	private void _showParents() {

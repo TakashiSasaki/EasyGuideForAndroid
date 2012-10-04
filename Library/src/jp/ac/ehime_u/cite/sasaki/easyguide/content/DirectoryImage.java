@@ -28,7 +28,9 @@ public class DirectoryImage {
 	private Bitmap _bitmap;
 
 	protected void finalize() throws Throwable {
-		this._bitmap.recycle();
+		if (this._bitmap != null) {
+			this._bitmap.recycle();
+		}
 	};
 
 	/**
@@ -61,7 +63,7 @@ public class DirectoryImage {
 	// }// if
 	// }// a constructor
 
-	public void setContentUnit(ContentUnit content_unit) {
+	public DirectoryImage(ContentUnit content_unit) {
 		if (this._bitmap != null) {
 			this._bitmap.recycle();
 			this._bitmap = null;
@@ -78,7 +80,7 @@ public class DirectoryImage {
 		options.inSampleSize = denominator;
 		this._bitmap = BitmapFactory.decodeFile(this.imageFile.getPath(),
 				options);
-	}
+	}// a constructor
 
 	public static Bitmap ResizeBitmap(Bitmap original_bitmap, int width,
 			int height) {

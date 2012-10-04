@@ -53,7 +53,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private static Bitmap star;
 	private Bitmap bitmap;
 	private SurfaceHolder surfaceHolder;
-	private ItemBase itemBase;
+	//private ItemBase itemBase;
 	private ContentUnit contentUnit;
 	private float scaleX, scaleY;
 	private float offsetX, offsetY;
@@ -73,7 +73,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private TextView textViewContent;
 	private MediaController mediaController;
 
-	private DirectoryImage directoryImage = new DirectoryImage();
+	// private DirectoryImage directoryImage = new DirectoryImage();
 	private WifiManager wifiManager;
 	private WebView webView;
 
@@ -197,7 +197,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.bitmap.recycle();
 			this.bitmap = null;
 		}
-		this.itemBase = item_base;
+		//this.itemBase = item_base;
 		this.bitmap = item_base.getImage(this);
 		this.imageView.setImageBitmap(this.bitmap);
 		LayoutParams image_view_layout_params = this.imageView
@@ -234,7 +234,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 				StringBuilder sb = new StringBuilder();
 				String s;
 				while ((s = buffer_reader.readLine()) != null) {
-					sb.append(s);
+					sb.append(s+"\n");
 				}// while
 				this.textViewContent.setText(sb.toString());
 				this.textViewContent.setTextSize(35);
@@ -264,8 +264,10 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 		if (this.contentUnit.hasImageFile()) {
 			this.imageViewClickable.setImageBitmap(null);
-			this.directoryImage.setContentUnit(this.contentUnit);
-			this.imageViewClickable.setImageBitmap(this.directoryImage
+			DirectoryImage directory_image = new DirectoryImage(
+					this.contentUnit);
+			// this.directoryImage.setContentUnit(this.contentUnit);
+			this.imageViewClickable.setImageBitmap(directory_image
 					.getBitmap(this));
 			this.frameLayoutImage.setVisibility(View.VISIBLE);
 		} else {

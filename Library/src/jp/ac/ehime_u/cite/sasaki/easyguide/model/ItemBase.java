@@ -34,7 +34,7 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 		this.items = new ArrayList<S>();
 		this.directory = directory;
 		this.directoryName = new DirectoryName(directory.getName());
-		this.directoryImage = new DirectoryImage(); // it should not work
+		//this.directoryImage = new DirectoryImage(); // it should not work
 	}
 
 	protected ItemBase() {

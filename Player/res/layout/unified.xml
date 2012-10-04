@@ -53,8 +53,8 @@
 
         <VideoView
             android:id="@+id/videoView1"
-            android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <FrameLayout
@@ -89,11 +89,18 @@
         android:padding="1dp"
         android:visibility="visible" >
 
-        <TextView
-            android:id="@+id/textViewContent"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="説明文のテキスト" />
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textViewContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                scroll=""
+                android:text="説明文のテキスト"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </ScrollView>
     </LinearLayout>
 
     <LinearLayout
@@ -122,47 +129,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutStatus"
+        android:id="@+id/layoutButtons2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="1dp"
-        android:layout_weight="0"
-        android:gravity="left"
-        android:padding="1dp" >
-
-        <LinearLayout
-            android:id="@+id/layoutButtons2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left" >
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="panel" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textViewStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:maxHeight="50dp"
-            android:singleLine="false"
-            android:text="messages for the purpose of debugging"
-            android:textAppearance="?android:attr/textAppearanceSmall" >
-        </TextView>
-
-        <Button
-            android:id="@+id/buttonWiFi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="#FFff4500"
-            android:minWidth="60dp"
-            android:text="W" >
-        </Button>
+        android:layout_weight="0" >
     </LinearLayout>
 
 </LinearLayout>

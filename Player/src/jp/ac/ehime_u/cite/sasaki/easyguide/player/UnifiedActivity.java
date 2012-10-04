@@ -43,6 +43,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -59,6 +60,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private ArrayList<Point> starPoints = new ArrayList<Point>();
 
 	private HorizontalScrollView horizontalScrollViewSiblingsAndParents;
+	private HorizontalScrollView horizontalScrollViewBreadcrumb;
 	private LinearLayout layoutBreadcrumb;
 	private LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
@@ -78,10 +80,13 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.unified);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.setContentView(R.layout.unified);
+		this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
 		this.surfaceView = (SurfaceView) findViewById(R.id.surfaceViewClickable);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
+		this.horizontalScrollViewBreadcrumb = (HorizontalScrollView) findViewById(R.id.scrollViewBreadcrumb);
 		this.layoutBreadcrumb = (LinearLayout) findViewById(R.id.layoutBreadcrumb);
 		this.layoutText = (LinearLayout) findViewById(R.id.layoutText);
 		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
@@ -101,10 +106,10 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.surfaceView.setZOrderOnTop(true);
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 		this.surfaceView.getHolder().addCallback(this);
+		// getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		// setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
 		this.imageView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -269,7 +274,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		}// if content unit has an image
 
 		if (this.contentUnit.getChildren().length == 0) {
-			//this.layoutButtons.setVisibility(View.GONE);
+			// this.layoutButtons.setVisibility(View.GONE);
 		} else if (this.contentUnit.getChildren().length > 0) {
 			this._showButtons();
 			this.layoutButtons.setVisibility(View.VISIBLE);
@@ -342,6 +347,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private void _showParents() {
 		this.layoutBreadcrumb.removeAllViews();
 		final UnifiedActivity unified_activity = this;
+
 		for (int i = this.contentUnit.getAncestors().size() - 1; i >= 0; --i) {
 			Button b = new Button(this);
 			b.setText(this.contentUnit.getAncestors().get(i).getName());
@@ -362,6 +368,29 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			});// onClickListener
 			this.layoutBreadcrumb.addView(b);
 		}// for
+
+		Button b = new Button(this);
+		b.setText(this.contentUnit.getName());
+		b.setTextSize(30);
+		b.setTextColor(Color.BLACK);
+		b.setMinWidth(30);
+		final ContentUnit content_unit = this.contentUnit;
+		b.setBackgroundColor(Color.CYAN);
+		b.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				unified_activity.setContentUnit(content_unit);
+				unified_activity.videoView.stopPlayback();
+				unified_activity.layoutVideo.setVisibility(View.GONE);
+				unified_activity.onResume();
+			}// onClick
+		});// onClickListener
+		this.layoutBreadcrumb.addView(b);
+
+		this.horizontalScrollViewBreadcrumb.smoothScrollTo(
+				this.layoutBreadcrumb.getWidth(), 0);
+		this.horizontalScrollViewBreadcrumb.smoothScrollBy(200, 0);
 	}// _showParents
 
 	protected void addStarPoint(Point point) {

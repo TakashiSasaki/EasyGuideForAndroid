@@ -27,21 +27,29 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-    <LinearLayout
-        android:id="@+id/layoutBreadcrumb"
+    <HorizontalScrollView
+        android:id="@+id/scrollViewBreadcrumb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_margin="1dp"
         android:layout_weight="0"
-        android:gravity="left"
-        android:minHeight="10dp" >
+        android:background="@android:color/white">
 
-        <Button
+        <LinearLayout
+            android:id="@+id/layoutBreadcrumb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="parent1" android:minHeight="10dp"/>
-    </LinearLayout>
+            android:layout_gravity="top"
+            android:layout_margin="1dp"
+            android:gravity="left"
+            android:minHeight="10dp" >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="10dp"
+                android:text="parent1" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/layoutVideo"

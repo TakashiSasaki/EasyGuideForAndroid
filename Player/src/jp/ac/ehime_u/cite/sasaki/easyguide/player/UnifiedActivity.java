@@ -31,6 +31,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
@@ -62,16 +64,15 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private FrameLayout frameLayoutImage;
 	private LinearLayout layoutHtml;
 	private LinearLayout layoutButtons;
+	private LinearLayout layoutButtons2;
 	private LinearLayout layoutText;
 	private ImageView imageViewClickable;
 	private VideoView videoView;
 	private TextView textViewContent;
 	private MediaController mediaController;
-	private LinearLayout layoutButtons2;
 
 	private DirectoryImage directoryImage = new DirectoryImage();
 	private WifiManager wifiManager;
-	private Button buttonWiFi;
 	private WebView webView;
 
 	@Override
@@ -82,16 +83,16 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.surfaceView = (SurfaceView) findViewById(R.id.surfaceViewClickable);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
 		this.layoutBreadcrumb = (LinearLayout) findViewById(R.id.layoutBreadcrumb);
+		this.layoutText = (LinearLayout) findViewById(R.id.layoutText);
 		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
 		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
 		this.layoutHtml = (LinearLayout) findViewById(R.id.layoutHtml);
 		this.layoutButtons = (LinearLayout) findViewById(R.id.layoutButtons);
+		this.layoutButtons2 = (LinearLayout) findViewById(R.id.layoutButtons2);
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.textViewContent = (TextView) findViewById(R.id.textViewContent);
 		this.mediaController = (MediaController) findViewById(R.id.mediaController1);
-		this.layoutButtons2 = (LinearLayout) findViewById(R.id.layoutButtons2);
-		this.buttonWiFi = (Button) findViewById(R.id.buttonWiFi);
 		this.webView = (WebView) findViewById(R.id.webView);
 		this.layoutBreadcrumb = (LinearLayout) findViewById(R.id.layoutBreadcrumb);
 
@@ -101,6 +102,9 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 		this.surfaceView.getHolder().addCallback(this);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
 		this.imageView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -130,10 +134,9 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
 		MenuInflater menu_inflater = getMenuInflater();
 		menu_inflater.inflate(R.menu.menu, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}// onCreateOptionsMenu
 
 	@Override
@@ -229,6 +232,9 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 					sb.append(s);
 				}// while
 				this.textViewContent.setText(sb.toString());
+				this.textViewContent.setTextSize(35);
+				this.textViewContent.setBackgroundColor(Color.WHITE);
+				this.textViewContent.setTextColor(Color.BLACK);
 				this.layoutText.setVisibility(View.VISIBLE);
 			} catch (Exception e) {
 				this.layoutText.setVisibility(View.GONE);
@@ -249,7 +255,6 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.layoutVideo.setVisibility(View.VISIBLE);
 		} else {
 			this.layoutVideo.setVisibility(View.GONE);
-			this.videoView.setVideoPath(null);
 		}// if contentunit has a movie
 
 		if (this.contentUnit.hasImageFile()) {
@@ -263,12 +268,18 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.imageView.setImageBitmap(null);
 		}// if content unit has an image
 
-		if (this.contentUnit.getChildren().length > 0) {
+		if (this.contentUnit.getChildren().length == 0) {
+			//this.layoutButtons.setVisibility(View.GONE);
+		} else if (this.contentUnit.getChildren().length > 0) {
 			this._showButtons();
+			this.layoutButtons.setVisibility(View.VISIBLE);
 		}// if content unit has children
 
-		if (this.contentUnit.getAncestors().size() > 0) {
+		if (this.contentUnit.getAncestors().size() == 0) {
+			this.layoutBreadcrumb.setVisibility(View.GONE);
+		} else if (this.contentUnit.getAncestors().size() > 0) {
 			this._showParents();
+			this.layoutBreadcrumb.setVisibility(View.VISIBLE);
 		}// if content unit has parents
 	}// onResume
 
@@ -349,6 +360,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 					unified_activity.onResume();
 				}// onClick
 			});// onClickListener
+			this.layoutBreadcrumb.addView(b);
 		}// for
 	}// _showParents
 

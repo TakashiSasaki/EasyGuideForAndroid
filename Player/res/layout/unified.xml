@@ -16,14 +16,15 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:contentDescription="thumbnail"
-                android:src="@drawable/unknown" />
+                android:src="@drawable/unknown" 
+                android:visibility="gone"/>
         </LinearLayout>
     </HorizontalScrollView>
 

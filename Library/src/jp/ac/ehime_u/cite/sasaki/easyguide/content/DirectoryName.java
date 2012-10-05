@@ -37,18 +37,19 @@ public class DirectoryName {
 						+ " and it should be positive integer");
 			}
 			this.name = parts[1];
+			//return;
+			if (parts.length == 4) {
+				try {
+					this.x = Integer.parseInt(parts[2]);
+					this.y = Integer.parseInt(parts[3]);
+					return;
+				} catch (NumberFormatException e) {
+					throw new InvalidDirectoryNameException(
+							"Invalid number format in part 3 and 4 in the directory name "
+									+ directory_name);
+				}// try
+			}// if
 			return;
-		}// if
-		if (parts.length == 4) {
-			try {
-				this.x = Integer.parseInt(parts[2]);
-				this.y = Integer.parseInt(parts[3]);
-				return;
-			} catch (NumberFormatException e) {
-				throw new InvalidDirectoryNameException(
-						"Invalid number format in part 3 and 4 in the directory name "
-								+ directory_name);
-			}// try
 		}// if
 		throw new InvalidDirectoryNameException("Invalid directory name "
 				+ directory_name);

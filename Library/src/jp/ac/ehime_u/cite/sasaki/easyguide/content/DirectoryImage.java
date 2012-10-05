@@ -27,11 +27,11 @@ public class DirectoryImage {
 	private static Bitmap defaultImage;
 	private Bitmap _bitmap;
 
-	protected void finalize() throws Throwable {
-		if (this._bitmap != null) {
-			this._bitmap.recycle();
-		}
-	};
+//	protected void finalize() throws Throwable {
+//		if (this._bitmap != null) {
+//			this._bitmap.recycle();
+//		}
+//	};
 
 	/**
 	 * loads default image and create default thumbnail. They are used when no

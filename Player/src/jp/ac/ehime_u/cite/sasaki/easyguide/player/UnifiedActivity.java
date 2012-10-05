@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -53,7 +55,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private static Bitmap star;
 	private Bitmap bitmap;
 	private SurfaceHolder surfaceHolder;
-	//private ItemBase itemBase;
+	// private ItemBase itemBase;
 	private ContentUnit contentUnit;
 	private float scaleX, scaleY;
 	private float offsetX, offsetY;
@@ -110,15 +112,38 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		// setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		this.imageView.setOnTouchListener(new OnTouchListener() {
+		this.imageViewClickable.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				float x_on_image_view = event.getX();
 				float y_on_image_view = event.getY();
-				Point point_on_image_view = new Point((int) x_on_image_view,
-						(int) y_on_image_view);
-				Point point_on_bitmap = getPointOnBitmap(point_on_image_view);
+
+				Matrix matrix = imageViewClickable.getImageMatrix();
+				float f[] = new float[9];
+				matrix.getValues(f);
+				float scale_x = f[0];
+				float scale_y = f[4];
+				float offset_x = f[2];
+				float offset_y = f[5];
+
+				float bitmap_x = (x_on_image_view - offset_x) / scale_x;
+				float bitmap_y = (y_on_image_view - offset_y) / scale_y;
+
+				ContentUnit nearest_child = getNearestChild(bitmap_x, bitmap_y);
+				if (nearest_child == null)
+					return true;
+
+				setContentUnit(nearest_child);
+				videoView.stopPlayback();
+				layoutVideo.setVisibility(View.GONE);
+				onResume();
+
+				// Point point_on_image_view = new Point((int) x_on_image_view,
+				// (int) y_on_image_view);
+				// Point point_on_bitmap =
+				// getPointOnBitmap(point_on_image_view);
+				//
 				// onStarTouched(point_on_bitmap);
 				// TODO: should be implemented
 				return false;
@@ -197,7 +222,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.bitmap.recycle();
 			this.bitmap = null;
 		}
-		//this.itemBase = item_base;
+		// this.itemBase = item_base;
 		this.bitmap = item_base.getImage(this);
 		this.imageView.setImageBitmap(this.bitmap);
 		LayoutParams image_view_layout_params = this.imageView
@@ -234,7 +259,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 				StringBuilder sb = new StringBuilder();
 				String s;
 				while ((s = buffer_reader.readLine()) != null) {
-					sb.append(s+"\n");
+					sb.append(s + "\n");
 				}// while
 				this.textViewContent.setText(sb.toString());
 				this.textViewContent.setTextSize(35);
@@ -395,29 +420,29 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 	// protected abstract void onStarTouched(Point point);
 
-	private Point getPointOnBitmap(Point point_on_image_view) {
-		initScaleAndOffset();
-		float x = (point_on_image_view.x - this.offsetX) / this.scaleX;
-		float y = (point_on_image_view.y - this.offsetY) / this.scaleY;
-		return new Point((int) x, (int) y);
-	}
+	// private Point getPointOnBitmap(Point point_on_image_view) {
+	// initScaleAndOffset();
+	// float x = (point_on_image_view.x - this.offsetX) / this.scaleX;
+	// float y = (point_on_image_view.y - this.offsetY) / this.scaleY;
+	// return new Point((int) x, (int) y);
+	// }
 
 	private Point getPointOnImageView(Point point_on_bitmap) {
-		initScaleAndOffset();
+		// initScaleAndOffset();
 		float x = (point_on_bitmap.x) * this.scaleX + this.offsetX;
 		float y = (point_on_bitmap.y) * this.scaleY + this.offsetY;
 		return new Point((int) x, (int) y);
 	}
 
-	private void initScaleAndOffset() {
-		Matrix matrix = this.imageView.getImageMatrix();
-		float f[] = new float[9];
-		matrix.getValues(f);
-		this.scaleX = f[0];
-		this.scaleY = f[4];
-		this.offsetX = f[2];
-		this.offsetY = f[5];
-	}
+	// private void initScaleAndOffset() {
+	// Matrix matrix = this.imageView.getImageMatrix();
+	// float f[] = new float[9];
+	// matrix.getValues(f);
+	// this.scaleX = f[0];
+	// this.scaleY = f[4];
+	// this.offsetX = f[2];
+	// this.offsetY = f[5];
+	// }
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -466,5 +491,26 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.surfaceHolder.unlockCanvasAndPost(c);
 		}// for
 	}// drawSurface
+
+	public ContentUnit getNearestChild(float bitmap_x, float bitmap_y) {
+		ContentUnit nearest_child = null;
+		float min_distance_squared = 2000 * 2000;
+		for (ContentUnit child : this.contentUnit.getChildren()) {
+			if (child.getX() < 0 || child.getY() < 0)
+				continue;
+			float dx = child.getX() - bitmap_x;
+			float dy = child.getY() - bitmap_y;
+			float distance = dx * dx + dy * dy;
+			if (min_distance_squared > distance) {
+				min_distance_squared = distance;
+				nearest_child = child;
+			}
+		}
+		if (nearest_child != null)
+			return nearest_child;
+		if (this.contentUnit.getChildren().length == 0)
+			return null;
+		return this.contentUnit.getChild(1);
+	}// getNearestChild
 
 }// class UnifiedActivity

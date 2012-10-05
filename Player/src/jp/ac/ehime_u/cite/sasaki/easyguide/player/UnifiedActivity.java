@@ -344,9 +344,9 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		final ContentUnit parent_cu = this.contentUnit.getParent();
 		if (parent_cu != null) {
 			Button b = new Button(this);
-			b.setText(parent_cu.getName() + "にもどる");
+			b.setText("もどる");
 			b.setTextSize(30);
-			b.setBackgroundColor(Color.CYAN);
+			b.setBackgroundColor(Color.GREEN);
 			// b.setTextColor(Color.WHITE);
 			b.setGravity(Gravity.RIGHT);
 			b.setMinWidth(30);
@@ -359,7 +359,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 					ua.onResume();
 				}// onClick
 			});
-			// this.layoutButtons.addView(b);
+			 this.layoutButtons.addView(b);
 		}// if
 		this.layoutButtons.setMinimumWidth(this.horizontalScrollViewButtons
 				.getWidth());

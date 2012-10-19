@@ -10,6 +10,7 @@
 *.dbproj merge=union
 
 # Standard to msysgit
+#*.java   diff=astextplain
 *.java   -text
 *.doc	 diff=astextplain
 *.DOC	 diff=astextplain

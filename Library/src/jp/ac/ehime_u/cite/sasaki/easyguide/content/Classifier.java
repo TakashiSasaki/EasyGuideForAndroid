@@ -18,7 +18,7 @@ public class Classifier {
 			.compile("^(.+\\.html)|(.+\\.htm)$");
 	private Pattern textFilePattern = Pattern.compile("^.+\\.txt$");
 	private Pattern imageFilePattern = Pattern
-			.compile("^(.+\\.jpg)|(.+\\.JPG)|(.+\\.JPEG)|(.+\\.jpeg)|(.+\\.png)|(.+\\.PNG)$");
+			.compile("^(.+\\.jpg)|(.+\\.JPG)|(.+\\.JPEG)|(.+\\.jpeg)|(.+\\.png)|(.+\\.PNG)|(.+\\.gif)|(.+\\.GIF)$");
 
 	private ArrayList<File> movieFiles = new ArrayList<File>();
 	private ArrayList<File> htmlFiles = new ArrayList<File>();

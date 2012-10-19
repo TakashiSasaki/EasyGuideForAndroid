@@ -410,8 +410,8 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.layoutBreadcrumb.addView(b);
 
 		this.horizontalScrollViewBreadcrumb.smoothScrollTo(
-				this.layoutBreadcrumb.getWidth(), 0);
-		this.horizontalScrollViewBreadcrumb.smoothScrollBy(200, 0);
+				this.layoutBreadcrumb.getWidth()+1000, 0);
+		this.horizontalScrollViewBreadcrumb.smoothScrollBy(2000, 0);
 	}// _showParents
 
 	protected void addStarPoint(Point point) {

@@ -2,6 +2,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
@@ -23,6 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,11 +76,13 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private DirectoryImage directoryImage = new DirectoryImage();
 	private WifiManager wifiManager;
 	private WebView webView;
+	private Handler handler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.unified);
+		this.handler = new Handler();
 		this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
 		this.surfaceView = (SurfaceView) findViewById(R.id.surfaceViewClickable);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
@@ -102,9 +106,9 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 		this.surfaceView.getHolder().addCallback(this);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 		this.imageView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -124,7 +128,11 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 				.getExternalStorageDirectory();
 		File content_root_directory = new File(external_storage_directory,
 				"EASYGUIDE/www.yonden.co.jp/01 四国電力");
-		this.contentUnit = new ContentUnit(content_root_directory, null);
+		try {
+			this.contentUnit = new ContentUnit(content_root_directory, null);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		this.wifiManager = (WifiManager) this
 				.getSystemService(Context.WIFI_SERVICE);
@@ -136,7 +144,8 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menu_inflater = getMenuInflater();
 		menu_inflater.inflate(R.menu.menu, menu);
-		return super.onCreateOptionsMenu(menu);
+		// return super.onCreateOptionsMenu(menu);
+		return true;
 	}// onCreateOptionsMenu
 
 	@Override
@@ -213,6 +222,8 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if (this.contentUnit == null)
+			return;
 		if (this.contentUnit.hasHtml()) {
 			this.webView.loadUrl("file://" + this.contentUnit.getDirectory()
 					+ "/index.html");
@@ -269,7 +280,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		}// if content unit has an image
 
 		if (this.contentUnit.getChildren().length == 0) {
-			//this.layoutButtons.setVisibility(View.GONE);
+			// this.layoutButtons.setVisibility(View.GONE);
 		} else if (this.contentUnit.getChildren().length > 0) {
 			this._showButtons();
 			this.layoutButtons.setVisibility(View.VISIBLE);
@@ -283,8 +294,14 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		}// if content unit has parents
 	}// onResume
 
-	public void setContentUnit(ContentUnit cu) {
-		this.contentUnit = cu;
+	public void setContentUnit(ContentUnit content_unit) {
+		this.contentUnit = content_unit;
+		this.handler.post(new Runnable() {
+			@Override
+			public void run() {
+				onResume();
+			}
+		});
 	}
 
 	private void _showButtons() {
@@ -304,7 +321,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 				@Override
 				public void onClick(View v) {
 					ua.setContentUnit(cu);
-					ua.onResume();
+					// ua.onResume();
 				}
 			});
 			if (count < 5) {
@@ -328,10 +345,10 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			b.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					ua.setContentUnit(parent_cu);
 					ua.videoView.stopPlayback();
 					ua.layoutVideo.setVisibility(View.GONE);
-					ua.onResume();
+					ua.setContentUnit(parent_cu);
+					// ua.onResume();
 				}// onClick
 			});
 			this.layoutButtons2.removeAllViews();
@@ -354,10 +371,10 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 				@Override
 				public void onClick(View v) {
-					unified_activity.setContentUnit(content_unit);
 					unified_activity.videoView.stopPlayback();
 					unified_activity.layoutVideo.setVisibility(View.GONE);
-					unified_activity.onResume();
+					unified_activity.setContentUnit(content_unit);
+					// unified_activity.onResume();
 				}// onClick
 			});// onClickListener
 			this.layoutBreadcrumb.addView(b);

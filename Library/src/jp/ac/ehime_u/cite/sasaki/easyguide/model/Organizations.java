@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
@@ -15,13 +16,13 @@ public class Organizations extends ArrayList<Organization> {
 
 	private static Organizations theOrganizations;
 
-	private Organizations() {
+	private Organizations() throws FileNotFoundException {
 		super();
 		Log.v(new Throwable(), "Enumerating organization directories");
 		this.EnumerateOrganizations();
 	}// a constructor
 
-	public void EnumerateOrganizations() {
+	public void EnumerateOrganizations() throws FileNotFoundException {
 		Log.v(new Throwable(), "Enumerating domains.");
 		for (Domain domain : Root.getTheRoot()) {
 			Log.v(new Throwable(),
@@ -50,8 +51,9 @@ public class Organizations extends ArrayList<Organization> {
 
 	/**
 	 * @return singleton object of Organizations
+	 * @throws FileNotFoundException 
 	 */
-	public static Organizations getInstance() {
+	public static Organizations getInstance() throws FileNotFoundException {
 		if (theOrganizations == null) {
 			theOrganizations = new Organizations();
 		}// if

@@ -2,6 +2,8 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.nio.file.DirectoryNotEmptyException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.LoggingMXBean;
@@ -25,8 +27,11 @@ public class Classifier {
 
 	File directory;
 
-	public Classifier(File directory) {
+	public Classifier(File directory) throws FileNotFoundException {
 		this.directory = directory;
+		if(!directory.isDirectory()){
+			throw new FileNotFoundException();
+		}
 
 		for (File f : directory.listFiles()) {
 

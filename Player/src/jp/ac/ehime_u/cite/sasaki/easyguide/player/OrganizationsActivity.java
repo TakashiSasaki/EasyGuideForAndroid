@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.io.FileNotFoundException;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
@@ -32,8 +34,13 @@ public class OrganizationsActivity extends Activity {
 
 		ArrayAdapter<Organization> array_adapter = new ArrayAdapter<Organization>(
 				this, android.R.layout.simple_list_item_1);
-		for (Organization organization : Organizations.getInstance()) {
-			array_adapter.add(organization);
+		try {
+			for (Organization organization : Organizations.getInstance()) {
+				array_adapter.add(organization);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}// for
 		ListView list_view = (ListView) findViewById(R.id.listViewOrganizations);
 		list_view.setAdapter(array_adapter);
@@ -52,7 +59,7 @@ public class OrganizationsActivity extends Activity {
 			}// onItemClick
 		});// setOnItemClickListener
 
-		WifiDetectorThread.getInstance(this).start();
+		//WifiDetectorThread.getInstance(this).start();
 
 	}// onCreate
 

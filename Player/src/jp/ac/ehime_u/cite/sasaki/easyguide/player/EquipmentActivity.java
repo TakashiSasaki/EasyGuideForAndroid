@@ -72,7 +72,12 @@ public class EquipmentActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.equipment);
 
-		SelectEquipment();
+		try {
+			SelectEquipment();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		// SetImageView();
 		// SetSpinnerEquipments();
 		MakeButtons();
@@ -256,7 +261,7 @@ public class EquipmentActivity extends Activity {
 	private void MakeButtons() {
 	}
 
-	private void SelectEquipment() {
+	private void SelectEquipment() throws FileNotFoundException {
 		Intent intent = this.getIntent();
 		this.organizationIndex = intent.getIntExtra("organizationIndex", 0);
 		this.facilityIndex = intent.getIntExtra("facilityIndex", 0);

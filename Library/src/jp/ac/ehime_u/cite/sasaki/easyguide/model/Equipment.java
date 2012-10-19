@@ -1,6 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
@@ -27,8 +28,9 @@ public class Equipment extends ItemBase<Equipment, Panel> {
 	 * a constructor
 	 * 
 	 * @param equipment_directory
+	 * @throws FileNotFoundException 
 	 */
-	public Equipment(File equipment_directory) {
+	public Equipment(File equipment_directory) throws FileNotFoundException {
 		super(equipment_directory);
 		Log.v(new Throwable(),
 				"Constructing equipment "
@@ -55,7 +57,7 @@ public class Equipment extends ItemBase<Equipment, Panel> {
 	// }// toString
 
 	@SuppressWarnings("javadoc")
-	public void EnumeratePanels() {
+	public void EnumeratePanels() throws FileNotFoundException {
 		for (File panel_directory : this.listFiles()) {
 			if (panel_directory.isDirectory())
 				this.add(new Panel(panel_directory));

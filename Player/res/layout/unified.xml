@@ -16,32 +16,41 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:contentDescription="thumbnail"
-                android:src="@drawable/unknown" />
+                android:src="@drawable/unknown" 
+                android:visibility="gone"/>
         </LinearLayout>
     </HorizontalScrollView>
 
-    <LinearLayout
-        android:id="@+id/layoutBreadcrumb"
+    <HorizontalScrollView
+        android:id="@+id/scrollViewBreadcrumb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_margin="1dp"
         android:layout_weight="0"
-        android:gravity="left"
-        android:minHeight="10dp" >
+        android:background="@android:color/white" >
 
-        <Button
+        <LinearLayout
+            android:id="@+id/layoutBreadcrumb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="parent1" android:minHeight="10dp"/>
-    </LinearLayout>
+            android:layout_gravity="top"
+            android:layout_margin="1dp"
+            android:gravity="left"
+            android:minHeight="10dp" >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="10dp"
+                android:text="parent1" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/layoutVideo"
@@ -122,20 +131,21 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutButtons"
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollViewButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:layout_weight="0"
-        android:gravity="center" >
-    </LinearLayout>
+        android:layout_gravity="center" 
+        android:background="@android:color/white">
 
-    <LinearLayout
-        android:id="@+id/layoutButtons2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0" >
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center">
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

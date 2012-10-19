@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -43,6 +45,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -52,43 +55,47 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private static Bitmap star;
 	private Bitmap bitmap;
 	private SurfaceHolder surfaceHolder;
-	private ItemBase itemBase;
+	// private ItemBase itemBase;
 	private ContentUnit contentUnit;
 	private float scaleX, scaleY;
 	private float offsetX, offsetY;
 	private ArrayList<Point> starPoints = new ArrayList<Point>();
 
 	private HorizontalScrollView horizontalScrollViewSiblingsAndParents;
+	private HorizontalScrollView horizontalScrollViewBreadcrumb;
 	private LinearLayout layoutBreadcrumb;
 	private LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
 	private LinearLayout layoutHtml;
+	private HorizontalScrollView horizontalScrollViewButtons;
 	private LinearLayout layoutButtons;
-	private LinearLayout layoutButtons2;
 	private LinearLayout layoutText;
 	private ImageView imageViewClickable;
 	private VideoView videoView;
 	private TextView textViewContent;
 	private MediaController mediaController;
 
-	private DirectoryImage directoryImage = new DirectoryImage();
+	// private DirectoryImage directoryImage = new DirectoryImage();
 	private WifiManager wifiManager;
 	private WebView webView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.unified);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.setContentView(R.layout.unified);
+		this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
 		this.surfaceView = (SurfaceView) findViewById(R.id.surfaceViewClickable);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
+		this.horizontalScrollViewBreadcrumb = (HorizontalScrollView) findViewById(R.id.scrollViewBreadcrumb);
 		this.layoutBreadcrumb = (LinearLayout) findViewById(R.id.layoutBreadcrumb);
 		this.layoutText = (LinearLayout) findViewById(R.id.layoutText);
 		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
 		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
 		this.layoutHtml = (LinearLayout) findViewById(R.id.layoutHtml);
+		this.horizontalScrollViewButtons = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewButtons);
 		this.layoutButtons = (LinearLayout) findViewById(R.id.layoutButtons);
-		this.layoutButtons2 = (LinearLayout) findViewById(R.id.layoutButtons2);
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.textViewContent = (TextView) findViewById(R.id.textViewContent);
@@ -101,19 +108,42 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.surfaceView.setZOrderOnTop(true);
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 		this.surfaceView.getHolder().addCallback(this);
+		// getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		// setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
-		this.imageView.setOnTouchListener(new OnTouchListener() {
+		this.imageViewClickable.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				float x_on_image_view = event.getX();
 				float y_on_image_view = event.getY();
-				Point point_on_image_view = new Point((int) x_on_image_view,
-						(int) y_on_image_view);
-				Point point_on_bitmap = getPointOnBitmap(point_on_image_view);
+
+				Matrix matrix = imageViewClickable.getImageMatrix();
+				float f[] = new float[9];
+				matrix.getValues(f);
+				float scale_x = f[0];
+				float scale_y = f[4];
+				float offset_x = f[2];
+				float offset_y = f[5];
+
+				float bitmap_x = (x_on_image_view - offset_x) / scale_x;
+				float bitmap_y = (y_on_image_view - offset_y) / scale_y;
+
+				ContentUnit nearest_child = getNearestChild(bitmap_x, bitmap_y);
+				if (nearest_child == null)
+					return true;
+
+				setContentUnit(nearest_child);
+				videoView.stopPlayback();
+				layoutVideo.setVisibility(View.GONE);
+				onResume();
+
+				// Point point_on_image_view = new Point((int) x_on_image_view,
+				// (int) y_on_image_view);
+				// Point point_on_bitmap =
+				// getPointOnBitmap(point_on_image_view);
+				//
 				// onStarTouched(point_on_bitmap);
 				// TODO: should be implemented
 				return false;
@@ -192,7 +222,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.bitmap.recycle();
 			this.bitmap = null;
 		}
-		this.itemBase = item_base;
+		// this.itemBase = item_base;
 		this.bitmap = item_base.getImage(this);
 		this.imageView.setImageBitmap(this.bitmap);
 		LayoutParams image_view_layout_params = this.imageView
@@ -229,7 +259,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 				StringBuilder sb = new StringBuilder();
 				String s;
 				while ((s = buffer_reader.readLine()) != null) {
-					sb.append(s);
+					sb.append(s + "\n");
 				}// while
 				this.textViewContent.setText(sb.toString());
 				this.textViewContent.setTextSize(35);
@@ -259,8 +289,10 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 		if (this.contentUnit.hasImageFile()) {
 			this.imageViewClickable.setImageBitmap(null);
-			this.directoryImage.setContentUnit(this.contentUnit);
-			this.imageViewClickable.setImageBitmap(this.directoryImage
+			DirectoryImage directory_image = new DirectoryImage(
+					this.contentUnit);
+			// this.directoryImage.setContentUnit(this.contentUnit);
+			this.imageViewClickable.setImageBitmap(directory_image
 					.getBitmap(this));
 			this.frameLayoutImage.setVisibility(View.VISIBLE);
 		} else {
@@ -269,7 +301,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		}// if content unit has an image
 
 		if (this.contentUnit.getChildren().length == 0) {
-			//this.layoutButtons.setVisibility(View.GONE);
+			// this.layoutButtons.setVisibility(View.GONE);
 		} else if (this.contentUnit.getChildren().length > 0) {
 			this._showButtons();
 			this.layoutButtons.setVisibility(View.VISIBLE);
@@ -291,7 +323,6 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.layoutButtons.removeAllViews();
 		final UnifiedActivity ua = this;
 
-		int count = 0;
 		for (final ContentUnit cu : this.contentUnit.getChildren()) {
 			Button b = new Button(this);
 			b.setText(cu.getName());
@@ -307,22 +338,16 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 					ua.onResume();
 				}
 			});
-			if (count < 5) {
-				this.layoutButtons.addView(b);
-				++count;
-			} else {
-				this.layoutButtons2.addView(b);
-				++count;
-			}
+			this.layoutButtons.addView(b);
 
 		}// for
 		final ContentUnit parent_cu = this.contentUnit.getParent();
 		if (parent_cu != null) {
 			Button b = new Button(this);
-			b.setText(parent_cu.getName() + "にもどる");
+			b.setText("もどる");
 			b.setTextSize(30);
-			b.setBackgroundColor(Color.BLUE);
-			b.setTextColor(Color.WHITE);
+			b.setBackgroundColor(Color.GREEN);
+			// b.setTextColor(Color.WHITE);
 			b.setGravity(Gravity.RIGHT);
 			b.setMinWidth(30);
 			b.setOnClickListener(new OnClickListener() {
@@ -334,14 +359,16 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 					ua.onResume();
 				}// onClick
 			});
-			this.layoutButtons2.removeAllViews();
-			this.layoutButtons2.addView(b);
+			 this.layoutButtons.addView(b);
 		}// if
+		this.layoutButtons.setMinimumWidth(this.horizontalScrollViewButtons
+				.getWidth());
 	}// _showButtons
 
 	private void _showParents() {
 		this.layoutBreadcrumb.removeAllViews();
 		final UnifiedActivity unified_activity = this;
+
 		for (int i = this.contentUnit.getAncestors().size() - 1; i >= 0; --i) {
 			Button b = new Button(this);
 			b.setText(this.contentUnit.getAncestors().get(i).getName());
@@ -362,6 +389,29 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			});// onClickListener
 			this.layoutBreadcrumb.addView(b);
 		}// for
+
+		Button b = new Button(this);
+		b.setText(this.contentUnit.getName());
+		b.setTextSize(30);
+		b.setTextColor(Color.BLACK);
+		b.setMinWidth(30);
+		final ContentUnit content_unit = this.contentUnit;
+		b.setBackgroundColor(Color.CYAN);
+		b.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				unified_activity.setContentUnit(content_unit);
+				unified_activity.videoView.stopPlayback();
+				unified_activity.layoutVideo.setVisibility(View.GONE);
+				unified_activity.onResume();
+			}// onClick
+		});// onClickListener
+		this.layoutBreadcrumb.addView(b);
+
+		this.horizontalScrollViewBreadcrumb.smoothScrollTo(
+				this.layoutBreadcrumb.getWidth()+1000, 0);
+		this.horizontalScrollViewBreadcrumb.smoothScrollBy(2000, 0);
 	}// _showParents
 
 	protected void addStarPoint(Point point) {
@@ -370,29 +420,29 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 	// protected abstract void onStarTouched(Point point);
 
-	private Point getPointOnBitmap(Point point_on_image_view) {
-		initScaleAndOffset();
-		float x = (point_on_image_view.x - this.offsetX) / this.scaleX;
-		float y = (point_on_image_view.y - this.offsetY) / this.scaleY;
-		return new Point((int) x, (int) y);
-	}
+	// private Point getPointOnBitmap(Point point_on_image_view) {
+	// initScaleAndOffset();
+	// float x = (point_on_image_view.x - this.offsetX) / this.scaleX;
+	// float y = (point_on_image_view.y - this.offsetY) / this.scaleY;
+	// return new Point((int) x, (int) y);
+	// }
 
 	private Point getPointOnImageView(Point point_on_bitmap) {
-		initScaleAndOffset();
+		// initScaleAndOffset();
 		float x = (point_on_bitmap.x) * this.scaleX + this.offsetX;
 		float y = (point_on_bitmap.y) * this.scaleY + this.offsetY;
 		return new Point((int) x, (int) y);
 	}
 
-	private void initScaleAndOffset() {
-		Matrix matrix = this.imageView.getImageMatrix();
-		float f[] = new float[9];
-		matrix.getValues(f);
-		this.scaleX = f[0];
-		this.scaleY = f[4];
-		this.offsetX = f[2];
-		this.offsetY = f[5];
-	}
+	// private void initScaleAndOffset() {
+	// Matrix matrix = this.imageView.getImageMatrix();
+	// float f[] = new float[9];
+	// matrix.getValues(f);
+	// this.scaleX = f[0];
+	// this.scaleY = f[4];
+	// this.offsetX = f[2];
+	// this.offsetY = f[5];
+	// }
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -441,5 +491,26 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.surfaceHolder.unlockCanvasAndPost(c);
 		}// for
 	}// drawSurface
+
+	public ContentUnit getNearestChild(float bitmap_x, float bitmap_y) {
+		ContentUnit nearest_child = null;
+		float min_distance_squared = 2000 * 2000;
+		for (ContentUnit child : this.contentUnit.getChildren()) {
+			if (child.getX() < 0 || child.getY() < 0)
+				continue;
+			float dx = child.getX() - bitmap_x;
+			float dy = child.getY() - bitmap_y;
+			float distance = dx * dx + dy * dy;
+			if (min_distance_squared > distance) {
+				min_distance_squared = distance;
+				nearest_child = child;
+			}
+		}
+		if (nearest_child != null)
+			return nearest_child;
+		if (this.contentUnit.getChildren().length == 0)
+			return null;
+		return this.contentUnit.getChild(1);
+	}// getNearestChild
 
 }// class UnifiedActivity

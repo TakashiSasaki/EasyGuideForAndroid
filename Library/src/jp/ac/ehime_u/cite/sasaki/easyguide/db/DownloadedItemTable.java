@@ -2,7 +2,7 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.db;
 
 import java.util.ArrayList;
 
-import com.sun.jmx.remote.util.OrderClassLoaders;
+//import com.sun.jmx.remote.util.OrderClassLoaders;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;

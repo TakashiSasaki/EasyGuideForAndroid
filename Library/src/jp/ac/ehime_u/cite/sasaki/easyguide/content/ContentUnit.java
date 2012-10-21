@@ -159,7 +159,7 @@ public class ContentUnit {
 	}
 
 	static public void main(String[] args) {
-		final String directory_path = "/C:/Users/sasaki/Google ãƒ‰ãƒ©ã‚¤ãƒ–/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 å››å›½é›»åŠ›/01 å››å›½é›»åŠ›ä¿å®‰ç ”ä¿®æ‰€";
+		final String directory_path = "/C:/Users/sasaki/Google ƒhƒ‰ƒCƒu/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 l‘“d—Í/01 l‘“d—Í•ÛˆÀŒ¤CŠ";
 		final File directory = new File(directory_path);
 		ContentUnit content_unit = new ContentUnit(directory, null);
 		ContentUnit content_unit_2 = content_unit.getChild(1).getChild(2);

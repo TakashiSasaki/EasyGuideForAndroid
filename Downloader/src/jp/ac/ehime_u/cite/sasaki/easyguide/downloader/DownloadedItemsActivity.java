@@ -10,9 +10,11 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
-import android.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+//import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
-import android.content.Loader;
+import android.support.v4.content.Loader;
+//import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;

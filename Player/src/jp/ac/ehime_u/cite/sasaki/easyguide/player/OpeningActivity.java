@@ -1,6 +1,5 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.*;
@@ -31,27 +30,20 @@ public class OpeningActivity extends Activity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1);
 		this.buildingList = new ArrayList<Building>();
-		try {
-			for (Organization organization : Organizations.getInstance()) {
-				Log.v(this.getClass().getSimpleName(),
-						"Enumerating organizations");
-				for (Facility facility : organization) {
+		for (Organization organization : Organizations.getInstance()) {
+			Log.v(this.getClass().getSimpleName(), "Enumerating organizations");
+			for (Facility facility : organization) {
+				Log.v(this.getClass().getSimpleName(), "Enumerating facilities");
+				for (Building building : facility) {
 					Log.v(this.getClass().getSimpleName(),
-							"Enumerating facilities");
-					for (Building building : facility) {
-						Log.v(this.getClass().getSimpleName(),
-								"Enumerating buildings. Building "
-										+ building.getTitle() + " found.");
-						assert (building.getTitle() != null);
-						adapter.add(building.getTitle());
-						this.buildingList.add(building);
-					}
-				}
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+							"Enumerating buildings. Building "
+									+ building.getTitle() + " found.");
+					assert (building.getTitle() != null);
+					adapter.add(building.getTitle());
+					this.buildingList.add(building);
+				}//for
+			}//for
+		}//for
 		ListView building_list_view = (ListView) findViewById(R.id.listViewBuilding);
 		Log.v(this.getClass().getSimpleName(), "Totally " + adapter.getCount()
 				+ " buildings found.");

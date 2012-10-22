@@ -59,7 +59,7 @@ public class OrganizationsActivity extends Activity {
 			}// onItemClick
 		});// setOnItemClickListener
 
-		//WifiDetectorThread.getInstance(this).start();
+		WifiDetectorThread.getInstance(this).start();
 
 	}// onCreate
 
@@ -69,5 +69,5 @@ public class OrganizationsActivity extends Activity {
 		intent.putExtra("organizationIndex", number);
 		startActivity(intent);
 	}// InvokeOrganizationActivity
-}// OrganizationActivity
+}// OrganizationsActivity
 

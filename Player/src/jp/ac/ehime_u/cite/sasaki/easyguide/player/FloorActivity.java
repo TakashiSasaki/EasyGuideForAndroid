@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.io.FileNotFoundException;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
@@ -22,12 +24,18 @@ public class FloorActivity extends ClickableActivity<Room> {
 
 	// Spinner spinner;
 
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.floor);
 		// this.spinner = (Spinner) findViewById(R.id.spinnerRooms);
 
-		SelectFloor();
+		try {
+			SelectFloor();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			setImageView(this.floor);
 		} catch (Exception e) {
@@ -91,7 +99,7 @@ public class FloorActivity extends ClickableActivity<Room> {
 	// i.setImageBitmap(this.floor.getImage());
 	// }
 
-	private void SelectFloor() {
+	private void SelectFloor() throws FileNotFoundException {
 		Intent intent = this.getIntent();
 		this.organizationIndex = intent.getIntExtra("organizationIndex", 0);
 		this.facilityIndex = intent.getIntExtra("facilityIndex", 0);

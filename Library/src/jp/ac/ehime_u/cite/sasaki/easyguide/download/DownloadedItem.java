@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
+
 import android.util.Log;
 
 public class DownloadedItem {
@@ -57,6 +59,7 @@ public class DownloadedItem {
 				+ this.downloadedDate.getTime() + ".zip");
 	}// a constructor
 
+	@Deprecated
 	public int SaveStream(BufferedInputStream buffered_input_stream) {
 		int count = 0;
 		Log.v(this.getClass().getSimpleName(), "Writing downloaded file to "

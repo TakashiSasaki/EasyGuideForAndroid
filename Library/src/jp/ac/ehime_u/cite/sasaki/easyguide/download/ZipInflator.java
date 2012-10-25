@@ -14,6 +14,8 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
+
 
 import android.util.Log;
 

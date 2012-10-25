@@ -11,6 +11,7 @@ tmp/**/*
 *.bak
 *.swp
 *~.nib
+gen/
 
 # External tool builders
 .externalToolBuilders/
@@ -157,7 +158,3 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
-
-# Android
-gen/
-

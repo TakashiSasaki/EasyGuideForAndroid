@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Source;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 

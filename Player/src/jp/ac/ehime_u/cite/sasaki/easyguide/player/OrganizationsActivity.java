@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.io.FileNotFoundException;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
@@ -16,6 +18,7 @@ import android.widget.ListView;
  * Application begins with this activity.
  * 
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
+ * 
  */
 public class OrganizationsActivity extends Activity {
 
@@ -33,8 +36,13 @@ public class OrganizationsActivity extends Activity {
 
 		ArrayAdapter<Organization> array_adapter = new ArrayAdapter<Organization>(
 				this, android.R.layout.simple_list_item_1);
+		try {
 		for (Organization organization : Organizations.getInstance()) {
 			array_adapter.add(organization);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}// for
 		ListView list_view = (ListView) findViewById(R.id.listViewOrganizations);
 		list_view.setAdapter(array_adapter);
@@ -53,16 +61,12 @@ public class OrganizationsActivity extends Activity {
 			}// onItemClick
 		});// setOnItemClickListener
 
-		this.InvokeOrganizationActivity(1);
+		// TODO: it should be implemented by the demo day.
+		// WifiDetectorThread.getInstance(this).start();
+		WifiDetectorThread.getInstance(this).start();
+		//this.InvokeOrganizationActivity(1);
 
 	}// onCreate
-
-	@Override
-	protected void onResume() {
-		// TODO: it should be implemented by the demo day.
-		WifiDetectorThread.getInstance(this).start();
-		super.onResume();
-	}// onResume
 
 	private void InvokeOrganizationActivity(int number) {
 		Intent intent = new Intent();

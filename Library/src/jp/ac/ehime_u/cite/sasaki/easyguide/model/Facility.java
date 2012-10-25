@@ -1,6 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 
 import android.view.MotionEvent;
@@ -20,8 +22,9 @@ public class Facility extends ItemBase<Facility, Building> {
 
 	/**
 	 * @param facility_directory
+	 * @throws FileNotFoundException 
 	 */
-	public Facility(File facility_directory) {
+	public Facility(File facility_directory) throws FileNotFoundException {
 		super(facility_directory);
 		// this.facilityDirectory = facility_directory;
 		// // String building_directory_path = building_directory.getPath();
@@ -53,7 +56,7 @@ public class Facility extends ItemBase<Facility, Building> {
 	// return facilityDirectory == null || facilityDirectoryName == null;
 	// }
 
-	public void EnumerateBuildings() {
+	public void EnumerateBuildings() throws FileNotFoundException {
 		for (File building_directory : this.listFiles()) {
 			if (building_directory.isDirectory())
 				this.add(new Building(building_directory));

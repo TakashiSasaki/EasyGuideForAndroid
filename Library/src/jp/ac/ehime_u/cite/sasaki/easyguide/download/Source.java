@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
 import android.content.Context;
 
 public class Source {

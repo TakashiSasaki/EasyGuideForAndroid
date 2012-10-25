@@ -2,13 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.ac.ehime_u.cite.sasaki.easyguide.player"
     android:installLocation="auto"
-    android:versionCode="051"
-    android:versionName="0.5.1" >
+    android:versionCode="052"
+    android:versionName="0.5.2" >
 
-    <uses-sdk android:minSdkVersion="10" />
+    <uses-sdk android:minSdkVersion="13" />
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.STATUS_BAR"/>
 
     <application
         android:debuggable="true"
@@ -16,41 +18,15 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
         <activity
-            android:name="OrganizationsActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" android:launchMode="singleInstance">
+            android:name="UnifiedActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".BuildingActivity"
-            android:screenOrientation="portrait" android:launchMode="singleInstance">
-        </activity>
-        <activity
-            android:name=".EquipmentActivity"
-            android:screenOrientation="portrait" android:launchMode="singleInstance">
-        </activity>
-        <activity
-            android:name="OrganizationActivity"
-            android:screenOrientation="portrait" android:launchMode="singleInstance">
-        </activity>
-        <activity
-            android:name="FacilityActivity"
-            android:screenOrientation="portrait" android:launchMode="singleInstance">
-        </activity>
-        <activity
-            android:name="FloorActivity"
-            android:screenOrientation="portrait" android:launchMode="singleInstance">
-        </activity>
-        <activity
-            android:name="RoomActivity"
-            android:screenOrientation="portrait" android:launchMode="singleInstance">
-        </activity>
-        <activity android:name="OpeningActivity" android:launchMode="singleInstance"></activity>
-        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity" android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

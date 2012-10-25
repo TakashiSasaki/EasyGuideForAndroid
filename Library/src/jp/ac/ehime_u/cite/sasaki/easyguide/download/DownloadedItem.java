@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
+
 import android.util.Log;
 
 public class DownloadedItem {

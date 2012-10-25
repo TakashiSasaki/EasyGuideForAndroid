@@ -1,12 +1,13 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
-import com.gmail.takashi316.lib.android.activity.SmartActivity;
+//import com.gmail.takashi316.lib.android.activity.SmartActivity;
 
 import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -28,7 +29,7 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public abstract class ClickableActivity<T extends ItemBase> extends
-		SmartActivity implements SurfaceHolder.Callback {
+		Activity implements SurfaceHolder.Callback {
 	private ImageView imageView;
 	private SurfaceView surfaceView;
 	private static Bitmap star;

@@ -10,6 +10,8 @@ import java.util.Iterator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryName;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
@@ -33,7 +35,7 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 		this.items = new ArrayList<S>();
 		this.directory = directory;
 		this.directoryName = new DirectoryName(directory.getName());
-		this.directoryImage = new DirectoryImage(directory);
+		//this.directoryImage = new DirectoryImage(); // it should not work
 	}
 
 	@Deprecated
@@ -118,7 +120,7 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 	}
 
 	public String getTitle() {
-		return this.directoryName.getName();
+		return this.directoryName.name;
 	}
 
 	protected S getByIndex(int index, S default_item) {
@@ -162,19 +164,19 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 	}
 
 	public int getIndex() {
-		return this.directoryName.getNumber();
+		return this.directoryName.number;
 	}
 
 	public int getX() {
-		return this.directoryName.getX();
+		return this.directoryName.x;
 	}
 
 	public int getY() {
-		return this.directoryName.getY();
+		return this.directoryName.y;
 	}
 
 	public Bitmap getImage(Context context) throws Exception {
-		return this.directoryImage.getImage(context);
+		return this.directoryImage.getBitmap(context);
 	}
 
 	public Bitmap getThumbnail(Context context) throws Exception {
@@ -211,10 +213,10 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 					+ "has no item as children");
 		S nearest = this.items.get(0);
 		for (S item : this.items) {
-			float old_distance_squared = (nearest.getX() - point.x) ^ 2
-					+ (nearest.getY() - point.y) ^ 2;
-			float new_distance_squared = (item.getX() - point.x) ^ 2
-					+ (item.getY() - point.y) ^ 2;
+			float old_distance_squared = (float) (Math.pow(nearest.getX()
+					- point.x, 2) + Math.pow(nearest.getY() - point.y, 2));
+			float new_distance_squared = (float) (Math.pow(item.getX()
+					- point.x, 2) + Math.pow(item.getY() - point.y, 2));
 			if (old_distance_squared > new_distance_squared) {
 				nearest = item;
 			}

@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.model.DirectoryImageException;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +19,7 @@ public class ExtractedItemsActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		try {
 			this.setListAdapter(new SummaryArrayAdapter(this, R.layout.extracted_items));
-		} catch (RuntimeException e) {
+		} catch (DirectoryImageException e) {
 			Log.d(this.getClass().getSimpleName(),
 					"Can't create instance of SummaryArrayAdapter.");
 		}

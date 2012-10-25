@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/itemWifiSense"
+        android:menuCategory="container"
+        android:showAsAction="ifRoom|withText"
+        android:title="Wi-Fiによる位置の計測">
+    </item>
+    <item
+        android:id="@+id/itemWifiLocate"
+        android:showAsAction="ifRoom|withText"
+        android:title="Wi-Fiによる位置の推定">
+    </item>
+    <item
+        android:id="@+id/itemExit"
+        android:showAsAction="ifRoom|withText"
+        android:title="終了">
+    </item>
+
+</menu>

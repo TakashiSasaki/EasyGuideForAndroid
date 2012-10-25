@@ -1,6 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 
@@ -30,8 +31,9 @@ public class Building extends ItemBase<Building, Floor> {
 
 	/**
 	 * @param building_directory
+	 * @throws FileNotFoundException 
 	 */
-	public Building(File building_directory) {
+	public Building(File building_directory) throws FileNotFoundException {
 		super(building_directory);
 		// this.buildingDirectory = building_directory;
 		// this.buildingDirectoryName = new DirectoryName(
@@ -53,7 +55,7 @@ public class Building extends ItemBase<Building, Floor> {
 	// }
 
 	@SuppressWarnings("javadoc")
-	public void EnumerateFloors() {
+	public void EnumerateFloors() throws FileNotFoundException {
 		for (File floor_directory : this.listFiles()) {
 			if (floor_directory.isDirectory())
 				this.add(new Floor(floor_directory));

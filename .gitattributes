@@ -21,6 +21,6 @@
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
 
-*.java  text=true whitespaces=false
-*.xml  text=true whitespaces=false
+*.java   text=true whitespace=false
+*.xml    text=true whitespace=false
 

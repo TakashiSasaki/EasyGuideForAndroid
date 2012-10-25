@@ -10,6 +10,8 @@ import java.util.Iterator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryName;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
@@ -27,14 +29,16 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 	// return this.itemType;
 	// }
 
+	@Deprecated
 	protected ItemBase(File directory) {
 		super();
 		this.items = new ArrayList<S>();
 		this.directory = directory;
 		this.directoryName = new DirectoryName(directory.getName());
-		this.directoryImage = new DirectoryImage(directory);
+		//this.directoryImage = new DirectoryImage(); // it should not work
 	}
 
+	@Deprecated
 	protected ItemBase() {
 		super();
 	}
@@ -116,7 +120,7 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 	}
 
 	public String getTitle() {
-		return this.directoryName.getName();
+		return this.directoryName.name;
 	}
 
 	protected S getByIndex(int index, S default_item) {
@@ -160,19 +164,19 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 	}
 
 	public int getIndex() {
-		return this.directoryName.getNumber();
+		return this.directoryName.number;
 	}
 
 	public int getX() {
-		return this.directoryName.getX();
+		return this.directoryName.x;
 	}
 
 	public int getY() {
-		return this.directoryName.getY();
+		return this.directoryName.y;
 	}
 
 	public Bitmap getImage(Context context) throws Exception {
-		return this.directoryImage.getImage(context);
+		return this.directoryImage.getBitmap(context);
 	}
 
 	public Bitmap getThumbnail(Context context) throws Exception {

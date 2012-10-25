@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
-        android:id="@+id/itemSources"
-        android:title="@string/itemSources">
+    <item android:id="@+id/itemSources" android:title="@string/itemSources">
     </item>
-    <item
-        android:id="@+id/itemDownloadedItems"
-        android:title="@string/itemDownloadedItems">
+    <item android:id="@+id/itemDownloadedItems" android:title="@string/itemDownloadedItems">
     </item>
-    <item
-        android:id="@+id/itemToc"
-        android:title="@string/itemToc">
+    <item android:id="@+id/itemToc" android:title="@string/itemToc">
     </item>
 
 </menu>

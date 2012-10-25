@@ -1,6 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.db;
 
-import android.content.AsyncTaskLoader;
+import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 

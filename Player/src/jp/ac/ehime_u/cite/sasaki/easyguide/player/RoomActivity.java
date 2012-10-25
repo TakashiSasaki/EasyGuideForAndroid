@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.io.FileNotFoundException;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
@@ -32,7 +34,12 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.room);
 
-		SelectRoom();
+		try {
+			SelectRoom();
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		try {
 			setImageView(this.room);
 		} catch (Exception e1) {
@@ -51,16 +58,17 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 		}
 		setSpinnerArrayAdapter(equipment_array_adapter);
 
-//		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//		alertDialogBuilder.setTitle("content index");
-//		alertDialogBuilder.setMessage("organizationIndex="
-//				+ RoomActivity.this.organizationIndex + ", facilityIndex="
-//				+ RoomActivity.this.facilityIndex + ", buildingIndex="
-//				+ RoomActivity.this.buildingIndex + ", floorIndex="
-//				+ RoomActivity.this.floorIndex + ", roomIndex="
-//				+ RoomActivity.this.roomIndex);
-//		AlertDialog alertDialog = alertDialogBuilder.create();
-//		alertDialog.show();
+		// AlertDialog.Builder alertDialogBuilder = new
+		// AlertDialog.Builder(this);
+		// alertDialogBuilder.setTitle("content index");
+		// alertDialogBuilder.setMessage("organizationIndex="
+		// + RoomActivity.this.organizationIndex + ", facilityIndex="
+		// + RoomActivity.this.facilityIndex + ", buildingIndex="
+		// + RoomActivity.this.buildingIndex + ", floorIndex="
+		// + RoomActivity.this.floorIndex + ", roomIndex="
+		// + RoomActivity.this.roomIndex);
+		// AlertDialog alertDialog = alertDialogBuilder.create();
+		// alertDialog.show();
 
 	}// onCreate
 
@@ -99,7 +107,7 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 	// i.setImageBitmap(this.room.getImage());
 	// }
 
-	private void SelectRoom() {
+	private void SelectRoom() throws FileNotFoundException {
 		Intent intent = this.getIntent();
 		this.organizationIndex = intent.getIntExtra("organizationIndex", 0);
 		this.facilityIndex = intent.getIntExtra("facilityIndex", 0);
@@ -133,6 +141,13 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 		intent.putExtra("equipmentIndex", selected_item.getIndex());
 		startActivity(intent);
 	}
+
+	@Override
+	protected void onResume() {
+		// TODO: it should be implemented by the demo day.
+		WifiDetectorThread.getInstance(this).start();
+		super.onResume();
+	}// onResume
 
 	@Override
 	protected void onStarTouched(Point point) {

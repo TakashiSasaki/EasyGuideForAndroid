@@ -25,4 +25,5 @@
         この画面はコンテンツの発行者がテストに用いる目的で表示されています。
         現時点ではどの建物を選択してもデモ用の建物が選択されたものとみなされます。
     </string>
+    <string name="hello_android">hello_android</string>
 </resources>

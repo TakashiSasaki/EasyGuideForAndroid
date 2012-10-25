@@ -4,14 +4,17 @@
     <item
         android:id="@+id/itemWifiSense"
         android:menuCategory="container"
+        android:showAsAction="ifRoom|withText"
         android:title="Wi-Fiによる位置の計測">
     </item>
     <item
         android:id="@+id/itemWifiLocate"
+        android:showAsAction="ifRoom|withText"
         android:title="Wi-Fiによる位置の推定">
     </item>
     <item
         android:id="@+id/itemExit"
+        android:showAsAction="ifRoom|withText"
         android:title="終了">
     </item>
 

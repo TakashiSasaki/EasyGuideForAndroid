@@ -206,5 +206,4 @@
             android:layout_weight="1" >
         </ScrollView>
     </LinearLayout>
-
-</LinearLayout>
+</LinearLayout>

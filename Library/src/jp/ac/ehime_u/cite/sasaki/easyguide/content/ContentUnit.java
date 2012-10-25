@@ -1,6 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +23,8 @@ public class ContentUnit {
 		return this.identifier[this._level];
 	}
 
-	public ContentUnit(File directory, ContentUnit parent) {
+	public ContentUnit(File directory, ContentUnit parent) throws FileNotFoundException{
+		
 		this._directory = directory;
 		this._parent = parent;
 		this._directoryName = new DirectoryName(directory.getName());
@@ -158,7 +160,7 @@ public class ContentUnit {
 		return this._classifier.getHtmlFiles().get(0);
 	}
 
-	static public void main(String[] args) {
+	static public void main(String[] args) throws FileNotFoundException {
 		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力/01 四国電力保安研修所";
 		final File directory = new File(directory_path);
 		ContentUnit content_unit = new ContentUnit(directory, null);

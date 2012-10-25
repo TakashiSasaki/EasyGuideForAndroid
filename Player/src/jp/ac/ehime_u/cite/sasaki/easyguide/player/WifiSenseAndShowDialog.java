@@ -29,7 +29,7 @@ public class WifiSenseAndShowDialog {
 
 	public void sense() {
 		File file = new File(this.directory, "wifi.log");
-		this.directory.setWritable(true);
+		//this.directory.setWritable(true);
 		FileWriter file_writer;
 		try {
 			if (file.exists()) {

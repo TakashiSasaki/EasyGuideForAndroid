@@ -2,7 +2,9 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import java.util.ArrayList;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.*;
+import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +19,7 @@ import android.widget.ListView;
  * 
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
-public class OpeningActivity extends Activity {
+public class TocActivity extends Activity {
 	/** Called when the activity is first created. */
 
 	private ArrayList<Building> buildingList;
@@ -26,8 +28,8 @@ public class OpeningActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.opening);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		this.setContentView(R.layout.toc);
+		TocAdapter toc_adapter = new TocAdapter(this, ContentUnit.);
 				android.R.layout.simple_list_item_1);
 		this.buildingList = new ArrayList<Building>();
 		for (Organization organization : Organizations.getInstance()) {
@@ -44,7 +46,7 @@ public class OpeningActivity extends Activity {
 				}//for
 			}//for
 		}//for
-		ListView building_list_view = (ListView) findViewById(R.id.listViewBuilding);
+		ListView building_list_view = (ListView) findViewById(R.id.listViewOrganizations);
 		Log.v(this.getClass().getSimpleName(), "Totally " + adapter.getCount()
 				+ " buildings found.");
 		building_list_view.setAdapter(adapter);

@@ -2,7 +2,6 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import java.util.ArrayList;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.player.R;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.*;
 import android.app.Activity;
 import android.content.Intent;

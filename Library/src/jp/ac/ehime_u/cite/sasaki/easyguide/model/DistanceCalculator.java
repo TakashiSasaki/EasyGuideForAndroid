@@ -1,5 +1,6 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryName;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -80,7 +81,7 @@ public class DistanceCalculator {
 
 	public double GetDistanceBetween(MotionEvent motion_event,
 			DirectoryName directory_name) {
-		return GetDistanceBetween(motion_event, directory_name.getX(),
-				directory_name.getY());
+		return GetDistanceBetween(motion_event, directory_name.x,
+				directory_name.y);
 	}
 } // DistanceCalculator

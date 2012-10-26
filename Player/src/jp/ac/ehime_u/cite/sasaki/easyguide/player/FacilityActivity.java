@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.io.FileNotFoundException;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
@@ -30,11 +32,15 @@ public class FacilityActivity extends ClickableActivity<Building> {
 				.getIntExtra("organizationIndex", 0);
 		this.facilityIndex = this.intent.getIntExtra("facilityIndex", 0);
 
-		Organizations organizations = Organizations.getInstance();
+		Organizations organizations;
 		try {
+			organizations = Organizations.getInstance();
 			Organization organization = organizations
 					.getOrganization(this.organizationIndex);
 			this.facility = organization.getFacility(this.facilityIndex);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		} catch (ItemNotFoundException e) {
 			this.facility = Facility.getDummy();
 		}// try

@@ -112,6 +112,7 @@ public class DownloadThread extends Thread {
 		this.downloadedItem.SaveStream(buffered_input_stream);
 	}// DownloadViaHttp
 
+	@Deprecated
 	private void CopyFromAssets() {
 		InputStream input_stream;
 		Pattern pattern = Pattern.compile("^/([0-9a-zA-Z_\\-.]+/.+\\.zip)$");

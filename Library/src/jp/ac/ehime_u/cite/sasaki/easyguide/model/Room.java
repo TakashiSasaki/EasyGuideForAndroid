@@ -1,6 +1,8 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -26,8 +28,9 @@ public class Room extends ItemBase<Room, Equipment> {
 
 	/**
 	 * @param room_directory
+	 * @throws FileNotFoundException 
 	 */
-	public Room(File room_directory) {
+	public Room(File room_directory) throws FileNotFoundException {
 		super(room_directory);
 		// this.roomDirectory = room_directory;
 		// this.roomDirectoryName = new DirectoryName(room_directory.getName());
@@ -38,7 +41,7 @@ public class Room extends ItemBase<Room, Equipment> {
 	}// a constructor
 
 	@SuppressWarnings("javadoc")
-	public void EnumerateEquipments() {
+	public void EnumerateEquipments() throws FileNotFoundException {
 		for (File equipment_directory : this.listFiles()) {
 			if (!equipment_directory.isDirectory())
 				continue;

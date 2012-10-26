@@ -2,11 +2,11 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.ArrayAdapter;
 
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
- * 
+ * This is an example of usage of ListActivity.
  */
 public class ExtractedItemsActivity extends ListActivity {
 
@@ -16,12 +16,8 @@ public class ExtractedItemsActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		try {
-			this.setListAdapter(new SummaryArrayAdapter(this, R.layout.extracted_items));
-		} catch (RuntimeException e) {
-			Log.d(this.getClass().getSimpleName(),
-					"Can't create instance of SummaryArrayAdapter.");
-		}
+		this.setListAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, new String[] {}));
 	}// onCreate
 
 	/*

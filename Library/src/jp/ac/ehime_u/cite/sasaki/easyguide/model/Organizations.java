@@ -1,8 +1,10 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -14,15 +16,15 @@ public class Organizations extends ArrayList<Organization> {
 
 	private static Organizations theOrganizations;
 
-	private Organizations() {
+	private Organizations() throws FileNotFoundException {
 		super();
 		Log.v(new Throwable(), "Enumerating organization directories");
 		this.EnumerateOrganizations();
 	}// a constructor
 
-	public void EnumerateOrganizations() {
+	public void EnumerateOrganizations() throws FileNotFoundException {
 		Log.v(new Throwable(), "Enumerating domains.");
-		for (Domain domain : Root.GetTheRoot()) {
+		for (Domain domain : Root.getTheRoot()) {
 			Log.v(new Throwable(),
 					"Enumerating organizations " + domain.getDomainDirectory());
 			domain.EnumerateOrganizations();
@@ -37,8 +39,6 @@ public class Organizations extends ArrayList<Organization> {
 			Log.v(new Throwable(), "scanned for organizations in domain "
 					+ domain.getDomainDirectory().getName());
 		}// for
-		Log.v(new Throwable(), "scanned for domains in "
-				+ Root.GetTheRoot().getRootDirectory().getPath());
 	}// EnumerateOrganizations
 
 	// public Organization GetOrganizationByIndex(int organization_index) {
@@ -51,8 +51,9 @@ public class Organizations extends ArrayList<Organization> {
 
 	/**
 	 * @return singleton object of Organizations
+	 * @throws FileNotFoundException 
 	 */
-	public static Organizations getInstance() {
+	public static Organizations getInstance() throws FileNotFoundException {
 		if (theOrganizations == null) {
 			theOrganizations = new Organizations();
 		}// if

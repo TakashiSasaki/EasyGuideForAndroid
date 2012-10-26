@@ -3,6 +3,9 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.downloader;
 import android.app.AlertDialog;
 import android.content.Context;
 
+/*
+ * This is an usage example of AlertDialog.Builder
+ */
 public class Glossary extends AlertDialog.Builder {
 	Context context;
 

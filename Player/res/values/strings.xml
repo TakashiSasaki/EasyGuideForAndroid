@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="hello">Hello World, EasyGuideActivity!</string>
     <string name="app_name">EasyGuide</string>
     <string name="organizations"> コンテンツの発行者(organization)を選択して下さい。
@@ -9,20 +8,22 @@
         通常は他のアプリケーションから自動的にコンテンツの発行者が選択された状態で起動され、施設および建物の選択が促されるか、
         もしくは位置情報により自動的に建物が選択されます。 そのためこの画面が表示されることはありません。
         この画面はコンテンツの発行者がテストに用いる目的で表示されています。
-        現時点では発行者を選択してもデモ用の発行者が選択されたものとみなされます。</string>
+        現時点では発行者を選択してもデモ用の発行者が選択されたものとみなされます。
+    </string>
     <string name="organization">施設(facility)を選択して下さい。
         EasyGuideでは単一のコンテンツ発行者からダウンロードされるコンテンツに複数の施設(facility)が含まれます。
         施設には複数の建物(building)が含まれます。
         通常は他のアプリケーションから自動的に施設が選択された状態で起動され建物の選択を促されるか、
         もしくは位置情報により自動的に建物が選択されます。 そのためこの画面が表示されることはありません。
         この画面はコンテンツの発行者がテストに用いる目的で表示されています。
-        現時点ではどの施設を選択してもデモ用の施設が選択されたものとみなされます。</string>
+        現時点ではどの施設を選択してもデモ用の施設が選択されたものとみなされます。
+    </string>
     <string name="facility">建物(building)を選択して下さい。
         EasyGuideでは施設(facility)が複数の建物を持つことができます。
         通常は他のアプリケーションから自動的に建物が選択された状態で起動されるか、
         もしくは位置情報により自動的に建物が選択されます。そのためこの画面が表示されることはありません。
         この画面はコンテンツの発行者がテストに用いる目的で表示されています。
-       現時点ではどの建物を選択してもデモ用の建物が選択されたものとみなされます。</string>
-    <string name="spinner_prompt_floors">spinner_prompt_floors</string>
-
+        現時点ではどの建物を選択してもデモ用の建物が選択されたものとみなされます。
+    </string>
+    <string name="hello_android">hello_android</string>
 </resources>

@@ -1,4 +1,4 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.download;
+package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 
 import android.util.Log;
 
@@ -23,7 +23,7 @@ import android.util.Log;
  */
 @SuppressWarnings("serial")
 public class Domain extends ArrayList<Organization> {
-	private File domainDirectory;
+	private File _domainDirectory;
 	private Pattern ZIP_FILE_PATTERN = Pattern
 			.compile("^[0-9]+\\.[zZ][iI][pP]$");
 
@@ -37,7 +37,7 @@ public class Domain extends ArrayList<Organization> {
 		// if (!IsResolvable(url_.getHost())) {
 		// throw new Exception(url_.getHost() + " is not resolvable.");
 		// }
-		File domain_directory = new File(Root.GetTheRoot().getRootDirectory(),
+		File domain_directory = new File(Root.getTheRoot().rootDirectory(),
 				domain_name.toLowerCase());
 		if (!domain_directory.exists()) {
 			domain_directory.mkdirs();
@@ -48,7 +48,7 @@ public class Domain extends ArrayList<Organization> {
 					+ domain_name.toLowerCase());
 		}
 		assert (domain_directory.isDirectory());
-		this.domainDirectory = domain_directory;
+		this._domainDirectory = domain_directory;
 
 	}// a constructor of class Domain
 
@@ -64,7 +64,7 @@ public class Domain extends ArrayList<Organization> {
 		// throw new Exception(domain_directory.getName()
 		// + " is invalid for FQDN.");
 		// }
-		this.domainDirectory = domain_directory;
+		this._domainDirectory = domain_directory;
 		if (!domain_directory.exists()) {
 			throw new FileNotFoundException(domain_directory.getPath());
 		}
@@ -72,7 +72,7 @@ public class Domain extends ArrayList<Organization> {
 
 	public ArrayList<DownloadedItem> ScanDownloadedItems() {
 		ArrayList<DownloadedItem> r = new ArrayList<DownloadedItem>();
-		for (File zip_file_candidate : this.domainDirectory.listFiles()) {
+		for (File zip_file_candidate : this._domainDirectory.listFiles()) {
 			Matcher m = this.ZIP_FILE_PATTERN.matcher(zip_file_candidate.getName());
 			if (m.find()) {
 				DownloadedItem di = new DownloadedItem(zip_file_candidate);
@@ -86,10 +86,11 @@ public class Domain extends ArrayList<Organization> {
 	 * Domain class inherits ArrayList<Organization> and an instance of Domain
 	 * class holds organization directories. The enumeration of organization
 	 * directories are not performed automatically.
+	 * @throws FileNotFoundException 
 	 */
-	public void EnumerateOrganizations() {
+	public void EnumerateOrganizations() throws FileNotFoundException {
 		clear();
-		for (File file : this.domainDirectory.listFiles()) {
+		for (File file : this._domainDirectory.listFiles()) {
 			Log.v(this.getClass().getSimpleName(),
 					"unzipped directory " + file.getAbsolutePath()
 							+ " was found.");
@@ -119,7 +120,7 @@ public class Domain extends ArrayList<Organization> {
 	 * Removes all organization directories under the domain directory.
 	 */
 	public void RemoveAllOrganizations() {
-		for (File f : this.domainDirectory.listFiles()) {
+		for (File f : this._domainDirectory.listFiles()) {
 			if (f.isDirectory()) {
 				RemoveDirectory(f);
 			}
@@ -138,14 +139,13 @@ public class Domain extends ArrayList<Organization> {
 				return filename.endsWith(".zip");
 			}// accept
 		};// FileNameFilter
-		for (File f : this.domainDirectory.listFiles(file_name_filter)) {
+		for (File f : this._domainDirectory.listFiles(file_name_filter)) {
 			f.delete();
 		}// for
 	}// RemoveAllZipFiles
 
 	private String hostAddress;
 
-	@SuppressWarnings("unused")
 	@Deprecated
 	private boolean IsResolvable(final String host_) {
 		Thread thread = new Thread(new Runnable() {
@@ -173,7 +173,6 @@ public class Domain extends ArrayList<Organization> {
 		}
 	}// IsResolvable
 
-	@SuppressWarnings("unused")
 	@Deprecated
 	private boolean IsValidFqdn(String host_) {
 		Pattern pattern = Pattern
@@ -193,7 +192,7 @@ public class Domain extends ArrayList<Organization> {
 	 * @return the domainDirectory
 	 */
 	public File getDomainDirectory() {
-		return this.domainDirectory;
+		return this._domainDirectory;
 	}// getDomainDirectory
 
 }// Domain

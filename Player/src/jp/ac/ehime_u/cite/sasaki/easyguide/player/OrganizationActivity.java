@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.io.FileNotFoundException;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
@@ -33,7 +35,10 @@ public class OrganizationActivity extends ClickableActivity<Facility> {
 					this.organizationIndex);
 		} catch (ItemNotFoundException e) {
 			this.organization = Organization.getDummy();
-		}// try
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		ArrayAdapter<Facility> facilities_array_adapter = new ArrayAdapter<Facility>(
 				this, android.R.layout.simple_spinner_dropdown_item);

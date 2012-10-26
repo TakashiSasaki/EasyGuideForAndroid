@@ -1,6 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.ui;
 
 import java.util.ArrayList;
+
 import jp.ac.ehime_u.cite.sasaki.easyguide.R;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;

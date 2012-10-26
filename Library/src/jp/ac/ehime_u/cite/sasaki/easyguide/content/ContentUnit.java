@@ -3,70 +3,56 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.InvalidDirectoryNameException;
 
 public class ContentUnit {
 	private Classifier _classifier;
 	private DirectoryName _directoryName;
-	public int[] identifier = new int[7]; // 0=organization 1=facility
+	public ArrayList<Integer> identifier; // 0=organization 1=facility
 											// 2=building 3=floor
 											// 4=room 5=equipment 6=panel
-	private int _level;
+	// private int _level;
 	private ContentUnit _parent;
-	private ContentUnit[] _children;
+	private ArrayList<ContentUnit> children;
 	private File _directory;
 
-	public int siblingIndex() {
-		return this.identifier[this._level];
-	}
+	// public int siblingIndex() {
+	// return this.identifier[this._level];
+	// }
 
-	public ContentUnit(File directory, ContentUnit parent) throws FileNotFoundException{
-		
+	@SuppressWarnings({ "boxing", "unchecked" })
+	public ContentUnit(File directory, ContentUnit parent)
+			throws FileNotFoundException {
+
 		this._directory = directory;
 		this._parent = parent;
 		this._directoryName = new DirectoryName(directory.getName());
 		this._classifier = new Classifier(directory);
 
 		// detecting level consistency
-		if (parent == null) {
-			this._level = 0;
+		if (parent != null) {
+			this.identifier = (ArrayList<Integer>) parent.identifier.clone();
 		} else {
-			for (this._level = 0; this._level < parent.identifier.length; this._level++) {
-				if (parent.identifier[this._level] == 0)
-					break;
-				this.identifier[this._level] = parent.identifier[this._level];
-			}
-			assert (this._level == parent._level + 1);
-		}// if
-
-		this.identifier[this._level] = this._directoryName.number;
+			this.identifier.add(this._directoryName.number);
+		}
 
 		MyLogger.info("directory = " + directory.getAbsolutePath());
 
 		// traversing children
-		ArrayList<ContentUnit> children = new ArrayList<ContentUnit>();
+		this.children = new ArrayList<ContentUnit>();
 		for (File child_directory : directory.listFiles()) {
 			if (!child_directory.isDirectory())
 				continue;
 			try {
 				ContentUnit child_content_unit = new ContentUnit(
 						child_directory, this);
-				children.add(child_content_unit);
+				this.children.add(child_content_unit);
 			} catch (InvalidDirectoryNameException e) {
 				MyLogger.info(e.toString());
 				break;
 			}
 		}
 
-		// TODO: care for sparse numbering
-		this._children = new ContentUnit[children.size()];
-		for (ContentUnit child : children) {
-			this._children[child.siblingIndex() - 1] = child;
-		}
-		children = null;
 	}// a constructor
 
 	public String getName() {
@@ -93,15 +79,12 @@ public class ContentUnit {
 		return this._parent;
 	}
 
-	public ContentUnit[] getSiblings() {
-		if (this._parent == null) {
-			return new ContentUnit[] {};
-		}
-		return this._parent._children;
+	public ArrayList<ContentUnit> getSiblings() {
+		return this._parent.children;
 	}
 
-	public ContentUnit[] getChildren() {
-		return this._children;
+	public ArrayList<ContentUnit> getChildren() {
+		return this.children;
 	}
 
 	public ArrayList<ContentUnit> getAncestors() {
@@ -125,7 +108,7 @@ public class ContentUnit {
 
 	public ContentUnit getChild(int index) {
 		assert (index > 0);
-		return this._children[index - 1];
+		return this.children.get(index - 1);
 	}
 
 	public boolean hasMovie() {
@@ -165,8 +148,8 @@ public class ContentUnit {
 		final File directory = new File(directory_path);
 		ContentUnit content_unit = new ContentUnit(directory, null);
 		ContentUnit content_unit_2 = content_unit.getChild(1).getChild(2);
-		MyLogger.info("children " + content_unit_2.getChildren().length);
-		MyLogger.info("siblings " + content_unit_2.getSiblings().length);
+		MyLogger.info("children " + content_unit_2.getChildren().size());
+		MyLogger.info("siblings " + content_unit_2.getSiblings().size());
 		MyLogger.info("ancestors " + content_unit_2.getAncestors().size());
 		for (ContentUnit cu : content_unit_2.getAncestors()) {
 			MyLogger.info(cu.getName());

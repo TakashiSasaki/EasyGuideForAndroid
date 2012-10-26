@@ -2,6 +2,8 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.content;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.nio.file.DirectoryNotEmptyException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.LoggingMXBean;
@@ -16,7 +18,7 @@ public class Classifier {
 			.compile("^(.+\\.html)|(.+\\.htm)$");
 	private Pattern textFilePattern = Pattern.compile("^.+\\.txt$");
 	private Pattern imageFilePattern = Pattern
-			.compile("^(.+\\.jpg)|(.+\\.JPG)|(.+\\.JPEG)|(.+\\.jpeg)|(.+\\.png)|(.+\\.PNG)$");
+			.compile("^(.+\\.jpg)|(.+\\.JPG)|(.+\\.JPEG)|(.+\\.jpeg)|(.+\\.png)|(.+\\.PNG)|(.+\\.gif)|(.+\\.GIF)$");
 
 	private ArrayList<File> movieFiles = new ArrayList<File>();
 	private ArrayList<File> htmlFiles = new ArrayList<File>();
@@ -25,36 +27,40 @@ public class Classifier {
 
 	File directory;
 
-	public Classifier(File directory) {
+	public Classifier(File directory) throws FileNotFoundException {
 		this.directory = directory;
+		if(!directory.isDirectory()){
+			throw new FileNotFoundException();
+		}
 
 		for (File f : directory.listFiles()) {
-			Logger.getGlobal().info("classyfing " + f.getName());
+
+			MyLogger.info("classyfing " + f.getName());
 			Matcher match_movie = this.movieFilePattern.matcher(f.getName());
 			if (match_movie.find()) {
-				Logger.getGlobal().info("movie file " + f.getName());
+				MyLogger.info("movie file " + f.getName());
 				this.movieFiles.add(f);
 				continue;
 			}
 			Matcher match_html = this.htmlFilePattern.matcher(f.getName());
 			if (match_html.find()) {
-				Logger.getGlobal().info("html file" + f.getName());
+				MyLogger.info("html file" + f.getName());
 				this.htmlFiles.add(f);
 				continue;
 			}
 			Matcher match_text = this.textFilePattern.matcher(f.getName());
 			if (match_text.find()) {
-				Logger.getGlobal().info("text file " + f.getName());
+				MyLogger.info("text file " + f.getName());
 				this.textFiles.add(f);
 				continue;
 			}
 			Matcher match_image = this.imageFilePattern.matcher(f.getName());
 			if (match_image.find()) {
-				Logger.getGlobal().info("image file " + f.getName());
+				MyLogger.info("image file " + f.getName());
 				this.imageFiles.add(f);
 				continue;
 			}
-			Logger.getGlobal().info("not classified, " + f.getName());
+			MyLogger.info("not classified, " + f.getName());
 		}// for
 	}// a constructor
 

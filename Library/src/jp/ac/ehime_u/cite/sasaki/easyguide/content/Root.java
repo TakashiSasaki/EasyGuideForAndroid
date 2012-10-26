@@ -25,7 +25,8 @@ public class Root extends ArrayList<Domain> {
 	// the constructor
 	private Root(File root_directory) throws FileNotFoundException {
 		if (root_directory.isAbsolute()) {
-			if (!root_directory.exists()) throw new FileNotFoundException();
+			if (!root_directory.exists())
+				throw new FileNotFoundException();
 			this._rootDirectory = root_directory;
 		} else {
 			File external_storage_directory = Environment
@@ -36,8 +37,8 @@ public class Root extends ArrayList<Domain> {
 		}// if
 		_enumerateDomainDirectories();
 	}// an constructor
-	
-	public File rootDirectory(){
+
+	public File rootDirectory() {
 		return this._rootDirectory;
 	}
 
@@ -66,8 +67,7 @@ public class Root extends ArrayList<Domain> {
 			if (m.find()) {
 				try {
 					Domain domain = new Domain(domain_directory);
-					Logger.getGlobal().setLevel(Level.INFO);
-					Logger.getGlobal().info(domain.getDomainDirectory().getAbsolutePath());
+					MyLogger.info(domain.getDomainDirectory().getAbsolutePath());
 					this.add(domain);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
@@ -81,7 +81,8 @@ public class Root extends ArrayList<Domain> {
 	 */
 	private static Root theRoot;
 
-	public static Root getTheRoot(File contents_directory) throws FileNotFoundException {
+	public static Root getTheRoot(File contents_directory)
+			throws FileNotFoundException {
 		assert Root.theRoot == null;
 		Root.theRoot = new Root(contents_directory);
 		return Root.theRoot;

@@ -1,6 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import android.util.Log;
@@ -33,8 +34,9 @@ public class Organization extends ItemBase<Organization, Facility> {
 
 	/**
 	 * @param organization_directory
+	 * @throws FileNotFoundException 
 	 */
-	public Organization(File organization_directory) {
+	public Organization(File organization_directory) throws FileNotFoundException {
 		super(organization_directory);
 		// this.organizationDirectory = organization_directory;
 		// this.organizationDirectoryName = new DirectoryName(
@@ -48,7 +50,7 @@ public class Organization extends ItemBase<Organization, Facility> {
 		this.sortByIndex();
 	}// a constructor
 
-	public void EnumerateFacilities() {
+	public void EnumerateFacilities() throws FileNotFoundException {
 		for (File facility_directory : this.listFiles()) {
 			if (!facility_directory.isDirectory())
 				continue;

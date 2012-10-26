@@ -2,45 +2,83 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical"
-    android:weightSum="10" >
+    android:background="@android:color/black"
+    android:orientation="vertical" >
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollViewSiblingsAndParents"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="50dp" >
+        android:layout_gravity="top"
+        android:layout_margin="1dp"
+        android:layout_weight="0"
+        android:background="@android:color/white" >
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="thumbnail"
+                android:src="@drawable/unknown" 
+                android:visibility="gone"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/scrollViewBreadcrumb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@android:color/white" >
+
+        <LinearLayout
+            android:id="@+id/layoutBreadcrumb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="1dp"
+            android:gravity="left"
+            android:minHeight="10dp" >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="10dp"
+                android:text="parent1" />
         </LinearLayout>
     </HorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/layoutVideo"
         android:layout_width="match_parent"
-        android:layout_height="800dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:minHeight="50dp"
-        android:gravity="center_horizontal" >
+        android:gravity="center"
+        android:padding="1dp"
+        android:visibility="visible" >
 
         <VideoView
             android:id="@+id/videoView1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/frameLayoutImage"
-        android:layout_width="wrap_content"
-        android:layout_height="800dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="1dp"
         android:layout_weight="1"
         android:background="@android:color/white"
-        android:minHeight="50dp" >
+        android:padding="1dp"
+        android:visibility="visible" >
 
         <ImageView
             android:id="@+id/imageViewClickable"
@@ -56,58 +94,58 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/layoutText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="1dp"
+        android:visibility="visible" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textViewContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                scroll=""
+                android:text="説明文のテキスト"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/layoutHtml"
         android:layout_width="match_parent"
-        android:layout_height="800dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:minHeight="50dp" >
+        android:padding="1dp"
+        android:visibility="visible" >
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutButtons"
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollViewButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:minHeight="50dp" >
-    </LinearLayout>
+        android:layout_weight="0"
+        android:layout_gravity="center" 
+        android:background="@android:color/white">
 
-    <LinearLayout
-        android:id="@+id/layoutButtons2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:minHeight="50dp" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="right"
-        android:minHeight="50dp" >
-
-        <TextView
-            android:id="@+id/textViewStatus"
+        <LinearLayout
+            android:id="@+id/layoutButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:minHeight="20dp"
-            android:text="動作状態確認用表示部"
-            android:singleLine="false"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <Button
-            android:id="@+id/buttonWiFi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#FFff4500"
-            android:minHeight="60dp"
-            android:minWidth="60dp"
-            android:text="Wi-Fi電波強度測定" >
-        </Button>
-    </LinearLayout>
+            android:gravity="center">
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

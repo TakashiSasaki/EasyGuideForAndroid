@@ -5,14 +5,14 @@ import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.db.DownloadedItemTable;
 import jp.ac.ehime_u.cite.sasaki.easyguide.db.SimpleCursorLoader;
-import jp.ac.ehime_u.cite.sasaki.easyguide.download.Domain;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
-import android.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+//import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
-import android.content.Loader;
+import android.support.v4.content.Loader;
+//import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,11 +41,6 @@ public class DownloadedItemsActivity extends CommonMenuActivity implements
 		// this.layoutInflator = (LayoutInflater) this
 		// .getSystemService(LAYOUT_INFLATER_SERVICE);
 		this.downloadedItemsTable = new DownloadedItemTable(this);
-		Root.GetTheRoot().EnumerateDomainDirectories();
-		for (Domain d : Root.GetTheRoot()) {
-			ArrayList<DownloadedItem> adi = d.ScanDownloadedItems();
-			DownloadedItemTable.getInstance(this).Insert(adi);
-		}
 		this.listViewDownloadedItems = (ListView) findViewById(R.id.listViewDownloadedItems);
 		// SetSimpleArrayAdapter();
 		SetCursorAdapter();

@@ -24,7 +24,7 @@ public class CommonMenuActivity extends Activity {
 		case R.id.itemSources: {
 			Log.v(this.getClass().getSimpleName(), "R.id.itemSources");
 			Intent intent = new Intent(CommonMenuActivity.this,
-					SourcesActivity.class);
+					MainActivity.class);
 			intent.setAction(Intent.ACTION_VIEW);
 			startActivity(intent);
 			return true;

@@ -12,12 +12,12 @@ public class TableBase {
 	}
 
 	protected SQLiteDatabase getReadableDatabase() {
-		CommonSQLiteOpenHelper oh = new CommonSQLiteOpenHelper(this.context);
+		SQLiteOpenHelper oh = new SQLiteOpenHelper(this.context);
 		return oh.getReadableDatabase();
-	}
+	}// getReadableDatabase
 
 	protected SQLiteDatabase getWritableDatabase() {
-		CommonSQLiteOpenHelper oh = new CommonSQLiteOpenHelper(this.context);
+		SQLiteOpenHelper oh = new SQLiteOpenHelper(this.context);
 		return oh.getWritableDatabase();
-	}
-}
+	}// getWritableDatabase
+}// tableBase

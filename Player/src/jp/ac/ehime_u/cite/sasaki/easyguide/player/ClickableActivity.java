@@ -1,5 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+//import com.gmail.takashi316.lib.android.activity.SmartActivity;
+
 import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
@@ -26,8 +28,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public abstract class ClickableActivity<T extends ItemBase> extends Activity
-		implements SurfaceHolder.Callback {
+public abstract class ClickableActivity<T extends ItemBase> extends
+		Activity implements SurfaceHolder.Callback {
 	private ImageView imageView;
 	private SurfaceView surfaceView;
 	private static Bitmap star;
@@ -56,6 +58,8 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 			public boolean onTouch(View v, MotionEvent event) {
 				float x_on_image_view = event.getX();
 				float y_on_image_view = event.getY();
+				Log.v(new Throwable(), "on ImageView x=" + x_on_image_view
+						+ " y=" + y_on_image_view);
 				Point point_on_image_view = new Point((int) x_on_image_view,
 						(int) y_on_image_view);
 				Point point_on_bitmap = getPointOnBitmap(point_on_image_view);
@@ -146,10 +150,14 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 
 	private Point getPointOnImageView(Point point_on_bitmap) {
 		initScaleAndOffset();
+		Log.v(new Throwable(), "offsetX=" + this.offsetX + " offsetY="
+				+ this.offsetY + " bitmapX=" + point_on_bitmap.x + " bitmapY="
+				+ point_on_bitmap.y + " scaleX=" + this.scaleX + " scaleY="
+				+ this.scaleY);
 		float x = (point_on_bitmap.x) * this.scaleX + this.offsetX;
 		float y = (point_on_bitmap.y) * this.scaleY + this.offsetY;
 		return new Point((int) x, (int) y);
-	}
+	}// getPointOnImageView
 
 	private void initScaleAndOffset() {
 		Matrix matrix = this.imageView.getImageMatrix();
@@ -187,8 +195,12 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 			return;
 		if (this.starPoints == null)
 			return;
+		Log.v(new Throwable(), "Points = " + this.starPoints.size());
+		Canvas c = this.surfaceHolder.lockCanvas();
 		for (Point p : this.starPoints) {
 			Point on_image_view = getPointOnImageView(p);
+			Log.v(new Throwable(), "starX=" + on_image_view.x + " starY="
+					+ on_image_view.y);
 			Drawable d = this.imageView.getDrawable();
 			Log.v(new Throwable(), "IntrinsicHeight=" + d.getIntrinsicHeight()
 					+ " IntrinsicWidth=" + d.getIntrinsicWidth());
@@ -202,11 +214,10 @@ public abstract class ClickableActivity<T extends ItemBase> extends Activity
 				ClickableActivity.star = BitmapFactory.decodeResource(
 						getResources(), R.drawable.btn_rating_star_on_selected);
 			}
-			Canvas c = this.surfaceHolder.lockCanvas();
-			c.drawBitmap(ClickableActivity.star, on_image_view.x,
-					on_image_view.y, null);
-			this.surfaceHolder.unlockCanvasAndPost(c);
+			//c.drawBitmap(ClickableActivity.star, on_image_view.x,
+			//		on_image_view.y, null);
 		}// for
+		this.surfaceHolder.unlockCanvasAndPost(c);
 	}// drawSurface
 
 }// ClickableActivity

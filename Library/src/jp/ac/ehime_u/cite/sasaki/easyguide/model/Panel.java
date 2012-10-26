@@ -19,8 +19,9 @@ public class Panel extends ItemBase {
 
 	/**
 	 * @param panel_directory
+	 * @throws FileNotFoundException 
 	 */
-	public Panel(File panel_directory) {
+	public Panel(File panel_directory) throws FileNotFoundException {
 		super(panel_directory);
 		// this.panelDirectory = panel_directory;
 		// this.panelDirectoryName = new

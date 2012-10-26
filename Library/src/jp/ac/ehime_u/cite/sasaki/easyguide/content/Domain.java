@@ -86,8 +86,9 @@ public class Domain extends ArrayList<Organization> {
 	 * Domain class inherits ArrayList<Organization> and an instance of Domain
 	 * class holds organization directories. The enumeration of organization
 	 * directories are not performed automatically.
+	 * @throws FileNotFoundException 
 	 */
-	public void EnumerateOrganizations() {
+	public void EnumerateOrganizations() throws FileNotFoundException {
 		clear();
 		for (File file : this._domainDirectory.listFiles()) {
 			Log.v(this.getClass().getSimpleName(),

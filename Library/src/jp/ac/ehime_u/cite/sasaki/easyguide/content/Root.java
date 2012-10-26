@@ -15,20 +15,15 @@ import android.os.Environment;
  * 
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
-@SuppressWarnings("serial")
-public class Root extends ArrayList<Domain> {
+public class Root extends ContentUnit {
 	// private static final String rootDirectoryName = "EASYGUIDE";
 	private File _rootDirectory;
 	private Pattern DOMAIN_PATTERN = Pattern
 			.compile("^[a-zA-Z0-9_\\-][a-zA-Z0-9_\\-.]+[a-zA-Z0-9_\\-]$");
 
 	// the constructor
-	private Root(File root_directory) throws FileNotFoundException {
-		if (root_directory.isAbsolute()) {
-			if (!root_directory.exists())
-				throw new FileNotFoundException();
-			this._rootDirectory = root_directory;
-		} else {
+	private static final String _EASYGUIDE = "EASYGUIDE";
+	public Root() throws FileNotFoundException {
 			File external_storage_directory = Environment
 					.getExternalStorageDirectory();
 			this._rootDirectory = new File(external_storage_directory,

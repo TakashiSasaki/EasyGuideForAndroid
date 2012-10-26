@@ -3,27 +3,36 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.ui;
 import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.R;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Panel;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.BitmapLoader;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.TextLoader;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 public class TocAdapter extends BaseAdapter {
 
-	Organizations organizations = Organizations.getInstance();
+	public class TocItem {
+		Bitmap thumbnail;
+		String domain;
+		String description;
 
-	ArrayList<TocItem> tocArrayList = new ArrayList<TocItem>();
+		public TocItem(Bitmap thumbnail, String domain, String description) {
+			this.thumbnail = thumbnail;
+			this.domain = domain;
+			this.description = description;
+		}
+
+	}// TocItem
+
+	// Organizations organizations = Organizations.getInstance();
+
+	ArrayList<TocItem> tocItems = new ArrayList<TocItem>();
 
 	LayoutInflater layoutInflater;
 
@@ -31,50 +40,27 @@ public class TocAdapter extends BaseAdapter {
 	 * the constructor of TocAdapter
 	 * 
 	 * @param context
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public TocAdapter(Context context) throws Exception {
+	public TocAdapter(Context context, ContentUnit[] content_units)
+			throws Exception {
 		super();
 
 		this.layoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		rebuildArray(context);
-
+		for (ContentUnit content_unit : content_units) {
+			BitmapLoader bitmap_loader = new BitmapLoader(context);
+			bitmap_loader.loadBitmapFromFile(content_unit.getImageFile());
+			Bitmap thumbnail = bitmap_loader.getBitmap();
+			TextLoader text_loader = new TextLoader();
+			text_loader.loadTextFromFile(content_unit.getTextFile());
+			String description = text_loader.getText();
+			String domain = content_unit.getName();
+			TocItem toc_item = new TocItem(thumbnail, domain, description);
+			this.tocItems.add(toc_item);
+		}
 	}// the constructor
-
-	void rebuildArray(Context context) throws Exception {
-		this.tocArrayList.clear();
-		this.tocArrayList = null;
-		this.tocArrayList = new ArrayList<TocItem>();
-		for (Organization organization : this.organizations) {
-			this.tocArrayList.add(organization.getTocItem(context));
-			organization.EnumerateFacilities();
-			for (Facility facility : organization) {
-				this.tocArrayList.add(facility.getTocItem(context));
-				facility.EnumerateBuildings();
-				for (Building building : facility) {
-					this.tocArrayList.add(building.getTocItem(context));
-					building.EnumerateFloors();
-					for (Floor floor : building) {
-						this.tocArrayList.add(floor.getTocItem(context));
-						floor.EnumerateRooms();
-						for (Room room : floor) {
-							this.tocArrayList.add(room.getTocItem(context));
-							room.EnumerateEquipments();
-							for (Equipment equipment : room) {
-								this.tocArrayList.add(equipment.getTocItem(context));
-								equipment.EnumeratePanels();
-								for (Panel panel : equipment) {
-									this.tocArrayList.add(panel.getTocItem(context));
-								}// for
-							}// for
-						}// for
-					}// for
-				}// for
-			}// for
-		}// for
-	}// rebuildArray
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -85,19 +71,10 @@ public class TocAdapter extends BaseAdapter {
 			view = this.layoutInflater.inflate(R.layout.tocitem, null);
 		}
 		try {
-			TocItem toc_item = this.tocArrayList.get(position);
-			((TextView) (view.findViewById(R.id.textViewLevelName)))
-					.setText(toc_item.getLayerTypeName());
-			((TextView) (view.findViewById(R.id.textViewTitle)))
-					.setText(toc_item.getTitle());
-			((TextView) (view.findViewById(R.id.textViewNumber)))
-					.setText(toc_item.index);
-			((TextView) (view.findViewById(R.id.textViewPath)))
-					.setText(toc_item.getPath());
-			((TextView) (view.findViewById(R.id.textViewX))).setText(toc_item
-					.getX());
-			((TextView) (view.findViewById(R.id.textViewY))).setText(toc_item
-					.getY());
+			TocItem toc_item = this.tocItems.get(position);
+			ImageView imageViewTocItem = (ImageView) view
+					.findViewById(R.id.imageViewTocItem);
+			imageViewTocItem.setImageBitmap(toc_item.thumbnail);
 		} catch (IndexOutOfBoundsException e) {
 			Log.e(this.getClass().getSimpleName(),
 					"no item in tocArrayList at position" + position);
@@ -108,19 +85,16 @@ public class TocAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.tocItems.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.tocItems.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return 0;
+		return position;
 	}
 }// TocAdapter

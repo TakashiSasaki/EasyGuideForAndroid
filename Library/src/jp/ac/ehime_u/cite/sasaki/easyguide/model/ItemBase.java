@@ -10,17 +10,16 @@ import java.util.Iterator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
+//import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryName;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
-import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocItem;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 		implements Collection<S> {
 	private File directory;
 	protected DirectoryName directoryName;
-	protected DirectoryImage directoryImage;
+	//protected DirectoryImage directoryImage;
 	protected ArrayList<S> items;
 
 	// protected ItemType itemType;
@@ -175,37 +174,37 @@ public class ItemBase<T extends ItemBase<?, ?>, S extends ItemBase<?, ?>>
 		return this.directoryName.y;
 	}
 
-	public Bitmap getImage(Context context) throws Exception {
-		return this.directoryImage.getBitmap(context);
-	}
+//	public Bitmap getImage(Context context) throws Exception {
+//		return this.directoryImage.getBitmap(context);
+//	}
+//
+//	public Bitmap getThumbnail(Context context) throws Exception {
+//		return this.directoryImage.getThumbnail(context);
+//	}
 
-	public Bitmap getThumbnail(Context context) throws Exception {
-		return this.directoryImage.getThumbnail(context);
-	}
-
-	public TocItem getTocItem(Context context) throws Exception {
-		ItemType item_type;
-		if (this.getClass().isInstance(Organization.class)) {
-			item_type = ItemType.ORGANIZATION_TYPE;
-		} else if (this.getClass().isInstance(Building.class)) {
-			item_type = ItemType.BUILDING_TYPE;
-		} else if (this.getClass().isInstance(Equipment.class)) {
-			item_type = ItemType.EQUIPMENT_TYPE;
-		} else if (this.getClass().isInstance(Facility.class)) {
-			item_type = ItemType.EQUIPMENT_TYPE;
-		} else if (this.getClass().isInstance(Floor.class)) {
-			item_type = ItemType.FLOOR_TYPE;
-		} else if (this.getClass().isInstance(Room.class)) {
-			item_type = ItemType.ROOM_TYPE;
-		} else {
-			item_type = ItemType.UNKNOWN_TYPE;
-		}
-		// this.layerType = item_base.getItemType();
-		TocItem toc_item = new TocItem(item_type, this.getIndex(),
-				this.getTitle(), this.getX(), this.getY(), this.getDirectory(),
-				this.getThumbnail(context));
-		return toc_item;
-	}// getTocItem
+//	public TocItem getTocItem(Context context) throws Exception {
+//		ItemType item_type;
+//		if (this.getClass().isInstance(Organization.class)) {
+//			item_type = ItemType.ORGANIZATION_TYPE;
+//		} else if (this.getClass().isInstance(Building.class)) {
+//			item_type = ItemType.BUILDING_TYPE;
+//		} else if (this.getClass().isInstance(Equipment.class)) {
+//			item_type = ItemType.EQUIPMENT_TYPE;
+//		} else if (this.getClass().isInstance(Facility.class)) {
+//			item_type = ItemType.EQUIPMENT_TYPE;
+//		} else if (this.getClass().isInstance(Floor.class)) {
+//			item_type = ItemType.FLOOR_TYPE;
+//		} else if (this.getClass().isInstance(Room.class)) {
+//			item_type = ItemType.ROOM_TYPE;
+//		} else {
+//			item_type = ItemType.UNKNOWN_TYPE;
+//		}
+//		// this.layerType = item_base.getItemType();
+//		TocItem toc_item = new TocItem(item_type, this.getIndex(),
+//				this.getTitle(), this.getX(), this.getY(), this.getDirectory(),
+//				this.getThumbnail(context));
+//		return toc_item;
+//	}// getTocItem
 
 	public S getNearest(Point point) throws ItemNotFoundException {
 		if (this.items.size() == 0)

@@ -1,15 +1,12 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
+
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.BitmapLoader;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.DirectoryImage;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.DistanceCalculator;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.ItemBase;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.TextLoader;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
 import android.app.Activity;
@@ -47,7 +44,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -223,19 +219,19 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 	// protected abstract void InvokeActivity(T selected_item);
 
-	protected void setImageView(ItemBase item_base) throws Exception {
-		this.imageView.setImageBitmap(null);
-		if (this.bitmap != null) {
-			this.bitmap.recycle();
-			this.bitmap = null;
-		}
-		// this.itemBase = item_base;
-		this.bitmap = item_base.getImage(this);
-		this.imageView.setImageBitmap(this.bitmap);
-		LayoutParams image_view_layout_params = this.imageView
-				.getLayoutParams();
-		this.surfaceView.setLayoutParams(image_view_layout_params);
-	}
+//	protected void setImageView(ItemBase item_base) throws Exception {
+//		this.imageView.setImageBitmap(null);
+//		if (this.bitmap != null) {
+//			this.bitmap.recycle();
+//			this.bitmap = null;
+//		}
+//		// this.itemBase = item_base;
+//		this.bitmap = item_base.getImage(this);
+//		this.imageView.setImageBitmap(this.bitmap);
+//		LayoutParams image_view_layout_params = this.imageView
+//				.getLayoutParams();
+//		this.surfaceView.setLayoutParams(image_view_layout_params);
+//	}
 
 	@Override
 	protected void onPause() {
@@ -260,15 +256,9 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 		if (this.contentUnit.hasText()) {
 			try {
-				FileReader file_reader = new FileReader(
-						this.contentUnit.getTextFile());
-				BufferedReader buffer_reader = new BufferedReader(file_reader);
-				StringBuilder sb = new StringBuilder();
-				String s;
-				while ((s = buffer_reader.readLine()) != null) {
-					sb.append(s + "\n");
-				}// while
-				this.textViewContent.setText(sb.toString());
+				TextLoader text_loader = new TextLoader();
+				text_loader.loadTextFromFile(this.contentUnit.getTextFile());
+				this.textViewContent.setText(text_loader.getText());
 				this.textViewContent.setTextSize(35);
 				this.textViewContent.setBackgroundColor(Color.WHITE);
 				this.textViewContent.setTextColor(Color.BLACK);
@@ -296,20 +286,22 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 		if (this.contentUnit.hasImageFile()) {
 			this.imageViewClickable.setImageBitmap(null);
-			DirectoryImage directory_image = new DirectoryImage(
-					this.contentUnit);
+			BitmapLoader bitmap_loader = new BitmapLoader(this);
+			bitmap_loader.loadBitmapFromFile(this.contentUnit.getImageFile());
 			// this.directoryImage.setContentUnit(this.contentUnit);
-			this.imageViewClickable.setImageBitmap(directory_image
-					.getBitmap(this));
+			this.imageViewClickable.setImageBitmap(bitmap_loader.getBitmap());
+			LayoutParams image_view_layout_params = this.imageView
+					.getLayoutParams();
+			this.surfaceView.setLayoutParams(image_view_layout_params);
 			this.frameLayoutImage.setVisibility(View.VISIBLE);
 		} else {
 			this.frameLayoutImage.setVisibility(View.GONE);
 			this.imageView.setImageBitmap(null);
 		}// if content unit has an image
 
-		if (this.contentUnit.getChildren().length == 0) {
+		if (this.contentUnit.getChildren().size() == 0) {
 			// this.layoutButtons.setVisibility(View.GONE);
-		} else if (this.contentUnit.getChildren().length > 0) {
+		} else if (this.contentUnit.getChildren().size() > 0) {
 			this._showButtons();
 			this.layoutButtons.setVisibility(View.VISIBLE);
 		}// if content unit has children
@@ -368,11 +360,11 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 				public void onClick(View v) {
 					ua.videoView.stopPlayback();
 					ua.layoutVideo.setVisibility(View.GONE);
-                    ua.setContentUnit(parent_cu);
-					//ua.onResume();
+					ua.setContentUnit(parent_cu);
+					// ua.onResume();
 				}// onClick
 			});
-			 this.layoutButtons.addView(b);
+			this.layoutButtons.addView(b);
 		}// if
 		this.layoutButtons.setMinimumWidth(this.horizontalScrollViewButtons
 				.getWidth());
@@ -423,7 +415,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.layoutBreadcrumb.addView(b);
 
 		this.horizontalScrollViewBreadcrumb.smoothScrollTo(
-				this.layoutBreadcrumb.getWidth()+1000, 0);
+				this.layoutBreadcrumb.getWidth() + 1000, 0);
 		this.horizontalScrollViewBreadcrumb.smoothScrollBy(2000, 0);
 	}// _showParents
 
@@ -521,7 +513,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		}
 		if (nearest_child != null)
 			return nearest_child;
-		if (this.contentUnit.getChildren().length == 0)
+		if (this.contentUnit.getChildren().size() == 0)
 			return null;
 		return this.contentUnit.getChild(1);
 	}// getNearestChild

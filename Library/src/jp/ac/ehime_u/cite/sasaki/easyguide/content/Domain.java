@@ -5,14 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import jp.ac.ehime_u.cite.sasaki.easyguide.download.DownloadedItem;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
-
-import android.util.Log;
 
 /**
  * Each organization belongs to one FQDN. class Domain manipulates resources
@@ -21,88 +15,36 @@ import android.util.Log;
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
  */
-@SuppressWarnings("serial")
-public class Domain extends ArrayList<Organization> {
-	private File _domainDirectory;
-	private Pattern ZIP_FILE_PATTERN = Pattern
+public class Domain extends ContentUnit {
+	// private File _domainDirectory;
+	private static final Pattern _ZIP_FILE_PATTERN = Pattern
 			.compile("^[0-9]+\\.[zZ][iI][pP]$");
+	private String hostAddress;
 
 	/**
 	 * class Domain represents domain directory. This constructor makes
 	 * corresponding directory if not exists.
 	 * 
 	 * @param domain_name
-	 */
-	public Domain(String domain_name) {
-		// if (!IsResolvable(url_.getHost())) {
-		// throw new Exception(url_.getHost() + " is not resolvable.");
-		// }
-		File domain_directory = new File(Root.getTheRoot().rootDirectory(),
-				domain_name.toLowerCase());
-		if (!domain_directory.exists()) {
-			domain_directory.mkdirs();
-			assert (domain_directory.exists());
-		}
-		if (domain_directory.isFile()) {
-			throw new RuntimeException("Can't make domain directory for "
-					+ domain_name.toLowerCase());
-		}
-		assert (domain_directory.isDirectory());
-		this._domainDirectory = domain_directory;
-
-	}// a constructor of class Domain
-
-	/**
-	 * a constructor
-	 * 
-	 * @param domain_directory
-	 *            : Already existing domain directory.
 	 * @throws FileNotFoundException
 	 */
-	public Domain(File domain_directory) throws FileNotFoundException {
-		// if (!IsValidFqdn(domain_directory.getName())) {
-		// throw new Exception(domain_directory.getName()
-		// + " is invalid for FQDN.");
-		// }
-		this._domainDirectory = domain_directory;
-		if (!domain_directory.exists()) {
-			throw new FileNotFoundException(domain_directory.getPath());
-		}
+	public Domain(Root root, String domain_name) throws FileNotFoundException {
+		super(new File(root.getDirectory(), domain_name.toLowerCase()), root);
+		getHostAddress();
 	}// a constructor of class Domain
 
-	public ArrayList<DownloadedItem> ScanDownloadedItems() {
-		ArrayList<DownloadedItem> r = new ArrayList<DownloadedItem>();
-		for (File zip_file_candidate : this._domainDirectory.listFiles()) {
-			Matcher m = this.ZIP_FILE_PATTERN.matcher(zip_file_candidate.getName());
-			if (m.find()) {
-				DownloadedItem di = new DownloadedItem(zip_file_candidate);
-				r.add(di);
-			}
-		}// for
-		return r;
-	}// ScanDownloadedItems
+	public void mkdir() {
+		if (!getDirectory().exists()) {
+			getDirectory().mkdirs();
+			assert (getDirectory().exists());
+		}
+	}// mkdir
 
-	/**
-	 * Domain class inherits ArrayList<Organization> and an instance of Domain
-	 * class holds organization directories. The enumeration of organization
-	 * directories are not performed automatically.
-	 * @throws FileNotFoundException 
-	 */
-	public void EnumerateOrganizations() throws FileNotFoundException {
-		clear();
-		for (File file : this._domainDirectory.listFiles()) {
-			Log.v(this.getClass().getSimpleName(),
-					"unzipped directory " + file.getAbsolutePath()
-							+ " was found.");
-			if (file.isDirectory()) {
-				Log.v(this.getClass().getSimpleName(), file.getName()
-						+ " was found as unzipped directory.");
-				this.add(new Organization(file));
-			}// if
-		}// for
-	}// EnumerateOrganizations
+	public void rmdir() {
+		_rmdir(getDirectory());
+	}// rmdir
 
-	static private void RemoveDirectory(File directory) {
+	static private void _rmdir(File directory) {
 		if (directory == null)
 			return;
 		assert (directory.isDirectory());
@@ -110,50 +52,35 @@ public class Domain extends ArrayList<Organization> {
 			if (f.isFile()) {
 				f.delete();
 			} else {
-				RemoveDirectory(f);
+				_rmdir(f);
 			}// if
 		}// for
 		directory.delete();
-	}// RemoveDirectory
-
-	/**
-	 * Removes all organization directories under the domain directory.
-	 */
-	public void RemoveAllOrganizations() {
-		for (File f : this._domainDirectory.listFiles()) {
-			if (f.isDirectory()) {
-				RemoveDirectory(f);
-			}
-		}// for
-		this.clear();
-	}// RemoveAllOrganizations
+	}// _rmdir
 
 	/**
 	 * Removes all files with zip extension under the domain directory. Domain
 	 * directory holds ZIP files and one or more organization directoryies.
 	 */
-	public void RemoveAllZipFiles() {
+	public void removeZipFiles() {
 		FilenameFilter file_name_filter = new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String filename) {
 				return filename.endsWith(".zip");
 			}// accept
 		};// FileNameFilter
-		for (File f : this._domainDirectory.listFiles(file_name_filter)) {
+		for (File f : this.getDirectory().listFiles(file_name_filter)) {
 			f.delete();
 		}// for
-	}// RemoveAllZipFiles
+	}// removeZipFiles
 
-	private String hostAddress;
-
-	@Deprecated
-	private boolean IsResolvable(final String host_) {
+	public void getHostAddress() {
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				InetAddress inet_address;
 				try {
-					inet_address = InetAddress.getByName(host_);
+					inet_address = InetAddress.getByName(getName());
 					Domain.this.hostAddress = inet_address.getHostAddress();
 				} catch (UnknownHostException e) {
 					Domain.this.hostAddress = null;
@@ -161,20 +88,9 @@ public class Domain extends ArrayList<Organization> {
 			}// run
 		});
 		thread.start();
-		try {
-			thread.join(10000);
-			if (this.hostAddress == null) {
-				return false;
-			} else {
-				return true;
-			}
-		} catch (InterruptedException e) {
-			return false;
-		}
 	}// IsResolvable
 
-	@Deprecated
-	private boolean IsValidFqdn(String host_) {
+	private boolean isFqdn(String host_) {
 		Pattern pattern = Pattern
 				.compile("^.{1,254}$)(^(?:(?!\\d+\\.)[a-zA-Z0-9_\\-]{1,63}\\.?)+(?:[a-zA-Z]{2,})$");
 		// regex string comes from
@@ -186,13 +102,6 @@ public class Domain extends ArrayList<Organization> {
 		} else {
 			return true;
 		}
-	}
-
-	/**
-	 * @return the domainDirectory
-	 */
-	public File getDomainDirectory() {
-		return this._domainDirectory;
-	}// getDomainDirectory
+	}// isFqdn
 
 }// Domain

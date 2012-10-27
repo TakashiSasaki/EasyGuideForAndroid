@@ -62,11 +62,9 @@ public class UnifiedActivity extends FragmentActivity implements
 	private HorizontalScrollView horizontalScrollViewSiblingsAndParents;
 	LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
-	private LinearLayout layoutText;
 	private ImageView imageViewClickable;
 	VideoView videoView;
-	private TextView textViewContent;
-	private MediaController mediaController;
+	// private MediaController mediaController;
 
 	private WifiManager wifiManager;
 	private Handler handler;
@@ -74,6 +72,7 @@ public class UnifiedActivity extends FragmentActivity implements
 	private BreadcrumbFragment breadcrumbFragment;
 	private ButtonsFragment buttonsFragment;
 	private HtmlFragment htmlFragment;
+	private TextFragment textFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,18 +83,19 @@ public class UnifiedActivity extends FragmentActivity implements
 		this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
 		this.surfaceView = (SurfaceView) findViewById(R.id.surfaceViewClickable);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
-		this.layoutText = (LinearLayout) findViewById(R.id.layoutText);
 		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
 		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
-		this.textViewContent = (TextView) findViewById(R.id.textViewContent);
 		this.fragmentManager = getSupportFragmentManager();
 		this.breadcrumbFragment = (BreadcrumbFragment) fragmentManager
 				.findFragmentById(R.id.breadcrumbFragment);
 		this.buttonsFragment = (ButtonsFragment) fragmentManager
 				.findFragmentById(R.id.buttonsFragment);
-		this.htmlFragment = (HtmlFragment)fragmentManager.findFragmentById(R.id.htmlFragment);
+		this.htmlFragment = (HtmlFragment) fragmentManager
+				.findFragmentById(R.id.htmlFragment);
+		this.textFragment = (TextFragment) fragmentManager
+				.findFragmentById(R.id.textFragment);
 
 		this.surfaceView.setZOrderOnTop(true);
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -201,22 +201,7 @@ public class UnifiedActivity extends FragmentActivity implements
 	protected void onResume() {
 		super.onResume();
 		htmlFragment.update(this.contentUnit);
-
-		if (this.contentUnit.hasText()) {
-			try {
-				TextLoader text_loader = new TextLoader();
-				text_loader.loadTextFromFile(this.contentUnit.getTextFile());
-				this.textViewContent.setText(text_loader.getText());
-				this.textViewContent.setTextSize(35);
-				this.textViewContent.setBackgroundColor(Color.WHITE);
-				this.textViewContent.setTextColor(Color.BLACK);
-				this.layoutText.setVisibility(View.VISIBLE);
-			} catch (Exception e) {
-				this.layoutText.setVisibility(View.GONE);
-			}// try
-		} else {
-			this.layoutText.setVisibility(View.GONE);
-		}// if contentUnit has a text
+		textFragment.update(this.contentUnit);
 
 		if (this.contentUnit.hasMovie()) {
 			// this.layoutVideo.bringToFront();

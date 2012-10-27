@@ -63,8 +63,6 @@ public class UnifiedActivity extends FragmentActivity implements
 	LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
 	private LinearLayout layoutHtml;
-	// private HorizontalScrollView horizontalScrollViewButtons;
-	// private LinearLayout layoutButtons;
 	private LinearLayout layoutText;
 	private ImageView imageViewClickable;
 	VideoView videoView;
@@ -94,15 +92,12 @@ public class UnifiedActivity extends FragmentActivity implements
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.textViewContent = (TextView) findViewById(R.id.textViewContent);
-		// this.mediaController = (MediaController) findViewById(R.id.);
 		this.webView = (WebView) findViewById(R.id.webView);
 		this.fragmentManager = getSupportFragmentManager();
 		this.breadcrumbFragment = (BreadcrumbFragment) fragmentManager
 				.findFragmentById(R.id.breadcrumbFragment);
 		this.buttonsFragment = (ButtonsFragment) fragmentManager
 				.findFragmentById(R.id.buttonsFragment);
-
-		// this.videoView.setMediaController(this.mediaController);
 
 		this.surfaceView.setZOrderOnTop(true);
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -193,48 +188,6 @@ public class UnifiedActivity extends FragmentActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}// onOptionsItemSelected
-
-	// protected void setSpinnerArrayAdapter(ArrayAdapter<T> array_adapter) {
-	// Spinner s = (Spinner) findViewById(R.id.spinner);
-	// s.setAdapter(array_adapter);
-	// OnItemSelectedListener l = new OnItemSelectedListener() {
-	// @Override
-	// public void onItemSelected(AdapterView<?> parent, View arg1,
-	// int position, long arg3) {
-	// T selected_item = (T) parent.getItemAtPosition(position);
-	// if (selected_item.isEmpty())
-	// return;
-	// Log.v(new Throwable(), "Facility " + selected_item.getTitle()
-	// + ", " + selected_item.getIndex() + " was selected");
-	// InvokeActivity(selected_item);
-	// }
-	//
-	// @Override
-	// public void onNothingSelected(AdapterView<?> arg0) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	// };// OnItemSelectedListener
-	// s.setSelection(0);
-	// s.setSelected(false);
-	// s.setOnItemSelectedListener(l);
-	// }// setSpinnerArrayAdapter
-
-	// protected abstract void InvokeActivity(T selected_item);
-
-	// protected void setImageView(ItemBase item_base) throws Exception {
-	// this.imageView.setImageBitmap(null);
-	// if (this.bitmap != null) {
-	// this.bitmap.recycle();
-	// this.bitmap = null;
-	// }
-	// // this.itemBase = item_base;
-	// this.bitmap = item_base.getImage(this);
-	// this.imageView.setImageBitmap(this.bitmap);
-	// LayoutParams image_view_layout_params = this.imageView
-	// .getLayoutParams();
-	// this.surfaceView.setLayoutParams(image_view_layout_params);
-	// }
 
 	@Override
 	protected void onPause() {

@@ -9,7 +9,6 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.TextLoader;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,7 +26,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,11 +35,9 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -67,8 +63,8 @@ public class UnifiedActivity extends FragmentActivity implements
 	LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
 	private LinearLayout layoutHtml;
-	private HorizontalScrollView horizontalScrollViewButtons;
-	private LinearLayout layoutButtons;
+	// private HorizontalScrollView horizontalScrollViewButtons;
+	// private LinearLayout layoutButtons;
 	private LinearLayout layoutText;
 	private ImageView imageViewClickable;
 	VideoView videoView;
@@ -80,6 +76,7 @@ public class UnifiedActivity extends FragmentActivity implements
 	private Handler handler;
 	private FragmentManager fragmentManager;
 	private BreadcrumbFragment breadcrumbFragment;
+	private ButtonsFragment buttonsFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +91,6 @@ public class UnifiedActivity extends FragmentActivity implements
 		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
 		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
 		this.layoutHtml = (LinearLayout) findViewById(R.id.layoutHtml);
-		this.horizontalScrollViewButtons = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewButtons);
-		this.layoutButtons = (LinearLayout) findViewById(R.id.layoutButtons);
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.textViewContent = (TextView) findViewById(R.id.textViewContent);
@@ -104,6 +99,8 @@ public class UnifiedActivity extends FragmentActivity implements
 		this.fragmentManager = getSupportFragmentManager();
 		this.breadcrumbFragment = (BreadcrumbFragment) fragmentManager
 				.findFragmentById(R.id.breadcrumbFragment);
+		this.buttonsFragment = (ButtonsFragment) fragmentManager
+				.findFragmentById(R.id.buttonsFragment);
 
 		// this.videoView.setMediaController(this.mediaController);
 
@@ -308,8 +305,8 @@ public class UnifiedActivity extends FragmentActivity implements
 		if (this.contentUnit.getChildren().size() == 0) {
 			// this.layoutButtons.setVisibility(View.GONE);
 		} else if (this.contentUnit.getChildren().size() > 0) {
-			this._showButtons();
-			this.layoutButtons.setVisibility(View.VISIBLE);
+			buttonsFragment.showButtons(this, contentUnit);
+			buttonsFragment.show();
 		}// if content unit has children
 
 		if (this.contentUnit.getAncestors().size() == 0) {
@@ -331,52 +328,6 @@ public class UnifiedActivity extends FragmentActivity implements
 			}
 		});
 	}
-
-	private void _showButtons() {
-		this.layoutButtons.removeAllViews();
-		final UnifiedActivity ua = this;
-
-		for (final ContentUnit cu : this.contentUnit.getChildren()) {
-			Button b = new Button(this);
-			b.setText(cu.getName());
-			b.setTextSize(30);
-			// b.setBackgroundColor(Color.YELLOW);
-			b.setTextColor(Color.BLACK);
-			b.setMinWidth(30);
-			b.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					ua.setContentUnit(cu);
-					// ua.onResume();
-				}
-			});
-			this.layoutButtons.addView(b);
-
-		}// for
-		final ContentUnit parent_cu = this.contentUnit.getParent();
-		if (parent_cu != null) {
-			Button b = new Button(this);
-			b.setText("もどる");
-			b.setTextSize(30);
-			b.setBackgroundColor(Color.GREEN);
-			// b.setTextColor(Color.WHITE);
-			b.setGravity(Gravity.RIGHT);
-			b.setMinWidth(30);
-			b.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					ua.videoView.stopPlayback();
-					ua.layoutVideo.setVisibility(View.GONE);
-					ua.setContentUnit(parent_cu);
-					// ua.onResume();
-				}// onClick
-			});
-			this.layoutButtons.addView(b);
-		}// if
-		this.layoutButtons.setMinimumWidth(this.horizontalScrollViewButtons
-				.getWidth());
-	}// _showButtons
 
 	protected void addStarPoint(Point point) {
 		this.starPoints.add(point);

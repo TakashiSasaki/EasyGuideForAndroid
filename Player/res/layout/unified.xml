@@ -114,21 +114,10 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollViewButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0"
-        android:background="@android:color/white" >
-
-        <LinearLayout
-            android:id="@+id/layoutButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:gravity="center" >
-        </LinearLayout>
-    </HorizontalScrollView>
+    <fragment
+        android:id="@+id/buttonsFragment"
+        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.ButtonsFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

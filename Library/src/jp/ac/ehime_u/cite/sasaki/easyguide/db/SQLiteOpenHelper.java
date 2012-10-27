@@ -17,7 +17,7 @@ class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.v(new Throwable(), "onCreate");
-		SourceTable.CreateTable(db);
+		SourceTable.createTable(db);
 		DownloadedItemTable.CreateTable(db);
 	}// onCreate
 
@@ -25,7 +25,7 @@ class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.v(new Throwable(), "Upgrading the database from " + oldVersion
 				+ " to " + newVersion);
-		SourceTable.UpgradeTable(db, oldVersion, newVersion);
+		SourceTable.upgradeTable(db, oldVersion, newVersion);
 		DownloadedItemTable.UpgradeTable(db, oldVersion, newVersion);
 	}// onUpgrade
 }// SQLiteOpenHelper

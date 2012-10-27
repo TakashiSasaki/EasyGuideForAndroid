@@ -1,6 +1,7 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.db;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Source;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -24,10 +26,6 @@ import android.widget.ArrayAdapter;
  */
 public class SourceTable {
 	final static String TABLE_NAME = "SOURCE";
-	final static public String COLUMN_DOMAIN = "domain";
-	final static public String COLUMN_URL = "url";
-	final static public String COLUMN_DOWNLOADED_FILE = "downloadedFile";
-	final static public String COLUMN_LAST_MODIFIED = "lastModified";
 
 	SQLiteOpenHelper sqliteOpenHelper;
 
@@ -39,29 +37,35 @@ public class SourceTable {
 	}
 
 	public void createTable() {
-		final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
-				+ COLUMN_DOMAIN + " TEXT NOT NULL, " + COLUMN_URL
-				+ " TEXT NOT NULL, " + COLUMN_DOWNLOADED_FILE + " TEXT, "
-				+ COLUMN_LAST_MODIFIED + " LONG);";
 		SQLiteDatabase wdb = sqliteOpenHelper.getWritableDatabase();
-		wdb.execSQL(CREATE_TABLE);
+		createTable(wdb);
 		wdb.close();
 	}// createTable
 
-	public void upgradeTable(int oldVersion, int newVersion) {
-		// Log.v(new Throwable(), DROP_TABLE + " old_version=" + oldVersion
-		// + ", new_version=" + newVersion);
+	public static void createTable(SQLiteDatabase db) {
+		final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
+				+ Source.COLUMN_DOMAIN + " TEXT NOT NULL, " + Source.COLUMN_URL
+				+ " TEXT NOT NULL, " + Source.COLUMN_DOWNLOADED_FILE
+				+ " TEXT, " + Source.COLUMN_LAST_MODIFIED + " LONG);";
+		db.execSQL(CREATE_TABLE);
+	}
+
+	public static void upgradeTable(SQLiteDatabase db, int oldVersion,
+			int newVersion) {
 		if (oldVersion != newVersion) {
-			dropTable();
-			createTable();
+			dropTable(db);
+			createTable(db);
 		}// if
-			// db.close();
-	}// UpgradeTable
+	}
+
+	private static void dropTable(SQLiteDatabase db) {
+		final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
+		db.execSQL(DROP_TABLE);
+	}
 
 	public void dropTable() {
 		SQLiteDatabase wdb = sqliteOpenHelper.getWritableDatabase();
-		final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
-		wdb.execSQL(DROP_TABLE);
+		dropTable(wdb);
 		wdb.close();
 	}// dropTable
 
@@ -71,73 +75,61 @@ public class SourceTable {
 	 */
 	public Cursor select(Domain domain) {
 		SQLiteDatabase rdb = sqliteOpenHelper.getReadableDatabase();
-		Cursor cursor = rdb.query("zip_urls", new String[] { COLUMN_DOMAIN,
-				COLUMN_URL, COLUMN_DOWNLOADED_FILE, COLUMN_LAST_MODIFIED },
-				COLUMN_DOMAIN + " = ?", new String[] { domain
-						.getName() }, null, null, null);
+		Cursor cursor = rdb.query("zip_urls", new String[] {
+				Source.COLUMN_DOMAIN, Source.COLUMN_URL,
+				Source.COLUMN_DOWNLOADED_FILE, Source.COLUMN_LAST_MODIFIED },
+				Source.COLUMN_DOMAIN + " = ?",
+				new String[] { domain.getName() }, null, null, null);
 		rdb.close();
 		return cursor;
 	}// select
 
 	public void insert(Source s) {
 		SQLiteDatabase wdb = sqliteOpenHelper.getWritableDatabase();
-		wdb.insert(TABLE_NAME, null, GetContentValues(s));
+		ContentValues cv = new ContentValues();
+		wdb.insert(TABLE_NAME, null, cv);
 		wdb.close();
 	}// Insert
-
-	public static ContentValues GetContentValues(Source s) {
-		ContentValues cv = new ContentValues();
-		cv.put(COLUMN_DOMAIN, s.getDomain().getName());
-		try {
-			cv.put(COLUMN_LAST_MODIFIED, s.getLastModified().getTime());
-		} catch (NullPointerException nurupo) {
-			cv.put(COLUMN_LAST_MODIFIED, 0L);
-		}// try
-		catch (InterruptedException e) {
-			cv.put(COLUMN_LAST_MODIFIED, 0L);
-		}
-		cv.put(COLUMN_URL, s.getUri().toString());
-		return cv;
-	}// GetContentValues
 
 	public void insert(ArrayList<Source> zip_url_array_list) {
 		SQLiteDatabase wdb = sqliteOpenHelper.getWritableDatabase();
 		for (Source s : zip_url_array_list) {
-			wdb.insert(TABLE_NAME, null, GetContentValues(s));
+			wdb.insert(TABLE_NAME, null, s.getContentValues());
 		}// for
 		wdb.close();
 	}// Insert
 
-	public String GetDomainByUrl(URI uri) {
-		SQLiteDatabase rdb = sqliteOpenHelper. getReadableDatabase();
-		Cursor c = rdb.query(TABLE_NAME, new String[] { COLUMN_URL,
-				COLUMN_DOMAIN }, COLUMN_URL + " = ?",
+	public String getByUrl(URI uri) {
+		SQLiteDatabase rdb = sqliteOpenHelper.getReadableDatabase();
+		Cursor c = rdb.query(TABLE_NAME, new String[] { Source.COLUMN_URL,
+				Source.COLUMN_DOMAIN }, Source.COLUMN_URL + " = ?",
 				new String[] { uri.toString() }, null, null, null);
 		if (c.getCount() <= 0)
 			return null;
 		c.moveToFirst();
-		String domain_string = c.getString(c.getColumnIndex(COLUMN_DOMAIN));
+		String domain_string = c.getString(c
+				.getColumnIndex(Source.COLUMN_DOMAIN));
 		c.close();
 		rdb.close();
 		return domain_string;
 	}// GetDomainByUrl
 
-	public void Delete(Source zip_uri) {
-		SQLiteDatabase wdb = sqliteOpenHelper. getWritableDatabase();
-		wdb.delete(TABLE_NAME, COLUMN_DOMAIN + " = ?", new String[] { zip_uri
-				.getDomainDirectory().getName() });
+	public void Delete(Source source) {
+		SQLiteDatabase wdb = sqliteOpenHelper.getWritableDatabase();
+		wdb.delete(TABLE_NAME, Source.COLUMN_DOMAIN + " = ?",
+				new String[] { source.getDomain() });
 		wdb.close();
 	}// Delete
 
 	public void DeleteAll() {
-		SQLiteDatabase wdb = sqliteOpenHelper. getWritableDatabase();
+		SQLiteDatabase wdb = sqliteOpenHelper.getWritableDatabase();
 		wdb.delete(TABLE_NAME, null, null);
 		wdb.close();
 	}// DeleteAll
 
 	@Deprecated
 	public void DeleteZipUrl(String domain_) {
-		SQLiteDatabase wdb = sqliteOpenHelper. getWritableDatabase();
+		SQLiteDatabase wdb = sqliteOpenHelper.getWritableDatabase();
 		domain_ = domain_.toLowerCase();
 		wdb.execSQL("DELETE FROM zip_urls WHERE domain = ?",
 				new String[] { domain_ });
@@ -145,10 +137,10 @@ public class SourceTable {
 	}
 
 	public void Delete(ArrayList<Source> zip_url_array_list) {
-		SQLiteDatabase wdb = sqliteOpenHelper. getWritableDatabase();
+		SQLiteDatabase wdb = sqliteOpenHelper.getWritableDatabase();
 		for (Source zip_url : zip_url_array_list) {
-			wdb.delete(TABLE_NAME, COLUMN_DOMAIN + " = ?",
-					new String[] { zip_url.getDomainByString() });
+			wdb.delete(TABLE_NAME, Source.COLUMN_DOMAIN + " = ?",
+					new String[] { zip_url.getDomain() });
 		}// for
 		wdb.close();
 	}// Delete
@@ -156,14 +148,16 @@ public class SourceTable {
 	/**
 	 * @param activity_
 	 * @return array adapter for list view
+	 * @throws InterruptedException
 	 */
-	public ArrayAdapter<String> GetArrayAdapter(Context context) {
-		SQLiteDatabase rdb = sqliteOpenHelper. getReadableDatabase();
-		Cursor cursor = rdb.query(TABLE_NAME, new String[] { COLUMN_URL,
-				COLUMN_DOMAIN }, null, null, null, null, null);
+	public ArrayAdapter<String> GetArrayAdapter(Context context)
+			throws InterruptedException {
+		SQLiteDatabase rdb = sqliteOpenHelper.getReadableDatabase();
+		Cursor cursor = rdb.query(TABLE_NAME, new String[] { Source.COLUMN_URL,
+				Source.COLUMN_DOMAIN }, null, null, null, null, null);
 
-		ArrayAdapter<String> array_adapter = new ArrayAdapter<String>(
-				context, android.R.layout.simple_list_item_1);
+		ArrayAdapter<String> array_adapter = new ArrayAdapter<String>(context,
+				android.R.layout.simple_list_item_1);
 
 		for (boolean record_exists = cursor.moveToFirst(); record_exists; record_exists = cursor
 				.moveToNext()) {
@@ -176,20 +170,19 @@ public class SourceTable {
 		return array_adapter;
 	}// GetArrayAdapter
 
-	private static Source GetSource(Cursor c) {
-		int di = c.getColumnIndex(COLUMN_DOMAIN);
+	private static Source GetSource(Cursor c) throws InterruptedException {
+		int di = c.getColumnIndex(Source.COLUMN_DOMAIN);
 		String ds = c.getString(di);
-		//Domain d = new Domain();
 		URI u;
 		try {
-			u = new URI(c.getString(c.getColumnIndex(COLUMN_URL)));
+			u = new URI(c.getString(c.getColumnIndex(Source.COLUMN_URL)));
 		} catch (URISyntaxException e) {
 			Log.v(new Throwable(), e.getMessage());
 			return null;
 		}// try
 		Source s;
 		try {
-			s = new Source(d, u);
+			s = new Source(ds, u);
 		} catch (MalformedURLException e) {
 			Log.v(new Throwable(), e.getMessage());
 			return null;
@@ -200,15 +193,17 @@ public class SourceTable {
 		return s;
 	}// GetSource
 
-	public ArrayList<Source> GetArrayList() {
-		SQLiteDatabase rdb = getReadableDatabase();
+	public ArrayList<Source> GetArrayList() throws FileNotFoundException,
+			MalformedURLException, URISyntaxException, InterruptedException {
+		SQLiteDatabase rdb = sqliteOpenHelper.getReadableDatabase();
 		ArrayList<Source> array_list = new ArrayList<Source>();
-		Cursor cursor = rdb.query(TABLE_NAME, new String[] { COLUMN_DOMAIN,
-				COLUMN_URL, COLUMN_DOWNLOADED_FILE, COLUMN_LAST_MODIFIED },
+		Cursor cursor = rdb.query(TABLE_NAME, new String[] {
+				Source.COLUMN_DOMAIN, Source.COLUMN_URL,
+				Source.COLUMN_DOWNLOADED_FILE, Source.COLUMN_LAST_MODIFIED },
 				null, null, null, null, null);
 		for (boolean record_exists = cursor.moveToFirst(); record_exists; record_exists = cursor
 				.moveToNext()) {
-			Domain domain = new Domain(cursor.getString(0));
+			Domain domain = new Domain(Root.getTheRoot(), cursor.getString(0));
 			URI uri;
 			try {
 				uri = new URI(cursor.getString(1));
@@ -218,8 +213,7 @@ public class SourceTable {
 			}// try
 			File downloaded_file = new File(cursor.getString(2));
 			Date last_modified = new Date(cursor.getLong(3));
-			Source zip_url = new Source(domain, uri, downloaded_file,
-					last_modified);
+			Source zip_url = new Source(domain.getName(), uri);
 			array_list.add(zip_url);
 		}// for
 		cursor.close();
@@ -235,13 +229,10 @@ public class SourceTable {
 	 * @return singleton instance of class Source.
 	 * 
 	 */
-	static public SourceTable GetTheInstance() {
-		return theInstance;
-	}// singleton factory
-
-	static public SourceTable GetTheInstance(Context context) {
+	static public SourceTable getTheSourceTable(
+			SQLiteOpenHelper sqlite_open_helper) {
 		if (theInstance == null) {
-			theInstance = new SourceTable(context);
+			theInstance = new SourceTable(sqlite_open_helper);
 		}
 		return theInstance;
 	}// singleton factory

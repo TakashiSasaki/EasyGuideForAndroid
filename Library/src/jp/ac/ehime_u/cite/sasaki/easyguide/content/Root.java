@@ -14,6 +14,7 @@ import android.os.Environment;
  */
 public class Root extends ContentUnit {
 	private static final String _EASYGUIDE = "EASYGUIDE";
+	private static Root singleton;
 
 	private static File _getEasyGuideRoot() {
 		File external_storage_directory = Environment
@@ -28,7 +29,14 @@ public class Root extends ContentUnit {
 		return easy_guide_root;
 	}// _getEasyGuideRoot
 
-	public Root() throws FileNotFoundException {
+	public static Root getTheRoot() throws FileNotFoundException {
+		if (singleton != null)
+			return singleton;
+		singleton = new Root();
+		return singleton;
+	}
+
+	private Root() throws FileNotFoundException {
 		super(_getEasyGuideRoot(), null);
 		_checkDomainName();
 	}// an constructor

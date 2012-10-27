@@ -18,10 +18,26 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.ContentValues;
+
 public class Source {
-	private URI uri;
+	final static public String COLUMN_DOMAIN = "domain";
+	final static public String COLUMN_URL = "url";
+	final static public String COLUMN_DOWNLOADED_FILE = "downloadedFile";
+	final static public String COLUMN_LAST_MODIFIED = "lastModified";
+	
 	private String domain;
 	private Date lastModified;
+
+	private URI uri;
+
+	public String getDomain() {
+		return this.domain;
+	}
+
+	public Date getLastModified() {
+		return this.lastModified;
+	}
 
 	public Source(String domain, URI uri_) throws URISyntaxException,
 			MalformedURLException, InterruptedException {
@@ -80,4 +96,17 @@ public class Source {
 	public URI getUri() {
 		return this.uri;
 	}
+
+	public ContentValues getContentValues() {
+		ContentValues cv = new ContentValues();
+		cv.put(COLUMN_DOMAIN, getDomain());
+		try {
+			cv.put(COLUMN_LAST_MODIFIED, getLastModified().getTime());
+		} catch (NullPointerException nurupo) {
+			cv.put(COLUMN_LAST_MODIFIED, 0L);
+		}// try
+		cv.put(COLUMN_URL, getUri().toString());
+		return cv;
+	}
+
 }// Source

@@ -38,7 +38,7 @@ public class DownloadedItemTable extends TableBase {
 
 	static public ContentValues getContentValues(DownloadedItem di) {
 		ContentValues cv = new ContentValues();
-		cv.put(COLUMN_DOWNLOADED_DATE, di.getDownloadedDate().getTime());
+		//cv.put(COLUMN_DOWNLOADED_DATE, di.getDownloadedDate().getTime());
 		cv.put(COLUMN_DOWNLOADED_FILE, di.getDownloadedFile().getPath());
 		return cv;
 	}// getContentValues

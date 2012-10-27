@@ -42,7 +42,7 @@ public class TocAdapter extends BaseAdapter {
 	 * @param context
 	 * @throws Exception
 	 */
-	public TocAdapter(Context context, ContentUnit[] content_units)
+	public TocAdapter(Context context, ArrayList<ContentUnit> content_units)
 			throws Exception {
 		super();
 

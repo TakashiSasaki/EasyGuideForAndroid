@@ -168,6 +168,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.mGestureDetector = new GestureDetector(this,
 				this.mOnGestureListener);
 	}// onCreate
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

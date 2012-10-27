@@ -24,8 +24,8 @@ import android.widget.ListView;
 public class TocActivity extends Activity {
 	/** Called when the activity is first created. */
 
-	private ArrayList<Building> buildingList;
-	private static Building chosenBuilding;
+	//private ArrayList<Building> buildingList;
+	//private static Building chosenBuilding;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,12 +88,5 @@ public class TocActivity extends Activity {
 //				building_.getTitle());
 //		startActivity(intent);
 //	}// InvokeMapActivity
-
-	/**
-	 * @return the chosenBuilding
-	 */
-	static public Building getChosenBuilding() {
-		return chosenBuilding;
-	}
 
 }// OpeningActivity

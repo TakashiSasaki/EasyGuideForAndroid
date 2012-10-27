@@ -12,7 +12,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
+//import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Panel;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
@@ -224,7 +224,7 @@ public class EquipmentActivity extends Activity {
 		if (this.bitmap != null) {
 			this.bitmap.recycle();
 		}
-		this.bitmap = p.getImage(this);
+		//this.bitmap = p.getImage(this);
 		this.imageView.setImageBitmap(this.bitmap);
 		this.htmlPanel.setVisibility(View.GONE);
 		this.textPanel.setVisibility(View.GONE);
@@ -270,20 +270,20 @@ public class EquipmentActivity extends Activity {
 		this.roomIndex = intent.getIntExtra("roomIndex", 0);
 		this.equipmentIndex = intent.getIntExtra("equipmentIndex", 0);
 
-		Organizations organizations = Organizations.getInstance();
-		Organization organization;
-		try {
-			organization = organizations
-					.getOrganization(this.organizationIndex);
-			Facility facility = organization.getFacility(this.facilityIndex);
-			Building building = facility.getBuilding(this.buildingIndex);
-			Floor floor = building.getFloor(this.floorIndex);
-			Room room = floor.getRoom(this.roomIndex);
-			this.equipment = room.getEquipment(this.equipmentIndex);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//Organizations organizations = Organizations.getInstance();
+//		Organization organization;
+//		try {
+//			organization = organizations
+//					.getOrganization(this.organizationIndex);
+//			Facility facility = organization.getFacility(this.facilityIndex);
+//			Building building = facility.getBuilding(this.buildingIndex);
+//			Floor floor = building.getFloor(this.floorIndex);
+//			Room room = floor.getRoom(this.roomIndex);
+//			this.equipment = room.getEquipment(this.equipmentIndex);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}// SelectEquipment
 
 	@Override

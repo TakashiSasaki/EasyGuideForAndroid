@@ -104,7 +104,7 @@ public abstract class ClickableActivity<T extends ItemBase> extends
 			this.bitmap = null;
 		}
 		this.itemBase = item_base;
-		this.bitmap = item_base.getImage(this);
+//		this.bitmap = item_base.getImage(this);
 		this.imageView.setImageBitmap(this.bitmap);
 		LayoutParams image_view_layout_params = this.imageView
 				.getLayoutParams();

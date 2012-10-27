@@ -35,7 +35,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
@@ -55,10 +54,10 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private static Bitmap star;
 	private Bitmap bitmap;
 	private SurfaceHolder surfaceHolder;
-	// private ItemBase itemBase;
 	private ContentUnit contentUnit;
 	private float scaleX, scaleY;
 	private float offsetX, offsetY;
+	private GestureDetector mGestureDetector;
 	private ArrayList<Point> starPoints = new ArrayList<Point>();
 
 	private HorizontalScrollView horizontalScrollViewSiblingsAndParents;
@@ -75,7 +74,6 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private TextView textViewContent;
 	private MediaController mediaController;
 
-	// private DirectoryImage directoryImage = new DirectoryImage();
 	private WifiManager wifiManager;
 	private WebView webView;
 	private Handler handler;
@@ -246,7 +244,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 			this.bitmap.recycle();
 			this.bitmap = null;
 		}
-	}
+	}// onPause
 
 	@Override
 	protected void onResume() {
@@ -428,31 +426,11 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.starPoints.add(point);
 	}
 
-	// protected abstract void onStarTouched(Point point);
-
-	// private Point getPointOnBitmap(Point point_on_image_view) {
-	// initScaleAndOffset();
-	// float x = (point_on_image_view.x - this.offsetX) / this.scaleX;
-	// float y = (point_on_image_view.y - this.offsetY) / this.scaleY;
-	// return new Point((int) x, (int) y);
-	// }
-
 	private Point getPointOnImageView(Point point_on_bitmap) {
-		// initScaleAndOffset();
 		float x = (point_on_bitmap.x) * this.scaleX + this.offsetX;
 		float y = (point_on_bitmap.y) * this.scaleY + this.offsetY;
 		return new Point((int) x, (int) y);
 	}
-
-	// private void initScaleAndOffset() {
-	// Matrix matrix = this.imageView.getImageMatrix();
-	// float f[] = new float[9];
-	// matrix.getValues(f);
-	// this.scaleX = f[0];
-	// this.scaleY = f[4];
-	// this.offsetX = f[2];
-	// this.offsetY = f[5];
-	// }
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -530,6 +508,5 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		return this.mGestureDetector.onTouchEvent(event);
 	}
 
-	private GestureDetector mGestureDetector;
 
 }// class UnifiedActivity

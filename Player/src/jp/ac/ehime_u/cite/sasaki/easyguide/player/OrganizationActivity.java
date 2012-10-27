@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.exception.ItemNotFoundException;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
+//import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.content.Intent;
 import android.graphics.Point;
@@ -30,15 +30,15 @@ public class OrganizationActivity extends ClickableActivity<Facility> {
 				"OrganizationActivity was invoked with number = "
 						+ this.organizationIndex);
 
-		try {
-			this.organization = Organizations.getInstance().getOrganization(
-					this.organizationIndex);
-		} catch (ItemNotFoundException e) {
-			this.organization = Organization.getDummy();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			this.organization = Organizations.getInstance().getOrganization(
+//					this.organizationIndex);
+//		} catch (ItemNotFoundException e) {
+//			this.organization = Organization.getDummy();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		ArrayAdapter<Facility> facilities_array_adapter = new ArrayAdapter<Facility>(
 				this, android.R.layout.simple_spinner_dropdown_item);

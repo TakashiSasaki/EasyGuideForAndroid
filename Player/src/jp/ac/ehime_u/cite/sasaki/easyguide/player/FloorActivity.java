@@ -7,7 +7,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
+//import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.content.Intent;
@@ -106,17 +106,17 @@ public class FloorActivity extends ClickableActivity<Room> {
 		this.buildingIndex = intent.getIntExtra("buildingIndex", 0);
 		this.floorIndex = intent.getIntExtra("floorIndex", 0);
 
-		try {
-			Organizations organizations = Organizations.getInstance();
-			Organization organization;
-			organization = organizations
-					.getOrganization(this.organizationIndex);
-			Facility facility = organization.getFacility(this.facilityIndex);
-			Building building = facility.getBuilding(this.buildingIndex);
-			this.floor = building.getFloor(this.floorIndex);
-		} catch (ItemNotFoundException e) {
-			this.floor = Floor.getDummy();
-		}// try
+//		try {
+//			Organizations organizations = Organizations.getInstance();
+//			Organization organization;
+//			organization = organizations
+//					.getOrganization(this.organizationIndex);
+//			Facility facility = organization.getFacility(this.facilityIndex);
+//			Building building = facility.getBuilding(this.buildingIndex);
+//			this.floor = building.getFloor(this.floorIndex);
+//		} catch (ItemNotFoundException e) {
+//			this.floor = Floor.getDummy();
+//		}// try
 	}// SelectFloor
 
 	@Override

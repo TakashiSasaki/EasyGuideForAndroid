@@ -8,7 +8,7 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Equipment;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
+//import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Room;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.app.AlertDialog;
@@ -115,18 +115,18 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 		this.floorIndex = intent.getIntExtra("floorIndex", 0);
 		this.roomIndex = intent.getIntExtra("roomIndex", 0);
 
-		try {
-			Organizations organizations = Organizations.getInstance();
-			Organization organization;
-			organization = organizations
-					.getOrganization(this.organizationIndex);
-			Facility facility = organization.getFacility(this.facilityIndex);
-			Building building = facility.getBuilding(this.buildingIndex);
-			Floor floor = building.getFloor(this.floorIndex);
-			this.room = floor.getRoom(this.roomIndex);
-		} catch (ItemNotFoundException e) {
-			this.room = Room.getDummy();
-		}
+//		try {
+//			Organizations organizations = Organizations.getInstance();
+//			Organization organization;
+//			organization = organizations
+//					.getOrganization(this.organizationIndex);
+//			Facility facility = organization.getFacility(this.facilityIndex);
+//			Building building = facility.getBuilding(this.buildingIndex);
+//			Floor floor = building.getFloor(this.floorIndex);
+//			this.room = floor.getRoom(this.roomIndex);
+//		} catch (ItemNotFoundException e) {
+//			this.room = Room.getDummy();
+//		}
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class RoomActivity extends ClickableActivity<Equipment> {
 	@Override
 	protected void onResume() {
 		// TODO: it should be implemented by the demo day.
-		WifiDetectorThread.getInstance(this).start();
+//		WifiDetectorThread.getInstance(this).start();
 		super.onResume();
 	}// onResume
 

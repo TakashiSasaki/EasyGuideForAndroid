@@ -62,7 +62,6 @@ public class UnifiedActivity extends FragmentActivity implements
 	private HorizontalScrollView horizontalScrollViewSiblingsAndParents;
 	LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
-	private LinearLayout layoutHtml;
 	private LinearLayout layoutText;
 	private ImageView imageViewClickable;
 	VideoView videoView;
@@ -70,11 +69,11 @@ public class UnifiedActivity extends FragmentActivity implements
 	private MediaController mediaController;
 
 	private WifiManager wifiManager;
-	private WebView webView;
 	private Handler handler;
 	private FragmentManager fragmentManager;
 	private BreadcrumbFragment breadcrumbFragment;
 	private ButtonsFragment buttonsFragment;
+	private HtmlFragment htmlFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,16 +87,15 @@ public class UnifiedActivity extends FragmentActivity implements
 		this.layoutText = (LinearLayout) findViewById(R.id.layoutText);
 		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
 		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
-		this.layoutHtml = (LinearLayout) findViewById(R.id.layoutHtml);
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.textViewContent = (TextView) findViewById(R.id.textViewContent);
-		this.webView = (WebView) findViewById(R.id.webView);
 		this.fragmentManager = getSupportFragmentManager();
 		this.breadcrumbFragment = (BreadcrumbFragment) fragmentManager
 				.findFragmentById(R.id.breadcrumbFragment);
 		this.buttonsFragment = (ButtonsFragment) fragmentManager
 				.findFragmentById(R.id.buttonsFragment);
+		this.htmlFragment = (HtmlFragment)fragmentManager.findFragmentById(R.id.htmlFragment);
 
 		this.surfaceView.setZOrderOnTop(true);
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -202,13 +200,7 @@ public class UnifiedActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (this.contentUnit.hasHtml()) {
-			this.webView.loadUrl("file://" + this.contentUnit.getDirectory()
-					+ "/index.html");
-			this.layoutHtml.setVisibility(View.VISIBLE);
-		} else {
-			this.layoutHtml.setVisibility(View.GONE);
-		}// if contentUnit.has HTML
+		htmlFragment.update(this.contentUnit);
 
 		if (this.contentUnit.hasText()) {
 			try {

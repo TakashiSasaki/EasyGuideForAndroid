@@ -99,21 +99,16 @@
         </ScrollView>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutHtml"
+    <fragment
+        android:id="@+id/htmlFragment"
+        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.HtmlFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_margin="1dp"
         android:layout_weight="1"
         android:padding="1dp"
-        android:visibility="visible" >
-
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+        android:visibility="visible" />
 
     <fragment
         android:id="@+id/buttonsFragment"

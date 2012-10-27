@@ -33,7 +33,8 @@
         android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.BreadcrumbFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0" />
+        android:layout_weight="0"
+        android:background="@android:color/white" />
 
     <LinearLayout
         android:id="@+id/layoutVideo"
@@ -117,7 +118,10 @@
     <fragment
         android:id="@+id/buttonsFragment"
         android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.ButtonsFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0"
+        android:background="@android:color/white" />
 
 </LinearLayout>

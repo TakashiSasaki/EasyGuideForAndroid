@@ -60,10 +60,8 @@ public class UnifiedActivity extends FragmentActivity implements
 	private ArrayList<Point> starPoints = new ArrayList<Point>();
 
 	private HorizontalScrollView horizontalScrollViewSiblingsAndParents;
-	LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
 	private ImageView imageViewClickable;
-	VideoView videoView;
 	// private MediaController mediaController;
 
 	private WifiManager wifiManager;
@@ -73,6 +71,7 @@ public class UnifiedActivity extends FragmentActivity implements
 	private ButtonsFragment buttonsFragment;
 	private HtmlFragment htmlFragment;
 	private TextFragment textFragment;
+	private VideoFragment videoFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +82,8 @@ public class UnifiedActivity extends FragmentActivity implements
 		this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
 		this.surfaceView = (SurfaceView) findViewById(R.id.surfaceViewClickable);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
-		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
 		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
-		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.fragmentManager = getSupportFragmentManager();
 		this.breadcrumbFragment = (BreadcrumbFragment) fragmentManager
 				.findFragmentById(R.id.breadcrumbFragment);
@@ -96,6 +93,8 @@ public class UnifiedActivity extends FragmentActivity implements
 				.findFragmentById(R.id.htmlFragment);
 		this.textFragment = (TextFragment) fragmentManager
 				.findFragmentById(R.id.textFragment);
+		this.videoFragment = (VideoFragment) fragmentManager
+				.findFragmentById(R.id.videoFragment);
 
 		this.surfaceView.setZOrderOnTop(true);
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -127,8 +126,8 @@ public class UnifiedActivity extends FragmentActivity implements
 					return true;
 
 				setContentUnit(nearest_child);
-				videoView.stopPlayback();
-				layoutVideo.setVisibility(View.GONE);
+				videoFragment.stopPlayback();
+				videoFragment.hide();
 				onResume();
 
 				// Point point_on_image_view = new Point((int) x_on_image_view,
@@ -202,20 +201,7 @@ public class UnifiedActivity extends FragmentActivity implements
 		super.onResume();
 		htmlFragment.update(this.contentUnit);
 		textFragment.update(this.contentUnit);
-
-		if (this.contentUnit.hasMovie()) {
-			// this.layoutVideo.bringToFront();
-			this.layoutVideo.setBackgroundColor(Color.WHITE);
-			if (!this.videoView.isPlaying()) {
-				this.videoView.setVideoPath(this.contentUnit.getMovieFile()
-						.getAbsolutePath());
-				this.videoView.setMediaController(new MediaController(this));
-				this.videoView.start();
-			}
-			this.layoutVideo.setVisibility(View.VISIBLE);
-		} else {
-			this.layoutVideo.setVisibility(View.GONE);
-		}// if contentunit has a movie
+		videoFragment.update(this.contentUnit, this);
 
 		if (this.contentUnit.hasImageFile()) {
 			this.imageViewClickable.setImageBitmap(null);
@@ -235,7 +221,7 @@ public class UnifiedActivity extends FragmentActivity implements
 		if (this.contentUnit.getChildren().size() == 0) {
 			// this.layoutButtons.setVisibility(View.GONE);
 		} else if (this.contentUnit.getChildren().size() > 0) {
-			buttonsFragment.showButtons(this, contentUnit);
+			buttonsFragment.showButtons(this, contentUnit, videoFragment);
 			buttonsFragment.show();
 		}// if content unit has children
 
@@ -244,7 +230,7 @@ public class UnifiedActivity extends FragmentActivity implements
 		} else if (this.contentUnit.getAncestors().size() > 0) {
 			this.breadcrumbFragment.showParents(
 					this.contentUnit.getAncestors(), this.contentUnit, this,
-					this);
+					this, videoFragment);
 			this.breadcrumbFragment.show();
 		}// if content unit has parents
 	}// onResume

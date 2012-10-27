@@ -30,7 +30,7 @@ public class ButtonsFragment extends Fragment {
 	}
 
 	public void showButtons(final UnifiedActivity unified_activity,
-			ContentUnit current_content_unit) {
+			ContentUnit current_content_unit, final VideoFragment video_fragment) {
 		this.layoutButtons.removeAllViews();
 		// final UnifiedActivity ua = this;
 
@@ -64,8 +64,8 @@ public class ButtonsFragment extends Fragment {
 			b.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					unified_activity.videoView.stopPlayback();
-					unified_activity.layoutVideo.setVisibility(View.GONE);
+					video_fragment.stopPlayback();
+					video_fragment.hide();
 					unified_activity.setContentUnit(parent_cu);
 					// ua.onResume();
 				}// onClick

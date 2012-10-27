@@ -41,7 +41,8 @@ public class BreadcrumbFragment extends Fragment {
 
 	public void showParents(ArrayList<ContentUnit> ancestors,
 			final ContentUnit current_content_unit, Context context,
-			final UnifiedActivity unified_activity) {
+			final UnifiedActivity unified_activity,
+			final VideoFragment video_fragment) {
 
 		this.layoutBreadcrumb.removeAllViews();
 		// final UnifiedActivity unified_activity = this;
@@ -58,8 +59,8 @@ public class BreadcrumbFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					unified_activity.setContentUnit(content_unit);
-					unified_activity.videoView.stopPlayback();
-					unified_activity.layoutVideo.setVisibility(View.GONE);
+					video_fragment.stopPlayback();
+					video_fragment.hide();
 					unified_activity.onResume();
 				}// onClick
 			});// onClickListener
@@ -77,8 +78,8 @@ public class BreadcrumbFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				unified_activity.setContentUnit(current_content_unit);
-				unified_activity.videoView.stopPlayback();
-				unified_activity.layoutVideo.setVisibility(View.GONE);
+				video_fragment.stopPlayback();
+				video_fragment.hide();
 				unified_activity.onResume();
 			}// onClick
 		});// onClickListener

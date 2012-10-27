@@ -36,22 +36,17 @@
         android:layout_weight="0"
         android:background="@android:color/white" />
 
-    <LinearLayout
-        android:id="@+id/layoutVideo"
-        android:layout_width="match_parent"
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.VideoFragment"
+                android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_margin="1dp"
         android:layout_weight="1"
         android:gravity="center"
         android:padding="1dp"
-        android:visibility="visible" >
-
-        <VideoView
-            android:id="@+id/videoView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:visibility="visible"/>
 
     <FrameLayout
         android:id="@+id/frameLayoutImage"

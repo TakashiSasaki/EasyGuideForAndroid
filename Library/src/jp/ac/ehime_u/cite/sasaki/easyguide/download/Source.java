@@ -1,92 +1,83 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.download;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
-import android.content.Context;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 public class Source {
-	private Domain domain;
 	private URI uri;
+	private String domain;
 	private Date lastModified;
-	private LastModifiedHeaderThread lastModifiedThread;
-	private static final long DOWNLOAD_WAIT = 100;
 
-	public Source(Domain domain_, URI uri_, File downloaded_file,
-			Date last_modified) {
-		this.domain = domain_;
-		this.uri = uri_;
-		// this.downloadedFile = downloaded_file;
-		// this.SetDownloadedFile(this.downloadedFile);
-		this.lastModified = last_modified;
-	}// a constructor
-
-	public Source(Domain domain_, URI uri_) throws URISyntaxException,
-			MalformedURLException {
-		this.uri = uri_;
-		this.domain = domain_;
+	public Source(String domain, URI uri_) throws URISyntaxException,
+			MalformedURLException, InterruptedException {
+		this.uri = uri;
+		this.domain = domain;
 		if (!this.uri.getHost().equals("assets")) {
-			checkLastModified();
+			if (this.uri.getHost() != "assets") {
+				updateLastModified();
+			}
 		}// if
 	} // a constructor
 
-	public void checkLastModified() {
-		if (this.uri.getHost() != "assets") {
-			try {
-				this.lastModifiedThread = new LastModifiedHeaderThread(this.uri);
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-				return;
-			}
-			this.lastModifiedThread.start();
-		}// if
-	}// checkLastModified
-
-	public DownloadedItem Download(Context context_)
-			throws InterruptedException, URISyntaxException {
-		// SetDownloadedFile();
-		DownloadedItem downloaded_item = new DownloadedItem(this.domain);
-		DownloadThread download_thread = new DownloadThread(this, context_,
-				downloaded_item);
-		download_thread.start();
-		Thread.sleep(DOWNLOAD_WAIT, 0);
-		download_thread.join();
-		return downloaded_item;
-	}// Download
-
-	public Domain getDomain() {
-		return this.domain;
-	}// getDomain
-
-	public String getDomainByString() {
-		return this.domain.getDomainDirectory().getName();
-	}// getDomainByString
-
-	public File getDomainDirectory() {
-		return this.domain.getDomainDirectory();
-	}// getDomainDirectory
+	public void updateLastModified() throws InterruptedException {
+		new Thread() {
+			@Override
+			public void run() {
+				HttpClient http_client = new DefaultHttpClient();
+				http_client.getParams().setParameter("http.connection.timeout",
+						new Integer(10000));
+				HttpHead http_head = new HttpHead(uri);
+				HttpResponse http_response;
+				try {
+					http_response = http_client.execute(http_head);
+					Header last_modified_header = http_response
+							.getLastHeader("Last-Modified");
+					final SimpleDateFormat simple_date_format = new SimpleDateFormat(
+							"EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
+					lastModified = simple_date_format
+							.parse(last_modified_header.getValue());
+					int http_status_code = http_response.getStatusLine()
+							.getStatusCode();
+					if (http_status_code == HttpStatus.SC_REQUEST_TIMEOUT) {
+						throw new RuntimeException("request for "
+								+ uri.toString() + " timed out.");
+					}
+					if (http_status_code == HttpStatus.SC_NOT_FOUND) {
+						throw new RuntimeException(uri.toString()
+								+ " was not found.");
+					}
+					if (http_status_code != HttpStatus.SC_OK) {
+						throw new RuntimeException("response : "
+								+ http_response.getStatusLine().toString());
+					}
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				assert (lastModified != null);
+			}// run
+		}.start();
+	}// updateLastModified
 
 	public URI getUri() {
 		return this.uri;
-	}// getUri
-
-	public Date getLastModified() throws InterruptedException {
-		if (this.lastModified != null) {
-			return this.lastModified;
-		} else {
-			this.lastModifiedThread.join();
-			this.lastModified = this.lastModifiedThread.getLastModified();
-			this.lastModifiedThread = null; // release LastModifiedThread object
-			return this.lastModified;
-		}
-	}// getLastModified
-
-	public Date getLastModifiedNonBlocking() {
-		return this.lastModified;
-	}// getLastModifiedNonBlocking
-
+	}
 }// Source

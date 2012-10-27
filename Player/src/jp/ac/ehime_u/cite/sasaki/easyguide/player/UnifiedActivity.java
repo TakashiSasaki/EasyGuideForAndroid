@@ -24,6 +24,8 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.Menu;
@@ -48,7 +50,8 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-public class UnifiedActivity extends Activity implements SurfaceHolder.Callback {
+public class UnifiedActivity extends FragmentActivity implements
+		SurfaceHolder.Callback {
 	private ImageView imageView;
 	private SurfaceView surfaceView;
 	private static Bitmap star;
@@ -61,22 +64,22 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 	private ArrayList<Point> starPoints = new ArrayList<Point>();
 
 	private HorizontalScrollView horizontalScrollViewSiblingsAndParents;
-	private HorizontalScrollView horizontalScrollViewBreadcrumb;
-	private LinearLayout layoutBreadcrumb;
-	private LinearLayout layoutVideo;
+	LinearLayout layoutVideo;
 	private FrameLayout frameLayoutImage;
 	private LinearLayout layoutHtml;
 	private HorizontalScrollView horizontalScrollViewButtons;
 	private LinearLayout layoutButtons;
 	private LinearLayout layoutText;
 	private ImageView imageViewClickable;
-	private VideoView videoView;
+	VideoView videoView;
 	private TextView textViewContent;
 	private MediaController mediaController;
 
 	private WifiManager wifiManager;
 	private WebView webView;
 	private Handler handler;
+	private FragmentManager fragmentManager;
+	private BreadcrumbFragment breadcrumbFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +90,6 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
 		this.surfaceView = (SurfaceView) findViewById(R.id.surfaceViewClickable);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
-		this.horizontalScrollViewBreadcrumb = (HorizontalScrollView) findViewById(R.id.scrollViewBreadcrumb);
-		this.layoutBreadcrumb = (LinearLayout) findViewById(R.id.layoutBreadcrumb);
 		this.layoutText = (LinearLayout) findViewById(R.id.layoutText);
 		this.layoutVideo = (LinearLayout) findViewById(R.id.layoutVideo);
 		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
@@ -98,9 +99,11 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.videoView = (VideoView) findViewById(R.id.videoView1);
 		this.textViewContent = (TextView) findViewById(R.id.textViewContent);
-		this.mediaController = (MediaController) findViewById(R.id.mediaController1);
+		// this.mediaController = (MediaController) findViewById(R.id.);
 		this.webView = (WebView) findViewById(R.id.webView);
-		this.layoutBreadcrumb = (LinearLayout) findViewById(R.id.layoutBreadcrumb);
+		this.fragmentManager = getSupportFragmentManager();
+		this.breadcrumbFragment = (BreadcrumbFragment) fragmentManager
+				.findFragmentById(R.id.breadcrumbFragment);
 
 		// this.videoView.setMediaController(this.mediaController);
 
@@ -310,10 +313,12 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		}// if content unit has children
 
 		if (this.contentUnit.getAncestors().size() == 0) {
-			this.layoutBreadcrumb.setVisibility(View.GONE);
+			this.breadcrumbFragment.hide();
 		} else if (this.contentUnit.getAncestors().size() > 0) {
-			this._showParents();
-			this.layoutBreadcrumb.setVisibility(View.VISIBLE);
+			this.breadcrumbFragment.showParents(
+					this.contentUnit.getAncestors(), this.contentUnit, this,
+					this);
+			this.breadcrumbFragment.show();
 		}// if content unit has parents
 	}// onResume
 
@@ -372,55 +377,6 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		this.layoutButtons.setMinimumWidth(this.horizontalScrollViewButtons
 				.getWidth());
 	}// _showButtons
-
-	private void _showParents() {
-		this.layoutBreadcrumb.removeAllViews();
-		final UnifiedActivity unified_activity = this;
-
-		for (int i = this.contentUnit.getAncestors().size() - 1; i >= 0; --i) {
-			Button b = new Button(this);
-			b.setText(this.contentUnit.getAncestors().get(i).getName());
-			b.setTextSize(30);
-			b.setTextColor(Color.BLACK);
-			b.setMinWidth(30);
-			final ContentUnit content_unit = this.contentUnit.getAncestors()
-					.get(i);
-			b.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					unified_activity.setContentUnit(content_unit);
-					unified_activity.videoView.stopPlayback();
-					unified_activity.layoutVideo.setVisibility(View.GONE);
-					unified_activity.onResume();
-				}// onClick
-			});// onClickListener
-			this.layoutBreadcrumb.addView(b);
-		}// for
-
-		Button b = new Button(this);
-		b.setText(this.contentUnit.getName());
-		b.setTextSize(30);
-		b.setTextColor(Color.BLACK);
-		b.setMinWidth(30);
-		final ContentUnit content_unit = this.contentUnit;
-		b.setBackgroundColor(Color.CYAN);
-		b.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				unified_activity.setContentUnit(content_unit);
-				unified_activity.videoView.stopPlayback();
-				unified_activity.layoutVideo.setVisibility(View.GONE);
-				unified_activity.onResume();
-			}// onClick
-		});// onClickListener
-		this.layoutBreadcrumb.addView(b);
-
-		this.horizontalScrollViewBreadcrumb.smoothScrollTo(
-				this.layoutBreadcrumb.getWidth() + 1000, 0);
-		this.horizontalScrollViewBreadcrumb.smoothScrollBy(2000, 0);
-	}// _showParents
 
 	protected void addStarPoint(Point point) {
 		this.starPoints.add(point);
@@ -503,10 +459,7 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// return super.onTouchEvent(event);
-		Log.v(new Throwable(), "");
 		return this.mGestureDetector.onTouchEvent(event);
-	}
-
+	}// onTouchEvent
 
 }// class UnifiedActivity

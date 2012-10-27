@@ -16,7 +16,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -50,11 +49,11 @@ public class DownloadThread extends Thread {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	public DownloadThread(Source source, Context context_, DownloadedItem downloaded_item)
-			throws URISyntaxException {
+	public DownloadThread(Source source, Context context_,
+			DownloadedItem downloaded_item) throws URISyntaxException {
 		this.source = source;
 		this.downloadedItem = downloaded_item;
-		//this.zipUrl.SetDownloadedFile();
+		// this.zipUrl.SetDownloadedFile();
 		this.httpGet = new HttpGet(this.source.getUri());
 		this.httpClient = new DefaultHttpClient();
 		this.httpClient.getParams().setParameter("http.connection.timeout",

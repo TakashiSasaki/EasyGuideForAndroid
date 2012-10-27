@@ -1,8 +1,10 @@
 package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
+import jp.ac.ehime_u.cite.sasaki.easyguide.content.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.*;
 import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocAdapter;
 import android.app.Activity;
@@ -29,27 +31,26 @@ public class TocActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.toc);
-		TocAdapter toc_adapter = new TocAdapter(this, ContentUnit.);
-				android.R.layout.simple_list_item_1);
-		this.buildingList = new ArrayList<Building>();
-		for (Organization organization : Organizations.getInstance()) {
-			Log.v(this.getClass().getSimpleName(), "Enumerating organizations");
-			for (Facility facility : organization) {
-				Log.v(this.getClass().getSimpleName(), "Enumerating facilities");
-				for (Building building : facility) {
-					Log.v(this.getClass().getSimpleName(),
-							"Enumerating buildings. Building "
-									+ building.getTitle() + " found.");
-					assert (building.getTitle() != null);
-					adapter.add(building.getTitle());
-					this.buildingList.add(building);
-				}//for
-			}//for
-		}//for
+		// android.R.layout.simple_list_item_1);
+		// this.buildingList = new ArrayList<Building>();
+		// for (Organization organization : Organizations.getInstance()) {
+		// Log.v(this.getClass().getSimpleName(), "Enumerating organizations");
+		// for (Facility facility : organization) {
+		// Log.v(this.getClass().getSimpleName(), "Enumerating facilities");
+		// for (Building building : facility) {
+		// Log.v(this.getClass().getSimpleName(),
+		// "Enumerating buildings. Building "
+		// + building.getTitle() + " found.");
+		// assert (building.getTitle() != null);
+		// adapter.add(building.getTitle());
+		// this.buildingList.add(building);
+		// }//for
+		// }//for
+		// }//for
 		ListView building_list_view = (ListView) findViewById(R.id.listViewOrganizations);
-		Log.v(this.getClass().getSimpleName(), "Totally " + adapter.getCount()
-				+ " buildings found.");
-		building_list_view.setAdapter(adapter);
+		// Log.v(this.getClass().getSimpleName(), "Totally " +
+		// adapter.getCount()
+		// + " buildings found.");
 
 		building_list_view
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -57,30 +58,36 @@ public class TocActivity extends Activity {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						ListView list_view = (ListView) parent;
-						Log.v(this.getClass().getSimpleName(),
-								"Chosen position is "
-										+ position
-										+ ", building name in ArrayAdapter is "
-										+ (String) list_view
-												.getItemAtPosition(position)
-										+ ", building name in buildingList is "
-										+ OpeningActivity.this.buildingList
-												.get(position).getTitle());
-						InvokeMapActivity(OpeningActivity.this.buildingList
-								.get(position));
+						ContentUnit content_unit = (ContentUnit) list_view
+								.getItemAtPosition(position);
+						Intent intent = new Intent(TocActivity.this,
+								UnifiedActivity.class);
+						startActivity(intent);
 					}// onItemClick
 				}// OnItemClickListener
 				);
+
+		try {
+			TocAdapter toc_adapter = new TocAdapter(this, Root.getTheRoot()
+					.getChildren());
+			building_list_view.setAdapter(toc_adapter);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}// onCreate
 
-	private void InvokeMapActivity(Building building_) {
-		OpeningActivity.chosenBuilding = building_;
-		Intent intent = new Intent(getApplicationContext(),
-				BuildingActivity.class);
-		intent.putExtra("jp.ac.ehime_u.cite.sasaki.easyguide.model.Building",
-				building_.getTitle());
-		startActivity(intent);
-	}// InvokeMapActivity
+//	private void InvokeMapActivity(Building building_) {
+//		OpeningActivity.chosenBuilding = building_;
+//		Intent intent = new Intent(getApplicationContext(),
+//				BuildingActivity.class);
+//		intent.putExtra("jp.ac.ehime_u.cite.sasaki.easyguide.model.Building",
+//				building_.getTitle());
+//		startActivity(intent);
+//	}// InvokeMapActivity
 
 	/**
 	 * @return the chosenBuilding

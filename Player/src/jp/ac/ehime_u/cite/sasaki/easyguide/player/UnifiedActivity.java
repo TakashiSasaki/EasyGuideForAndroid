@@ -165,10 +165,10 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 				.getSystemService(Context.WIFI_SERVICE);
 		this.wifiManager.startScan();
 
-		this.mGestureDetector = new GestureDetector(this,
-				this.mOnGestureListener);
+		this.mGestureDetector = new FourDirectionsGestureDetector(this, null,
+				null, null, null);
+
 	}// onCreate
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -530,37 +530,6 @@ public class UnifiedActivity extends Activity implements SurfaceHolder.Callback 
 		return this.mGestureDetector.onTouchEvent(event);
 	}
 
-	protected static final float SWIPE_MAX_OFF_PATH = 200;
-	protected static final float SWIPE_MIN_DISTANCE = 100;
-	protected static final float SWIPE_THRESHOLD_VELOCITY = 10;
 	private GestureDetector mGestureDetector;
-
-	private final SimpleOnGestureListener mOnGestureListener = new SimpleOnGestureListener() {
-		@Override
-		public boolean onFling(MotionEvent event1, MotionEvent event2,
-				float velocityX, float velocityY) {
-
-			Log.v(new Throwable(),
-					"X1=" + event1.getX() + ",Y1=" + event1.getY() + ",X2="
-							+ event2.getX() + ",Y2=" + event2.getY());
-			try {
-				if (event1.getX() - event2.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					// 開始位置から終了位置の移動距離が指定値より大きい
-					// X軸の移動速度が指定値より大きい
-					// TODO: do something
-				} else if (event2.getX() - event1.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					// 終了位置から開始位置の移動距離が指定値より大きい
-					// X軸の移動速度が指定値より大きい
-					// TODO: do something
-				}
-
-			} catch (Exception e) {
-				// nothing
-			}// try
-			return false;
-		}// onFling
-	};// SimpleOnGestureListener
 
 }// class UnifiedActivity

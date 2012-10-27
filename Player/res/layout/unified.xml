@@ -39,17 +39,18 @@
     <fragment
         android:id="@+id/videoFragment"
         android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.VideoFragment"
-                android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_margin="1dp"
         android:layout_weight="1"
         android:gravity="center"
         android:padding="1dp"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
-    <FrameLayout
-        android:id="@+id/frameLayoutImage"
+    <fragment
+        android:id="@+id/imageFragment"
+        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.ImageFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_vertical"
@@ -57,20 +58,8 @@
         android:layout_weight="1"
         android:background="@android:color/white"
         android:padding="1dp"
-        android:visibility="visible" >
+        android:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/imageViewClickable"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/h512w512" />
-
-        <SurfaceView
-            android:id="@+id/surfaceViewClickable"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
 
     <fragment
         android:id="@+id/textFragment"

@@ -2,23 +2,10 @@ package jp.ac.ehime_u.cite.sasaki.easyguide.player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.BitmapLoader;
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.TextLoader;
-import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.PixelFormat;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,38 +17,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
-import android.webkit.WebView;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.TextView;
-import android.widget.VideoView;
 
-public class UnifiedActivity extends FragmentActivity implements
-		SurfaceHolder.Callback {
-	private ImageView imageView;
-	private SurfaceView surfaceView;
-	private static Bitmap star;
+public class UnifiedActivity extends FragmentActivity {
+	// private ImageView imageView;
 	private Bitmap bitmap;
-	private SurfaceHolder surfaceHolder;
 	private ContentUnit contentUnit;
-	private float scaleX, scaleY;
-	private float offsetX, offsetY;
 	private GestureDetector mGestureDetector;
-	private ArrayList<Point> starPoints = new ArrayList<Point>();
 
 	private HorizontalScrollView horizontalScrollViewSiblingsAndParents;
-	private FrameLayout frameLayoutImage;
-	private ImageView imageViewClickable;
 	// private MediaController mediaController;
 
 	private WifiManager wifiManager;
@@ -72,6 +38,7 @@ public class UnifiedActivity extends FragmentActivity implements
 	private HtmlFragment htmlFragment;
 	private TextFragment textFragment;
 	private VideoFragment videoFragment;
+	private ImageFragment imageFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +46,8 @@ public class UnifiedActivity extends FragmentActivity implements
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.unified);
 		this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
-		this.surfaceView = (SurfaceView) findViewById(R.id.surfaceViewClickable);
+		// this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
-		this.frameLayoutImage = (FrameLayout) findViewById(R.id.frameLayoutImage);
-		this.imageViewClickable = (ImageView) findViewById(R.id.imageViewClickable);
 		this.fragmentManager = getSupportFragmentManager();
 		this.breadcrumbFragment = (BreadcrumbFragment) fragmentManager
 				.findFragmentById(R.id.breadcrumbFragment);
@@ -95,51 +59,12 @@ public class UnifiedActivity extends FragmentActivity implements
 				.findFragmentById(R.id.textFragment);
 		this.videoFragment = (VideoFragment) fragmentManager
 				.findFragmentById(R.id.videoFragment);
+		this.imageFragment = (ImageFragment) fragmentManager
+				.findFragmentById(R.id.imageFragment);
 
-		this.surfaceView.setZOrderOnTop(true);
-		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-		this.surfaceView.getHolder().addCallback(this);
 		// getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-		this.imageViewClickable.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				float x_on_image_view = event.getX();
-				float y_on_image_view = event.getY();
-
-				Matrix matrix = imageViewClickable.getImageMatrix();
-				float f[] = new float[9];
-				matrix.getValues(f);
-				float scale_x = f[0];
-				float scale_y = f[4];
-				float offset_x = f[2];
-				float offset_y = f[5];
-
-				float bitmap_x = (x_on_image_view - offset_x) / scale_x;
-				float bitmap_y = (y_on_image_view - offset_y) / scale_y;
-
-				ContentUnit nearest_child = getNearestChild(bitmap_x, bitmap_y);
-				if (nearest_child == null)
-					return true;
-
-				setContentUnit(nearest_child);
-				videoFragment.stopPlayback();
-				videoFragment.hide();
-				onResume();
-
-				// Point point_on_image_view = new Point((int) x_on_image_view,
-				// (int) y_on_image_view);
-				// Point point_on_bitmap =
-				// getPointOnBitmap(point_on_image_view);
-				//
-				// onStarTouched(point_on_bitmap);
-				// TODO: should be implemented
-				return false;
-			}// onTouch
-		});
 
 		File external_storage_directory = Environment
 				.getExternalStorageDirectory();
@@ -187,36 +112,11 @@ public class UnifiedActivity extends FragmentActivity implements
 	}// onOptionsItemSelected
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-		this.imageView.setImageBitmap(null);
-		if (this.bitmap != null) {
-			this.bitmap.recycle();
-			this.bitmap = null;
-		}
-	}// onPause
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 		htmlFragment.update(this.contentUnit);
 		textFragment.update(this.contentUnit);
 		videoFragment.update(this.contentUnit, this);
-
-		if (this.contentUnit.hasImageFile()) {
-			this.imageViewClickable.setImageBitmap(null);
-			BitmapLoader bitmap_loader = new BitmapLoader(this);
-			bitmap_loader.loadBitmapFromFile(this.contentUnit.getImageFile());
-			// this.directoryImage.setContentUnit(this.contentUnit);
-			this.imageViewClickable.setImageBitmap(bitmap_loader.getBitmap());
-			LayoutParams image_view_layout_params = this.imageView
-					.getLayoutParams();
-			this.surfaceView.setLayoutParams(image_view_layout_params);
-			this.frameLayoutImage.setVisibility(View.VISIBLE);
-		} else {
-			this.frameLayoutImage.setVisibility(View.GONE);
-			this.imageView.setImageBitmap(null);
-		}// if content unit has an image
 
 		if (this.contentUnit.getChildren().size() == 0) {
 			// this.layoutButtons.setVisibility(View.GONE);
@@ -245,84 +145,11 @@ public class UnifiedActivity extends FragmentActivity implements
 		});
 	}
 
-	protected void addStarPoint(Point point) {
-		this.starPoints.add(point);
-	}
-
-	private Point getPointOnImageView(Point point_on_bitmap) {
-		float x = (point_on_bitmap.x) * this.scaleX + this.offsetX;
-		float y = (point_on_bitmap.y) * this.scaleY + this.offsetY;
-		return new Point((int) x, (int) y);
-	}
-
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
-	}// surfaceChanged
-
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		this.surfaceHolder = holder;
-	}
-
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		this.surfaceHolder = null;
-	}
-
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		drawSurface();
+		// drawSurface();
 	}
-
-	protected void drawSurface() {
-		if (this.surfaceHolder == null)
-			return;
-		if (this.starPoints == null)
-			return;
-		for (Point p : this.starPoints) {
-			Point on_image_view = getPointOnImageView(p);
-			Drawable d = this.imageView.getDrawable();
-			Log.v(new Throwable(), "IntrinsicHeight=" + d.getIntrinsicHeight()
-					+ " IntrinsicWidth=" + d.getIntrinsicWidth());
-			// if (on_image_view.x < 0 || on_image_view.x >=
-			// d.getIntrinsicWidth()
-			// || on_image_view.y < 0
-			// || on_image_view.y >= d.getIntrinsicHeight()) {
-			// return;
-			// }
-			if (star == null) {
-				UnifiedActivity.star = BitmapFactory.decodeResource(
-						getResources(), R.drawable.btn_rating_star_on_selected);
-			}
-			Canvas c = this.surfaceHolder.lockCanvas();
-			c.drawBitmap(UnifiedActivity.star, on_image_view.x,
-					on_image_view.y, null);
-			this.surfaceHolder.unlockCanvasAndPost(c);
-		}// for
-	}// drawSurface
-
-	public ContentUnit getNearestChild(float bitmap_x, float bitmap_y) {
-		ContentUnit nearest_child = null;
-		float min_distance_squared = 2000 * 2000;
-		for (ContentUnit child : this.contentUnit.getChildren()) {
-			if (child.getX() < 0 || child.getY() < 0)
-				continue;
-			float dx = child.getX() - bitmap_x;
-			float dy = child.getY() - bitmap_y;
-			float distance = dx * dx + dy * dy;
-			if (min_distance_squared > distance) {
-				min_distance_squared = distance;
-				nearest_child = child;
-			}
-		}
-		if (nearest_child != null)
-			return nearest_child;
-		if (this.contentUnit.getChildren().size() == 0)
-			return null;
-		return this.contentUnit.getChild(1);
-	}// getNearestChild
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

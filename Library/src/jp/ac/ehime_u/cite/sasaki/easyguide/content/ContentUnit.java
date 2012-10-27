@@ -143,6 +143,27 @@ public class ContentUnit {
 		return this._classifier.getHtmlFiles().get(0);
 	}
 
+	public ContentUnit getNearestChild(float bitmap_x, float bitmap_y) {
+		ContentUnit nearest_child = null;
+		float min_distance_squared = 2000 * 2000;
+		for (ContentUnit child : getChildren()) {
+			if (child.getX() < 0 || child.getY() < 0)
+				continue;
+			float dx = child.getX() - bitmap_x;
+			float dy = child.getY() - bitmap_y;
+			float distance = dx * dx + dy * dy;
+			if (min_distance_squared > distance) {
+				min_distance_squared = distance;
+				nearest_child = child;
+			}
+		}
+		if (nearest_child != null)
+			return nearest_child;
+		if (getChildren().size() == 0)
+			return null;
+		return getChild(1);
+	}// getNearestChild
+
 	static public void main(String[] args) throws FileNotFoundException {
 		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力/01 四国電力保安研修所";
 		final File directory = new File(directory_path);
@@ -156,5 +177,5 @@ public class ContentUnit {
 		}
 		MyLogger.info("siblings and ancestors "
 				+ content_unit_2.getSiblingsAndAncestors().size());
-	}
+	}// main
 }// class ContentUnit

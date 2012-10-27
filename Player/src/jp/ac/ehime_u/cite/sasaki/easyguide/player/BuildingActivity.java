@@ -7,7 +7,6 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.model.Building;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Facility;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Floor;
 import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organization;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.Organizations;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.content.Intent;
 import android.graphics.Point;
@@ -48,20 +47,20 @@ public class BuildingActivity extends ClickableActivity<Floor> {
 		this.facilityIndex = intent.getIntExtra("facilityIndex", 0);
 		this.buildingIndex = intent.getIntExtra("buildingIndex", 0);
 
-		Organizations organizations;
+		//Organizations organizations;
 		Organization organization;
-		try {
-			organizations = Organizations.getInstance();
-			organization = organizations
-					.getOrganization(this.organizationIndex);
-			Facility facility = organization.getFacility(this.facilityIndex);
-			this.building = facility.getBuilding(this.buildingIndex);
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ItemNotFoundException e) {
-			this.building = Building.getDummy();
-		}
+//		try {
+			//organizations = Organizations.getInstance();
+//			organization = organizations
+//					.getOrganization(this.organizationIndex);
+//			Facility facility = organization.getFacility(this.facilityIndex);
+//			this.building = facility.getBuilding(this.buildingIndex);
+//		} catch (FileNotFoundException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (ItemNotFoundException e) {
+//			this.building = Building.getDummy();
+//		}
 
 		ArrayAdapter<Floor> floor_array_adapter = new ArrayAdapter<Floor>(this,
 				android.R.layout.simple_spinner_dropdown_item);

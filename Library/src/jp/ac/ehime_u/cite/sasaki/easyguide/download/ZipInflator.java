@@ -61,16 +61,6 @@ public class ZipInflator {
 		this.destinationDirectory = domain_directory;
 	}// a constructor
 
-	/**
-	 * @param input_stream
-	 * @param domain_
-	 */
-	@Deprecated
-	public ZipInflator(InputStream input_stream, Domain domain_) {
-		this.inputStream = input_stream;
-		this.destinationDirectory = domain_.getDomainDirectory();
-	}// a constructor
-
 	public void Inflate() {
 		ZipInputStream zip_input_stream = new ZipInputStream(this.inputStream);
 		Log.v(this.getClass().getSimpleName(),

@@ -16,48 +16,28 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
 import android.util.Log;
 
 public class DownloadedItem {
-	private Date downloadedDate;
 	private File downloadedFile;
-	private String domain;
 	private final int bufferSize = 65536;
-
-	public Date getDownloadedDate() {
-		return this.downloadedDate;
-	}
 
 	public File getDownloadedFile() {
 		return this.downloadedFile;
 	}
-	
-	public String getDomain(){
-		return this.domain;
-	}
 
 	public DownloadedItem(File downloaded_file) {
 		this.downloadedFile = downloaded_file;
-		Pattern pattern = Pattern.compile("([0-9]+).zip");
-		Matcher matcher = pattern.matcher(downloaded_file.getName());
-		String time_in_milliseconds;
-		if (matcher.find()) {
-			time_in_milliseconds = matcher.group(1);
-			this.downloadedDate = new Date(Long.parseLong(time_in_milliseconds));
-		} else {
-			throw new RuntimeException("Malformed file name.");
-		} // if
-		this.domain = downloaded_file.getParentFile().getName();
 	}// a constructor
-
-	//public DownloadedItem(String time_in_milliseconds) {
-	//	this.downloadedDate = new Date(Long.parseLong(time_in_milliseconds));
-	//}// a constructor
 
 	public DownloadedItem(Domain domain) {
-		Calendar calendar = Calendar.getInstance();
-		this.domain = domain.getDomainDirectory().getName();
-		this.downloadedDate = calendar.getTime();
-		this.downloadedFile = new File(domain.getDomainDirectory(), ""
-				+ this.downloadedDate.getTime() + ".zip");
+		this.downloadedFile = new File(domain.getDirectory(), ""
+				+ Calendar.getInstance().getTime() + ".zip");
 	}// a constructor
+
+	public Date getDateFromFileName() {
+		Pattern pattern = Pattern.compile("([0-9]+).zip");
+		Matcher matcher = pattern.matcher(this.downloadedFile.getName());
+		String time_in_milliseconds = matcher.group(1);
+		return new Date(Long.parseLong(time_in_milliseconds));
+	}
 
 	@Deprecated
 	public int SaveStream(BufferedInputStream buffered_input_stream) {

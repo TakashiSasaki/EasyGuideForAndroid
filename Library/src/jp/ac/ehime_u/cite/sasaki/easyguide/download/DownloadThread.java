@@ -64,11 +64,11 @@ public class DownloadThread extends Thread {
 
 	@Override
 	public void run() {
-		if (this.source.getUri().getHost().equals("assets")) {
-			CopyFromAssets();
-		} else {
+//		if (this.source.getUri().getHost().equals("assets")) {
+//			CopyFromAssets();
+//		} else {
 			DownloadViaHttp();
-		}
+//		}
 	}// run()
 
 	private void DownloadViaHttp() {
@@ -111,31 +111,31 @@ public class DownloadThread extends Thread {
 		this.downloadedItem.SaveStream(buffered_input_stream);
 	}// DownloadViaHttp
 
-	@Deprecated
-	private void CopyFromAssets() {
-		InputStream input_stream;
-		Pattern pattern = Pattern.compile("^/([0-9a-zA-Z_\\-.]+/.+\\.zip)$");
-		String path_in_assets = this.source.getUri().getPath();
-		Matcher matcher = pattern.matcher(path_in_assets);
-		if (!matcher.find()) {
-			throw new RuntimeException("Malformed path in assets : "
-					+ path_in_assets);
-		}// if
-		String path_in_assets_without_heading_slash = matcher.group(1);
-		Log.v(this.getClass().getSimpleName(), "Reading from "
-				+ path_in_assets_without_heading_slash);
-		try {
-			input_stream = this.assetManager
-					.open(path_in_assets_without_heading_slash);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}// try
-		BufferedInputStream buffered_input_stream = new BufferedInputStream(
-				input_stream);
-		final int count = this.downloadedItem.SaveStream(buffered_input_stream);
-		Log.v(this.getClass().getSimpleName(), "" + count + " bytes wrote.");
-	}// CopyFromAssets
+//	@Deprecated
+//	private void CopyFromAssets() {
+//		InputStream input_stream;
+//		Pattern pattern = Pattern.compile("^/([0-9a-zA-Z_\\-.]+/.+\\.zip)$");
+//		String path_in_assets = this.source.getUri().getPath();
+//		Matcher matcher = pattern.matcher(path_in_assets);
+//		if (!matcher.find()) {
+//			throw new RuntimeException("Malformed path in assets : "
+//					+ path_in_assets);
+//		}// if
+//		String path_in_assets_without_heading_slash = matcher.group(1);
+//		Log.v(this.getClass().getSimpleName(), "Reading from "
+//				+ path_in_assets_without_heading_slash);
+//		try {
+//			input_stream = this.assetManager
+//					.open(path_in_assets_without_heading_slash);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return;
+//		}// try
+//		BufferedInputStream buffered_input_stream = new BufferedInputStream(
+//				input_stream);
+//		final int count = this.downloadedItem.SaveStream(buffered_input_stream);
+//		Log.v(this.getClass().getSimpleName(), "" + count + " bytes wrote.");
+//	}// CopyFromAssets
 
 	/**
 	 * @param http_client

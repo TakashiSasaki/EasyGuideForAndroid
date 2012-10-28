@@ -28,9 +28,11 @@ public class Domain extends ContentUnit {
 	 * @param domain_name
 	 * @throws FileNotFoundException
 	 */
-	public Domain(Root root, String domain_name) throws FileNotFoundException {
-		super(new File(root.getDirectory(), domain_name.toLowerCase()), root);
-		getHostAddress();
+	public Domain(Root root, String domain_name, int sibling_index)
+			throws FileNotFoundException {
+		super(new File(root.getDirectory(), domain_name.toLowerCase()), root,
+				sibling_index);
+		updateHostAddress();
 	}// a constructor of class Domain
 
 	public void mkdir() {
@@ -74,34 +76,42 @@ public class Domain extends ContentUnit {
 		}// for
 	}// removeZipFiles
 
-	public void getHostAddress() {
+	public void updateHostAddress() {
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				InetAddress inet_address;
 				try {
 					inet_address = InetAddress.getByName(getName());
-					Domain.this.hostAddress = inet_address.getHostAddress();
+					Domain.this.setHostAddress(inet_address.getHostAddress());
 				} catch (UnknownHostException e) {
-					Domain.this.hostAddress = null;
+					Domain.this.setHostAddress(null);
 				}
 			}// run
 		});
 		thread.start();
-	}// IsResolvable
+	}// updateHostAddress
 
-	private boolean isFqdn(String host_) {
+	private boolean isFqdn() {
 		Pattern pattern = Pattern
 				.compile("^.{1,254}$)(^(?:(?!\\d+\\.)[a-zA-Z0-9_\\-]{1,63}\\.?)+(?:[a-zA-Z]{2,})$");
 		// regex string comes from
 		// http://regexlib.com/Search.aspx?k=fqdn&c=-1&m=-1&ps=20
 		// by Scott Mulcahy
-		Matcher matcher = pattern.matcher(host_);
+		Matcher matcher = pattern.matcher(getName());
 		if (matcher.find()) {
 			return true;
 		} else {
 			return true;
 		}
 	}// isFqdn
+
+	public String getHostAddress() {
+		return hostAddress;
+	}
+
+	public void setHostAddress(String hostAddress) {
+		this.hostAddress = hostAddress;
+	}
 
 }// Domain

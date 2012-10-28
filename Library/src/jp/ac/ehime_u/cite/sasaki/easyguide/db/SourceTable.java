@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import jp.ac.ehime_u.cite.sasaki.easyguide.content.Domain;
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.Root;
 import jp.ac.ehime_u.cite.sasaki.easyguide.download.Source;
 import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 
@@ -203,7 +202,8 @@ public class SourceTable {
 				null, null, null, null, null);
 		for (boolean record_exists = cursor.moveToFirst(); record_exists; record_exists = cursor
 				.moveToNext()) {
-			Domain domain = new Domain(Root.getTheRoot(), cursor.getString(0));
+			//Domain domain = new Domain(Root.getTheRoot(), cursor.getString(0));
+			String domain_string = cursor.getString(0);
 			URI uri;
 			try {
 				uri = new URI(cursor.getString(1));
@@ -213,7 +213,7 @@ public class SourceTable {
 			}// try
 			File downloaded_file = new File(cursor.getString(2));
 			Date last_modified = new Date(cursor.getLong(3));
-			Source zip_url = new Source(domain.getName(), uri);
+			Source zip_url = new Source(domain_string, uri);
 			array_list.add(zip_url);
 		}// for
 		cursor.close();

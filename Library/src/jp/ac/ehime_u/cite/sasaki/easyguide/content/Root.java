@@ -37,7 +37,7 @@ public class Root extends ContentUnit {
 	}
 
 	private Root() throws FileNotFoundException {
-		super(_getEasyGuideRoot(), null);
+		super(_getEasyGuideRoot(), null, 1);
 		_checkDomainName();
 	}// an constructor
 

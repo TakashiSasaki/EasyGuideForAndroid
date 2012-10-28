@@ -8,33 +8,35 @@ import jp.ac.ehime_u.cite.sasaki.easyguide.exception.InvalidDirectoryNameExcepti
 public class ContentUnit {
 	private Classifier _classifier;
 	private DirectoryName _directoryName;
-	public ArrayList<Integer> identifier; // 0=organization 1=facility
+	public ArrayList<Integer> contentPath; // 0=organization 1=facility
 											// 2=building 3=floor
 											// 4=room 5=equipment 6=panel
 	// private int _level;
 	private ContentUnit _parent;
 	private ArrayList<ContentUnit> children;
 	private File _directory;
+	private int siblingIndex;
 
 	// public int siblingIndex() {
 	// return this.identifier[this._level];
 	// }
 
 	@SuppressWarnings({ "boxing", "unchecked" })
-	public ContentUnit(File directory, ContentUnit parent)
+	public ContentUnit(File directory, ContentUnit parent, int sibling_index)
 			throws FileNotFoundException {
 
 		this._directory = directory;
 		this._parent = parent;
 		this._directoryName = new DirectoryName(directory.getName());
 		this._classifier = new Classifier(directory);
+		this.siblingIndex = sibling_index;
 
 		// detecting level consistency
 		if (parent != null) {
-			this.identifier = (ArrayList<Integer>) parent.identifier.clone();
+			this.contentPath = (ArrayList<Integer>) parent.contentPath.clone();
 		} else {
-			this.identifier.add(this._directoryName.number);
-		}
+			this.contentPath.add(this.siblingIndex);
+		}// if
 
 		MyLogger.info("directory = " + directory.getAbsolutePath());
 
@@ -45,13 +47,13 @@ public class ContentUnit {
 				continue;
 			try {
 				ContentUnit child_content_unit = new ContentUnit(
-						child_directory, this);
+						child_directory, this, children.size() + 1);
 				this.children.add(child_content_unit);
 			} catch (InvalidDirectoryNameException e) {
 				MyLogger.info(e.toString());
 				break;
-			}
-		}
+			}// try
+		}// for
 
 	}// a constructor
 
@@ -167,7 +169,7 @@ public class ContentUnit {
 	static public void main(String[] args) throws FileNotFoundException {
 		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力/01 四国電力保安研修所";
 		final File directory = new File(directory_path);
-		ContentUnit content_unit = new ContentUnit(directory, null);
+		ContentUnit content_unit = new ContentUnit(directory, null, 1);
 		ContentUnit content_unit_2 = content_unit.getChild(1).getChild(2);
 		MyLogger.info("children " + content_unit_2.getChildren().size());
 		MyLogger.info("siblings " + content_unit_2.getSiblings().size());

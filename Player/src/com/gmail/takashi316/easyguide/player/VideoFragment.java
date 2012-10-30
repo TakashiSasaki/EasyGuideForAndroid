@@ -2,6 +2,7 @@ package com.gmail.takashi316.easyguide.player;
 
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +17,16 @@ import android.widget.VideoView;
 public class VideoFragment extends Fragment {
 	VideoView videoView;
 	LinearLayout layoutVideo;
+	Context context;
+	//Class<? extends Activity> activityClass;
+	ContentUnit contentUnit;
+
+	@Override
+	public void onAttach(Activity activity) {
+		this.context = activity.getApplicationContext();
+		//this.activityClass = activity.getClass();
+		super.onAttach(activity);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,8 +46,15 @@ public class VideoFragment extends Fragment {
 		layoutVideo.setVisibility(View.GONE);
 	} // hide
 
-	public void update(ContentUnit content_unit, Context context) {
-		if (content_unit.hasMovie()) {
+	public void update(ContentUnit content_unit) {
+		if (this.contentUnit != null) {
+			if (this.contentUnit.getParent().equals(content_unit.getParent())) {
+				this.stopPlayback();
+				// this.hide();
+			}
+		}
+		this.contentUnit = content_unit;
+		if (this.contentUnit.hasMovie()) {
 			// this.layoutVideo.bringToFront();
 			this.layoutVideo.setBackgroundColor(Color.WHITE);
 			if (!this.videoView.isPlaying()) {

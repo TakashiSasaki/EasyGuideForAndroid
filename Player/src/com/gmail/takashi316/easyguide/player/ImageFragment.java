@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import com.gmail.takashi316.easyguide.content.BitmapLoader;
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 
-import sun.management.counter.Units;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,6 +31,16 @@ public class ImageFragment extends Fragment {
 	private FrameLayout frameLayoutImage;
 	private ImageView imageViewClickable;
 	private ContentUnit contentUnit;
+	// private Activity activity;
+	private Context context;
+	private Class<? extends Activity> activityClass;
+
+	@Override
+	public void onAttach(Activity activity) {
+		this.context = activity.getApplicationContext();
+		this.activityClass = activity.getClass();
+		super.onAttach(activity);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,10 +74,13 @@ public class ImageFragment extends Fragment {
 				if (nearest_child == null)
 					return true;
 
-				setContentUnit(nearest_child);
-				videoFragment.stopPlayback();
-				videoFragment.hide();
-				onResume();
+				Intent intent = new Intent(context, activityClass);
+				intent.putExtra("contentPath", nearest_child.getContentPath());
+				startActivity(intent);
+				// setContentUnit(nearest_child);
+				// videoFragment.stopPlayback();
+				// videoFragment.hide();
+				//onResume();
 
 				// Point point_on_image_view = new Point((int) x_on_image_view,
 				// (int) y_on_image_view);
@@ -93,7 +106,7 @@ public class ImageFragment extends Fragment {
 		// }
 	}// onPause
 
-	public void update(ContentUnit content_unit, Context context) {
+	public void update(ContentUnit content_unit) {
 		this.contentUnit = content_unit;
 		if (content_unit.hasImageFile()) {
 			this.imageViewClickable.setImageBitmap(null);

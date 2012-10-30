@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,15 @@ import android.widget.LinearLayout;
 public class BreadcrumbFragment extends Fragment {
 	private HorizontalScrollView horizontalScrollViewBreadcrumb;
 	private LinearLayout layoutBreadcrumb;
+	private Context context;
+	private Class<? extends Activity> activityClass;
+
+	@Override
+	public void onAttach(Activity activity) {
+		this.context = activity.getApplicationContext();
+		this.activityClass = activity.getClass();
+		super.onAttach(activity);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,10 +51,18 @@ public class BreadcrumbFragment extends Fragment {
 		this.horizontalScrollViewBreadcrumb.setVisibility(View.VISIBLE);
 	}
 
+	public void update(ContentUnit content_unit) {
+		if (content_unit.getAncestors().size() == 0) {
+			this.hide();
+		} else if (content_unit.getAncestors().size() > 0) {
+			this.showParents(content_unit.getAncestors(), content_unit);
+			this.show();
+		}// if content unit has parents
+
+	}
+
 	public void showParents(ArrayList<ContentUnit> ancestors,
-			final ContentUnit current_content_unit, Context context,
-			final UnifiedActivity unified_activity,
-			final VideoFragment video_fragment) {
+			final ContentUnit current_content_unit) {
 
 		this.layoutBreadcrumb.removeAllViews();
 		// final UnifiedActivity unified_activity = this;
@@ -59,10 +78,14 @@ public class BreadcrumbFragment extends Fragment {
 
 				@Override
 				public void onClick(View v) {
-					unified_activity.setContentUnit(content_unit);
-					video_fragment.stopPlayback();
-					video_fragment.hide();
-					unified_activity.onResume();
+					Intent intent = new Intent(context, activityClass);
+					intent.putExtra("contentPath",
+							content_unit.getContentPath());
+					// unified_activity.setContentUnit(content_unit);
+					// video_fragment.stopPlayback();
+					// video_fragment.hide();
+					// unified_activity.onResume();
+					startActivity(intent);
 				}// onClick
 			});// onClickListener
 			this.layoutBreadcrumb.addView(b);
@@ -78,10 +101,14 @@ public class BreadcrumbFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				unified_activity.setContentUnit(current_content_unit);
-				video_fragment.stopPlayback();
-				video_fragment.hide();
-				unified_activity.onResume();
+				Intent intent = new Intent(context, activityClass);
+				intent.putExtra("contentPath",
+						current_content_unit.getContentPath());
+				// unified_activity.setContentUnit(current_content_unit);
+				// video_fragment.stopPlayback();
+				// video_fragment.hide();
+				// unified_activity.onResume();
+				startActivity(intent);
 			}// onClick
 		});// onClickListener
 		this.layoutBreadcrumb.addView(b);

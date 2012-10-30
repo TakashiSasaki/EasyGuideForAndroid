@@ -2,6 +2,9 @@ package com.gmail.takashi316.easyguide.player;
 
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +20,15 @@ import android.widget.LinearLayout;
 public class ButtonsFragment extends Fragment {
 	HorizontalScrollView horizontalScrollViewButtons;
 	LinearLayout layoutButtons;
+	Context context;
+	Class<? extends Activity> activityClass;
+
+	@Override
+	public void onAttach(Activity activity) {
+		this.context = activity.getApplicationContext();
+		activityClass = activity.getClass();
+		super.onAttach(activity);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,13 +42,21 @@ public class ButtonsFragment extends Fragment {
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
-	public void showButtons(final UnifiedActivity unified_activity,
-			ContentUnit current_content_unit, final VideoFragment video_fragment) {
+	public void update(ContentUnit content_unit) {
+		if (content_unit.getChildren().size() == 0) {
+			// this.layoutButtons.setVisibility(View.GONE);
+		} else if (content_unit.getChildren().size() > 0) {
+			this.showButtons(content_unit);
+			this.show();
+		}// if content unit has children
+	}
+
+	public void showButtons(ContentUnit current_content_unit) {
 		this.layoutButtons.removeAllViews();
 		// final UnifiedActivity ua = this;
 
 		for (final ContentUnit cu : current_content_unit.getChildren()) {
-			Button b = new Button(unified_activity);
+			Button b = new Button(context);
 			b.setText(cu.getName());
 			b.setTextSize(30);
 			// b.setBackgroundColor(Color.YELLOW);
@@ -46,7 +66,10 @@ public class ButtonsFragment extends Fragment {
 
 				@Override
 				public void onClick(View v) {
-					unified_activity.setContentUnit(cu);
+					Intent intent = new Intent(context, activityClass);
+					intent.putExtra("contentPath", cu.getContentPath());
+					startActivity(intent);
+					// unified_activity.setContentUnit(cu);
 					// ua.onResume();
 				}
 			});
@@ -55,7 +78,7 @@ public class ButtonsFragment extends Fragment {
 		}// for
 		final ContentUnit parent_cu = current_content_unit.getParent();
 		if (parent_cu != null) {
-			Button b = new Button(unified_activity);
+			Button b = new Button(context);
 			b.setText("もどる");
 			b.setTextSize(30);
 			b.setBackgroundColor(Color.GREEN);
@@ -65,9 +88,12 @@ public class ButtonsFragment extends Fragment {
 			b.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					video_fragment.stopPlayback();
-					video_fragment.hide();
-					unified_activity.setContentUnit(parent_cu);
+					Intent intent = new Intent(context, activityClass);
+					intent.putExtra("contentPath", parent_cu.getContentPath());
+					startActivity(intent);
+					// video_fragment.stopPlayback();
+					// video_fragment.hide();
+					// unified_activity.setContentUnit(parent_cu);
 					// ua.onResume();
 				}// onClick
 			});

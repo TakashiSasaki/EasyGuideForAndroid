@@ -1,14 +1,11 @@
 package com.gmail.takashi316.easyguide.player;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -22,10 +19,12 @@ import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 
 import com.gmail.takashi316.easyguide.content.ContentUnit;
+import com.gmail.takashi316.easyguide.content.Root;
 
 public class UnifiedActivity extends FragmentActivity {
 	// private ImageView imageView;
-	private Bitmap bitmap;
+	// private Bitmap bitmap;
+	// private Root root;
 	private ContentUnit contentUnit;
 	private GestureDetector mGestureDetector;
 
@@ -68,13 +67,20 @@ public class UnifiedActivity extends FragmentActivity {
 		// setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		File external_storage_directory = Environment
-				.getExternalStorageDirectory();
-		File content_root_directory = new File(external_storage_directory,
-				"EASYGUIDE/www.yonden.co.jp/01 四国電力");
+		// File external_storage_directory = Environment
+		// .getExternalStorageDirectory();
+		// File content_root_directory = new File(external_storage_directory,
+		// "EASYGUIDE/www.yonden.co.jp/01 四国電力");
+		// try {
+		// this.root = Root.getTheRoot();
+		// this.contentUnit = new ContentUnit(content_root_directory, null, 1);
+		// } catch (FileNotFoundException e) {
+		// e.printStackTrace();
+		// }
 		try {
-			this.contentUnit = new ContentUnit(content_root_directory, null);
+			contentUnit = Root.getTheRoot();
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -118,34 +124,36 @@ public class UnifiedActivity extends FragmentActivity {
 		super.onResume();
 		htmlFragment.update(this.contentUnit);
 		textFragment.update(this.contentUnit);
-		videoFragment.update(this.contentUnit, this);
+		videoFragment.update(this.contentUnit);
+		imageFragment.update(this.contentUnit);
 
-		if (this.contentUnit.getChildren().size() == 0) {
-			// this.layoutButtons.setVisibility(View.GONE);
-		} else if (this.contentUnit.getChildren().size() > 0) {
-			buttonsFragment.showButtons(this, contentUnit, videoFragment);
-			buttonsFragment.show();
-		}// if content unit has children
+		buttonsFragment.update(this.contentUnit);
+		// if (this.contentUnit.getChildren().size() == 0) {
+		// // this.layoutButtons.setVisibility(View.GONE);
+		// } else if (this.contentUnit.getChildren().size() > 0) {
+		// buttonsFragment.showButtons(contentUnit);
+		// buttonsFragment.show();
+		// }// if content unit has children
 
-		if (this.contentUnit.getAncestors().size() == 0) {
-			this.breadcrumbFragment.hide();
-		} else if (this.contentUnit.getAncestors().size() > 0) {
-			this.breadcrumbFragment.showParents(
-					this.contentUnit.getAncestors(), this.contentUnit, this,
-					this, videoFragment);
-			this.breadcrumbFragment.show();
-		}// if content unit has parents
+		breadcrumbFragment.update(this.contentUnit);
+		// if (this.contentUnit.getAncestors().size() == 0) {
+		// this.breadcrumbFragment.hide();
+		// } else if (this.contentUnit.getAncestors().size() > 0) {
+		// this.breadcrumbFragment.showParents(
+		// this.contentUnit.getAncestors(), this.contentUnit);
+		// this.breadcrumbFragment.show();
+		// }// if content unit has parents
 	}// onResume
 
-	public void setContentUnit(ContentUnit cu) {
-		this.contentUnit = cu;
-		this.handler.post(new Runnable() {
-			@Override
-			public void run() {
-				onResume();
-			}
-		});
-	}
+	// public void setContentUnit(ContentUnit cu) {
+	// this.contentUnit = cu;
+	// this.handler.post(new Runnable() {
+	// @Override
+	// public void run() {
+	// onResume();
+	// }
+	// });
+	// }
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {

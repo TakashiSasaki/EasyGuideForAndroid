@@ -58,11 +58,15 @@ public class ContentUnit {
 
 	}// a constructor
 
+	public ArrayList<Integer> getContentPath() {
+		return this.contentPath;
+	}
+	
 	public String getName() {
 		return this._directoryName.name;
 	}
 
-	public int getIndString() {
+	public int getNumber() {
 		return this._directoryName.number;
 	}
 

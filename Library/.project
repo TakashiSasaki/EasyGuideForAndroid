@@ -3,6 +3,7 @@
 	<name>EasyGuide-Lib</name>
 	<comment></comment>
 	<projects>
+		<project>android-lib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

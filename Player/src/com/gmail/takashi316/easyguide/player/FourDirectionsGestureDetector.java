@@ -1,6 +1,7 @@
 package com.gmail.takashi316.easyguide.player;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
+import com.gmail.takashi316.easyguide.util.Log;
+
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;

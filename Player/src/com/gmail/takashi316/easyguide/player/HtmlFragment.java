@@ -1,6 +1,7 @@
 package com.gmail.takashi316.easyguide.player;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
+import com.gmail.takashi316.easyguide.content.ContentUnit;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

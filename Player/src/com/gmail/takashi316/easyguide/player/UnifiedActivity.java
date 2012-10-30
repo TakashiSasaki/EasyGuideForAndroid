@@ -2,7 +2,7 @@ package com.gmail.takashi316.easyguide.player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,6 +20,8 @@ import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
+
+import com.gmail.takashi316.easyguide.content.ContentUnit;
 
 public class UnifiedActivity extends FragmentActivity {
 	// private ImageView imageView;

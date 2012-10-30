@@ -3,10 +3,10 @@ package com.gmail.takashi316.easyguide.player;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.Root;
-import jp.ac.ehime_u.cite.sasaki.easyguide.model.*;
-import jp.ac.ehime_u.cite.sasaki.easyguide.ui.TocAdapter;
+import com.gmail.takashi316.easyguide.content.ContentUnit;
+import com.gmail.takashi316.easyguide.content.Root;
+import com.gmail.takashi316.easyguide.ui.TocAdapter;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

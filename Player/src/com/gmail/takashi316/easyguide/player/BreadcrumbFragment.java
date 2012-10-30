@@ -2,7 +2,8 @@ package com.gmail.takashi316.easyguide.player;
 
 import java.util.ArrayList;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
+import com.gmail.takashi316.easyguide.content.ContentUnit;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;

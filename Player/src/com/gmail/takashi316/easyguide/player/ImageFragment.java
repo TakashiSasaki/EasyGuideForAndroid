@@ -2,10 +2,10 @@ package com.gmail.takashi316.easyguide.player;
 
 import java.util.ArrayList;
 
+import com.gmail.takashi316.easyguide.content.BitmapLoader;
+import com.gmail.takashi316.easyguide.content.ContentUnit;
+
 import sun.management.counter.Units;
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.BitmapLoader;
-import jp.ac.ehime_u.cite.sasaki.easyguide.content.ContentUnit;
-import jp.ac.ehime_u.cite.sasaki.easyguide.util.Log;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

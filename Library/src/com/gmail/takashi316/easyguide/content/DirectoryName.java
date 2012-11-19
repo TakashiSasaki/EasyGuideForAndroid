@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import com.gmail.takashi316.easyguide.exception.InvalidDirectoryNameException;
 
-
 /**
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  * 
@@ -38,7 +37,7 @@ public class DirectoryName {
 						+ " and it should be positive integer");
 			}
 			this.name = parts[1];
-			//return;
+			// return;
 			if (parts.length == 4) {
 				try {
 					this.x = Integer.parseInt(parts[2]);
@@ -52,6 +51,13 @@ public class DirectoryName {
 			}// if
 			return;
 		}// if
+		if (parts.length == 1) {
+			this.name = directory_name;
+			this.number = -1;
+			this.x = -1;
+			this.y = -1;
+			return;
+		}
 		throw new InvalidDirectoryNameException("Invalid directory name "
 				+ directory_name);
 	}// a constructor

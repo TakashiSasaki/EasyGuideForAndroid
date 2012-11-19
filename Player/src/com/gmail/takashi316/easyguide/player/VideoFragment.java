@@ -58,7 +58,7 @@ public class VideoFragment extends Fragment {
 				// do nothing
 			} else if (this.contentUnit.getParent().equals(
 					content_unit.getParent())) {
-				this.stopPlayback();
+				// do nothing
 			}
 		}
 		this.contentUnit = content_unit;

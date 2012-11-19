@@ -3,7 +3,6 @@ package com.gmail.takashi316.easyguide.content;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
-import java.nio.file.DirectoryNotEmptyException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.LoggingMXBean;

@@ -177,26 +177,26 @@ public class UnifiedActivity extends FragmentActivity {
 	}// onResume
 
 	private void updateFragments() {
+		htmlFragment.update(this.contentUnit);
 		if (this.contentUnit.hasHtml()) {
-			htmlFragment.update(this.contentUnit);
 			htmlLinearLayout.setVisibility(View.VISIBLE);
 		} else {
 			htmlLinearLayout.setVisibility(View.GONE);
 		}
+		textFragment.update(this.contentUnit);
 		if (this.contentUnit.hasText()) {
-			textFragment.update(this.contentUnit);
 			textLinearLayout.setVisibility(View.VISIBLE);
 		} else {
 			textLinearLayout.setVisibility(View.GONE);
 		}
+		videoFragment.update(this.contentUnit);
 		if (this.contentUnit.hasMovie()) {
-			videoFragment.update(this.contentUnit);
 			videoLinearLayout.setVisibility(View.VISIBLE);
 		} else {
 			videoLinearLayout.setVisibility(View.GONE);
 		}
+		imageFragment.update(this.contentUnit);
 		if (this.contentUnit.hasImageFile()) {
-			imageFragment.update(this.contentUnit);
 			imageLinearLayout.setVisibility(View.VISIBLE);
 		} else {
 			imageLinearLayout.setVisibility(View.GONE);

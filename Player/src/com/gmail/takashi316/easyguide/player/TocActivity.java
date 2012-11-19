@@ -61,7 +61,7 @@ public class TocActivity extends Activity {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						ListView list_view = (ListView) parent;
-						ContentUnit content_unit = (ContentUnit) list_view
+						TocAdapter.TocItem toc_item = (TocAdapter.TocItem) list_view
 								.getItemAtPosition(position);
 						Intent intent = new Intent(TocActivity.this,
 								UnifiedActivity.class);

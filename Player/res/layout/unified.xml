@@ -111,6 +111,20 @@
             android:visibility="visible" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayoutWifi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <fragment
+            android:id="@+id/wifiFragment"
+            android:name="com.gmail.takashi316.easyguide.player.WifiFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </fragment>
+    </LinearLayout>
+
     <fragment
         android:id="@+id/buttonsFragment"
         android:name="com.gmail.takashi316.easyguide.player.ButtonsFragment"

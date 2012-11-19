@@ -49,6 +49,8 @@ public class UnifiedActivity extends FragmentActivity {
 	private LinearLayout videoLinearLayout;
 	private ImageFragment imageFragment;
 	private LinearLayout imageLinearLayout;
+	private WifiFragment wifiFragment;
+	private LinearLayout linearLayoutWifi;
 
 	private ContentUnit rootContentUnit;
 
@@ -77,6 +79,9 @@ public class UnifiedActivity extends FragmentActivity {
 		this.imageFragment = (ImageFragment) fragmentManager
 				.findFragmentById(R.id.imageFragment);
 		this.imageLinearLayout = (LinearLayout) findViewById(R.id.imageLinearLayout);
+		this.wifiFragment = (WifiFragment) fragmentManager
+				.findFragmentById(R.id.wifiFragment);
+		this.linearLayoutWifi = (LinearLayout) findViewById(R.id.linearLayoutWifi);
 
 		// getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
@@ -92,10 +97,6 @@ public class UnifiedActivity extends FragmentActivity {
 		// } catch (FileNotFoundException e) {
 		// e.printStackTrace();
 		// }
-		this.wifiManager = (WifiManager) this
-				.getSystemService(Context.WIFI_SERVICE);
-		this.wifiManager.startScan();
-
 		this.mGestureDetector = new FourDirectionsGestureDetector(this, null,
 				null, null, null);
 
@@ -203,6 +204,7 @@ public class UnifiedActivity extends FragmentActivity {
 		}
 		buttonsFragment.update(this.contentUnit);
 		breadcrumbFragment.update(this.contentUnit);
+		wifiFragment.update(this.contentUnit.getDirectory());
 	}
 
 	// public void setContentUnit(ContentUnit cu) {
@@ -227,4 +229,11 @@ public class UnifiedActivity extends FragmentActivity {
 		return true;
 	}// onTouchEvent
 
+	public void toggleWifiLayout() {
+		if (this.linearLayoutWifi.getVisibility() == View.VISIBLE) {
+			this.linearLayoutWifi.setVisibility(View.GONE);
+		} else {
+			this.linearLayoutWifi.setVisibility(View.VISIBLE);
+		}
+	}// toggleWifiLayout
 }// class UnifiedActivity

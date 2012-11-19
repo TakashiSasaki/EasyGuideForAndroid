@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -57,6 +58,18 @@ public class ButtonsFragment extends Fragment {
 		this.layoutButtons.removeAllViews();
 		// final UnifiedActivity ua = this;
 
+		ImageButton image_button = new ImageButton(context);
+		image_button.setImageResource(android.R.drawable.btn_radio);
+		image_button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				UnifiedActivity unified_activity = (UnifiedActivity) getActivity();
+				unified_activity.toggleWifiLayout();
+			}
+		});
+		this.layoutButtons.addView(image_button);
+
 		for (final ContentUnit cu : current_content_unit.getChildren()) {
 			Button b = new Button(context);
 			b.setText(cu.getName());
@@ -84,7 +97,7 @@ public class ButtonsFragment extends Fragment {
 			Button b = new Button(context);
 			b.setText("もどる");
 			b.setTextSize(30);
-			//b.setBackgroundColor(Color.GREEN);
+			// b.setBackgroundColor(Color.GREEN);
 			b.setTextColor(Color.BLACK);
 			b.setMinWidth(40);
 			b.setOnClickListener(new OnClickListener() {

@@ -45,10 +45,10 @@ public class ImageFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		inflater.inflate(R.layout.image_fragment, container);
-		this.frameLayoutImage = (FrameLayout) getView().findViewById(
+		View v = inflater.inflate(R.layout.image_fragment, container);
+		this.frameLayoutImage = (FrameLayout) v.findViewById(
 				R.id.frameLayoutImage);
-		this.imageViewClickable = (ImageView) getView().findViewById(
+		this.imageViewClickable = (ImageView) v.findViewById(
 				R.id.imageViewClickable);
 
 		this.imageViewClickable.setOnTouchListener(new OnTouchListener() {
@@ -93,7 +93,8 @@ public class ImageFragment extends Fragment {
 			}// onTouch
 		});
 
-		return super.onCreateView(inflater, container, savedInstanceState);
+		//return super.onCreateView(inflater, container, savedInstanceState);
+		return v;
 	}
 
 	@Override

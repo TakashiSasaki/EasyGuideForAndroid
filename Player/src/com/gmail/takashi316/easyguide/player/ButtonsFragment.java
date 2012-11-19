@@ -33,13 +33,13 @@ public class ButtonsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		inflater.inflate(R.id.buttonsFragment, container);
-		this.horizontalScrollViewButtons = (HorizontalScrollView) getView()
+		View v = inflater.inflate(R.layout.buttons_fragment, container);
+		this.horizontalScrollViewButtons = (HorizontalScrollView) v
 				.findViewById(R.id.horizontalScrollViewButtons);
-		this.layoutButtons = (LinearLayout) getView().findViewById(
-				R.id.layoutButtons);
+		this.layoutButtons = (LinearLayout) v.findViewById(R.id.layoutButtons);
 
-		return super.onCreateView(inflater, container, savedInstanceState);
+		// return super.onCreateView(inflater, container, savedInstanceState);
+		return v;
 	}
 
 	public void update(ContentUnit content_unit) {

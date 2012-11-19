@@ -18,24 +18,23 @@ public class VideoFragment extends Fragment {
 	VideoView videoView;
 	LinearLayout layoutVideo;
 	Context context;
-	//Class<? extends Activity> activityClass;
+	// Class<? extends Activity> activityClass;
 	ContentUnit contentUnit;
 
 	@Override
 	public void onAttach(Activity activity) {
 		this.context = activity.getApplicationContext();
-		//this.activityClass = activity.getClass();
+		// this.activityClass = activity.getClass();
 		super.onAttach(activity);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		inflater.inflate(R.layout.video_fragment, container);
-		this.videoView = (VideoView) getView().findViewById(R.id.videoView1);
-		this.layoutVideo = (LinearLayout) getView().findViewById(
-				R.id.layoutVideo);
-		return super.onCreateView(inflater, container, savedInstanceState);
+		View v = inflater.inflate(R.layout.video_fragment, container);
+		this.videoView = (VideoView) v.findViewById(R.id.videoView1);
+		this.layoutVideo = (LinearLayout) v.findViewById(R.id.layoutVideo);
+		return v;
 	}// onCreateView
 
 	public void stopPlayback() {

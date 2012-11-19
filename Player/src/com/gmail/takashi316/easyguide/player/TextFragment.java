@@ -19,13 +19,14 @@ public class TextFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		inflater.inflate(R.layout.text_fragment, container);
-		this.layoutText = (LinearLayout) getView()
+		View v = inflater.inflate(R.layout.text_fragment, container);
+		this.layoutText = (LinearLayout) v
 				.findViewById(R.id.layoutText);
-		this.textViewContent = (TextView) getView().findViewById(
+		this.textViewContent = (TextView) v.findViewById(
 				R.id.textViewContent);
 
-		return super.onCreateView(inflater, container, savedInstanceState);
+		//return super.onCreateView(inflater, container, savedInstanceState);
+		return v;
 	}// onCreateView
 
 	public void update(ContentUnit content_unit) {

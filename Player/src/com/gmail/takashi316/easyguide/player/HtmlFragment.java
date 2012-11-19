@@ -17,11 +17,12 @@ public class HtmlFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		inflater.inflate(R.layout.html_fragment, container);
-		this.layoutHtml = (LinearLayout) getView()
+		View v = inflater.inflate(R.layout.html_fragment, container);
+		this.layoutHtml = (LinearLayout) v
 				.findViewById(R.id.layoutHtml);
-		this.webView = (WebView) getView().findViewById(R.id.webView);
-		return super.onCreateView(inflater, container, savedInstanceState);
+		this.webView = (WebView) v.findViewById(R.id.webView);
+		//return super.onCreateView(inflater, container, savedInstanceState);
+		return v;
 	}// onCreateView
 
 	public void update(ContentUnit content_unit) {

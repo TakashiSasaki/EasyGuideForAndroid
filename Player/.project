@@ -3,6 +3,7 @@
 	<name>Player</name>
 	<comment></comment>
 	<projects>
+		<project>android-lib</project>
 		<project>Library</project>
 	</projects>
 	<buildSpec>

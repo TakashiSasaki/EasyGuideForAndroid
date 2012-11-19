@@ -3,6 +3,8 @@ package com.gmail.takashi316.easyguide.player;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import junit.framework.Assert;
+
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 import com.gmail.takashi316.easyguide.content.Root;
 import com.gmail.takashi316.easyguide.ui.TocAdapter;
@@ -24,8 +26,8 @@ import android.widget.ListView;
 public class TocActivity extends Activity {
 	/** Called when the activity is first created. */
 
-	//private ArrayList<Building> buildingList;
-	//private static Building chosenBuilding;
+	// private ArrayList<Building> buildingList;
+	// private static Building chosenBuilding;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +49,11 @@ public class TocActivity extends Activity {
 		// }//for
 		// }//for
 		// }//for
-		ListView building_list_view = (ListView) findViewById(R.id.listViewOrganizations);
+		ListView building_list_view = (ListView) findViewById(R.id.tocListView);
 		// Log.v(this.getClass().getSimpleName(), "Totally " +
 		// adapter.getCount()
 		// + " buildings found.");
+		Assert.assertNotNull(building_list_view);
 
 		building_list_view
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,13 +83,13 @@ public class TocActivity extends Activity {
 		}
 	}// onCreate
 
-//	private void InvokeMapActivity(Building building_) {
-//		OpeningActivity.chosenBuilding = building_;
-//		Intent intent = new Intent(getApplicationContext(),
-//				BuildingActivity.class);
-//		intent.putExtra("jp.ac.ehime_u.cite.sasaki.easyguide.model.Building",
-//				building_.getTitle());
-//		startActivity(intent);
-//	}// InvokeMapActivity
+	// private void InvokeMapActivity(Building building_) {
+	// OpeningActivity.chosenBuilding = building_;
+	// Intent intent = new Intent(getApplicationContext(),
+	// BuildingActivity.class);
+	// intent.putExtra("jp.ac.ehime_u.cite.sasaki.easyguide.model.Building",
+	// building_.getTitle());
+	// startActivity(intent);
+	// }// InvokeMapActivity
 
 }// OpeningActivity

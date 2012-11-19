@@ -2,7 +2,7 @@ package com.gmail.takashi316.sandbox;
 
 //import com.gmail.takashi316.lib.android.activity.SmartActivity;
 
-import com.gmail.takashi316.easyguide.R;
+import com.gmail.takashi316.easyguide.player.R;
 
 import android.app.Activity;
 import android.os.Bundle;

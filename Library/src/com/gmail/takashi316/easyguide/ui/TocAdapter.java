@@ -59,9 +59,9 @@ public class TocAdapter extends BaseAdapter {
 				bitmap_loader.resizeBitmap(128, 128);
 				thumbnail = bitmap_loader.getBitmap();
 			} catch (Exception e) {
-				Resources resources = context.getResources();
-				thumbnail = BitmapFactory.decodeResource(resources,
-						R.drawable.unknown);
+				bitmap_loader.loadDefaultBitmap();
+				bitmap_loader.resizeBitmap(128, 128);
+				thumbnail = bitmap_loader.getBitmap();
 			}
 			String description;
 			try {

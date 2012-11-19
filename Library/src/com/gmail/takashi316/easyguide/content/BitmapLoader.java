@@ -20,13 +20,17 @@ public class BitmapLoader {
 	}
 
 	public void loadDefaultBitmap() {
+		loadBitmapFromResource(R.drawable.unknown);
+	}// loadDefaultBitmap
+
+	public void loadBitmapFromResource(int drawable_id) {
 		Resources resources = this.context.getResources();
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inPurgeable = true;
 		options.inPreferredConfig = Bitmap.Config.RGB_565;
-		this.bitmap = BitmapFactory.decodeResource(resources,
-				R.drawable.unknown, options);
-	}// loadDefaultBitmap
+		this.bitmap = BitmapFactory.decodeResource(resources, drawable_id,
+				options);
+	}// loadBitmapFromResource
 
 	public void loadBitmapFromFile(File file) {
 		BitmapFactory.Options options = new BitmapFactory.Options();

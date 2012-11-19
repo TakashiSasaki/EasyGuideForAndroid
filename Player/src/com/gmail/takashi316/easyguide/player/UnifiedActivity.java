@@ -223,7 +223,8 @@ public class UnifiedActivity extends FragmentActivity {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		return this.mGestureDetector.onTouchEvent(event);
+		//return this.mGestureDetector.onTouchEvent(event);
+		return true;
 	}// onTouchEvent
 
 }// class UnifiedActivity

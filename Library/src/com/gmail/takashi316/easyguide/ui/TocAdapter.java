@@ -8,15 +8,14 @@ import com.gmail.takashi316.easyguide.content.TextLoader;
 import com.gmail.takashi316.easyguide.lib.R;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class TocAdapter extends BaseAdapter {
 
@@ -24,11 +23,28 @@ public class TocAdapter extends BaseAdapter {
 		Bitmap thumbnail;
 		String name;
 		String description;
+		public String absolutePath;
 
-		public TocItem(Bitmap thumbnail, String name, String description) {
-			this.thumbnail = thumbnail;
-			this.name = name;
-			this.description = description;
+		public TocItem(Context context, ContentUnit content_unit) {
+			BitmapLoader bitmap_loader = new BitmapLoader(context);
+			try {
+				bitmap_loader.loadBitmapFromFile(content_unit.getImageFile());
+				bitmap_loader.resizeBitmap(128, 128);
+				this.thumbnail = bitmap_loader.getBitmap();
+			} catch (Exception e) {
+				bitmap_loader.loadDefaultBitmap();
+				bitmap_loader.resizeBitmap(128, 128);
+				this.thumbnail = bitmap_loader.getBitmap();
+			}
+			this.name = content_unit.getName();
+			try {
+				TextLoader text_loader = new TextLoader();
+				text_loader.loadTextFromFile(content_unit.getTextFile());
+				this.description = text_loader.getText();
+			} catch (Exception e) {
+				this.description = "この項目の説明はありません";
+			}
+			this.absolutePath = content_unit.getDirectory().getAbsolutePath();
 		}
 	}// TocItem
 
@@ -52,27 +68,7 @@ public class TocAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		for (ContentUnit content_unit : content_units) {
-			BitmapLoader bitmap_loader = new BitmapLoader(context);
-			Bitmap thumbnail;
-			try {
-				bitmap_loader.loadBitmapFromFile(content_unit.getImageFile());
-				bitmap_loader.resizeBitmap(128, 128);
-				thumbnail = bitmap_loader.getBitmap();
-			} catch (Exception e) {
-				bitmap_loader.loadDefaultBitmap();
-				bitmap_loader.resizeBitmap(128, 128);
-				thumbnail = bitmap_loader.getBitmap();
-			}
-			String description;
-			try {
-				TextLoader text_loader = new TextLoader();
-				text_loader.loadTextFromFile(content_unit.getTextFile());
-				description = text_loader.getText();
-			} catch (Exception e) {
-				description = "この項目の説明はありません";
-			}
-			String name = content_unit.getName();
-			TocItem toc_item = new TocItem(thumbnail, name, description);
+			TocItem toc_item = new TocItem(context, content_unit);
 			this.tocItems.add(toc_item);
 		}// for
 	}// the constructor
@@ -90,6 +86,12 @@ public class TocAdapter extends BaseAdapter {
 			ImageView imageViewTocItem = (ImageView) view
 					.findViewById(R.id.imageViewTocItem);
 			imageViewTocItem.setImageBitmap(toc_item.thumbnail);
+			TextView textViewTocItemName = (TextView) view
+					.findViewById(R.id.textViewTocItemName);
+			textViewTocItemName.setText(toc_item.name);
+			TextView textViewTocItemDescription = (TextView) view
+					.findViewById(R.id.textViewTocItemDescription);
+			textViewTocItemDescription.setText(toc_item.description);
 		} catch (IndexOutOfBoundsException e) {
 			Log.e(this.getClass().getSimpleName(),
 					"no item in tocArrayList at position" + position);

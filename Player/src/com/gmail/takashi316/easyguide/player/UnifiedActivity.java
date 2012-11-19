@@ -1,9 +1,11 @@
 package com.gmail.takashi316.easyguide.player;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -77,13 +79,6 @@ public class UnifiedActivity extends FragmentActivity {
 		// } catch (FileNotFoundException e) {
 		// e.printStackTrace();
 		// }
-		try {
-			contentUnit = Root.getTheRoot();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		this.wifiManager = (WifiManager) this
 				.getSystemService(Context.WIFI_SERVICE);
 		this.wifiManager.startScan();
@@ -122,6 +117,30 @@ public class UnifiedActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		try {
+			this.contentUnit = Root.getTheRoot();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Intent intent = getIntent();
+		if (intent != null) {
+			final String root = intent.getExtras().getString("root");
+			if (root != null) {
+				final File root_directory = new File(root);
+				if (root_directory != null) {
+					try {
+						this.contentUnit = new ContentUnit(root_directory,
+								null, 0);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
 		htmlFragment.update(this.contentUnit);
 		textFragment.update(this.contentUnit);
 		videoFragment.update(this.contentUnit);

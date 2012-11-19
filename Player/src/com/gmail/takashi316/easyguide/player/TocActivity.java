@@ -12,10 +12,8 @@ import com.gmail.takashi316.easyguide.ui.TocAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
@@ -65,6 +63,7 @@ public class TocActivity extends Activity {
 								.getItemAtPosition(position);
 						Intent intent = new Intent(TocActivity.this,
 								UnifiedActivity.class);
+						intent.putExtra("root", toc_item.absolutePath);
 						startActivity(intent);
 					}// onItemClick
 				}// OnItemClickListener

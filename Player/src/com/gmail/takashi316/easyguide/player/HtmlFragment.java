@@ -13,10 +13,12 @@ import android.widget.LinearLayout;
 public class HtmlFragment extends Fragment {
 	private LinearLayout layoutHtml;
 	private WebView webView;
+	private ViewGroup container;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		this.container = container;
 		View v = inflater.inflate(R.layout.html_fragment, container);
 		this.layoutHtml = (LinearLayout) v
 				.findViewById(R.id.layoutHtml);

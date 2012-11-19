@@ -167,7 +167,7 @@ public class UnifiedActivity extends FragmentActivity {
 	}// onResume
 
 	private void updateFragments() {
-		htmlFragment.update(this.contentUnit);
+			htmlFragment.update(this.contentUnit);
 		textFragment.update(this.contentUnit);
 		videoFragment.update(this.contentUnit);
 		imageFragment.update(this.contentUnit);

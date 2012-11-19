@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class BreadcrumbFragment extends Fragment {
 	private HorizontalScrollView horizontalScrollViewBreadcrumb;
@@ -94,15 +95,26 @@ public class BreadcrumbFragment extends Fragment {
 					startActivity(intent);
 				}// onClick
 			});// onClickListener
+			TextView arrow = new TextView(context);
+			arrow.setText("≫");
+			arrow.setTextSize(30);
+			arrow.setTextColor(Color.BLACK);
+			this.layoutBreadcrumb.addView(arrow);
+
 			this.layoutBreadcrumb.addView(b);
 		}// for
 
+		TextView arrow = new TextView(context);
+		arrow.setText("≫≫");
+		arrow.setTextSize(30);
+		arrow.setTextColor(Color.BLACK);
+		this.layoutBreadcrumb.addView(arrow);
 		Button b = new Button(context);
 		b.setText(current_content_unit.getName());
 		b.setTextSize(30);
 		b.setTextColor(Color.BLACK);
 		b.setMinWidth(30);
-		b.setBackgroundColor(Color.CYAN);
+		//b.setBackgroundColor(Color.CYAN);
 		b.setOnClickListener(new OnClickListener() {
 
 			@Override

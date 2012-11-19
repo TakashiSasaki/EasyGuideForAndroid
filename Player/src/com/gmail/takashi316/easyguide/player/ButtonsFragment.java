@@ -16,6 +16,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 
 public class ButtonsFragment extends Fragment {
 	HorizontalScrollView horizontalScrollViewButtons;
@@ -82,10 +84,9 @@ public class ButtonsFragment extends Fragment {
 			Button b = new Button(context);
 			b.setText("もどる");
 			b.setTextSize(30);
-			b.setBackgroundColor(Color.GREEN);
-			// b.setTextColor(Color.WHITE);
-			b.setGravity(Gravity.RIGHT);
-			b.setMinWidth(30);
+			//b.setBackgroundColor(Color.GREEN);
+			b.setTextColor(Color.BLACK);
+			b.setMinWidth(40);
 			b.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {

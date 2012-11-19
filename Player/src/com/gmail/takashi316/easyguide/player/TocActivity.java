@@ -66,10 +66,7 @@ public class TocActivity extends Activity {
 						ListView list_view = (ListView) parent;
 						TocAdapter.TocItem toc_item = (TocAdapter.TocItem) list_view
 								.getItemAtPosition(position);
-						Intent intent = new Intent(TocActivity.this,
-								UnifiedActivity.class);
-						intent.putExtra("root", toc_item.absolutePath);
-						startActivity(intent);
+						InvokeAbsolutePath(toc_item.absolutePath);
 					}// onItemClick
 				}// OnItemClickListener
 				);
@@ -85,7 +82,14 @@ public class TocActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		InvokeAbsolutePath("/mnt/sdcard/EASYGUIDE/www.yonden.co.jp/01 四国電力/");
 	}// onCreate
+
+	private void InvokeAbsolutePath(String absolute_path) {
+		Intent intent = new Intent(TocActivity.this, UnifiedActivity.class);
+		intent.putExtra("root", absolute_path);
+		startActivity(intent);
+	}// InvokeAbsolutePath
 
 	// private void InvokeMapActivity(Building building_) {
 	// OpeningActivity.chosenBuilding = building_;

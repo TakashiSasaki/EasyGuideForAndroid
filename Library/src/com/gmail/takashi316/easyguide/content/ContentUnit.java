@@ -11,7 +11,7 @@ public class ContentUnit {
 	private DirectoryName _directoryName;
 	private ArrayList<Integer> contentPath;
 	private ContentUnit _parent;
-	private ArrayList<ContentUnit> children;
+	private ArrayList<ContentUnit> children = new ArrayList<ContentUnit>();;
 	private File _directory;
 	private int siblingIndex;
 
@@ -35,9 +35,14 @@ public class ContentUnit {
 
 		MyLogger.info("directory = " + directory.getAbsolutePath());
 
+		this.enumerateChildren();
+
+	}// a constructor
+
+	private void enumerateChildren() throws FileNotFoundException {
 		// traversing children
-		this.children = new ArrayList<ContentUnit>();
-		for (File child_directory : directory.listFiles()) {
+		this.children.clear();
+		for (File child_directory : _directory.listFiles()) {
 			if (!child_directory.isDirectory())
 				continue;
 			try {
@@ -49,8 +54,7 @@ public class ContentUnit {
 				break;
 			}// try
 		}// for
-
-	}// a constructor
+	}
 
 	public ArrayList<Integer> getContentPath() {
 		return this.contentPath;
@@ -134,6 +138,11 @@ public class ContentUnit {
 
 	public boolean hasImageFile() {
 		return this._classifier.getImageFiles().size() > 0;
+	}
+
+	public boolean hasContent() {
+		return this.hasHtml() || this.hasImageFile() || this.hasMovie()
+				|| this.hasText();
 	}
 
 	public File getImageFile() {

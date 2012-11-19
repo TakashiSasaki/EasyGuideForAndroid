@@ -6,7 +6,6 @@
     android:layout_gravity="center_vertical"
     android:layout_margin="1dp"
     android:layout_weight="1"
-    android:background="@android:color/white"
     android:padding="1dp"
     android:visibility="visible" >
 
@@ -14,12 +13,14 @@
         android:id="@+id/imageViewClickable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:scaleType="fitCenter"
         android:src="@drawable/h512w512" />
 
-    <SurfaceView
+    <!-- <SurfaceView
         android:id="@+id/surfaceViewClickable"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" /> -->
 
 </FrameLayout>

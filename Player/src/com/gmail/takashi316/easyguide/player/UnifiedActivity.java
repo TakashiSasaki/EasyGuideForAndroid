@@ -17,9 +17,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 import com.gmail.takashi316.easyguide.content.Root;
@@ -40,9 +42,13 @@ public class UnifiedActivity extends FragmentActivity {
 	private BreadcrumbFragment breadcrumbFragment;
 	private ButtonsFragment buttonsFragment;
 	private HtmlFragment htmlFragment;
+	private LinearLayout htmlLinearLayout;
 	private TextFragment textFragment;
+	private LinearLayout textLinearLayout;
 	private VideoFragment videoFragment;
+	private LinearLayout videoLinearLayout;
 	private ImageFragment imageFragment;
+	private LinearLayout imageLinearLayout;
 
 	private ContentUnit rootContentUnit;
 
@@ -61,12 +67,16 @@ public class UnifiedActivity extends FragmentActivity {
 				.findFragmentById(R.id.buttonsFragment);
 		this.htmlFragment = (HtmlFragment) fragmentManager
 				.findFragmentById(R.id.htmlFragment);
+		this.htmlLinearLayout = (LinearLayout) findViewById(R.id.htmlLinearLayout);
 		this.textFragment = (TextFragment) fragmentManager
 				.findFragmentById(R.id.textFragment);
+		this.textLinearLayout = (LinearLayout) findViewById(R.id.textLinearLayout);
 		this.videoFragment = (VideoFragment) fragmentManager
 				.findFragmentById(R.id.videoFragment);
+		this.videoLinearLayout = (LinearLayout) findViewById(R.id.videoLinearLayout);
 		this.imageFragment = (ImageFragment) fragmentManager
 				.findFragmentById(R.id.imageFragment);
+		this.imageLinearLayout = (LinearLayout) findViewById(R.id.imageLinearLayout);
 
 		// getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
@@ -167,10 +177,30 @@ public class UnifiedActivity extends FragmentActivity {
 	}// onResume
 
 	private void updateFragments() {
+		if (this.contentUnit.hasHtml()) {
 			htmlFragment.update(this.contentUnit);
-		textFragment.update(this.contentUnit);
-		videoFragment.update(this.contentUnit);
-		imageFragment.update(this.contentUnit);
+			htmlLinearLayout.setVisibility(View.VISIBLE);
+		} else {
+			htmlLinearLayout.setVisibility(View.GONE);
+		}
+		if (this.contentUnit.hasText()) {
+			textFragment.update(this.contentUnit);
+			textLinearLayout.setVisibility(View.VISIBLE);
+		} else {
+			textLinearLayout.setVisibility(View.GONE);
+		}
+		if (this.contentUnit.hasMovie()) {
+			videoFragment.update(this.contentUnit);
+			videoLinearLayout.setVisibility(View.VISIBLE);
+		} else {
+			videoLinearLayout.setVisibility(View.GONE);
+		}
+		if (this.contentUnit.hasImageFile()) {
+			imageFragment.update(this.contentUnit);
+			imageLinearLayout.setVisibility(View.VISIBLE);
+		} else {
+			imageLinearLayout.setVisibility(View.GONE);
+		}
 		buttonsFragment.update(this.contentUnit);
 		breadcrumbFragment.update(this.contentUnit);
 	}

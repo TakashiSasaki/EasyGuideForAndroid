@@ -15,7 +15,6 @@
             android:id="@+id/textViewContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            scroll=""
             android:text="説明文のテキスト"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </ScrollView>

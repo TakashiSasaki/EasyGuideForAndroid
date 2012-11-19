@@ -26,6 +26,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class ImageFragment extends Fragment {
 	private FrameLayout frameLayoutImage;
@@ -114,7 +115,9 @@ public class ImageFragment extends Fragment {
 			BitmapLoader bitmap_loader = new BitmapLoader(context);
 			bitmap_loader.loadBitmapFromFile(content_unit.getImageFile());
 			// this.directoryImage.setContentUnit(this.contentUnit);
-			this.imageViewClickable.setImageBitmap(bitmap_loader.getBitmap());
+			Bitmap b = bitmap_loader.getBitmap();
+			//this.imageViewClickable.setScaleType(ScaleType.FIT_CENTER);
+			this.imageViewClickable.setImageBitmap(b);
 			// LayoutParams image_view_layout_params = this.imageViewClickable
 			// .getLayoutParams();
 			// this.surfaceView.setLayoutParams(image_view_layout_params);

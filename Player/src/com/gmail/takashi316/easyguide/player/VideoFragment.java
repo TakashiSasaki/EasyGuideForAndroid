@@ -70,7 +70,7 @@ public class VideoFragment extends Fragment {
 			if (!this.videoView.isPlaying()) {
 				this.videoView.setVideoPath(content_unit.getMovieFile()
 						.getAbsolutePath());
-				this.videoView.setMediaController(new MediaController(context));
+				this.videoView.setMediaController(new MediaController(getActivity()));
 				this.videoView.start();
 			}
 			this.layoutVideo.setVisibility(View.VISIBLE);

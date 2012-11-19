@@ -37,8 +37,10 @@ public class Root extends ContentUnit {
 	}
 
 	private Root() throws FileNotFoundException {
-		super(_getEasyGuideRoot(), null, 1);
-		_checkDomainName();
+		//super(_getEasyGuideRoot(), null, 1);
+		super(_getEasyGuideRoot(), null);
+		this.enumerateChildren();
+		this._checkDomainName();
 	}// an constructor
 
 	private void _checkDomainName() {

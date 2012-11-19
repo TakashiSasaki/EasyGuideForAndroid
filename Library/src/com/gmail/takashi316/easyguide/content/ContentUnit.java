@@ -11,9 +11,9 @@ import com.gmail.takashi316.easyguide.exception.InvalidDirectoryNameException;
 public class ContentUnit {
 	private Classifier _classifier;
 	private DirectoryName _directoryName;
-	private ArrayList<Integer> contentPath;
+	private ArrayList<Integer> contentPath = new ArrayList<Integer>();
 	private ContentUnit _parent;
-	private ArrayList<ContentUnit> children = new ArrayList<ContentUnit>();;
+	private ArrayList<ContentUnit> children = new ArrayList<ContentUnit>();
 	private File _directory;
 	private int siblingIndex;
 
@@ -31,30 +31,70 @@ public class ContentUnit {
 		if (parent != null) {
 			this.contentPath = (ArrayList<Integer>) parent.contentPath.clone();
 			this.contentPath.add(this.siblingIndex);
-		} else {
-			this.contentPath = new ArrayList<Integer>();
-		}// if
+		} // else {
+			// this.contentPath = new ArrayList<Integer>();
+			// }// if
 
 		MyLogger.info("directory = " + directory.getAbsolutePath());
 
-		this.enumerateChildren();
-
-	}// a constructor
-
-	private void enumerateChildren() throws FileNotFoundException {
-		// traversing children
-		this.children.clear();
 		for (File child_directory : _directory.listFiles()) {
 			if (!child_directory.isDirectory())
 				continue;
 			try {
 				ContentUnit child_content_unit = new ContentUnit(
 						child_directory, this, children.size() + 1);
+			} catch (InvalidDirectoryNameException e) {
+				MyLogger.info(e.toString());
+				break;
+			}// try
+		}// for
+
+	}// recursive and non-sorting constructor
+
+	public ContentUnit(File directory, ContentUnit parent)
+			throws FileNotFoundException {
+		this._directory = directory;
+		this._directoryName = new DirectoryName(directory.getName());
+		this._classifier = new Classifier(directory);
+		this._parent = parent;
+	}// non-recursive constructor
+
+	public void enumerateChildren() throws FileNotFoundException {
+		// traversing children
+		this.children.clear();
+
+		for (File child_directory : _directory.listFiles()) {
+			if (!child_directory.isDirectory())
+				continue;
+			try {
+				// ContentUnit child_content_unit = new ContentUnit(
+				// child_directory, this, children.size() + 1);
+				ContentUnit child_content_unit = new ContentUnit(
+						child_directory, this);
 				this.children.add(child_content_unit);
 			} catch (InvalidDirectoryNameException e) {
 				MyLogger.info(e.toString());
 				break;
 			}// try
+		}// for
+
+		Collections.sort(this.children, new Comparator<ContentUnit>() {
+
+			@Override
+			public int compare(ContentUnit o1, ContentUnit o2) {
+				return o1.getNumber() - o2.getNumber();
+			}
+		});
+
+		for (int i = 0; i < this.children.size(); ++i) {
+			ContentUnit child = this.children.get(i);
+			child.siblingIndex = i + 1;
+			child.contentPath = (ArrayList<Integer>) this.contentPath.clone();
+			child.contentPath.add(child.siblingIndex);
+		}// for
+
+		for (ContentUnit child : this.children) {
+			child.enumerateChildren();
 		}// for
 	}
 

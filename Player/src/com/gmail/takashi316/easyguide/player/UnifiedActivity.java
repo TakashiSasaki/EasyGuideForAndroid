@@ -150,8 +150,8 @@ public class UnifiedActivity extends FragmentActivity {
 			final File root_directory = new File(root);
 			if (root_directory != null) {
 				try {
-					this.rootContentUnit = new ContentUnit(root_directory,
-							null, 1);
+					this.rootContentUnit = new ContentUnit(root_directory, null);
+					this.rootContentUnit.enumerateChildren();
 					this.contentUnit = this.rootContentUnit;
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -223,7 +223,7 @@ public class UnifiedActivity extends FragmentActivity {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		//return this.mGestureDetector.onTouchEvent(event);
+		// return this.mGestureDetector.onTouchEvent(event);
 		return true;
 	}// onTouchEvent
 

@@ -9,18 +9,11 @@ import com.gmail.takashi316.easyguide.exception.InvalidDirectoryNameException;
 public class ContentUnit {
 	private Classifier _classifier;
 	private DirectoryName _directoryName;
-	public ArrayList<Integer> contentPath; // 0=organization 1=facility
-											// 2=building 3=floor
-											// 4=room 5=equipment 6=panel
-	// private int _level;
+	private ArrayList<Integer> contentPath;
 	private ContentUnit _parent;
 	private ArrayList<ContentUnit> children;
 	private File _directory;
 	private int siblingIndex;
-
-	// public int siblingIndex() {
-	// return this.identifier[this._level];
-	// }
 
 	@SuppressWarnings({ "boxing", "unchecked" })
 	public ContentUnit(File directory, ContentUnit parent, int sibling_index)
@@ -35,9 +28,9 @@ public class ContentUnit {
 		// detecting level consistency
 		if (parent != null) {
 			this.contentPath = (ArrayList<Integer>) parent.contentPath.clone();
+			this.contentPath.add(this.siblingIndex);
 		} else {
 			this.contentPath = new ArrayList<Integer>();
-			this.contentPath.add(this.siblingIndex);
 		}// if
 
 		MyLogger.info("directory = " + directory.getAbsolutePath());
@@ -117,6 +110,14 @@ public class ContentUnit {
 	public ContentUnit getChild(int index) {
 		assert (index > 0);
 		return this.children.get(index - 1);
+	}
+
+	public ContentUnit getDescendant(ArrayList<Integer> content_path) {
+		ContentUnit descendant = this;
+		for (int sibling_index : content_path) {
+			descendant = descendant.getChild(sibling_index);
+		}
+		return descendant;
 	}
 
 	public boolean hasMovie() {

@@ -47,9 +47,18 @@ public class VideoFragment extends Fragment {
 
 	public void update(ContentUnit content_unit) {
 		if (this.contentUnit != null) {
-			if (this.contentUnit.getParent().equals(content_unit.getParent())) {
+			if (this.contentUnit.getParent() == null
+					&& content_unit.getParent() != null) {
 				this.stopPlayback();
-				// this.hide();
+			} else if (this.contentUnit.getAncestors() != null
+					&& content_unit.getParent() == null) {
+				this.stopPlayback();
+			} else if (this.contentUnit.getParent() == null
+					&& content_unit.getParent() == null) {
+				// do nothing
+			} else if (this.contentUnit.getParent().equals(
+					content_unit.getParent())) {
+				this.stopPlayback();
 			}
 		}
 		this.contentUnit = content_unit;

@@ -2,6 +2,7 @@ package com.gmail.takashi316.easyguide.player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -42,6 +43,8 @@ public class UnifiedActivity extends FragmentActivity {
 	private TextFragment textFragment;
 	private VideoFragment videoFragment;
 	private ImageFragment imageFragment;
+
+	private ContentUnit rootContentUnit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,54 +118,62 @@ public class UnifiedActivity extends FragmentActivity {
 	}// onOptionsItemSelected
 
 	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		if (intent != null) {
+			ArrayList<Integer> content_path = intent
+					.getIntegerArrayListExtra("contentPath");
+			if (content_path != null) {
+				this.contentUnit = this.rootContentUnit
+						.getDescendant(content_path);
+			}// if
+		}// if
+			// this.updateFragments();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Intent intent = getIntent();
+		final String root = intent.getExtras().getString("root");
+		if (root != null) {
+			final File root_directory = new File(root);
+			if (root_directory != null) {
+				try {
+					this.rootContentUnit = new ContentUnit(root_directory,
+							null, 1);
+					this.contentUnit = this.rootContentUnit;
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}// if
+		} else {
+			try {
+				this.rootContentUnit = Root.getTheRoot();
+				this.contentUnit = this.rootContentUnit;
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}// if
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
+		this.updateFragments();
 
-		try {
-			this.contentUnit = Root.getTheRoot();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Intent intent = getIntent();
-		if (intent != null) {
-			final String root = intent.getExtras().getString("root");
-			if (root != null) {
-				final File root_directory = new File(root);
-				if (root_directory != null) {
-					try {
-						this.contentUnit = new ContentUnit(root_directory,
-								null, 0);
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		}
+	}// onResume
 
+	private void updateFragments() {
 		htmlFragment.update(this.contentUnit);
 		textFragment.update(this.contentUnit);
 		videoFragment.update(this.contentUnit);
 		imageFragment.update(this.contentUnit);
-
 		buttonsFragment.update(this.contentUnit);
-		// if (this.contentUnit.getChildren().size() == 0) {
-		// // this.layoutButtons.setVisibility(View.GONE);
-		// } else if (this.contentUnit.getChildren().size() > 0) {
-		// buttonsFragment.showButtons(contentUnit);
-		// buttonsFragment.show();
-		// }// if content unit has children
-
 		breadcrumbFragment.update(this.contentUnit);
-		// if (this.contentUnit.getAncestors().size() == 0) {
-		// this.breadcrumbFragment.hide();
-		// } else if (this.contentUnit.getAncestors().size() > 0) {
-		// this.breadcrumbFragment.showParents(
-		// this.contentUnit.getAncestors(), this.contentUnit);
-		// this.breadcrumbFragment.show();
-		// }// if content unit has parents
-	}// onResume
+	}
 
 	// public void setContentUnit(ContentUnit cu) {
 	// this.contentUnit = cu;

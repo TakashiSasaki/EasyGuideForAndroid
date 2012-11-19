@@ -67,7 +67,8 @@ public class ButtonsFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(context, activityClass);
-					intent.putExtra("contentPath", cu.getContentPath());
+					intent.putIntegerArrayListExtra("contentPath",
+							cu.getContentPath());
 					startActivity(intent);
 					// unified_activity.setContentUnit(cu);
 					// ua.onResume();

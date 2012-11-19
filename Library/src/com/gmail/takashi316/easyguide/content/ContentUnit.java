@@ -36,6 +36,7 @@ public class ContentUnit {
 		if (parent != null) {
 			this.contentPath = (ArrayList<Integer>) parent.contentPath.clone();
 		} else {
+			this.contentPath = new ArrayList<Integer>();
 			this.contentPath.add(this.siblingIndex);
 		}// if
 
@@ -61,7 +62,7 @@ public class ContentUnit {
 	public ArrayList<Integer> getContentPath() {
 		return this.contentPath;
 	}
-	
+
 	public String getName() {
 		return this._directoryName.name;
 	}

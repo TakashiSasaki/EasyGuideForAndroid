@@ -71,8 +71,8 @@ public class TocActivity extends Activity {
 				);
 
 		try {
-			TocAdapter toc_adapter = new TocAdapter(this, Root.getTheRoot()
-					.getChildren());
+			ArrayList<ContentUnit> children = Root.getTheRoot().getChildren();
+			TocAdapter toc_adapter = new TocAdapter(this, children);
 			building_list_view.setAdapter(toc_adapter);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

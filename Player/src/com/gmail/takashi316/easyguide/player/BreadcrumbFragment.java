@@ -34,13 +34,19 @@ public class BreadcrumbFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		inflater.inflate(R.layout.breadcrumb_fragment, container);
-		this.horizontalScrollViewBreadcrumb = (HorizontalScrollView) getView()
+		View v = inflater.inflate(R.layout.breadcrumb_fragment, container);
+		
+		// this.horizontalScrollViewBreadcrumb = (HorizontalScrollView)
+		// getView()
+		// .findViewById(R.id.scrollViewBreadcrumb);
+		this.horizontalScrollViewBreadcrumb = (HorizontalScrollView) v
 				.findViewById(R.id.scrollViewBreadcrumb);
-		this.layoutBreadcrumb = (LinearLayout) getView().findViewById(
+		//this.layoutBreadcrumb = (LinearLayout) getView().findViewById(
+		//		R.id.layoutBreadcrumb);
+		this.layoutBreadcrumb = (LinearLayout) v.findViewById(
 				R.id.layoutBreadcrumb);
 
-		return super.onCreateView(inflater, container, savedInstanceState);
+		return v;
 	}
 
 	public void hide() {

@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/breadcrumbFragment"
-        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.BreadcrumbFragment"
+        android:name="com.gmail.takashi316.easyguide.player.BreadcrumbFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/videoFragment"
-        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.VideoFragment"
+        android:name="com.gmail.takashi316.easyguide.player.VideoFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
@@ -50,7 +50,7 @@
 
     <fragment
         android:id="@+id/imageFragment"
-        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.ImageFragment"
+        android:name="com.gmail.takashi316.easyguide.player.ImageFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_vertical"
@@ -63,7 +63,7 @@
 
     <fragment
         android:id="@+id/textFragment"
-        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.TextFragment"
+        android:name="com.gmail.takashi316.easyguide.player.TextFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -72,7 +72,7 @@
 
     <fragment
         android:id="@+id/htmlFragment"
-        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.HtmlFragment"
+        android:name="com.gmail.takashi316.easyguide.player.HtmlFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
@@ -83,7 +83,7 @@
 
     <fragment
         android:id="@+id/buttonsFragment"
-        android:name="jp.ac.ehime_u.cite.sasaki.easyguide.player.ButtonsFragment"
+        android:name="com.gmail.takashi316.easyguide.player.ButtonsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

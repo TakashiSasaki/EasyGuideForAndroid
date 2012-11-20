@@ -3,7 +3,6 @@ package com.gmail.takashi316.easyguide.player;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 
 import android.app.Activity;
@@ -19,8 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-//import android.widget.HorizontalScrollView;
-//import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class WifiFragment extends Fragment {
@@ -34,7 +31,9 @@ public class WifiFragment extends Fragment {
 	// File directory;
 	WifiAps wifiAps = new WifiAps();
 	WifiAps savedWifiAps = new WifiAps();
-	HashMap<ArrayList<Integer>, WifiAps> wifiMap = new HashMap<ArrayList<Integer>, WifiAps>();
+	// HashMap<ArrayList<Integer>, WifiAps> wifiMap = new
+	// HashMap<ArrayList<Integer>, WifiAps>();
+	WifiMap wifiMap = new WifiMap();
 	ContentUnit contentUnit;
 	WifiThread wifiThread;
 

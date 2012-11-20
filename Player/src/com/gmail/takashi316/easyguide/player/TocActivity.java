@@ -10,6 +10,7 @@ import com.gmail.takashi316.easyguide.content.Root;
 import com.gmail.takashi316.easyguide.ui.TocAdapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -29,12 +30,22 @@ public class TocActivity extends Activity {
 	// private ArrayList<Building> buildingList;
 	// private static Building chosenBuilding;
 
+	Root root;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.toc);
+
+		try {
+			root = new Root();
+		} catch (FileNotFoundException e) {
+			new AlertDialog.Builder(this).setTitle(
+					"SDカード、本体メモリ、外部メモリにEASYGUIDEというフォルダが見つかりません。").show();
+			finish();
+		}// try
 
 		// android.R.layout.simple_list_item_1);
 		// this.buildingList = new ArrayList<Building>();
@@ -72,7 +83,7 @@ public class TocActivity extends Activity {
 				);
 
 		try {
-			ArrayList<ContentUnit> children = Root.getTheRoot().getChildren();
+			ArrayList<ContentUnit> children = root.getChildren();
 			TocAdapter toc_adapter = new TocAdapter(this, children);
 			building_list_view.setAdapter(toc_adapter);
 		} catch (FileNotFoundException e) {
@@ -82,7 +93,7 @@ public class TocActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		InvokeAbsolutePath("/mnt/sdcard/EASYGUIDE/www.yonden.co.jp/01 四国電力/");
+		// InvokeAbsolutePath("/mnt/sdcard/EASYGUIDE/www.yonden.co.jp/01 四国電力/");
 	}// onCreate
 
 	private void InvokeAbsolutePath(String absolute_path) {

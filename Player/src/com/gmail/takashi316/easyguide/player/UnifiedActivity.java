@@ -124,7 +124,7 @@ public class UnifiedActivity extends FragmentActivity {
 			AlertDialog.Builder alert_dialog = new AlertDialog.Builder(this);
 			alert_dialog.setPositiveButton("OK", null);
 			return true;
-		}
+		}// swtich
 		return super.onOptionsItemSelected(item);
 	}// onOptionsItemSelected
 
@@ -152,21 +152,21 @@ public class UnifiedActivity extends FragmentActivity {
 			if (root_directory != null) {
 				try {
 					this.rootContentUnit = new ContentUnit(root_directory, null);
-					this.rootContentUnit.enumerateChildren();
+					this.rootContentUnit.enumerateChildren(true);
 					this.contentUnit = this.rootContentUnit;
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}// try
 			}// if
 		} else {
 			try {
-				this.rootContentUnit = Root.getTheRoot();
+				this.rootContentUnit = new Root();
 				this.contentUnit = this.rootContentUnit;
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}// try
 		}// if
 
 		try {
@@ -174,7 +174,7 @@ public class UnifiedActivity extends FragmentActivity {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}// try
 	}// onStart
 
 	@Override
@@ -190,35 +190,35 @@ public class UnifiedActivity extends FragmentActivity {
 			htmlLinearLayout.setVisibility(View.VISIBLE);
 		} else {
 			htmlLinearLayout.setVisibility(View.GONE);
-		}
+		}// if
 		textFragment.update(this.contentUnit);
 		if (this.contentUnit.hasText()) {
 			textLinearLayout.setVisibility(View.VISIBLE);
 		} else {
 			textLinearLayout.setVisibility(View.GONE);
-		}
+		}// if
 		videoFragment.update(this.contentUnit);
 		if (this.contentUnit.hasMovie()) {
 			videoLinearLayout.setVisibility(View.VISIBLE);
 		} else {
 			videoLinearLayout.setVisibility(View.GONE);
-		}
+		}// if
 		imageFragment.update(this.contentUnit);
 		if (this.contentUnit.hasImageFile()) {
 			imageLinearLayout.setVisibility(View.VISIBLE);
 		} else {
 			imageLinearLayout.setVisibility(View.GONE);
-		}
+		}// if
 		buttonsFragment.update(this.contentUnit);
 		breadcrumbFragment.update(this.contentUnit);
 		wifiFragment.update(this.contentUnit);
-	}
+	}// updateFragments
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		// drawSurface();
-	}
+	}// onWindowFocusChanged
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

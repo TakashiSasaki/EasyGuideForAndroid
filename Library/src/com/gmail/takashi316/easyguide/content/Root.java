@@ -14,7 +14,7 @@ import android.os.Environment;
  */
 public class Root extends ContentUnit {
 	private static final String _EASYGUIDE = "EASYGUIDE";
-	private static Root singleton;
+	//private static Root singleton;
 
 	private static File _getEasyGuideRoot() {
 		File external_storage_directory = Environment
@@ -22,37 +22,30 @@ public class Root extends ContentUnit {
 		File easy_guide_root = new File(external_storage_directory, _EASYGUIDE);
 		if (!easy_guide_root.isDirectory()) {
 			easy_guide_root.mkdir();
-		}
+		}//if
 		if (!easy_guide_root.canWrite()) {
 			easy_guide_root.setWritable(true);
-		}
+		}//if
 		return easy_guide_root;
 	}// _getEasyGuideRoot
 
-	public static Root getTheRoot() throws FileNotFoundException {
-		if (singleton != null)
-			return singleton;
-		singleton = new Root();
-		return singleton;
-	}
+//	public static Root getTheRoot() throws FileNotFoundException {
+//		if (singleton != null)
+//			return singleton;
+//		singleton = new Root();
+//		return singleton;
+//	}// getTheRoot()
 
-	private Root() throws FileNotFoundException {
-		//super(_getEasyGuideRoot(), null, 1);
+	public Root() throws FileNotFoundException {
+		// super(_getEasyGuideRoot(), null, 1);
 		super(_getEasyGuideRoot(), null);
-		this.enumerateChildren();
-		this._checkDomainName();
+		this.enumerateChildren(false);
 	}// an constructor
 
-	private void _checkDomainName() {
+	public static boolean isDomainName(String s) {
 		final Pattern DOMAIN_PATTERN = Pattern
 				.compile("^[a-zA-Z0-9_\\-][a-zA-Z0-9_\\-.]+[a-zA-Z0-9_\\-]$");
-		// "^.{1,254}$)(^(?:(?!\\d+\\.)[a-zA-Z0-9_\\-]{1,63}\\.?)+(?:[a-zA-Z]{2,})$"
-		for (ContentUnit child : this.getChildren()) {
-			Matcher m = DOMAIN_PATTERN.matcher(child.getName());
-			if (!m.find()) {
-				throw new RuntimeException("invalid domain name "
-						+ child.getName());
-			}// if
-		}// for
-	}// _checkDomainName
+		Matcher m = DOMAIN_PATTERN.matcher(s);
+		return m.find();
+	}// isDomainName
 }// Root

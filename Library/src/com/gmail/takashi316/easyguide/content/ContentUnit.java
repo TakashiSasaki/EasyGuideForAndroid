@@ -59,7 +59,8 @@ public class ContentUnit {
 		this._parent = parent;
 	}// non-recursive constructor
 
-	public void enumerateChildren() throws FileNotFoundException {
+	public void enumerateChildren(boolean recursive)
+			throws FileNotFoundException {
 		// traversing children
 		this.children.clear();
 
@@ -93,10 +94,12 @@ public class ContentUnit {
 			child.contentPath.add(child.siblingIndex);
 		}// for
 
-		for (ContentUnit child : this.children) {
-			child.enumerateChildren();
-		}// for
-	}
+		if (recursive) {
+			for (ContentUnit child : this.children) {
+				child.enumerateChildren(recursive);
+			}// for
+		}// if
+	}// enumerateChildren
 
 	public ArrayList<Integer> getContentPath() {
 		return this.contentPath;

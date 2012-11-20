@@ -4,14 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,7 +26,6 @@ public class WifiFragment extends Fragment {
 	private LinearLayout linearLayoutWifi;
 	private Context context;
 	private Class<? extends Activity> activityClass;
-	WifiManager wifiManager;
 	Button buttonLocateAp, buttonDeleteAp, buttonDetectAp, buttonSaveAp;
 	TextView textViewWifiAps, textViewSavedWifiAps, textViewDistance;
 	// File directory;
@@ -37,22 +33,80 @@ public class WifiFragment extends Fragment {
 	WifiAps savedWifiAps = new WifiAps();
 	HashMap<ArrayList<Integer>, WifiAps> wifiMap = new HashMap<ArrayList<Integer>, WifiAps>();
 	ContentUnit contentUnit;
+	Thread wifiThread;
+
+	class WifiThread extends Thread {
+		final int intervalMilliseconds = 5000;
+		WifiManager wifiManager;
+		boolean working = false;
+
+		public WifiThread() {
+			this.wifiManager = (WifiManager) context
+					.getSystemService(Context.WIFI_SERVICE);
+			this.wifiManager.startScan();
+		}// a constructor
+
+		public void stopScan() {
+			this.working = false;
+		}// stopScan
+
+		@Override
+		public void run() {
+			super.run();
+			working = true;
+			while (true) {
+				wifiManager.startScan();
+				try {
+					Thread.sleep(intervalMilliseconds);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}// try
+				if (!working)
+					return;
+				wifiAps.setScanResults(wifiManager.getScanResults());
+				textViewWifiAps.setText(wifiAps.toString());
+				double distance = savedWifiAps.getDistance(wifiAps);
+				int count = savedWifiAps.countMatchedAps(wifiAps);
+				textViewDistance.setText("distance = " + distance
+						+ "\ncount = " + count);
+			}// while
+		}// run
+	}// WifiThread
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.context = activity.getApplicationContext();
 		this.activityClass = activity.getClass();
-	}
+
+	}// onAttach
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		wifiThread = new WifiThread();
+		wifiThread.run();
+	}// onStart
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		wifiThread.stop();
+		try {
+			wifiThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}// try
+	}// onStop
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.wifi_fragment, container);
 
-		this.wifiManager = (WifiManager) context
-				.getSystemService(Context.WIFI_SERVICE);
-		this.wifiManager.startScan();
+		// this.wifiManager = (WifiManager) context
+		// .getSystemService(Context.WIFI_SERVICE);
+		// this.wifiManager.startScan();
 
 		this.textViewWifiAps = (TextView) v.findViewById(R.id.textViewWifiAps);
 		this.textViewSavedWifiAps = (TextView) v
@@ -83,14 +137,7 @@ public class WifiFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				wifiManager.startScan();
-				List<ScanResult> sr_list = wifiManager.getScanResults();
-				wifiAps.setScanResults(sr_list);
-				textViewWifiAps.setText(wifiAps.toString());
-				double distance = savedWifiAps.getDistance(wifiAps);
-				int count = savedWifiAps.countMatchedAps(wifiAps);
-				textViewDistance.setText("distance = " + distance
-						+ "\ncount = " + count);
+				// do nothing
 			}// onClick
 		});
 
@@ -115,9 +162,9 @@ public class WifiFragment extends Fragment {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}// try
 
-			}
+			}// onClick
 		});
 
 		return v;
@@ -139,11 +186,11 @@ public class WifiFragment extends Fragment {
 
 	public void hide() {
 		this.horizontalScrollViewWifi.setVisibility(View.GONE);
-	}
+	}// hide
 
 	public void show() {
 		this.horizontalScrollViewWifi.setVisibility(View.VISIBLE);
-	}
+	}// show
 
 	public void loadWifiMap(ContentUnit content_unit) throws IOException {
 		wifiMap.clear();

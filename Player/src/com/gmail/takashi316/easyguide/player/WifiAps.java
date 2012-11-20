@@ -13,8 +13,17 @@ import java.util.regex.Pattern;
 import android.net.wifi.ScanResult;
 import android.util.FloatMath;
 
-public class WifiAps {
+public class WifiAps implements Cloneable {
 	HashMap<String, Float> bssidToLevel = new HashMap<String, Float>();
+
+	@Override
+	protected WifiAps clone() throws CloneNotSupportedException {
+		WifiAps cloned = null;
+		cloned = (WifiAps) super.clone();
+		cloned.bssidToLevel = (HashMap<String, Float>) this.bssidToLevel
+				.clone();
+		return cloned;
+	}// clone
 
 	public float getDistance(WifiAps their_wifi_aps) {
 		float distance_squared = 0.0f;

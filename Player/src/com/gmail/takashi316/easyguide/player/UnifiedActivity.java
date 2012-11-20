@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -141,7 +140,7 @@ public class UnifiedActivity extends FragmentActivity {
 			}// if
 		}// if
 			// this.updateFragments();
-	}
+	}// onNewIntent
 
 	@Override
 	protected void onStart() {
@@ -171,12 +170,12 @@ public class UnifiedActivity extends FragmentActivity {
 		}// if
 
 		try {
-			wifiFragment.scanSavedWifiAps(rootContentUnit);
+			wifiFragment.loadWifiMap(rootContentUnit);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}// onStart
 
 	@Override
 	protected void onResume() {
@@ -212,18 +211,8 @@ public class UnifiedActivity extends FragmentActivity {
 		}
 		buttonsFragment.update(this.contentUnit);
 		breadcrumbFragment.update(this.contentUnit);
-		wifiFragment.update(this.contentUnit.getDirectory());
+		wifiFragment.update(this.contentUnit);
 	}
-
-	// public void setContentUnit(ContentUnit cu) {
-	// this.contentUnit = cu;
-	// this.handler.post(new Runnable() {
-	// @Override
-	// public void run() {
-	// onResume();
-	// }
-	// });
-	// }
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
@@ -242,6 +231,6 @@ public class UnifiedActivity extends FragmentActivity {
 			this.linearLayoutWifi.setVisibility(View.GONE);
 		} else {
 			this.linearLayoutWifi.setVisibility(View.VISIBLE);
-		}
+		}// if
 	}// toggleWifiLayout
 }// class UnifiedActivity

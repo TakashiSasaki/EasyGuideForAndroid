@@ -2,22 +2,30 @@ package com.gmail.takashi316.easyguide.player;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.net.wifi.ScanResult;
+import android.util.FloatMath;
 
-public class WifiAps {
+public class WifiAps implements Cloneable {
 	HashMap<String, Float> bssidToLevel = new HashMap<String, Float>();
 
-	public double getDistance(WifiAps their_wifi_aps) {
+	@Override
+	protected WifiAps clone() throws CloneNotSupportedException {
+		WifiAps cloned = null;
+		cloned = (WifiAps) super.clone();
+		cloned.bssidToLevel = (HashMap<String, Float>) this.bssidToLevel
+				.clone();
+		return cloned;
+	}// clone
+
+	public float getDistance(WifiAps their_wifi_aps) {
 		float distance_squared = 0.0f;
 		for (String bssid : bssidToLevel.keySet()) {
 			Float my_level = this.bssidToLevel.get(bssid);
@@ -27,37 +35,28 @@ public class WifiAps {
 			distance_squared += (their_level - my_level)
 					* (their_level - my_level);
 		}
-		return Math.sqrt(distance_squared);
-	}
+		return FloatMath.sqrt(distance_squared);
+	}// getDistance
 
 	public int countMatchedAps(WifiAps their_wifi_aps) {
-		int threashold = -60;
 		int count = 0;
 		for (String bssid : bssidToLevel.keySet()) {
 			Float my_level = this.bssidToLevel.get(bssid);
 			Float their_level = their_wifi_aps.bssidToLevel.get(bssid);
 			if (their_level == null)
 				continue;
-			if (my_level < threashold)
-				continue;
-			if (their_level < threashold)
-				continue;
 			count += 1;
 		}
 		return count;
-	}
+	}// countMatchedAps
 
 	public void setScanResults(List<ScanResult> scan_results) {
 		this.bssidToLevel.clear();
 		if (scan_results == null)
 			return;
 		for (ScanResult scan_result : scan_results) {
-			// String ssid = sr.SSID;
 			String bssid = scan_result.BSSID;
 			int level = scan_result.level;
-			// String s = new Date().toString() + ", " + sr.SSID + ", "
-			// + sr.BSSID + ", " + sr.level + "\n";
-			// sb.append(s);
 			bssidToLevel.put(bssid, Float.valueOf(level));
 		}// for
 	}// setScanResults
@@ -105,4 +104,4 @@ public class WifiAps {
 			bssidToLevel.put(bssid, Float.valueOf(level));
 		}// for
 	} // load
-}
+}// WifiAps

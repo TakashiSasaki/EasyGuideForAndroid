@@ -2,6 +2,7 @@ package com.gmail.takashi316.easyguide.player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
@@ -168,6 +169,13 @@ public class UnifiedActivity extends FragmentActivity {
 				e.printStackTrace();
 			}
 		}// if
+
+		try {
+			wifiFragment.scanSavedWifiAps(rootContentUnit);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

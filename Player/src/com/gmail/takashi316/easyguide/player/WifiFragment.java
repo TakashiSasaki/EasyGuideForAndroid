@@ -32,9 +32,11 @@ public class WifiFragment extends Fragment {
 	WifiManager wifiManager;
 	Button buttonLocateAp, buttonDeleteAp, buttonDetectAp, buttonSaveAp;
 	TextView textViewWifiAps, textViewSavedWifiAps, textViewDistance;
-	File directory;
+	// File directory;
 	WifiAps wifiAps = new WifiAps();
 	WifiAps savedWifiAps = new WifiAps();
+	HashMap<ArrayList<Integer>, WifiAps> wifiMap = new HashMap<ArrayList<Integer>, WifiAps>();
+	ContentUnit contentUnit;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -62,7 +64,7 @@ public class WifiFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				File file = new File(directory, "wifi.log");
+				File file = new File(contentUnit.getDirectory(), "wifi.log");
 				if (file.exists()) {
 					file.delete();
 				}
@@ -105,7 +107,7 @@ public class WifiFragment extends Fragment {
 		this.buttonSaveAp.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				File file = new File(directory, "wifi.log");
+				File file = new File(contentUnit.getDirectory(), "wifi.log");
 				wifiAps.save(file);
 				try {
 					savedWifiAps.load(file);
@@ -121,16 +123,18 @@ public class WifiFragment extends Fragment {
 		return v;
 	}
 
-	void update(File directory) {
-		this.directory = directory;
+	void update(ContentUnit content_unit) {
+		this.contentUnit = content_unit;
+		// this.directory = directory;
 		try {
-			File file = new File(directory, "wifi.log");
+			File file = new File(contentUnit.getDirectory(), "wifi.log");
 			savedWifiAps.load(file);
 			textViewSavedWifiAps.setText(savedWifiAps.toString());
+			wifiMap.put(contentUnit.getContentPath(), savedWifiAps);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}// try
 	}// update
 
 	public void hide() {
@@ -141,26 +145,26 @@ public class WifiFragment extends Fragment {
 		this.horizontalScrollViewWifi.setVisibility(View.VISIBLE);
 	}
 
-	public void update(ContentUnit content_unit) {
-	}
-
-	HashMap<ArrayList<Integer>, WifiAps> m = new HashMap<ArrayList<Integer>, WifiAps>();
-
-	public void scanSavedWifiAps(ContentUnit root) throws IOException {
-		m.clear();
-		for (ContentUnit content_unit : root.getChildren()) {
-			WifiAps wifi_aps = new WifiAps();
-			File file = new File(content_unit.getDirectory(), "wifi.log");
-			wifi_aps.load(file);
-			m.put(content_unit.getContentPath(), wifi_aps);
-		}// for
+	public void loadWifiMap(ContentUnit content_unit) throws IOException {
+		wifiMap.clear();
+		_loadWifiMap(content_unit);
 	}// scanSavedWifiAps
+
+	private void _loadWifiMap(ContentUnit content_unit) throws IOException {
+		WifiAps wifi_aps = new WifiAps();
+		File file = new File(content_unit.getDirectory(), "wifi.log");
+		wifi_aps.load(file);
+		wifiMap.put(content_unit.getContentPath(), wifi_aps);
+		for (ContentUnit cu : content_unit.getChildren()) {
+			_loadWifiMap(cu);
+		}// for
+	}// _loadWifiMap
 
 	public void detect() {
 		int candidate_count = 0;
 		ArrayList<Integer> candidate_content_path = null;
-		for (ArrayList<Integer> content_path : m.keySet()) {
-			WifiAps wifi_aps = m.get(content_path);
+		for (ArrayList<Integer> content_path : wifiMap.keySet()) {
+			WifiAps wifi_aps = wifiMap.get(content_path);
 			int count = wifi_aps.countMatchedAps(this.wifiAps);
 			if (count > candidate_count) {
 				candidate_count = count;
@@ -174,4 +178,4 @@ public class WifiFragment extends Fragment {
 			startActivity(intent);
 		}// if
 	}// detect
-}
+}// WifiFragment

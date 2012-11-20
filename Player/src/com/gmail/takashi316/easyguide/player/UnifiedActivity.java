@@ -171,7 +171,7 @@ public class UnifiedActivity extends FragmentActivity {
 		}// if
 
 		try {
-			wifiFragment.scanSavedWifiAps(rootContentUnit);
+			wifiFragment.loadWifiMap(rootContentUnit);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -212,7 +212,7 @@ public class UnifiedActivity extends FragmentActivity {
 		}
 		buttonsFragment.update(this.contentUnit);
 		breadcrumbFragment.update(this.contentUnit);
-		wifiFragment.update(this.contentUnit.getDirectory());
+		wifiFragment.update(this.contentUnit);
 	}
 
 	// public void setContentUnit(ContentUnit cu) {

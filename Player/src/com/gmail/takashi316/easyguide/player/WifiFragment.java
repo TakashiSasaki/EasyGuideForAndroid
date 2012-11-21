@@ -23,18 +23,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class WifiFragment extends Fragment {
-	// private HorizontalScrollView horizontalScrollViewWifi;
-	// private LinearLayout linearLayoutWifi;
 	private Context context;
 	private Class<? extends Activity> activityClass;
 	Button buttonLoadAllAps, buttonSaveApFile, buttonDeleteApFile,
 			buttonDetectAp, buttonRegisterApTemporaliry, buttonLocateAp;
 	TextView textViewWifiAps, textViewSavedWifiAps, textViewDistance;
-	// File directory;
 	WifiAps wifiAps = new WifiAps();
-	WifiAps savedWifiAps = new WifiAps();
-	// HashMap<ArrayList<Integer>, WifiAps> wifiMap = new
-	// HashMap<ArrayList<Integer>, WifiAps>();
+	// WifiAps savedWifiAps = new WifiAps();
 	WifiMap wifiMap = new WifiMap();
 	ContentUnit contentUnit;
 	WifiThread wifiThread;
@@ -80,11 +75,19 @@ public class WifiFragment extends Fragment {
 				@Override
 				public void run() {
 					textViewWifiAps.setText(wifiAps.toString());
-					double distance = savedWifiAps.getDistance(wifiAps);
-					int count = savedWifiAps.countMatchedAps(wifiAps);
+					WifiAps registered_wifi_aps = wifiMap.get(contentUnit
+							.getContentPath());
+					if (registered_wifi_aps == null) {
+						textViewSavedWifiAps.setText("no AP is registered");
+						textViewDistance.setText("");
+						return;
+					}// return
+					textViewSavedWifiAps.setText(registered_wifi_aps.toString());
+					double distance = registered_wifi_aps.getDistance(wifiAps);
+					int count = registered_wifi_aps.countMatchedAps(wifiAps);
 					textViewDistance.setText("distance = " + distance
 							+ "\ncount = " + count);
-				}
+				}// run
 			});
 		}// detectAp
 	}// WifiThread
@@ -148,13 +151,7 @@ public class WifiFragment extends Fragment {
 						});
 				builder.setNegativeButton("しない", null);
 				builder.show();
-				try {
-					savedWifiAps.load(file);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}// try
-				textViewSavedWifiAps.setText(savedWifiAps.toString());
+				textViewSavedWifiAps.setText("削除しました");
 			}// onClick
 		});
 
@@ -193,13 +190,7 @@ public class WifiFragment extends Fragment {
 										wifiAps.save(file);
 									}// onClick
 								}).setNegativeButton("しない", null).show();
-				try {
-					savedWifiAps.load(file);
-					textViewSavedWifiAps.setText(savedWifiAps.toString());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}// try
-
+				textViewSavedWifiAps.setText("保存しました");
 			}// onClick
 		});
 
@@ -222,26 +213,8 @@ public class WifiFragment extends Fragment {
 
 	void update(ContentUnit content_unit) {
 		this.contentUnit = content_unit;
-		// this.directory = directory;
-		try {
-			File file = new File(contentUnit.getDirectory(), "wifi.log");
-			savedWifiAps.load(file);
-			textViewSavedWifiAps.setText(savedWifiAps.toString());
-			wifiMap.put(contentUnit.getContentPath(), savedWifiAps);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}// try
 	}// update
 
-	// public void hide() {
-	// this.horizontalScrollViewWifi.setVisibility(View.GONE);
-	// }// hide
-	//
-	// public void show() {
-	// this.horizontalScrollViewWifi.setVisibility(View.VISIBLE);
-	// }// show
-	//
 	public void loadWifiMap(ContentUnit content_unit) throws IOException {
 		wifiMap.clear();
 		_loadWifiMap(content_unit);

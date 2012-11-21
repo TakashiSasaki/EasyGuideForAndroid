@@ -63,7 +63,7 @@ public class UnifiedActivity extends FragmentActivity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.unified);
 		this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		// this.imageView = (ImageView) findViewById(R.id.imageViewClickable);
+		//this.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
 		this.fragmentManager = getSupportFragmentManager();
 		this.breadcrumbFragment = (BreadcrumbFragment) fragmentManager

@@ -9,7 +9,7 @@
     android:padding="0dp"
     android:visibility="visible" >
 
-    <ImageView
+    <com.matabii.dev.scaleimageview.ScaleImageView
         android:id="@+id/imageViewClickable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

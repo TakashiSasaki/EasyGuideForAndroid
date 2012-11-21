@@ -12,6 +12,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,11 +73,18 @@ public class WifiFragment extends Fragment {
 
 		public void detectAp() {
 			wifiAps.setScanResults(wifiManager.getScanResults());
-			textViewWifiAps.setText(wifiAps.toString());
-			double distance = savedWifiAps.getDistance(wifiAps);
-			int count = savedWifiAps.countMatchedAps(wifiAps);
-			textViewDistance.setText("distance = " + distance + "\ncount = "
-					+ count);
+			Handler handler = new Handler(Looper.getMainLooper());
+			handler.post(new Runnable() {
+
+				@Override
+				public void run() {
+					textViewWifiAps.setText(wifiAps.toString());
+					double distance = savedWifiAps.getDistance(wifiAps);
+					int count = savedWifiAps.countMatchedAps(wifiAps);
+					textViewDistance.setText("distance = " + distance
+							+ "\ncount = " + count);
+				}
+			});
 		}// detectAp
 	}// WifiThread
 
@@ -91,7 +100,7 @@ public class WifiFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 		wifiThread = new WifiThread();
-		wifiThread.run();
+		wifiThread.start();
 	}// onStart
 
 	@Override

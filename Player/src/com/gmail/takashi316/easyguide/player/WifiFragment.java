@@ -106,7 +106,7 @@ public class WifiFragment extends Fragment {
 	@Override
 	public void onStop() {
 		super.onStop();
-		wifiThread.stop();
+		wifiThread.stopScan();
 		try {
 			wifiThread.join();
 		} catch (InterruptedException e) {

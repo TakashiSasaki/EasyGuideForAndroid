@@ -140,7 +140,18 @@ public class UnifiedActivity extends FragmentActivity {
 			}// if
 		}// if
 			// this.updateFragments();
+		skipEmptyFolder();
 	}// onNewIntent
+
+	private void skipEmptyFolder() {
+		for (;;) {
+			if (this.contentUnit.getChildren().size() != 1)
+				break;
+			if (this.contentUnit.hasContent())
+				break;
+			this.contentUnit = this.contentUnit.getChild(1);
+		}// for
+	}// skipEmptyFolder
 
 	@Override
 	protected void onStart() {
@@ -168,7 +179,7 @@ public class UnifiedActivity extends FragmentActivity {
 				e.printStackTrace();
 			}// try
 		}// if
-
+		skipEmptyFolder();
 		try {
 			wifiFragment.loadWifiMap(rootContentUnit);
 		} catch (IOException e) {

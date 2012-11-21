@@ -3,6 +3,9 @@ package com.gmail.takashi316.easyguide.player;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 
 import android.app.Activity;
@@ -34,6 +37,7 @@ public class WifiFragment extends Fragment {
 	ContentUnit contentUnit;
 	WifiThread wifiThread;
 	Activity activity;
+	public Date lastUpdated = Calendar.getInstance().getTime();
 
 	class WifiThread extends Thread {
 		final int intervalMilliseconds = 5000;
@@ -89,6 +93,17 @@ public class WifiFragment extends Fragment {
 							+ "\ncount = " + count);
 				}// run
 			});
+
+			ArrayList<Integer> matched_content_path = wifiMap
+					.getMatchedConentPath(wifiAps);
+			if (matched_content_path == null)
+				return;
+			if (Calendar.getInstance().getTime().getTime()
+					- lastUpdated.getTime() < 60 * 1000)
+				return;
+			Intent intent = new Intent(context, activityClass);
+			intent.putExtra("contentPath", matched_content_path);
+			startActivity(intent);
 		}// detectAp
 	}// WifiThread
 

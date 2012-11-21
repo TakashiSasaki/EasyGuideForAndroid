@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -123,6 +124,7 @@ public class UnifiedActivity extends FragmentActivity {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
+		wifiFragment.lastUpdated = Calendar.getInstance().getTime();
 		if (intent != null) {
 			ArrayList<Integer> content_path = intent
 					.getIntegerArrayListExtra("contentPath");

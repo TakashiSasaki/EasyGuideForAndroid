@@ -47,10 +47,10 @@ public class ImageFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.image_fragment, container);
-		this.frameLayoutImage = (FrameLayout) v.findViewById(
-				R.id.frameLayoutImage);
-		this.imageViewClickable = (ImageView) v.findViewById(
-				R.id.imageViewClickable);
+		this.frameLayoutImage = (FrameLayout) v
+				.findViewById(R.id.frameLayoutImage);
+		this.imageViewClickable = (ImageView) v
+				.findViewById(R.id.imageViewClickable);
 
 		this.imageViewClickable.setOnTouchListener(new OnTouchListener() {
 
@@ -81,7 +81,7 @@ public class ImageFragment extends Fragment {
 				// setContentUnit(nearest_child);
 				// videoFragment.stopPlayback();
 				// videoFragment.hide();
-				//onResume();
+				// onResume();
 
 				// Point point_on_image_view = new Point((int) x_on_image_view,
 				// (int) y_on_image_view);
@@ -94,7 +94,7 @@ public class ImageFragment extends Fragment {
 			}// onTouch
 		});
 
-		//return super.onCreateView(inflater, container, savedInstanceState);
+		// return super.onCreateView(inflater, container, savedInstanceState);
 		return v;
 	}
 
@@ -116,7 +116,7 @@ public class ImageFragment extends Fragment {
 			bitmap_loader.loadBitmapFromFile(content_unit.getImageFile());
 			// this.directoryImage.setContentUnit(this.contentUnit);
 			Bitmap b = bitmap_loader.getBitmap();
-			//this.imageViewClickable.setScaleType(ScaleType.FIT_CENTER);
+			// this.imageViewClickable.setScaleType(ScaleType.FIT_CENTER);
 			this.imageViewClickable.setImageBitmap(b);
 			// LayoutParams image_view_layout_params = this.imageViewClickable
 			// .getLayoutParams();
@@ -128,7 +128,11 @@ public class ImageFragment extends Fragment {
 		}// if content unit has an image
 
 	}// update
-}
+
+	public void deleteBitmap() {
+		this.imageViewClickable.setImageBitmap(null);
+	}// deleteBitmap
+}// ImageFragment
 
 class SurfaceViewFragment extends ImageFragment implements
 		SurfaceHolder.Callback {

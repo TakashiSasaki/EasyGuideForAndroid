@@ -76,6 +76,25 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutScalableImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="0dp" >
+
+        <fragment
+            android:id="@+id/fragmentScalableImage"
+            android:name="com.gmail.takashi316.easyguide.player.ScalableImageFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="0dp"
+            android:background="@android:color/white"
+            android:padding="0dp"
+            android:visibility="visible" />
+    </LinearLayout>
+    
+    <LinearLayout
         android:id="@+id/textLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"

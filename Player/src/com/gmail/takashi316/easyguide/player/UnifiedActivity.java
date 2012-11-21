@@ -48,6 +48,8 @@ public class UnifiedActivity extends FragmentActivity {
 	private VideoFragment videoFragment;
 	private LinearLayout videoLinearLayout;
 	private ImageFragment imageFragment;
+	private ScalableImageFragment scalableImageFragment;
+	private LinearLayout linearLayoutScalableImage;
 	private LinearLayout imageLinearLayout;
 	private WifiFragment wifiFragment;
 	private LinearLayout linearLayoutWifi;
@@ -79,24 +81,14 @@ public class UnifiedActivity extends FragmentActivity {
 		this.imageFragment = (ImageFragment) fragmentManager
 				.findFragmentById(R.id.imageFragment);
 		this.imageLinearLayout = (LinearLayout) findViewById(R.id.imageLinearLayout);
+		this.scalableImageFragment = (ScalableImageFragment) fragmentManager
+				.findFragmentById(R.id.fragmentScalableImage);
+		this.linearLayoutScalableImage = (LinearLayout) findViewById(R.id.linearLayoutScalableImage);
+		this.imageLinearLayout = (LinearLayout) findViewById(R.id.imageLinearLayout);
 		this.wifiFragment = (WifiFragment) fragmentManager
 				.findFragmentById(R.id.wifiFragment);
 		this.linearLayoutWifi = (LinearLayout) findViewById(R.id.linearLayoutWifi);
 
-		// getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		// setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
-		// requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-		// File external_storage_directory = Environment
-		// .getExternalStorageDirectory();
-		// File content_root_directory = new File(external_storage_directory,
-		// "EASYGUIDE/www.yonden.co.jp/01 四国電力");
-		// try {
-		// this.root = Root.getTheRoot();
-		// this.contentUnit = new ContentUnit(content_root_directory, null, 1);
-		// } catch (FileNotFoundException e) {
-		// e.printStackTrace();
-		// }
 		this.mGestureDetector = new FourDirectionsGestureDetector(this, null,
 				null, null, null);
 
@@ -214,10 +206,22 @@ public class UnifiedActivity extends FragmentActivity {
 		} else {
 			videoLinearLayout.setVisibility(View.GONE);
 		}// if
-		imageFragment.update(this.contentUnit);
 		if (this.contentUnit.hasImageFile()) {
-			imageLinearLayout.setVisibility(View.VISIBLE);
+			if (this.contentUnit.getChildren().size() == 0) {
+				scalableImageFragment.update(this.contentUnit);
+				linearLayoutScalableImage.setVisibility(View.VISIBLE);
+				imageFragment.deleteBitmap();
+				imageLinearLayout.setVisibility(View.GONE);
+			} else {
+				imageFragment.update(this.contentUnit);
+				imageLinearLayout.setVisibility(View.VISIBLE);
+				scalableImageFragment.deleteBitmap();
+				linearLayoutScalableImage.setVisibility(View.GONE);
+			}
 		} else {
+			scalableImageFragment.deleteBitmap();
+			linearLayoutScalableImage.setVisibility(View.GONE);
+			imageFragment.deleteBitmap();
 			imageLinearLayout.setVisibility(View.GONE);
 		}// if
 		buttonsFragment.update(this.contentUnit);

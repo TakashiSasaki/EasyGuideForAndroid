@@ -162,11 +162,12 @@ public class WifiFragment extends Fragment {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								file.delete();
+								//wifiMap.remove(contentUnit.getContentPath());
+								textViewSavedWifiAps.setText("削除しました");
 							}// onClick
 						});
 				builder.setNegativeButton("しない", null);
 				builder.show();
-				textViewSavedWifiAps.setText("削除しました");
 			}// onClick
 		});
 

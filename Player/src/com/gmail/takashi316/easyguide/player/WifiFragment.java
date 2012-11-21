@@ -38,6 +38,7 @@ public class WifiFragment extends Fragment {
 	WifiMap wifiMap = new WifiMap();
 	ContentUnit contentUnit;
 	WifiThread wifiThread;
+	Activity activity;
 
 	class WifiThread extends Thread {
 		final int intervalMilliseconds = 5000;
@@ -93,7 +94,7 @@ public class WifiFragment extends Fragment {
 		super.onAttach(activity);
 		this.context = activity.getApplicationContext();
 		this.activityClass = activity.getClass();
-
+		this.activity = activity;
 	}// onAttach
 
 	@Override
@@ -132,23 +133,21 @@ public class WifiFragment extends Fragment {
 			public void onClick(View v) {
 				final File file = new File(contentUnit.getDirectory(),
 						"wifi.log");
-				if (file.exists()) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							context);
-					builder.setCancelable(true);
-					builder.setTitle("Wi-Fiアクセスポイントの記録"
-							+ file.getAbsolutePath() + " を削除しますか？");
-					builder.setPositiveButton("削除する",
-							new DialogInterface.OnClickListener() {
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+				builder.setCancelable(true);
+				builder.setTitle("Wi-Fiアクセスポイントの記録" + file.getAbsolutePath()
+						+ " を削除しますか？");
+				builder.setPositiveButton("削除する",
+						new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									file.delete();
-								}// onClick
-							});
-					builder.show();
-				}// if
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								file.delete();
+							}// onClick
+						});
+				builder.setNegativeButton("しない", null);
+				builder.show();
 				try {
 					savedWifiAps.load(file);
 				} catch (IOException e) {
@@ -182,7 +181,7 @@ public class WifiFragment extends Fragment {
 			public void onClick(View v) {
 				final File file = new File(contentUnit.getDirectory(),
 						"wifi.log");
-				new AlertDialog.Builder(context)
+				new AlertDialog.Builder(activity)
 						.setCancelable(true)
 						.setTitle("Wi-Fiアクセスポイント情報を保存しますか？")
 						.setPositiveButton("保存する",
@@ -193,7 +192,7 @@ public class WifiFragment extends Fragment {
 											int which) {
 										wifiAps.save(file);
 									}// onClick
-								}).show();
+								}).setNegativeButton("しない", null).show();
 				try {
 					savedWifiAps.load(file);
 					textViewSavedWifiAps.setText(savedWifiAps.toString());

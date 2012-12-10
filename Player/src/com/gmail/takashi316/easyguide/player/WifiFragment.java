@@ -28,7 +28,7 @@ import android.widget.TextView;
 public class WifiFragment extends Fragment {
 	private Context context;
 	private Class<? extends Activity> activityClass;
-	Button buttonLoadAllAps, buttonSaveApFile, buttonDeleteApFile,
+	Button buttonLoadAllApSets, buttonSaveApFile, buttonDeleteApFile,
 			buttonDetectAp, buttonRegisterApTemporaliry, buttonLocateAp;
 	TextView textViewWifiAps, textViewSavedWifiAps, textViewDistance;
 	WifiAps wifiAps = new WifiAps();
@@ -143,6 +143,16 @@ public class WifiFragment extends Fragment {
 				.findViewById(R.id.textViewSavedWifiAps);
 		this.textViewDistance = (TextView) v
 				.findViewById(R.id.textViewDistance);
+		
+		this.buttonLoadAllApSets = (Button)v.findViewById(R.id.buttonLoadAllApSets);
+		this.buttonLoadAllApSets.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				wifiMap.load();
+			}//onClick
+		});
+		
 		this.buttonDeleteApFile = (Button) v
 				.findViewById(R.id.buttonDeleteApFile);
 		this.buttonDeleteApFile.setOnClickListener(new OnClickListener() {

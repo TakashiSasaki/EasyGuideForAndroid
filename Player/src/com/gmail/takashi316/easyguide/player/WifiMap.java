@@ -33,5 +33,13 @@ public class WifiMap extends HashMap<ArrayList<Integer>, WifiAps> {
 		}// for
 		return matched_content_path;
 	}// getMatchedContentPath
-
+	
+	public void load(){
+		//TODO: load whole map
+	}
+	
+	public void save(){
+		//TODO: save whole map
+	}
+	
 }// WifiMap

@@ -76,6 +76,10 @@ public class WifiFragment extends Fragment {
 
 		public void detectAp() {
 			wifiAps.setScanResults(wifiManager.getScanResults());
+			ArrayList<Integer> matched_content_path = wifiMap
+					.getMatchedConentPath(wifiAps);
+			final WifiAps matched_wifi_aps = wifiMap.get(matched_content_path);
+			
 			Handler handler = new Handler(Looper.getMainLooper());
 			handler.post(new Runnable() {
 
@@ -93,17 +97,16 @@ public class WifiFragment extends Fragment {
 					double distance = registered_wifi_aps.getDistance(wifiAps);
 					int count = registered_wifi_aps.countMatchedAps(wifiAps);
 					textViewDistance.setText("distance = " + distance
-							+ "\ncount = " + count);
+							+ "\ncount = " + count + "\n" + matched_wifi_aps.toString());
 				}// run
 			});
 
-			ArrayList<Integer> matched_content_path = wifiMap
-					.getMatchedConentPath(wifiAps);
 			if (matched_content_path == null)
 				return;
 			if (Calendar.getInstance().getTime().getTime()
 					- lastUpdated.getTime() < 60 * 1000)
 				return;
+			if (booleanAutomaticTransition == false) return;
 			Intent intent = new Intent(context, activityClass);
 			intent.putExtra("contentPath", matched_content_path);
 			startActivity(intent);

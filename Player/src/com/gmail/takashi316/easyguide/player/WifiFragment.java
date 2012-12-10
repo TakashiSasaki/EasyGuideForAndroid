@@ -39,6 +39,8 @@ public class WifiFragment extends Fragment {
 	Activity activity;
 	public Date lastUpdated = Calendar.getInstance().getTime();
 	private Button buttonLoadWifiMap;
+	private Button buttonToggleAutomaticTransition;
+	private boolean booleanAutomaticTransition;
 
 	class WifiThread extends Thread {
 		final int intervalMilliseconds = 5000;
@@ -155,6 +157,20 @@ public class WifiFragment extends Fragment {
 			}// onClick
 		});
 
+		this.buttonToggleAutomaticTransition = (Button)v.findViewById(R.id.buttonToggleAutomaticTransition);
+		this.buttonToggleAutomaticTransition.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (booleanAutomaticTransition == true){
+					booleanAutomaticTransition = false;
+					buttonToggleAutomaticTransition.setText("自動遷移を許可する（現在禁止されています）");
+				} else {
+					booleanAutomaticTransition = true;
+					buttonToggleAutomaticTransition.setText("自動遷移を禁止する（現在許可されています）");
+				}//if
+			}//onClick
+		});
+		
 		this.buttonDeleteApFile = (Button) v
 				.findViewById(R.id.buttonDeleteApFile);
 		this.buttonDeleteApFile.setOnClickListener(new OnClickListener() {

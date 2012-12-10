@@ -28,8 +28,8 @@ import android.widget.TextView;
 public class WifiFragment extends Fragment {
 	private Context context;
 	private Class<? extends Activity> activityClass;
-	Button buttonLoadAllApSets, buttonSaveApFile, buttonDeleteApFile,
-			buttonDetectAp, buttonRegisterApTemporaliry, buttonLocateAp;
+	Button buttonSaveApFile, buttonDeleteApFile, buttonDetectAp,
+			buttonRegisterApTemporaliry, buttonLocateAp;
 	TextView textViewWifiAps, textViewSavedWifiAps, textViewDistance;
 	WifiAps wifiAps = new WifiAps();
 	// WifiAps savedWifiAps = new WifiAps();
@@ -38,6 +38,7 @@ public class WifiFragment extends Fragment {
 	WifiThread wifiThread;
 	Activity activity;
 	public Date lastUpdated = Calendar.getInstance().getTime();
+	private Button buttonLoadWifiMap;
 
 	class WifiThread extends Thread {
 		final int intervalMilliseconds = 5000;
@@ -143,16 +144,17 @@ public class WifiFragment extends Fragment {
 				.findViewById(R.id.textViewSavedWifiAps);
 		this.textViewDistance = (TextView) v
 				.findViewById(R.id.textViewDistance);
-		
-		this.buttonLoadAllApSets = (Button)v.findViewById(R.id.buttonLoadAllApSets);
-		this.buttonLoadAllApSets.setOnClickListener(new OnClickListener() {
-			
+
+		this.buttonLoadWifiMap = (Button) v
+				.findViewById(R.id.buttonLoadWifiMap);
+		this.buttonLoadWifiMap.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				wifiMap.load();
-			}//onClick
+			}// onClick
 		});
-		
+
 		this.buttonDeleteApFile = (Button) v
 				.findViewById(R.id.buttonDeleteApFile);
 		this.buttonDeleteApFile.setOnClickListener(new OnClickListener() {
@@ -172,7 +174,7 @@ public class WifiFragment extends Fragment {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								file.delete();
-								//wifiMap.remove(contentUnit.getContentPath());
+								// wifiMap.remove(contentUnit.getContentPath());
 								textViewSavedWifiAps.setText("削除しました");
 							}// onClick
 						});

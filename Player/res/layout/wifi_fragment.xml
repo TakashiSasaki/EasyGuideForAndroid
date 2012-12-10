@@ -10,7 +10,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/buttonLoadAllApSets"
+            android:id="@+id/buttonLoadWifiMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="APファイル全読み込み" />

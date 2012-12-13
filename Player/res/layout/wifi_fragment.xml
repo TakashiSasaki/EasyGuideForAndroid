@@ -13,38 +13,25 @@
             android:id="@+id/buttonLoadWifiMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="APファイル全読み込み" />
-        
-        <Button
-            android:id="@+id/buttonSaveApFile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="APファイル保存" />
+            android:text="WifiMap復帰" />
 
         <Button
-            android:id="@+id/buttonDeleteApFile"
+            android:id="@+id/buttonSaveWifiMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="APファイル削除" />
+            android:text="WifiMap保存" />
 
         <Button
-            android:id="@+id/buttonDetectAp"
+            android:id="@+id/buttonDeleteWifiMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="AP検出" />
+            android:text="WifiMap削除" />
 
         <Button
             android:id="@+id/buttonRegisterApTemporaliry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="AP一時登録" />
-
-        
-        <Button
-            android:id="@+id/buttonLocateAp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="測位" />
+            android:text="WifiMap登録" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,11 +54,11 @@
             android:text="アクセスポイント情報" />
 
         <TextView
-            android:id="@+id/textViewDistance"
+            android:id="@+id/textViewMatchedWifiApSet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="正規化距離" />
+            android:text="textViewMatchedWifiApSet" />
     </LinearLayout>
 
     <LinearLayout

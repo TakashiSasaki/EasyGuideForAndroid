@@ -124,7 +124,7 @@ public class UnifiedActivity extends FragmentActivity {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		wifiFragment.lastUpdated = Calendar.getInstance().getTime();
+		wifiFragment.setLastUpdated();;
 		if (intent != null) {
 			ArrayList<Integer> content_path = intent
 					.getIntegerArrayListExtra("contentPath");
@@ -175,7 +175,8 @@ public class UnifiedActivity extends FragmentActivity {
 		}// if
 		skipEmptyFolder();
 		try {
-			wifiFragment.loadWifiMap(rootContentUnit);
+			//wifiFragment.loadWifiMap(rootContentUnit);
+			wifiFragment.startWifiThread(rootContentUnit);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

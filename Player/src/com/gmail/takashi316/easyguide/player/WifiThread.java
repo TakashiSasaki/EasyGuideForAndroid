@@ -19,15 +19,15 @@ class WifiThread extends Thread {
 	WifiMap wifiMap;
 	WifiAps wifiAps = new WifiAps();
 	private boolean booleanAutomaticTransition = false;
-	// WifiAps savedWifiAps = new WifiAps();
-	final int intervalMilliseconds = 5000;
 	WifiManager wifiManager;
-	boolean working = false;
+	boolean scanEnabled = false;
 	Context context;
 	Class<?> activityClass;
 	TextView textViewWifiAps;
 	TextView textViewMatchedWifiApSet;
-
+	final int intervalMilliseconds = 5000;
+	private int guardMilliseconds = 10000;
+	
 	public WifiThread(Context context, Class<?> activity_class,
 			ContentUnit root_content_unit, TextView text_view_wifi_aps,
 			TextView text_view_matched_wifi_ap_set) throws IOException {
@@ -43,7 +43,7 @@ class WifiThread extends Thread {
 	}// a constructor
 
 	public void stopScan() {
-		this.working = false;
+		this.scanEnabled = false;
 	}// stopScan
 
 	protected void finalize() throws Throwable {
@@ -53,7 +53,7 @@ class WifiThread extends Thread {
 	@Override
 	public void run() {
 		super.run();
-		working = true;
+		scanEnabled = true;
 		while (true) {
 			wifiManager.startScan();
 			try {
@@ -61,7 +61,7 @@ class WifiThread extends Thread {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}// try
-			if (!working)
+			if (!scanEnabled)
 				return;
 			detectAp();
 		}// while
@@ -133,28 +133,25 @@ class WifiThread extends Thread {
 
 	public void setLastUpdated() {
 		lastUpdated = Calendar.getInstance().getTime();
-	}
+	}// setLastUpdated
+
+	public void setGuardMilliseconds(int guard_milliseconds) {
+		this.guardMilliseconds = guard_milliseconds;
+	}// setGuardMillisecondsd
 
 	public boolean sendIntent(ArrayList<Integer> content_path) {
 		if (content_path == null)
 			return false;
 		long last = lastUpdated.getTime();
 		long now = Calendar.getInstance().getTimeInMillis();
-		if (now - last < 10 * 1000)
+		if (now - last < guardMilliseconds)
 			return false;
 		if (booleanAutomaticTransition == false)
 			return false;
 		final Intent intent = new Intent(context, activityClass);
 		intent.putExtra("contentPath", content_path);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		// Handler handler = new Handler(Looper.getMainLooper());
-		// handler.post(new Runnable() {
-
-		// @Override
-		// public void run() {
 		context.startActivity(intent);
-		// }
-		// });
 		return true;
 	}// sendIntent
 }// WifiThread

@@ -23,19 +23,19 @@ class WifiThread extends Thread {
 	boolean scanEnabled = false;
 	Context context;
 	Class<?> activityClass;
-	TextView textViewWifiAps;
-	TextView textViewMatchedWifiApSet;
+	TextView textViewLastApSet;
+	TextView textViewMatchedApSet;
 	final int intervalMilliseconds = 5000;
 	private int guardMilliseconds = 10000;
-	
+
 	public WifiThread(Context context, Class<?> activity_class,
-			ContentUnit root_content_unit, TextView text_view_wifi_aps,
-			TextView text_view_matched_wifi_ap_set) throws IOException {
-		this.textViewWifiAps = text_view_wifi_aps;
-		this.textViewMatchedWifiApSet = text_view_matched_wifi_ap_set;
+			ContentUnit root_content_unit, TextView text_view_last_ap_set,
+			TextView text_view_matched_ap_set) throws IOException {
+		this.textViewLastApSet = text_view_last_ap_set;
+		this.textViewMatchedApSet = text_view_matched_ap_set;
 		this.context = context;
-		this.wifiMap = new WifiMap(root_content_unit);
 		this.activityClass = activity_class;
+		this.wifiMap = new WifiMap(root_content_unit);
 		this.wifiManager = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
 		this.wifiManager.setWifiEnabled(true);
@@ -78,16 +78,14 @@ class WifiThread extends Thread {
 
 			@Override
 			public void run() {
-				textViewWifiAps.setText(wifiAps.toString());
+				textViewLastApSet.setText(wifiAps.toString());
 				// WifiAps registered_wifi_aps = wifiMap.get(contentUnit
 				// .getContentPath());
 				if (matched_content_path != null) {
-					textViewMatchedWifiApSet.setText(matched_wifi_aps
-							.toString()
-							+ "\n"
-							+ matched_content_path.toString());
+					textViewMatchedApSet.setText(matched_wifi_aps.toString()
+							+ "\n" + matched_content_path.toString());
 				} else {
-					textViewMatchedWifiApSet.setText("マッチするポイントがありません");
+					textViewMatchedApSet.setText("マッチするポイントがありません");
 				}
 				// if (registered_wifi_aps == null) {
 				// textViewSavedWifiAps.setText("no AP is registered");

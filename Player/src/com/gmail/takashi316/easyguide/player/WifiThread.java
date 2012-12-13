@@ -23,16 +23,15 @@ class WifiThread extends Thread {
 	boolean scanEnabled = false;
 	Context context;
 	Class<?> activityClass;
-	TextView textViewLastApSet;
-	TextView textViewMatchedApSet;
 	final int intervalMilliseconds = 5000;
 	private int guardMilliseconds = 10000;
+	private ArrayList<Integer> matchedContentPath;
+	public TextView textViewLastApSet;
+	public TextView textViewMatchedApSet;
+	public TextView textViewMatchedContentPath;
 
 	public WifiThread(Context context, Class<?> activity_class,
-			ContentUnit root_content_unit, TextView text_view_last_ap_set,
-			TextView text_view_matched_ap_set) throws IOException {
-		this.textViewLastApSet = text_view_last_ap_set;
-		this.textViewMatchedApSet = text_view_matched_ap_set;
+			ContentUnit root_content_unit) throws IOException {
 		this.context = context;
 		this.activityClass = activity_class;
 		this.wifiMap = new WifiMap(root_content_unit);
@@ -63,45 +62,44 @@ class WifiThread extends Thread {
 			}// try
 			if (!scanEnabled)
 				return;
-			detectAp();
+			wifiAps.setScanResults(wifiManager.getScanResults());
+			matchedContentPath = wifiMap.getMatchedConentPath(wifiAps);
+			updateViews();
 		}// while
 	}// run
 
-	public void detectAp() {
-		wifiAps.setScanResults(wifiManager.getScanResults());
-		final ArrayList<Integer> matched_content_path = wifiMap
-				.getMatchedConentPath(wifiAps);
-		final WifiAps matched_wifi_aps = wifiMap.get(matched_content_path);
-
+	public void updateViews() {
+		// final ArrayList<Integer> matched_content_path = wifiMap
+		// .getMatchedConentPath(wifiAps);
+		// final WifiAps matched_wifi_aps = wifiMap.get(matched_content_path);
+		//
 		Handler handler = new Handler(Looper.getMainLooper());
 		handler.post(new Runnable() {
 
 			@Override
 			public void run() {
-				textViewLastApSet.setText(wifiAps.toString());
+				if (textViewLastApSet != null)
+					textViewLastApSet.setText(wifiAps.toString());
 				// WifiAps registered_wifi_aps = wifiMap.get(contentUnit
 				// .getContentPath());
-				if (matched_content_path != null) {
-					textViewMatchedApSet.setText(matched_wifi_aps.toString()
-							+ "\n" + matched_content_path.toString());
+				if (matchedContentPath != null) {
+					if (textViewMatchedContentPath != null)
+						textViewMatchedContentPath.setText(matchedContentPath
+								.toString());
+					if (textViewMatchedApSet != null) {
+						textViewMatchedApSet.setText(wifiMap.get(
+								matchedContentPath).toString());
+					}
 				} else {
-					textViewMatchedApSet.setText("マッチするポイントがありません");
+					if (textViewMatchedContentPath != null)
+						textViewMatchedContentPath.setText("N/A");
+					if (textViewMatchedApSet != null)
+						textViewMatchedApSet.setText("N/A");
 				}
-				// if (registered_wifi_aps == null) {
-				// textViewSavedWifiAps.setText("no AP is registered");
-				// textViewDistance.setText("");
-				// return;
-				// }// return
-				// textViewSavedWifiAps.setText(registered_wifi_aps.toString());
-				// double distance = registered_wifi_aps.getDistance(wifiAps);
-				// int count = registered_wifi_aps.countMatchedAps(wifiAps);
-				// textViewDistance.setText("distance = " + distance
-				// + "\ncount = " + count + "\n"
-				// + matched_wifi_aps.toString());
 			}// run
 		});
 
-		this.sendIntent(matched_content_path);
+		this.sendIntent();
 	}// detectAp
 
 	public void enableTransition(boolean b) {
@@ -137,8 +135,8 @@ class WifiThread extends Thread {
 		this.guardMilliseconds = guard_milliseconds;
 	}// setGuardMillisecondsd
 
-	public boolean sendIntent(ArrayList<Integer> content_path) {
-		if (content_path == null)
+	public boolean sendIntent() {
+		if (matchedContentPath == null)
 			return false;
 		long last = lastUpdated.getTime();
 		long now = Calendar.getInstance().getTimeInMillis();
@@ -147,7 +145,7 @@ class WifiThread extends Thread {
 		if (booleanAutomaticTransition == false)
 			return false;
 		final Intent intent = new Intent(context, activityClass);
-		intent.putExtra("contentPath", content_path);
+		intent.putExtra("contentPath", matchedContentPath);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 		return true;

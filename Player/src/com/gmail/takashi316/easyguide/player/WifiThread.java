@@ -135,7 +135,7 @@ class WifiThread extends Thread {
 			return false;
 		long last = lastUpdated.getTime();
 		long now = Calendar.getInstance().getTimeInMillis();
-		if (now - last < 60 * 1000)
+		if (now - last < 10 * 1000)
 			return false;
 		if (booleanAutomaticTransition == false)
 			return false;

@@ -38,12 +38,17 @@ class WifiThread extends Thread {
 		this.activityClass = activity_class;
 		this.wifiManager = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
+		this.wifiManager.setWifiEnabled(true);
 		this.wifiManager.startScan();
 	}// a constructor
 
 	public void stopScan() {
 		this.working = false;
 	}// stopScan
+
+	protected void finalize() throws Throwable {
+		this.wifiManager.setWifiEnabled(false);
+	};
 
 	@Override
 	public void run() {
@@ -142,14 +147,14 @@ class WifiThread extends Thread {
 		final Intent intent = new Intent(context, activityClass);
 		intent.putExtra("contentPath", content_path);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		Handler handler = new Handler(Looper.getMainLooper());
-	//	handler.post(new Runnable() {
+		// Handler handler = new Handler(Looper.getMainLooper());
+		// handler.post(new Runnable() {
 
-		//	@Override
-			//public void run() {
-				context.startActivity(intent);
-		//	}
-		//});
+		// @Override
+		// public void run() {
+		context.startActivity(intent);
+		// }
+		// });
 		return true;
 	}// sendIntent
 }// WifiThread

@@ -188,7 +188,8 @@ public class WifiFragment extends Fragment {
 		wifiThread = new WifiThread(this.activity.getApplicationContext(),
 				this.activity.getClass(), root_contet_unit,
 				(TextView) view.findViewById(R.id.textViewWifiAps),
-				(TextView) view.findViewById(R.id.textViewMatchedWifiApSet));
+				(TextView) view.findViewById(R.id.textViewMatchedWifiApSet),
+				(TextView) view);
 		wifiThread.start();
 	}// startWifiThread
 }// WifiFragment

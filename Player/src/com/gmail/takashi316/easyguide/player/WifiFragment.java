@@ -87,7 +87,8 @@ public class WifiFragment extends Fragment {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if (wifiThread == null) return;
+						if (wifiThread == null)
+							return;
 						if (wifiThread.isTransitionEnabled() == true) {
 							wifiThread.enableTransition(false);
 							buttonToggleAutomaticTransition
@@ -186,10 +187,10 @@ public class WifiFragment extends Fragment {
 	public void startWifiThread(ContentUnit root_contet_unit)
 			throws IOException {
 		wifiThread = new WifiThread(this.activity.getApplicationContext(),
-				this.activity.getClass(), root_contet_unit,
-				(TextView) view.findViewById(R.id.textViewWifiAps),
-				(TextView) view.findViewById(R.id.textViewMatchedWifiApSet),
-				(TextView) view);
+				this.activity.getClass(), root_contet_unit);
+		wifiThread.textViewLastApSet = (TextView)view.findViewById(R.id.textViewWifiAps);
+		wifiThread.textViewMatchedApSet = (TextView)view.findViewById(R.id.textViewMatchedWifiApSet);
+		wifiThread.textViewMatchedContentPath = (TextView)view.findViewById(R.id.textViewMatchedContentPath);
 		wifiThread.start();
 	}// startWifiThread
 }// WifiFragment

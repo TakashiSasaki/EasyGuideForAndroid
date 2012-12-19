@@ -26,6 +26,7 @@ class WifiThread extends Thread {
 	final int intervalMilliseconds = 5000;
 	private int guardMilliseconds = 10000;
 	private ArrayList<Integer> matchedContentPath;
+
 	public TextView textViewLastApSet;
 	public TextView textViewMatchedApSet;
 	public TextView textViewMatchedContentPath;
@@ -47,7 +48,7 @@ class WifiThread extends Thread {
 
 	protected void finalize() throws Throwable {
 		this.wifiManager.setWifiEnabled(false);
-	};
+	}// finalize
 
 	@Override
 	public void run() {

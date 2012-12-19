@@ -188,9 +188,12 @@ public class WifiFragment extends Fragment {
 			throws IOException {
 		wifiThread = new WifiThread(this.activity.getApplicationContext(),
 				this.activity.getClass(), root_contet_unit);
-		wifiThread.textViewLastApSet = (TextView)view.findViewById(R.id.textViewWifiAps);
-		wifiThread.textViewMatchedApSet = (TextView)view.findViewById(R.id.textViewMatchedWifiApSet);
-		wifiThread.textViewMatchedContentPath = (TextView)view.findViewById(R.id.textViewMatchedContentPath);
+		wifiThread.textViewLastApSet = (TextView) view
+				.findViewById(R.id.textViewWifiAps);
+		wifiThread.textViewMatchedApSet = (TextView) view
+				.findViewById(R.id.textViewMatchedWifiApSet);
+		wifiThread.textViewMatchedContentPath = (TextView) view
+				.findViewById(R.id.textViewMatchedContentPath);
 		wifiThread.start();
 	}// startWifiThread
 }// WifiFragment

@@ -31,6 +31,7 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity"></activity>
     </application>
 
 </manifest>

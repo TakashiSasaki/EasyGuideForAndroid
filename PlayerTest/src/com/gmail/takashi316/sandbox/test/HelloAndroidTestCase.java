@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import android.widget.TextView;
-import jp.ac.ehime_u.cite.sasaki.easyguide.player.R;
 
+import com.gmail.takashi316.easyguide.player.R;
 import com.gmail.takashi316.sandbox.HelloAndroidActivity;
 
 /**

@@ -1,17 +1,16 @@
-package jp.ac.ehime_u.cite.sasaki.easyguide.player;
+package com.gmail.takashi316.easyguide.player;
 
 
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
-import jp.ac.ehime_u.cite.sasaki.easyguide.player.OpeningActivity;
 
 public class OpeningActivityTestCase extends
-		ActivityInstrumentationTestCase2<OpeningActivity> {
+		ActivityInstrumentationTestCase2<TocActivity> {
 
 	public OpeningActivityTestCase() {
-		super(OpeningActivity.class);
+		super(TocActivity.class);
 	}// the constructor
 
 	public void test1() {

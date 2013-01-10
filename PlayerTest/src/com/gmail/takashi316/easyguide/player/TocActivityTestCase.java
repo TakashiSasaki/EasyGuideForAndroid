@@ -6,10 +6,10 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
 
-public class OpeningActivityTestCase extends
+public class TocActivityTestCase extends
 		ActivityInstrumentationTestCase2<TocActivity> {
 
-	public OpeningActivityTestCase() {
+	public TocActivityTestCase() {
 		super(TocActivity.class);
 	}// the constructor
 

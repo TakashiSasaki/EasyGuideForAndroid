@@ -27,7 +27,8 @@ public class HelloAndroidTestCase extends
 			}
 		});// runOnUiThread
 		Log.v("testTextViewHello", (String) this.textView.getText());
-		assertEquals(this.textView.getText(), "Hello World, HelloAndroidActivity!");
+		assertEquals(this.textView.getText(),
+				"Hello World, HelloAndroidActivity!");
 	}// testTextViewHello
 
 	Activity activity;

@@ -1,5 +1,6 @@
 package com.gmail.takashi316.easyguide.player;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import com.gmail.takashi316.easyguide.ui.TocAdapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -36,6 +38,12 @@ public class TocActivity extends Activity {
 	Root root;
 	AssetManager assetManager;
 	TextView textViewDocumentationDomain;
+	TextView textViewExistingDocumentationDomainDirectory;
+	String documentationDomain;
+	TextView textViewDocumentationDirectoryCount;
+	int documentationDirectoryCount = 0;
+	TextView textViewDocumentationFileCount;
+	int documentationFileCount = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,19 +51,26 @@ public class TocActivity extends Activity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.toc);
+		this.textViewDocumentationDomain = 
+				(TextView)findViewById(R.id.textViewDocumentationDomain);
+		this.textViewExistingDocumentationDomainDirectory =
+				(TextView)findViewById(R.id.textViewExistingDocumentationDomainDirectory);
+		this.textViewDocumentationDirectoryCount = 
+				(TextView)findViewById(R.id.textViewDocumentationDirectoryCount);
+		this.textViewDocumentationFileCount = 
+				(TextView)findViewById(R.id.textViewDocumentationFileCount);
+		
 		this.assetManager = this.getResources().getAssets();
 
 		try {
 			String[] asset_directories = this.assetManager.list("");
 			assert (asset_directories.length==1);
-			this.textViewDocumentationDomain = 
-					(TextView)findViewById(R.id.textViewDocumentationDomain);
-			textViewDocumentationDomain.setText(asset_directories[0]);
+			documentationDomain = asset_directories[0];
+			textViewDocumentationDomain.setText(documentationDomain);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 
-		
 		try {
 			root = new Root();
 		} catch (FileNotFoundException e) {
@@ -63,7 +78,14 @@ public class TocActivity extends Activity {
 					"SDカード、本体メモリ、外部メモリにEASYGUIDEというフォルダが見つかりません。").show();
 			finish();
 		}// try
-
+		
+		try {
+			installDocumentation();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		// android.R.layout.simple_list_item_1);
 		// this.buildingList = new ArrayList<Building>();
 		// for (Organization organization : Organizations.getInstance()) {
@@ -128,11 +150,39 @@ public class TocActivity extends Activity {
 	// startActivity(intent);
 	// }// InvokeMapActivity
 	
-	void deleteDocumentation(){
-		//TODO:
-	}
+	void installDocumentation() throws IOException{
+		for(ContentUnit content_unit : root.getChildren()){
+			if(content_unit.getName().equals(this.documentationDomain)){
+				this.textViewExistingDocumentationDomainDirectory.setText(content_unit.getDirectory().getAbsolutePath());
+				break;
+			}//if
+		}//for
+		copyAsset("", documentationDomain);
+	}//installDocumentation
 	
-	void installDocumentation(){
-		//TODO:
-	}
+	void copyAsset(final String asset_path, final String asset_name) throws IOException{
+		if(isAssetPathDirectory(asset_path+"/"+asset_name)){
+			File directory = new File(root.getDirectory(), asset_path + "/"+asset_name);
+			directory.mkdir();
+			documentationDirectoryCount+=1;
+			textViewDocumentationDirectoryCount.setText(""+documentationDirectoryCount);
+		}
+	}//copyAsset
+	
+	boolean isAssetPathDirectory(final String asset_path) throws IOException{
+		//this code is from http://d.hatena.ne.jp/h_mori/20121002/1349134592
+	       boolean isDirectory = false;
+	          try {
+	               if (assetManager.list(asset_path).length > 0){ //子が含まれる場合はディレクトリ
+	                    isDirectory = true;
+	               } else {
+	                    // オープン可能かチェック
+	                    assetManager.open(asset_path);
+	               }
+	          } catch (FileNotFoundException fnfe) {
+	               isDirectory = true;
+	          }
+	          return isDirectory;
+	}// isAssetPathDirectory
+	
 }// OpeningActivity

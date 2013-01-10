@@ -1,6 +1,7 @@
 package com.gmail.takashi316.easyguide.player;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import junit.framework.Assert;
@@ -12,12 +13,14 @@ import com.gmail.takashi316.easyguide.ui.TocAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * 施設一覧を表示して選択させるアクティビティ
@@ -31,14 +34,28 @@ public class TocActivity extends Activity {
 	// private static Building chosenBuilding;
 
 	Root root;
-
+	AssetManager assetManager;
+	TextView textViewDocumentationDomain;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.toc);
+		this.assetManager = this.getResources().getAssets();
 
+		try {
+			String[] asset_directories = this.assetManager.list("");
+			assert (asset_directories.length==1);
+			this.textViewDocumentationDomain = 
+					(TextView)findViewById(R.id.textViewDocumentationDomain);
+			textViewDocumentationDomain.setText(asset_directories[0]);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		
 		try {
 			root = new Root();
 		} catch (FileNotFoundException e) {
@@ -110,5 +127,12 @@ public class TocActivity extends Activity {
 	// building_.getTitle());
 	// startActivity(intent);
 	// }// InvokeMapActivity
-
+	
+	void deleteDocumentation(){
+		//TODO:
+	}
+	
+	void installDocumentation(){
+		//TODO:
+	}
 }// OpeningActivity

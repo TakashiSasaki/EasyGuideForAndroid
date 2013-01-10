@@ -157,6 +157,8 @@ public class TocActivity extends Activity {
 				break;
 			}//if
 		}//for
+		deleteDirectory(new File(root.getDirectory(), this.documentationDomain));
+		assert(!new File(root.getDirectory(), this.documentationDomain).exists());
 		copyAsset("", documentationDomain);
 	}//installDocumentation
 	
@@ -168,6 +170,15 @@ public class TocActivity extends Activity {
 			textViewDocumentationDirectoryCount.setText(""+documentationDirectoryCount);
 		}
 	}//copyAsset
+	
+	static void deleteDirectory(File directory){
+		for(File child : directory.listFiles()){
+			if(child.isFile()) child.delete();
+		}
+		for(File child : directory.listFiles()){
+			if(child.isDirectory()) deleteDirectory(child);
+		}
+	}// deleteDirectory
 	
 	boolean isAssetPathDirectory(final String asset_path) throws IOException{
 		//this code is from http://d.hatena.ne.jp/h_mori/20121002/1349134592

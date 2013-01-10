@@ -36,7 +36,7 @@ public class TocActivityTestCase extends
 				//assertEquals(textViewDocumentationDomain.getText(), "easyguide-app.blogspot.jp");
 			}// run
 		});// runOnThread
-	}// test1
+	}// testDocumentationDomain
 
 	@Override
 	protected void setUp() throws Exception {

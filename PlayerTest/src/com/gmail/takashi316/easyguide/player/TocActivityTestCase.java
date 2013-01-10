@@ -27,6 +27,7 @@ public class TocActivityTestCase extends
 			assertEquals("/mnt/sdcard/EASYGUIDE/easyguide-app.blogspot.jp", textViewExistingDocumentationDirectory.getText());	
 		}//if
 		assertEquals("1", textViewDocumentationDirectoryCount.getText());
+		assertEquals("1", textViewDocumentationFileCount.getText());
 		
 		this.toc_activity.runOnUiThread(new Runnable() {
 			@Override
@@ -37,6 +38,7 @@ public class TocActivityTestCase extends
 			}// run
 		});// runOnThread
 	}// testDocumentationDomain
+	
 
 	@Override
 	protected void setUp() throws Exception {

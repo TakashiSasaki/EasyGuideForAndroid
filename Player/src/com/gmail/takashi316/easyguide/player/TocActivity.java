@@ -1,8 +1,12 @@
 package com.gmail.takashi316.easyguide.player;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import junit.framework.Assert;
@@ -25,7 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * 施設一覧を表示して選択させるアクティビティ
+ * ドメイン一覧を表示して選択させるアクティビティ
  * 
  * @author Takashi SASAKI {@link "http://twitter.com/TakashiSasaki"}
  */
@@ -160,16 +164,41 @@ public class TocActivity extends Activity {
 		copyAsset("", documentationDomain);
 	}// installDocumentation
 
-	void copyAsset(final String asset_path, final String asset_name)
+	void copyAsset(final String parent_asset_path, final String asset_name)
 			throws IOException {
-		if (isAssetPathDirectory(asset_path + "/" + asset_name)) {
-			File directory = new File(root.getDirectory(), asset_path + "/"
-					+ asset_name);
+
+		final String asset_path = (parent_asset_path == null || parent_asset_path
+				.length() == 0) ? asset_name : parent_asset_path + "/"
+				+ asset_name;
+		if (isAssetPathDirectory(asset_path)) {
+			File directory = new File(root.getDirectory(), asset_path);
 			directory.mkdir();
 			documentationDirectoryCount += 1;
 			textViewDocumentationDirectoryCount.setText(""
 					+ documentationDirectoryCount);
-		}
+
+			for (String child_asset_name : assetManager.list(asset_path)) {
+				copyAsset(asset_path, child_asset_name);
+			}
+
+		} else {
+			InputStream is = assetManager.open(asset_path);
+			BufferedInputStream bis = new BufferedInputStream(is);
+			File output_file = new File(root.getDirectory(), asset_path);
+			assert (!output_file.exists());
+			FileOutputStream fos = new FileOutputStream(output_file);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			byte[] buffer = new byte[1024];
+			int len;
+			while ((len = bis.read(buffer, 0, buffer.length)) > 0) {
+				bos.write(buffer, 0, len);
+			}
+			documentationFileCount += 1;
+			textViewDocumentationFileCount.setText("" + documentationFileCount);
+			bos.flush();
+			bos.close();
+			fos.close();
+		}// if
 	}// copyAsset
 
 	static void deleteDirectory(File directory) {

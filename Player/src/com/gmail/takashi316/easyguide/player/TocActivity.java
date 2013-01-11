@@ -54,7 +54,7 @@ public class TocActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.setContentView(R.layout.toc);
+		this.setContentView(R.layout.toc_activity);
 		this.textViewDocumentationDomain = (TextView) findViewById(R.id.textViewDocumentationDomain);
 		this.textViewExistingDocumentationDomainDirectory = (TextView) findViewById(R.id.textViewExistingDocumentationDomainDirectory);
 		this.textViewDocumentationDirectoryCount = (TextView) findViewById(R.id.textViewDocumentationDirectoryCount);

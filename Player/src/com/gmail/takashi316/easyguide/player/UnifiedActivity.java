@@ -61,7 +61,7 @@ public class UnifiedActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.setContentView(R.layout.unified);
+		this.setContentView(R.layout.unified_activity);
 		this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// this.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);

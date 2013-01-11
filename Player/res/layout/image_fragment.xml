@@ -16,12 +16,4 @@
         android:background="@color/white"
         android:scaleType="fitCenter"
         android:src="@drawable/h512w512" />
-
-    <!--
-         <SurfaceView
-        android:id="@+id/surfaceViewClickable"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />    -->
-
-</FrameLayout>
+</FrameLayout>

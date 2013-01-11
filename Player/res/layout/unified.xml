@@ -93,7 +93,7 @@
             android:padding="0dp"
             android:visibility="visible" />
     </LinearLayout>
-    
+
     <LinearLayout
         android:id="@+id/textLinearLayout"
         android:layout_width="match_parent"
@@ -134,22 +134,23 @@
         android:id="@+id/linearLayoutMap"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" 
+        android:layout_weight="1"
         android:background="@color/purple"
         android:padding="10dp" >
+
         <fragment
-        	xmlns:android="http://schemas.android.com/apk/res/android"
-	        android:layout_width="match_parent"
-    	    android:layout_height="match_parent"
-	        class="com.google.android.gms.maps.SupportMapFragment" />
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.SupportMapFragment" />
     </LinearLayout>
-    
+
     <LinearLayout
         android:id="@+id/linearLayoutWifi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0" 
-        android:visibility="gone">
+        android:layout_weight="0"
+        android:visibility="gone" >
 
         <fragment
             android:id="@+id/wifiFragment"

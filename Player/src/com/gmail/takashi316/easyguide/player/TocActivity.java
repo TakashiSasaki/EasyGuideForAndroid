@@ -17,7 +17,6 @@ import com.gmail.takashi316.easyguide.ui.TocAdapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -72,7 +71,7 @@ public class TocActivity extends Activity {
 			textViewDocumentationDomain.setText(documentationDomain);
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}
+		}// try
 
 		try {
 			root = new Root();
@@ -87,7 +86,7 @@ public class TocActivity extends Activity {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}// try
 
 		// android.R.layout.simple_list_item_1);
 		// this.buildingList = new ArrayList<Building>();
@@ -119,7 +118,7 @@ public class TocActivity extends Activity {
 						ListView list_view = (ListView) parent;
 						TocAdapter.TocItem toc_item = (TocAdapter.TocItem) list_view
 								.getItemAtPosition(position);
-						InvokeAbsolutePath(toc_item.absolutePath);
+						invokeAbsolutePath(toc_item.absolutePath);
 					}// onItemClick
 				}// OnItemClickListener
 				);
@@ -135,23 +134,13 @@ public class TocActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// InvokeAbsolutePath("/mnt/sdcard/EASYGUIDE/www.yonden.co.jp/01 四国電力/");
 	}// onCreate
 
-	private void InvokeAbsolutePath(String absolute_path) {
+	private void invokeAbsolutePath(String absolute_path) {
 		Intent intent = new Intent(TocActivity.this, UnifiedActivity.class);
 		intent.putExtra("root", absolute_path);
 		startActivity(intent);
 	}// InvokeAbsolutePath
-
-	// private void InvokeMapActivity(Building building_) {
-	// OpeningActivity.chosenBuilding = building_;
-	// Intent intent = new Intent(getApplicationContext(),
-	// BuildingActivity.class);
-	// intent.putExtra("jp.ac.ehime_u.cite.sasaki.easyguide.model.Building",
-	// building_.getTitle());
-	// startActivity(intent);
-	// }// InvokeMapActivity
 
 	void installDocumentation() throws IOException {
 		for (ContentUnit content_unit : root.getChildren()) {
@@ -182,7 +171,7 @@ public class TocActivity extends Activity {
 
 			for (String child_asset_name : assetManager.list(asset_path)) {
 				copyAsset(asset_path, child_asset_name);
-			}
+			}// for
 
 		} else {
 			InputStream is = assetManager.open(asset_path);
@@ -195,7 +184,7 @@ public class TocActivity extends Activity {
 			int len;
 			while ((len = bis.read(buffer, 0, buffer.length)) > 0) {
 				bos.write(buffer, 0, len);
-			}
+			}// while
 			documentationFileCount += 1;
 			textViewDocumentationFileCount.setText("" + documentationFileCount);
 			bos.flush();
@@ -208,11 +197,11 @@ public class TocActivity extends Activity {
 		for (File child : directory.listFiles()) {
 			if (child.isFile())
 				child.delete();
-		}
+		}// for
 		for (File child : directory.listFiles()) {
 			if (child.isDirectory())
 				deleteDirectory(child);
-		}
+		}// for
 	}// deleteDirectory
 
 	boolean isAssetPathDirectory(final String asset_path) throws IOException {
@@ -224,13 +213,14 @@ public class TocActivity extends Activity {
 			} else {
 				// オープン可能かチェック
 				assetManager.open(asset_path);
-			}
+			}// if
 		} catch (FileNotFoundException fnfe) {
 			isDirectory = true;
-		}
+		}// try
 		return isDirectory;
 	}// isAssetPathDirectory
 
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menu_inflater = getMenuInflater();
 		menu_inflater.inflate(R.menu.toc_menu, menu);

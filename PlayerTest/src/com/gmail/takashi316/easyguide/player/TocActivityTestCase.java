@@ -1,8 +1,8 @@
 package com.gmail.takashi316.easyguide.player;
 
-import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class TocActivityTestCase extends
@@ -14,6 +14,7 @@ public class TocActivityTestCase extends
 	TextView textViewExistingDocumentationDirectory;
 	TextView textViewDocumentationDirectoryCount;
 	TextView textViewDocumentationFileCount;
+	ListView listViewToc;
 
 	public TocActivityTestCase() {
 		super(TocActivity.class);
@@ -40,6 +41,20 @@ public class TocActivityTestCase extends
 		});// runOnThread
 	}// testDocumentationDomain
 
+	public void testClickItem0() {
+		this.toc_activity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				assertTrue(listViewToc.performItemClick(null, 1, 0));
+			}// run
+		});
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+		}
+	}// testClikcItem0
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -53,6 +68,7 @@ public class TocActivityTestCase extends
 				.findViewById(R.id.textViewDocumentationDirectoryCount);
 		textViewDocumentationFileCount = (TextView) toc_activity
 				.findViewById(R.id.textViewDocumentationFileCount);
+		listViewToc = (ListView) toc_activity.findViewById(R.id.tocListView);
 	}// setUp
 
 	@Override

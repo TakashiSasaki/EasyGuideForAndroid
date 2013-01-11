@@ -26,7 +26,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 
 public class ImageFragment extends Fragment {
 	private FrameLayout frameLayoutImage;
@@ -148,8 +147,6 @@ class SurfaceViewFragment extends ImageFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		this.surfaceView = (SurfaceView) getView().findViewById(
-				R.id.surfaceViewClickable);
 		this.surfaceView.setZOrderOnTop(true);
 		this.surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 		this.surfaceView.getHolder().addCallback(this);

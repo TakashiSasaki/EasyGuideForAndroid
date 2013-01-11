@@ -63,7 +63,7 @@ public class UnifiedActivity extends FragmentActivity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.unified);
 		this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		//this.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+		// this.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		this.horizontalScrollViewSiblingsAndParents = (HorizontalScrollView) findViewById(R.id.horizontalScrollViewSiblingsAndParents);
 		this.fragmentManager = getSupportFragmentManager();
 		this.breadcrumbFragment = (BreadcrumbFragment) fragmentManager
@@ -124,7 +124,8 @@ public class UnifiedActivity extends FragmentActivity {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		wifiFragment.setLastUpdated();;
+		wifiFragment.setLastUpdated();
+		;
 		if (intent != null) {
 			ArrayList<Integer> content_path = intent
 					.getIntegerArrayListExtra("contentPath");
@@ -175,7 +176,7 @@ public class UnifiedActivity extends FragmentActivity {
 		}// if
 		skipEmptyFolder();
 		try {
-			//wifiFragment.loadWifiMap(rootContentUnit);
+			// wifiFragment.loadWifiMap(rootContentUnit);
 			wifiFragment.startWifiThread(rootContentUnit);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

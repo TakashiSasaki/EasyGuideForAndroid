@@ -5,46 +5,58 @@
     android:versionCode="071"
     android:versionName="0.7.1" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="10"/>
-    
-	<permission
-    android:name="com.gmail.takashi316.easyguide.player.permission.MAPS_RECEIVE"
-    android:protectionLevel="signature"/>
-	<uses-permission android:name="com.gmail.takashi316.easyguide.player.permission.MAPS_RECEIVE"/>
-	
-	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-	<uses-permission android:name="android.permission.INTERNET"/>
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="10" />
+
+    <permission
+        android:name="com.gmail.takashi316.easyguide.player.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.gmail.takashi316.easyguide.player.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:debuggable="true"
         android:icon="@drawable/icon48"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
-        <!--  This API key is valid only when apk is signed by my debug key -->
-		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyD-mO1W-GExZSU6wubE3XC22pXyUOT3QF8"/>
+
+        <!-- This API key is valid only when apk is signed by my debug key -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyD-mO1W-GExZSU6wubE3XC22pXyUOT3QF8" />
+
         <activity
             android:name="UnifiedActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" android:launchMode="singleInstance">
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="TocActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" android:launchMode="singleInstance">
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity"></activity>
-        <activity android:name="com.gmail.takashi316.sandbox.MapsV2Activity">
+        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity" >
+        </activity>
+        <activity android:name="com.gmail.takashi316.sandbox.MapsV2Activity" >
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
@@ -53,5 +65,4 @@
         </activity>
     </application>
 
- 
 </manifest>

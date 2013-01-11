@@ -26,13 +26,13 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DocumentationDomain" />
+            android:text="ドキュメントの展開先" />
 
         <TextView
             android:id="@+id/textViewDocumentationDomain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="ドキュメントの配布元" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,13 +43,13 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DocumentationDomainDirectory" />
+            android:text="ドキュメントの展開先" />
 
         <TextView
             android:id="@+id/textViewExistingDocumentationDomainDirectory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="ドキュメントの展開先" />
 
         <TextView
             android:id="@+id/textViewDocumentationDomainDirectory"

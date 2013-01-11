@@ -37,6 +37,11 @@
             android:name="TocActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" android:launchMode="singleInstance">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
         <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity"></activity>
         <activity android:name="com.gmail.takashi316.sandbox.MapsV2Activity">

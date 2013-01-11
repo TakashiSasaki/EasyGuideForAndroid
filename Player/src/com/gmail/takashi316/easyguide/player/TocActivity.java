@@ -21,6 +21,9 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -227,5 +230,22 @@ public class TocActivity extends Activity {
 		}
 		return isDirectory;
 	}// isAssetPathDirectory
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menu_inflater = getMenuInflater();
+		menu_inflater.inflate(R.menu.toc_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}// onCreateOptionsMenu
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.itemDebugPreference:
+			Intent intent = new Intent(this, DebugPreferenceActivity.class);
+			startActivity(intent);
+			return true;
+		}// swtich
+		return super.onOptionsItemSelected(item);
+	}// onOptionsItemSelected
 
 }// OpeningActivity

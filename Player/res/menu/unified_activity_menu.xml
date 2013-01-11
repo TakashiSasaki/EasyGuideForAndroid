@@ -14,5 +14,8 @@
         android:id="@+id/itemExit"
         android:title="終了">
     </item>
-
-</menu>
+    <item
+        android:id="@+id/itemDebugPreference"
+        android:title="デバッグ">
+    </item>
+</menu>

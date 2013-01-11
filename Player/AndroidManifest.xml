@@ -39,7 +39,7 @@
 
         <activity
             android:name="UnifiedActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
@@ -54,14 +54,22 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity" >
+        <activity
+            android:name="com.gmail.takashi316.sandbox.HelloAndroidActivity"
+            android:launchMode="singleTask" >
         </activity>
-        <activity android:name="com.gmail.takashi316.sandbox.MapsV2Activity" >
+        <activity
+            android:name="com.gmail.takashi316.sandbox.MapsV2Activity"
+            android:launchMode="singleTask" >
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="DebugPreferenceActivity"
+            android:launchMode="singleTask" >
         </activity>
     </application>
 

@@ -38,7 +38,6 @@ public class UnifiedActivity extends FragmentActivity {
 	// private MediaController mediaController;
 
 	private WifiManager wifiManager;
-	private Handler handler;
 	private FragmentManager fragmentManager;
 	private BreadcrumbFragment breadcrumbFragment;
 	private ButtonsFragment buttonsFragment;
@@ -98,13 +97,17 @@ public class UnifiedActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menu_inflater = getMenuInflater();
-		menu_inflater.inflate(R.menu.menu, menu);
+		menu_inflater.inflate(R.menu.unified_activity_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}// onCreateOptionsMenu
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.itemDebugPreference:
+			Intent intent = new Intent(this, DebugPreferenceActivity.class);
+			startActivity(intent);
+			return true;
 		case R.id.itemExit:
 			this.setResult(RESULT_OK);
 			this.finish();

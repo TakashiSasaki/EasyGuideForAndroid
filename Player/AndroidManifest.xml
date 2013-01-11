@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gmail.takashi316.easyguide.player"
     android:installLocation="auto"
-    android:versionCode="071"
-    android:versionName="0.7.1" >
+    android:versionCode="072"
+    android:versionName="0.7.2" >
 
     <uses-sdk
         android:minSdkVersion="8"

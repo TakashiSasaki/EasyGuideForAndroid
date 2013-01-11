@@ -12,4 +12,3 @@ public class MapsV2Activity extends FragmentActivity {
 		setContentView(R.layout.maps_v2_activity);
 	}
 }// MapsV2Activity
-

@@ -27,6 +27,8 @@ import android.widget.LinearLayout;
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 import com.gmail.takashi316.easyguide.content.Root;
 
+import com.google.android.gms.maps.SupportMapFragment;
+
 public class UnifiedActivity extends FragmentActivity {
 	// private ImageView imageView;
 	// private Bitmap bitmap;
@@ -53,6 +55,8 @@ public class UnifiedActivity extends FragmentActivity {
 	private LinearLayout imageLinearLayout;
 	private WifiFragment wifiFragment;
 	private LinearLayout linearLayoutWifi;
+	private SupportMapFragment supportMapFragment;
+	private LinearLayout linearLayoutMap;
 
 	private ContentUnit rootContentUnit;
 
@@ -88,9 +92,12 @@ public class UnifiedActivity extends FragmentActivity {
 		this.wifiFragment = (WifiFragment) fragmentManager
 				.findFragmentById(R.id.wifiFragment);
 		this.linearLayoutWifi = (LinearLayout) findViewById(R.id.linearLayoutWifi);
+		this.supportMapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.fragmentSupportMap);
+		this.linearLayoutMap = (LinearLayout) findViewById(R.id.linearLayoutMap);
 
 		this.mGestureDetector = new FourDirectionsGestureDetector(this, null,
 				null, null, null);
+
 
 	}// onCreate
 
@@ -231,6 +238,11 @@ public class UnifiedActivity extends FragmentActivity {
 			imageFragment.deleteBitmap();
 			imageLinearLayout.setVisibility(View.GONE);
 		}// if
+		if (this.contentUnit.hasMap()){
+			linearLayoutMap.setVisibility(View.VISIBLE);
+		} else {
+			linearLayoutMap.setVisibility(View.GONE);
+		}//if
 		buttonsFragment.update(this.contentUnit);
 		breadcrumbFragment.update(this.contentUnit);
 		wifiFragment.update(this.contentUnit);

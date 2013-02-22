@@ -37,12 +37,12 @@ public class ContentUnit {
 
 		MyLogger.info("directory = " + directory.getAbsolutePath());
 
-		for (File child_directory : _directory.listFiles()) {
+		for (File child_directory : this._directory.listFiles()) {
 			if (!child_directory.isDirectory())
 				continue;
 			try {
 				ContentUnit child_content_unit = new ContentUnit(
-						child_directory, this, children.size() + 1);
+						child_directory, this, this.children.size() + 1);
 			} catch (InvalidDirectoryNameException e) {
 				MyLogger.info(e.toString());
 				break;
@@ -64,7 +64,7 @@ public class ContentUnit {
 		// traversing children
 		this.children.clear();
 
-		for (File child_directory : _directory.listFiles()) {
+		for (File child_directory : this._directory.listFiles()) {
 			if (!child_directory.isDirectory())
 				continue;
 			try {
@@ -136,6 +136,15 @@ public class ContentUnit {
 	public ArrayList<ContentUnit> getChildren() {
 		return this.children;
 	}
+	
+	public boolean hasMap(){
+		for(ContentUnit child: this.children){
+			if(child.getLatitude() != null){
+				return true;
+			}//if
+		}//for
+		return false;
+	}//hasMap
 
 	public ArrayList<ContentUnit> getAncestors() {
 		ArrayList<ContentUnit> ancestors = new ArrayList<ContentUnit>();
@@ -160,7 +169,7 @@ public class ContentUnit {
 		assert (index > 0);
 		return this.children.get(index - 1);
 	}
-
+	
 	public ContentUnit getDescendant(ArrayList<Integer> content_path) {
 		ContentUnit descendant = this;
 		for (int sibling_index : content_path) {
@@ -189,7 +198,7 @@ public class ContentUnit {
 		return this.hasHtml() || this.hasImageFile() || this.hasMovie()
 				|| this.hasText();
 	}
-
+	
 	public File getImageFile() {
 		return this._classifier.getImageFiles().get(0);
 	}
@@ -205,6 +214,14 @@ public class ContentUnit {
 	public File getHtmlFile() {
 		return this._classifier.getHtmlFiles().get(0);
 	}
+	
+	public Double getLongitude(){
+		return this._directoryName.getLongitude();
+	}//getLongitude
+	
+	public Double getLatitude(){
+		return this._directoryName.getLatitude();
+	}//getLatitude
 
 	public ContentUnit getNearestChild(float bitmap_x, float bitmap_y) {
 		ContentUnit nearest_child = null;

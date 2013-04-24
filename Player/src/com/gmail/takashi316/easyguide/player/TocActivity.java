@@ -194,6 +194,8 @@ public class TocActivity extends Activity {
 	}// copyAsset
 
 	static void deleteDirectory(File directory) {
+		File[] files = directory.listFiles();
+		if (files == null) return;
 		for (File child : directory.listFiles()) {
 			if (child.isFile())
 				child.delete();

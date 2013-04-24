@@ -45,6 +45,6 @@ public class TextFragment extends Fragment {
 		} else {
 			this.layoutText.setVisibility(View.GONE);
 		}// if contentUnit has a text
-	}// updat
+	}// update
 }// TextFragment
 

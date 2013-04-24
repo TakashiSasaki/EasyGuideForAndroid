@@ -127,6 +127,7 @@ public class TocActivity extends Activity {
 			ArrayList<ContentUnit> children = root.getChildren();
 			TocAdapter toc_adapter = new TocAdapter(this, children);
 			building_list_view.setAdapter(toc_adapter);
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -134,8 +135,16 @@ public class TocActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}// onCreate
 
+	// for demo
+	@Override
+	protected void onResume() {
+		super.onResume();
+		invokeAbsolutePath(root.getChild(1).getDirectory().getAbsolutePath());
+	}
+	
 	private void invokeAbsolutePath(String absolute_path) {
 		Intent intent = new Intent(TocActivity.this, UnifiedActivity.class);
 		intent.putExtra("root", absolute_path);

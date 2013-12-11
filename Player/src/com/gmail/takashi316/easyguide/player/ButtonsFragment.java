@@ -1,5 +1,7 @@
 package com.gmail.takashi316.easyguide.player;
 
+import java.util.ArrayList;
+
 import com.gmail.takashi316.easyguide.content.ContentUnit;
 
 import android.app.Activity;
@@ -25,6 +27,7 @@ public class ButtonsFragment extends Fragment {
 	LinearLayout layoutButtons;
 	Context context;
 	Class<? extends Activity> activityClass;
+	ArrayList<Button> buttons = new ArrayList<Button>();
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -56,6 +59,7 @@ public class ButtonsFragment extends Fragment {
 
 	public void showButtons(ContentUnit current_content_unit) {
 		this.layoutButtons.removeAllViews();
+		this.buttons.clear();
 		// final UnifiedActivity ua = this;
 
 		/*
@@ -81,6 +85,11 @@ public class ButtonsFragment extends Fragment {
 
 				@Override
 				public void onClick(View v) {
+					for (Button b : buttons) {
+						b.setBackgroundResource(R.drawable.button_child);
+					}
+					((Button) v)
+							.setBackgroundResource(R.drawable.button_curent);
 					Intent intent = new Intent(context, activityClass);
 					intent.putIntegerArrayListExtra("contentPath",
 							cu.getContentPath());
@@ -89,8 +98,8 @@ public class ButtonsFragment extends Fragment {
 					// ua.onResume();
 				}
 			});
+			this.buttons.add(b);
 			this.layoutButtons.addView(b);
-
 		}// for
 		final ContentUnit parent_cu = current_content_unit.getParent();
 		if (parent_cu != null) {

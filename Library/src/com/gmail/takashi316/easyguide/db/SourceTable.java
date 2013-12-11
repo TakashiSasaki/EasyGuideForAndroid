@@ -12,7 +12,6 @@ import com.gmail.takashi316.easyguide.content.Domain;
 import com.gmail.takashi316.easyguide.download.Source;
 import com.gmail.takashi316.easyguide.util.Log;
 
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -203,7 +202,8 @@ public class SourceTable {
 				null, null, null, null, null);
 		for (boolean record_exists = cursor.moveToFirst(); record_exists; record_exists = cursor
 				.moveToNext()) {
-			//Domain domain = new Domain(Root.getTheRoot(), cursor.getString(0));
+			// Domain domain = new Domain(Root.getTheRoot(),
+			// cursor.getString(0));
 			String domain_string = cursor.getString(0);
 			URI uri;
 			try {

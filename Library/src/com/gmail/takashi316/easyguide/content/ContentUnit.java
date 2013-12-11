@@ -17,40 +17,6 @@ public class ContentUnit {
 	private File _directory;
 	private int siblingIndex;
 
-	@SuppressWarnings({ "boxing", "unchecked" })
-	public ContentUnit(File directory, ContentUnit parent, int sibling_index)
-			throws FileNotFoundException {
-
-		this._directory = directory;
-		this._parent = parent;
-		this._directoryName = new DirectoryName(directory.getName());
-		this._classifier = new Classifier(directory);
-		this.siblingIndex = sibling_index;
-
-		// detecting level consistency
-		if (parent != null) {
-			this.contentPath = (ArrayList<Integer>) parent.contentPath.clone();
-			this.contentPath.add(this.siblingIndex);
-		} // else {
-			// this.contentPath = new ArrayList<Integer>();
-			// }// if
-
-		MyLogger.info("directory = " + directory.getAbsolutePath());
-
-		for (File child_directory : this._directory.listFiles()) {
-			if (!child_directory.isDirectory())
-				continue;
-			try {
-				ContentUnit child_content_unit = new ContentUnit(
-						child_directory, this, this.children.size() + 1);
-			} catch (InvalidDirectoryNameException e) {
-				MyLogger.info(e.toString());
-				break;
-			}// try
-		}// for
-
-	}// recursive and non-sorting constructor
-
 	public ContentUnit(File directory, ContentUnit parent)
 			throws FileNotFoundException {
 		this._directory = directory;
@@ -136,15 +102,15 @@ public class ContentUnit {
 	public ArrayList<ContentUnit> getChildren() {
 		return this.children;
 	}
-	
-	public boolean hasMap(){
-		for(ContentUnit child: this.children){
-			if(child.getLatitude() != null){
+
+	public boolean hasMap() {
+		for (ContentUnit child : this.children) {
+			if (child.getLatitude() != null) {
 				return true;
-			}//if
-		}//for
+			}// if
+		}// for
 		return false;
-	}//hasMap
+	}// hasMap
 
 	public ArrayList<ContentUnit> getAncestors() {
 		ArrayList<ContentUnit> ancestors = new ArrayList<ContentUnit>();
@@ -169,7 +135,7 @@ public class ContentUnit {
 		assert (index > 0);
 		return this.children.get(index - 1);
 	}
-	
+
 	public ContentUnit getDescendant(ArrayList<Integer> content_path) {
 		ContentUnit descendant = this;
 		for (int sibling_index : content_path) {
@@ -198,7 +164,7 @@ public class ContentUnit {
 		return this.hasHtml() || this.hasImageFile() || this.hasMovie()
 				|| this.hasText();
 	}
-	
+
 	public File getImageFile() {
 		return this._classifier.getImageFiles().get(0);
 	}
@@ -214,14 +180,14 @@ public class ContentUnit {
 	public File getHtmlFile() {
 		return this._classifier.getHtmlFiles().get(0);
 	}
-	
-	public Double getLongitude(){
+
+	public Double getLongitude() {
 		return this._directoryName.getLongitude();
-	}//getLongitude
-	
-	public Double getLatitude(){
+	}// getLongitude
+
+	public Double getLatitude() {
 		return this._directoryName.getLatitude();
-	}//getLatitude
+	}// getLatitude
 
 	public ContentUnit getNearestChild(float bitmap_x, float bitmap_y) {
 		ContentUnit nearest_child = null;
@@ -247,7 +213,8 @@ public class ContentUnit {
 	static public void main(String[] args) throws FileNotFoundException {
 		final String directory_path = "/C:/Users/sasaki/Google ドライブ/Billable/EasyGuide-contents/EASYGUIDE/www.yonden.co.jp/01 四国電力/01 四国電力保安研修所";
 		final File directory = new File(directory_path);
-		ContentUnit content_unit = new ContentUnit(directory, null, 1);
+		ContentUnit content_unit = new ContentUnit(directory, null);
+		content_unit.enumerateChildren(true);
 		ContentUnit content_unit_2 = content_unit.getChild(1).getChild(2);
 		MyLogger.info("children " + content_unit_2.getChildren().size());
 		MyLogger.info("siblings " + content_unit_2.getSiblings().size());

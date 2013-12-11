@@ -28,10 +28,8 @@ public class Domain extends ContentUnit {
 	 * @param domain_name
 	 * @throws FileNotFoundException
 	 */
-	public Domain(Root root, String domain_name, int sibling_index)
-			throws FileNotFoundException {
-		super(new File(root.getDirectory(), domain_name.toLowerCase()), root,
-				sibling_index);
+	public Domain(Root root, String domain_name) throws FileNotFoundException {
+		super(new File(root.getDirectory(), domain_name.toLowerCase()), root);
 		updateHostAddress();
 	}// a constructor of class Domain
 

@@ -58,17 +58,16 @@ public class ButtonsFragment extends Fragment {
 		this.layoutButtons.removeAllViews();
 		// final UnifiedActivity ua = this;
 
-		ImageButton image_button = new ImageButton(context);
-		image_button.setImageResource(android.R.drawable.btn_radio);
-		image_button.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				UnifiedActivity unified_activity = (UnifiedActivity) getActivity();
-				unified_activity.toggleWifiLayout();
-			}
-		});
-		this.layoutButtons.addView(image_button);
+		/*
+		 * ImageButton image_button = new ImageButton(context);
+		 * image_button.setImageResource(android.R.drawable.btn_radio);
+		 * image_button.setOnClickListener(new OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) { UnifiedActivity
+		 * unified_activity = (UnifiedActivity) getActivity();
+		 * unified_activity.toggleWifiLayout(); } });
+		 * this.layoutButtons.addView(image_button);
+		 */
 
 		for (final ContentUnit cu : current_content_unit.getChildren()) {
 			Button b = new Button(context);

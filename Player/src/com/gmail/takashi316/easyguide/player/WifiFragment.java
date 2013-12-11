@@ -129,7 +129,7 @@ public class WifiFragment extends Fragment {
 											int which) {
 										int n_saved_ap_sets = wifiThread
 												.saveWifiMap();
-										// wifiAps.save(file);
+										//wifiAps.save(file);
 										textViewSavedWifiAps.setText(""
 												+ n_saved_ap_sets + "地点保存しました");
 									}// onClick
@@ -137,9 +137,9 @@ public class WifiFragment extends Fragment {
 			}// onClick
 		});// setOnClickListener
 
-		buttonRegister = (Button) view
+		this.buttonRegister = (Button) view
 				.findViewById(R.id.buttonRegisterApTemporaliry);
-		buttonRegister.setOnClickListener(new OnClickListener() {
+		this.buttonRegister.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				try {

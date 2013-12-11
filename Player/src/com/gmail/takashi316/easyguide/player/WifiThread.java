@@ -123,7 +123,8 @@ class WifiThread extends Thread {
 
 	public void learn(ContentUnit content_unit)
 			throws CloneNotSupportedException {
-		wifiMap.put(content_unit.getContentPath(), wifiAps.clone());
+		WifiAps wifi_aps = wifiAps.clone();
+		wifiMap.put(content_unit.getContentPath(), wifi_aps);
 	}
 
 	public void setLastUpdated() {

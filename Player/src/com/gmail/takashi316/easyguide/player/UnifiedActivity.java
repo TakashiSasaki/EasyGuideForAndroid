@@ -25,6 +25,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.gmail.takashi316.easyguide.content.ContentUnit;
+import com.gmail.takashi316.easyguide.content.Glossary;
 import com.gmail.takashi316.easyguide.content.Root;
 
 import com.google.android.gms.maps.SupportMapFragment;
@@ -210,7 +211,8 @@ public class UnifiedActivity extends FragmentActivity {
 		} else {
 			htmlLinearLayout.setVisibility(View.GONE);
 		}// if
-		textFragment.update(this.contentUnit);
+		textFragment.update(this.contentUnit,
+				new Glossary(this.rootContentUnit));
 		if (this.contentUnit.hasText()) {
 			textLinearLayout.setVisibility(View.VISIBLE);
 		} else {

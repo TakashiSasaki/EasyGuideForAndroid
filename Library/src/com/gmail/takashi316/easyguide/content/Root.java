@@ -14,7 +14,8 @@ import android.os.Environment;
  */
 public class Root extends ContentUnit {
 	private static final String _EASYGUIDE = "EASYGUIDE";
-	//private static Root singleton;
+
+	// private static Root singleton;
 
 	private static File _getEasyGuideRoot() {
 		File external_storage_directory = Environment
@@ -22,24 +23,24 @@ public class Root extends ContentUnit {
 		File easy_guide_root = new File(external_storage_directory, _EASYGUIDE);
 		if (!easy_guide_root.isDirectory()) {
 			easy_guide_root.mkdir();
-		}//if
+		}// if
 		if (!easy_guide_root.canWrite()) {
 			easy_guide_root.setWritable(true);
-		}//if
+		}// if
 		return easy_guide_root;
 	}// _getEasyGuideRoot
 
-//	public static Root getTheRoot() throws FileNotFoundException {
-//		if (singleton != null)
-//			return singleton;
-//		singleton = new Root();
-//		return singleton;
-//	}// getTheRoot()
+	// public static Root getTheRoot() throws FileNotFoundException {
+	// if (singleton != null)
+	// return singleton;
+	// singleton = new Root();
+	// return singleton;
+	// }// getTheRoot()
 
 	public Root() throws FileNotFoundException {
 		// super(_getEasyGuideRoot(), null, 1);
 		super(_getEasyGuideRoot(), null);
-		this.enumerateChildren(false);
+		this.enumerateChildren(true);
 	}// an constructor
 
 	public static boolean isDomainName(String s) {

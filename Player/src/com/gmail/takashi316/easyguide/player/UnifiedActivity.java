@@ -92,12 +92,12 @@ public class UnifiedActivity extends FragmentActivity {
 		this.wifiFragment = (WifiFragment) fragmentManager
 				.findFragmentById(R.id.wifiFragment);
 		this.linearLayoutWifi = (LinearLayout) findViewById(R.id.linearLayoutWifi);
-		this.supportMapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.fragmentSupportMap);
+		this.supportMapFragment = (SupportMapFragment) fragmentManager
+				.findFragmentById(R.id.fragmentSupportMap);
 		this.linearLayoutMap = (LinearLayout) findViewById(R.id.linearLayoutMap);
 
 		this.mGestureDetector = new FourDirectionsGestureDetector(this, null,
 				null, null, null);
-
 
 	}// onCreate
 
@@ -110,24 +110,26 @@ public class UnifiedActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.itemDebugPreference:
+		if (item.getItemId() == R.id.itemDebugPreference) {
 			Intent intent = new Intent(this, DebugPreferenceActivity.class);
 			startActivity(intent);
 			return true;
-		case R.id.itemExit:
+		}
+		if (item.getItemId() == R.id.itemExit) {
 			this.setResult(RESULT_OK);
 			this.finish();
 			return true;
-		case R.id.itemWifiSense:
+		}
+		if (item.getItemId() == R.id.itemWifiSense) {
 			new WifiSenseAndShowDialog(this, this.wifiManager,
 					this.contentUnit.getDirectory());
 			return true;
-		case R.id.itemWifiLocate:
+		}
+		if (item.getItemId() == R.id.itemWifiLocate) {
 			AlertDialog.Builder alert_dialog = new AlertDialog.Builder(this);
 			alert_dialog.setPositiveButton("OK", null);
 			return true;
-		}// swtich
+		}
 		return super.onOptionsItemSelected(item);
 	}// onOptionsItemSelected
 
@@ -238,11 +240,11 @@ public class UnifiedActivity extends FragmentActivity {
 			imageFragment.deleteBitmap();
 			imageLinearLayout.setVisibility(View.GONE);
 		}// if
-		if (this.contentUnit.hasMap()){
+		if (this.contentUnit.hasMap()) {
 			linearLayoutMap.setVisibility(View.VISIBLE);
 		} else {
 			linearLayoutMap.setVisibility(View.GONE);
-		}//if
+		}// if
 		buttonsFragment.update(this.contentUnit);
 		breadcrumbFragment.update(this.contentUnit);
 		wifiFragment.update(this.contentUnit);

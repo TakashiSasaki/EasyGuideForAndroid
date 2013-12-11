@@ -127,7 +127,7 @@ public class TocActivity extends Activity {
 			ArrayList<ContentUnit> children = root.getChildren();
 			TocAdapter toc_adapter = new TocAdapter(this, children);
 			building_list_view.setAdapter(toc_adapter);
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -144,7 +144,7 @@ public class TocActivity extends Activity {
 		super.onResume();
 		invokeAbsolutePath(root.getChild(1).getDirectory().getAbsolutePath());
 	}
-	
+
 	private void invokeAbsolutePath(String absolute_path) {
 		Intent intent = new Intent(TocActivity.this, UnifiedActivity.class);
 		intent.putExtra("root", absolute_path);
@@ -204,7 +204,8 @@ public class TocActivity extends Activity {
 
 	static void deleteDirectory(File directory) {
 		File[] files = directory.listFiles();
-		if (files == null) return;
+		if (files == null)
+			return;
 		for (File child : directory.listFiles()) {
 			if (child.isFile())
 				child.delete();
@@ -240,12 +241,11 @@ public class TocActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.itemDebugPreference:
+		if (item.getItemId() == R.id.itemDebugPreference) {
 			Intent intent = new Intent(this, DebugPreferenceActivity.class);
 			startActivity(intent);
 			return true;
-		}// swtich
+		}
 		return super.onOptionsItemSelected(item);
 	}// onOptionsItemSelected
 

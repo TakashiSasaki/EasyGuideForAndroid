@@ -7,7 +7,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="10" />
+        android:targetSdkVersion="14" />
 
     <permission
         android:name="com.gmail.takashi316.easyguide.player.permission.MAPS_RECEIVE"
@@ -28,7 +28,7 @@
         android:required="true" />
 
     <application
-        android:debuggable="true"
+        android:allowBackup="true"
         android:icon="@drawable/icon48"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >

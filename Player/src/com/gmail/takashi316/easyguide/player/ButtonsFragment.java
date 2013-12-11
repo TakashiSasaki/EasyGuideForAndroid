@@ -71,6 +71,7 @@ public class ButtonsFragment extends Fragment {
 
 		for (final ContentUnit cu : current_content_unit.getChildren()) {
 			Button b = new Button(context);
+			b.setBackgroundResource(R.drawable.button_child);
 			b.setText(cu.getName());
 			b.setTextSize(30);
 			// b.setBackgroundColor(Color.YELLOW);
@@ -94,6 +95,7 @@ public class ButtonsFragment extends Fragment {
 		final ContentUnit parent_cu = current_content_unit.getParent();
 		if (parent_cu != null) {
 			Button b = new Button(context);
+			b.setBackgroundResource(R.drawable.button_parent);
 			b.setText("もどる");
 			b.setTextSize(30);
 			// b.setBackgroundColor(Color.GREEN);

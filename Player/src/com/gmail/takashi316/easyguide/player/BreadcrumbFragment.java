@@ -36,16 +36,16 @@ public class BreadcrumbFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.breadcrumb_fragment, container);
-		
+
 		// this.horizontalScrollViewBreadcrumb = (HorizontalScrollView)
 		// getView()
 		// .findViewById(R.id.scrollViewBreadcrumb);
 		this.horizontalScrollViewBreadcrumb = (HorizontalScrollView) v
 				.findViewById(R.id.scrollViewBreadcrumb);
-		//this.layoutBreadcrumb = (LinearLayout) getView().findViewById(
-		//		R.id.layoutBreadcrumb);
-		this.layoutBreadcrumb = (LinearLayout) v.findViewById(
-				R.id.layoutBreadcrumb);
+		// this.layoutBreadcrumb = (LinearLayout) getView().findViewById(
+		// R.id.layoutBreadcrumb);
+		this.layoutBreadcrumb = (LinearLayout) v
+				.findViewById(R.id.layoutBreadcrumb);
 
 		return v;
 	}
@@ -76,6 +76,7 @@ public class BreadcrumbFragment extends Fragment {
 
 		for (int i = ancestors.size() - 1; i >= 0; --i) {
 			Button b = new Button(context);
+			b.setBackgroundResource(R.drawable.button_breadcrumb);
 			b.setText(ancestors.get(i).getName());
 			b.setTextSize(30);
 			b.setTextColor(Color.BLACK);
@@ -110,11 +111,12 @@ public class BreadcrumbFragment extends Fragment {
 		arrow.setTextColor(Color.BLACK);
 		this.layoutBreadcrumb.addView(arrow);
 		Button b = new Button(context);
+		b.setBackgroundResource(R.drawable.button_curent);
 		b.setText(current_content_unit.getName());
 		b.setTextSize(30);
 		b.setTextColor(Color.BLACK);
 		b.setMinWidth(30);
-		//b.setBackgroundColor(Color.CYAN);
+		// b.setBackgroundColor(Color.CYAN);
 		b.setOnClickListener(new OnClickListener() {
 
 			@Override
